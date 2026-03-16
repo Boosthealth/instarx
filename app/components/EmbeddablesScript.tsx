@@ -15,7 +15,7 @@ export default function EmbeddablesScript() {
   const urlRoot = engineDomain.startsWith('http://localhost') ? '' : engineDomain.startsWith('http') ? engineDomain : 'https://' + engineDomain
 
   const script = document.createElement('script')
-  script.src = urlRoot + '/bundle.js'
+  script.src = \`\${urlRoot}/bundle.js\`
   document.head.appendChild(script)
 
   const initializeEmbeddables = function () {
@@ -30,7 +30,7 @@ export default function EmbeddablesScript() {
     })
     const originUrl = window.location.href
     const url =
-      urlRoot + '/init?load=' +
+      \`\${urlRoot}/init?load=\` +
       encodeURIComponent(JSON.stringify({ embeddablesToLoad, originUrl }))
 
     fetch(url)

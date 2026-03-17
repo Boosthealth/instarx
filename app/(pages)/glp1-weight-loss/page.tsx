@@ -17,7 +17,7 @@ export default function GLP1WeightLoss() {
   return (
     <>
       <EmbeddablesScript />
-      <savvy id="flow_a22jeg0agf2ch469bbf95406"></savvy>
+      <savvy id="flow_6d999bf48dbh7hc6a5debc2h9c"></savvy>
     </>
   );
 }

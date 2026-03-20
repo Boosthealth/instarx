@@ -129,7 +129,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
                   className="h-14 w-auto"
                 />
               </Link>
-              <p className="mt-6 text-sm text-gray-400">Contact Us:</p>
+              <p className="mt-6 text-sm text-gray-300">Contact Us:</p>
               <div className="mt-2 space-y-1">
                 <p>
                   <a
@@ -158,7 +158,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
                   <ul className="space-y-2">
                     {group.links.map((link) => (
                       <li key={link.label}>
-                        <Link href={link.href} className="text-sm text-gray-300 hover:text-white transition-colors">
+                        <Link href={link.href} className="text-sm text-gray-200 hover:text-white transition-colors">
                           {link.label}
                         </Link>
                       </li>
@@ -172,7 +172,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
                 <ul className="space-y-2">
                   {footerSupportLinks.map((link) => (
                     <li key={link.label}>
-                      <Link href={link.href} className="text-sm text-gray-300 hover:text-white transition-colors">
+                      <Link href={link.href} className="text-sm text-gray-200 hover:text-white transition-colors">
                         {link.label}
                       </Link>
                     </li>
@@ -185,13 +185,13 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
           {/* Divider + Bottom bar */}
           <div className="border-t border-gray-600 py-5">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <p className="text-xs text-gray-500">&copy; 2026 InstaRX. All rights reserved.</p>
+              <p className="text-xs text-gray-400">&copy; 2026 InstaRX. All rights reserved.</p>
               <div className="flex flex-wrap gap-x-5 gap-y-2">
                 {footerBottomLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="text-xs text-gray-400 hover:text-gray-200 transition-colors"
+                    className="text-xs text-gray-300 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>

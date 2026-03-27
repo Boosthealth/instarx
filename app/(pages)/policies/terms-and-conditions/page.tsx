@@ -61,6 +61,9 @@ export default function TermsAndConditionsPage() {
           coordination between you, your healthcare provider, and the pharmacy, but does not itself dispense or
           distribute any medications.
         </p>
+        <p className="mt-4">
+          The doctor consultation fee of $45 is included as part of your monthly price.
+        </p>
 
         {/* Section 2 */}
         <h2 className="text-2xl font-semibold mt-10 mb-4">2. Eligibility</h2>

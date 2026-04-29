@@ -3,3 +3,20 @@
 body {
   margin: 0;
 }
+
+@utility glp1-bg {
+  background: linear-gradient(259.41deg, #FCE4A0 0.21%, #C5A3F0 50%, #F0A0C0 99.79%);
+}
+
+@utility shadow-list-item {
+  box-shadow:
+    0px 1px 3px 0px #0000001A,
+    0px 5px 5px 0px #00000017,
+    0px 11px 7px 0px #0000000D,
+    0px 19px 8px 0px #00000003,
+    0px 30px 8px 0px #00000000;
+}
+
+@utility arrow-shadow {
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+}

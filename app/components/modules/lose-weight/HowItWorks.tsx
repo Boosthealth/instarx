@@ -1,0 +1,67 @@
+import Image from "next/image";
+
+const steps = [
+  {
+    label: "Today",
+    text: "Get $150 Off today. Discount applied at checkout",
+  },
+  {
+    label: "In 1 day",
+    text: "Doctor Review: A Licensed U.S. Physician reviews your profile and writes your prescription",
+  },
+  {
+    label: "Within 1 day",
+    text: "Insta-Ship: Our licensed US pharmacies prepare your kit and express ship it to your door in 1–2 days.",
+  },
+  {
+    label: "Free & Discreet 1-2 Day Delivery",
+    text: "Receive your medication and supply kit",
+  },
+  {
+    label: "On-going care & support with Insta Rx Nursing Staff",
+    text: "Begin treatment, and start losing weight :)",
+  },
+];
+
+export function HowItWorks() {
+  return (
+    <section className="bg-white py-16 overflow-hidden" id="how-it-works">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-center">
+
+        {/* Left: timeline */}
+        <div className="px-6 md:pl-12 md:pr-0 max-w-2xl xl:max-w-3xl">
+          <h2 className="text-4xl md:text-6xl font-semibold text-gray-900 mb-3 leading-tight">
+            Get your weight loss meds in 1–2 days
+          </h2>
+          <p className="text-lg text-gray-500 mb-8">
+            Concierge medical weight loss without the waiting room.
+          </p>
+
+          <div className="flex flex-col divide-y divide-gray-200">
+            {steps.map((step, i) => (
+              <div key={i} className="py-2">
+                <p className="text-xs font-medium mb-1 text-orange-500">{step.label}</p>
+                <p className="text-base text-gray-800 flex items-start gap-2 font-semibold">
+                  <span className="mt-0.5 text-base shrink-0">▶</span>
+                  {step.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: phone mockup — flush to right edge */}
+        <div className="flex justify-center md:justify-end">
+          <Image
+            src="/lose-weight/timeline.webp"
+            alt="InstaRx app"
+            width={460}
+            height={920}
+            className="object-contain w-full sm:w-[280px] md:w-[360px] lg:w-[460px]"
+          />
+        </div>
+
+      </div>
+    </section>
+  );
+}

@@ -48,15 +48,18 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
   }, [menuOpen]);
 
   useEffect(() => {
+    if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, []);
+  }, [menuOpen]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white">
@@ -66,8 +69,8 @@ export default function Header() {
         style={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
       >
         <div
-          className="flex whitespace-nowrap"
-          style={{ width: "max-content", animation: "marquee 60s linear infinite" }}
+          className="marquee-track flex whitespace-nowrap"
+          style={{ width: "max-content" }}
         >
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span key={i} className="inline-flex items-center gap-1.5 mx-8 text-xs font-medium text-black">
@@ -79,7 +82,7 @@ export default function Header() {
       </div>
 
       {/* Navigation */}
-      <nav>
+      <nav aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="shrink-0">
@@ -98,7 +101,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base"
+                className="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:rounded"
               >
                 {link.label}
               </Link>
@@ -144,7 +147,7 @@ export default function Header() {
               <CloseIcon />
             </button>
           </div>
-          <nav className="flex flex-col flex-1">
+          <nav aria-label="Mobile menu" className="flex flex-col flex-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

@@ -15,7 +15,7 @@ function StarBox({ fill = 1 }: { fill?: number }) {
 
 function TrustpilotStars() {
   return (
-    <div className="flex items-center gap-2 mb-4">
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4">
       <span className="text-sm font-bold text-gray-900">Excellent 4.7</span>
       <div className="flex items-center gap-0.5">
         <StarBox fill={1} />
@@ -38,19 +38,19 @@ const checkItems = [
 
 export default function Hero() {
   return (
-    <section className="px-4 pt-[98px]">
+    <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
       {/* Gradient card */}
-      <div className="bg-gradient rounded-[48px] overflow-hidden">
+      <div className="bg-gradient rounded-3xl sm:rounded-[48px] overflow-hidden">
         <div
           className="max-w-7xl mx-auto px-6 text-gray-900"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-10 sm:py-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-8 sm:py-14">
 
             {/* Left: text */}
             <div>
               <TrustpilotStars />
 
-              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] mb-4">
+              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
                 Drop up to 1-2lbs<br />per week!
               </h1>
               <p className="mb-4 max-w-md">
@@ -77,11 +77,11 @@ export default function Hero() {
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center justify-center gap-4 mb-4 sm:justify-start">
-                <Button href="https://go.instarx.com/intake" text="Start Quiz →" />
-                <Button href="#pricing" text="See pricing" color="light" />
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start">
+                <Button href="https://go.instarx.com/intake" text="Start Quiz →" className="w-full sm:w-auto" />
+                <Button href="#pricing" text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-center text-sm text-gray-700 sm:text-left">
                 Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime
               </p>
             </div>

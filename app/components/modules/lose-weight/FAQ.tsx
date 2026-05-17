@@ -61,9 +61,9 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-white py-16 px-6" id="faqs">
+    <section className="bg-white py-16 px-4 sm:px-6" id="faqs">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-6xl text-gray-900 text-center mb-4 leading-tight">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 text-center mb-4 leading-tight">
           We&apos;re here to help.
         </h2>
         <p className="text-center text-lg text-gray-700 mb-12 md:text-xl md:mb-16">
@@ -76,12 +76,12 @@ export function FAQ() {
             return (
               <div key={i}>
                 <button
-                  className="w-full flex items-center justify-between py-4 text-left gap-4"
+                  className="w-full flex items-center justify-between py-4 text-left gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 rounded-sm"
                   aria-expanded={isOpen}
                   aria-controls={`faq-panel-${i}`}
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                 >
-                  <span className="font-semibold text-gray-900 text-sm md:text-base">
+                  <span className="font-semibold text-gray-900 text-lg leading-snug">
                     {faq.q}
                   </span>
                   <span className="shrink-0 text-gray-400 text-xl leading-none" aria-hidden="true">
@@ -95,7 +95,7 @@ export function FAQ() {
                   className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
                 >
                   <div className="overflow-hidden">
-                    <p className="pb-4 text-sm text-gray-600 leading-relaxed">
+                    <p className="pb-4 text-base text-gray-600 leading-snug">
                       {faq.a}
                     </p>
                   </div>

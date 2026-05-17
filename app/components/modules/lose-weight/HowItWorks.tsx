@@ -26,11 +26,11 @@ const steps = [
 export function HowItWorks() {
   return (
     <section className="bg-white py-16 overflow-hidden" id="how-it-works">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-0 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-center">
 
         {/* Left: timeline */}
         <div className="px-6 md:pl-12 md:pr-0 max-w-2xl xl:max-w-3xl">
-          <h2 className="text-4xl md:text-6xl font-semibold text-gray-900 mb-3 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 leading-tight">
             Get your weight loss meds in 1–2 days
           </h2>
           <p className="text-lg text-gray-500 mb-8">
@@ -39,10 +39,12 @@ export function HowItWorks() {
 
           <div className="flex flex-col divide-y divide-gray-200">
             {steps.map((step, i) => (
-              <div key={i} className="py-2">
-                <p className="text-xs font-medium mb-1 text-orange-500">{step.label}</p>
+              <div key={i} className="py-3.5 md:py-4">
+                <p className="text-sm font-medium mb-1.5 text-orange-500">{step.label}</p>
                 <p className="text-base text-gray-800 flex items-start gap-2 font-semibold">
-                  <span className="mt-0.5 text-base shrink-0">▶</span>
+                  <svg className="mt-1 shrink-0" width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                    <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
+                  </svg>
                   {step.text}
                 </p>
               </div>
@@ -57,7 +59,7 @@ export function HowItWorks() {
             alt="InstaRx app"
             width={460}
             height={920}
-            className="object-contain w-full sm:w-[280px] md:w-[360px] lg:w-[460px]"
+            className="object-contain w-full sm:w-70 md:w-90 lg:w-115"
           />
         </div>
 

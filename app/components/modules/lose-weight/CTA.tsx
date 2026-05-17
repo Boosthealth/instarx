@@ -15,15 +15,15 @@ function StarBox({ fill = 1 }: { fill?: number }) {
 export const CTA = ({ href, btnText, className, price = false }: { href: string; btnText?: string; className?: string; price?: boolean }) => {
   return (
     <div className={`flex flex-col items-center gap-4 ${className}`}>
-      <div className="flex items-center justify-center gap-4">
-        <Button href={href} text={btnText || "Start Quiz →"} className={`${price ? "" : "min-w-60"}`} />
-        {price && <Button href="#pricing" text="See Pricing" color="light" />}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <Button href={href} text={btnText || "Start Quiz →"} className={`${price ? "" : "min-w-60"} w-full sm:w-auto`} />
+        {price && <Button href="#pricing" text="See Pricing" color="light" className="w-full sm:w-auto" />}
       </div>
-      <p className="text-xs text-gray-700">
+      <p className="text-center text-sm text-gray-700">
         No Hidden Fees &nbsp;·&nbsp; No Monthly Membership &nbsp;·&nbsp; Cancel Anytime
       </p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap justify-center items-center gap-2">
         <span className="text-sm font-bold text-gray-800">Excellent 4.7</span>
         <div className="flex items-center gap-0.5">
           <StarBox fill={1} />

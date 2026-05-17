@@ -27,9 +27,9 @@ const reviews = [
 
 function Stars() {
   return (
-    <div className="flex gap-0.5 mb-3">
+    <div className="flex gap-0.5 mb-3" aria-label="5 out of 5 stars">
       {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b">
+        <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" aria-hidden="true">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
       ))}
@@ -41,9 +41,9 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
   return (
     <div className="bg-white rounded-2xl p-6 flex flex-col gap-2 h-full">
       <Stars />
-      <p className="font-semibold text-gray-900 text-sm leading-snug">{review.title}</p>
-      <p className="text-sm text-gray-600 leading-relaxed flex-1">{review.text}</p>
-      <p className="text-sm text-gray-500 mt-2">— {review.author}</p>
+      <p className="text-lg font-semibold text-gray-900 leading-snug">{review.title}</p>
+      <p className="text-base text-gray-600 leading-snug flex-1">{review.text}</p>
+      <p className="text-base font-medium text-gray-700 mt-2">— {review.author}</p>
     </div>
   );
 }
@@ -57,8 +57,8 @@ export function Reviews() {
   return (
     <section className="bg-gray-100 py-16" id="reviews">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl md:text-6xl text-gray-900 text-center mb-4">
-          10k+ Happy Customers :)
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 text-center mb-4">
+          10k+ Happy Customers
         </h2>
         <p className="text-center text-gray-700 text-lg mb-10 md:text-xl md:mb-16">
           Real people. Real weight loss. See what our customers have to say.

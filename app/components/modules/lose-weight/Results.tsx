@@ -23,7 +23,7 @@ export default function Results() {
           </div>
         </div>
 
-        <div className="mb-20">
+        <div className="mb-12 md:mb-20">
           <TrustBadgesCarousel />
         </div>
 

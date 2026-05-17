@@ -7,7 +7,7 @@ export function Medications() {
     <section className="bg-[#f5f0eb] py-16 px-6 rounded-b-[48px]">
       <div className="max-w-4xl mx-auto text-center">
 
-        <h2 className="text-4xl md:text-6xl text-gray-900 mb-10 leading-tight">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-10 leading-tight">
           Medications In Stock Ready to Ship
         </h2>
         <p className="text-lg font-medium text-gray-700 mb-6 md:text-xl">

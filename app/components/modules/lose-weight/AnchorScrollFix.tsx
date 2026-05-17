@@ -17,7 +17,13 @@ export function AnchorScrollFix() {
       const href = anchor.getAttribute("href");
       if (!href || href === "#" || href === "#top") return;
 
-      const id = decodeURIComponent(href.slice(1));
+      let id: string;
+      try {
+        id = decodeURIComponent(href.slice(1));
+      } catch {
+        return;
+      }
+
       const el = document.getElementById(id);
       if (!el) return;
 
@@ -29,11 +35,15 @@ export function AnchorScrollFix() {
       if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
       (el as HTMLElement).focus({ preventScroll: true });
 
-      const oldURL = location.href;
-      history.pushState(null, "", `#${id}`);
-      window.dispatchEvent(
-        new HashChangeEvent("hashchange", { oldURL, newURL: location.href })
-      );
+      try {
+        const oldURL = location.href;
+        history.pushState(null, "", `#${id}`);
+        window.dispatchEvent(
+          new HashChangeEvent("hashchange", { oldURL, newURL: location.href })
+        );
+      } catch {
+        // pushState blocked in sandboxed iframe — scroll already completed
+      }
     };
 
     document.addEventListener("click", handleClick);

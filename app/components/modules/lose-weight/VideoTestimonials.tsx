@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { CTA } from "./CTA";
@@ -20,24 +21,37 @@ const bottlesRight = [
   { src: "/lose-weight/instarx-semaglutide.webp", style: { top: "30%", right: "4%", rotate: "-8deg", width: 90 } },
 ];
 
-function VideoSlide({ src }: { src: string }) {
+function VideoSlide({ src, index }: { src: string; index: number }) {
+  const [failed, setFailed] = useState(false);
   const ext = src.split(".").pop()?.toLowerCase();
-  const type = ext === "mov" ? "video/quicktime" : "video/mp4";
+  const isMov = ext === "mov";
+
+  if (failed) {
+    return (
+      <div className="w-full h-full rounded-2xl bg-gray-200 flex items-center justify-center">
+        <p className="text-gray-500 text-sm text-center px-4">Video unavailable. Please refresh and try again.</p>
+      </div>
+    );
+  }
+
   return (
     <video
       controls
       playsInline
       preload="metadata"
+      aria-label={`Customer testimonial video ${index + 1}`}
       className="w-full h-full object-cover rounded-2xl bg-black"
+      onError={() => setFailed(true)}
     >
-      <source src={src} type={type} />
+      {isMov && <source src={src.replace(/\.mov$/i, ".mp4")} type="video/mp4" />}
+      <source src={src} type={isMov ? "video/quicktime" : "video/mp4"} />
     </video>
   );
 }
 
 export function VideoTestimonials() {
   const [emblaRef] = useEmblaCarousel({
-    loop: true,
+    loop: false,
     align: "start",
     containScroll: "trimSnaps",
   });
@@ -85,7 +99,7 @@ export function VideoTestimonials() {
           <div className="max-w-5xl mx-auto">
             {/* Text content */}
             <div className="relative z-10 max-w-2xl mx-auto text-center px-6 mb-10">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-5 leading-tight pt-12">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 mb-5 leading-tight md:pt-12">
               We&apos;ll Help You Kill the Cravings, Feel Full Faster, and Put Your Body Into Fat-Burning Mode — With GLP-1/GIP Treatment.
             </h2>
             <p className="text-lg text-gray-600 mb-7 leading-relaxed md:text-xl">
@@ -94,7 +108,7 @@ export function VideoTestimonials() {
               one of the few providers where all of our doctors are obesity certified. Questions? Concerns?
               We&apos;re a message away.
             </p>
-            <p className="text-3xl text-gray-800 font-light">
+            <p className="text-xl md:text-2xl text-gray-700 font-semibold">
               Hear from real people who reclaimed their health with Insta Rx:
             </p>
             <div className="flex justify-center mt-6" aria-hidden="true">
@@ -113,7 +127,7 @@ export function VideoTestimonials() {
                 <div className="flex gap-4">
                   {videos.map((src, i) => (
                     <div key={i} className="flex-none w-[55vw] md:w-[calc(40%-8px)] aspect-9/16">
-                      <VideoSlide src={src} />
+                      <VideoSlide src={src} index={i} />
                     </div>
                   ))}
                 </div>
@@ -123,17 +137,17 @@ export function VideoTestimonials() {
             <div className="hidden lg:flex gap-6 px-8 max-w-4xl mx-auto">
               {videos.map((src, i) => (
                 <div key={i} className="flex-1 aspect-9/16">
-                  <VideoSlide src={src} />
+                  <VideoSlide src={src} index={i} />
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-[#f5f0eb] p-4">
-        <div className="bg-linear-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-[48px] py-12 px-4 md:py-20">
+      <div className="bg-[#f5f0eb] sm:p-4">
+        <div className="bg-linear-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-t-3xl sm:rounded-[48px] py-12 px-6 sm:px-12 md:py-20">
           <div className="mx-auto max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-medium text-gray-800 mb-8 text-center leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 mb-8 text-center leading-tight">
               Are you ready to shed 15% of your body weight?
             </h2>
             <CTA href="https://go.instarx.com/intake" className="text-center" btnText="Let's Go!" price />

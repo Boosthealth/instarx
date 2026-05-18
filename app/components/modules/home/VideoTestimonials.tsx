@@ -8,7 +8,7 @@ import { CTA } from "./CTA";
 const videos = [
   "/video/1000019567.mp4",
   "/video/1000103649.mp4",
-  "/video/IMG_2142.mov",
+  "/video/IMG_2142.mp4",
 ];
 
 const bottlesLeft = [
@@ -23,8 +23,6 @@ const bottlesRight = [
 
 function VideoSlide({ src, index }: { src: string; index: number }) {
   const [failed, setFailed] = useState(false);
-  const ext = src.split(".").pop()?.toLowerCase();
-  const isMov = ext === "mov";
 
   if (failed) {
     return (
@@ -43,8 +41,7 @@ function VideoSlide({ src, index }: { src: string; index: number }) {
       className="w-full h-full object-cover rounded-2xl bg-black"
       onError={() => setFailed(true)}
     >
-      {isMov && <source src={src.replace(/\.mov$/i, ".mp4")} type="video/mp4" />}
-      <source src={src} type={isMov ? "video/quicktime" : "video/mp4"} />
+      <source src={src} type="video/mp4" />
     </video>
   );
 }
@@ -99,7 +96,7 @@ export function VideoTestimonials() {
           <div className="max-w-5xl mx-auto">
             {/* Text content */}
             <div className="relative z-10 max-w-2xl mx-auto text-center px-6 mb-10">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 mb-5 leading-tight md:pt-12">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 mb-5 leading-tight">
               We&apos;ll Help You Kill the Cravings, Feel Full Faster, and Put Your Body Into Fat-Burning Mode — With GLP-1/GIP Treatment.
             </h2>
             <p className="text-lg text-gray-600 mb-7 leading-relaxed md:text-xl">

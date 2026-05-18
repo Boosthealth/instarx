@@ -111,7 +111,7 @@ export default function Header() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
-              href="#start"
+              href="https://go.instarx.com/intake"
               className="hidden md:inline-flex items-center px-5 py-2 bg-black text-white text-sm font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             >
               Start Your Journey
@@ -160,7 +160,7 @@ export default function Header() {
             ))}
           </nav>
           <Link
-            href="#start"
+            href="https://go.instarx.com/intake"
             className="block text-center px-6 py-4 bg-black text-white text-base font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             onClick={() => setMenuOpen(false)}
           >

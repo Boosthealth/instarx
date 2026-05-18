@@ -25,7 +25,7 @@ export const CTA = ({ href, btnText, className, price = false }: { href: string;
 
       <div className="flex flex-wrap justify-center items-center gap-2">
         <span className="text-sm font-bold text-gray-800">Excellent 4.7</span>
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
           <StarBox fill={1} />
           <StarBox fill={1} />
           <StarBox fill={1} />

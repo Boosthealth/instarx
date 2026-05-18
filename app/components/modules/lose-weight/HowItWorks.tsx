@@ -40,7 +40,7 @@ export function HowItWorks() {
           <div className="flex flex-col divide-y divide-gray-200">
             {steps.map((step, i) => (
               <div key={i} className="py-3.5 md:py-4">
-                <p className="text-sm font-medium mb-1.5 text-orange-500">{step.label}</p>
+                <p className="text-sm font-medium mb-1.5 text-orange-700">{step.label}</p>
                 <p className="text-base text-gray-800 flex items-start gap-2 font-semibold">
                   <svg className="mt-1 shrink-0" width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
                     <path d="M2 1.5l9 4.5-9 4.5V1.5z" />

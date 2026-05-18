@@ -84,8 +84,8 @@ export default function Header() {
       {/* Navigation */}
       <nav aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="shrink-0">
+          {/* Logo — self-stretch ensures 64px (h-16) tap target on mobile */}
+          <Link href="/" className="shrink-0 self-stretch flex items-center">
             <Image
               src="/logos/instarx-logo.png"
               alt="InstaRx"
@@ -117,7 +117,7 @@ export default function Header() {
               Start Your Journey
             </Link>
             <button
-              className="md:hidden p-2 text-gray-700 hover:text-black transition-colors"
+              className="md:hidden p-3 text-gray-700 hover:text-black transition-colors"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}

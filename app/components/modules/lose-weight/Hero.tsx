@@ -17,7 +17,7 @@ function TrustpilotStars() {
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4">
       <span className="text-sm font-bold text-gray-900">Excellent 4.7</span>
-      <div className="flex items-center gap-0.5">
+      <div className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
         <StarBox fill={1} />
         <StarBox fill={1} />
         <StarBox fill={1} />
@@ -90,10 +90,11 @@ export default function Hero() {
             <div className="flex justify-center rounded-2xl overflow-hidden lg:justify-end">
               <Image
                 src="/lose-weight/hero-lady.webp"
-                alt="Woman smiling"
-                width={480}
-                height={520}
-                className="object-contain w-full rounded-2xl sm:max-w-md lg:max-w-lg"
+                alt="Woman achieving her weight loss goals with InstaRx GLP-1 medication"
+                width={540}
+                height={514}
+                sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) 448px, 512px"
+                className="object-cover w-full rounded-2xl sm:max-w-md lg:max-w-lg"
                 priority
               />
             </div>
@@ -111,6 +112,7 @@ export default function Hero() {
             alt="As seen in: OK!, BalancingAct, Woman's World, LA Weekly, Lifetime, Health"
             width={720}
             height={48}
+            sizes="(max-width: 1280px) 80vw, 720px"
             className="hidden w-[80%] sm:block object-contain"
           />
           <Image
@@ -118,6 +120,7 @@ export default function Hero() {
             alt="As seen in: OK!, BalancingAct, Woman's World, LA Weekly, Lifetime, Health"
             width={340}
             height={80}
+            sizes="100vw"
             className="w-full sm:hidden object-contain"
           />
         </div>

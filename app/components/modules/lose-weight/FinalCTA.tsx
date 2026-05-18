@@ -4,7 +4,7 @@ export function FinalCTA() {
   return (
     <section className="sm:p-4" id="pricing">
       <div className="bg-linear-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-t-3xl sm:rounded-[48px] overflow-hidden py-14 sm:py-20 px-6 sm:px-10 text-center">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-600 mb-4">
+        <p className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-600 mb-4">
           Get Started
         </p>
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight max-w-2xl mx-auto">

@@ -63,7 +63,7 @@ function BadgeItem({ badge }: { badge: Badge }) {
   return (
     <>
       <span className="text-gray-700">{badge.icon}</span>
-      <span className="text-xs text-gray-700 font-medium leading-tight">{badge.label}</span>
+      <span className="text-sm text-gray-700 font-medium leading-tight">{badge.label}</span>
     </>
   );
 }

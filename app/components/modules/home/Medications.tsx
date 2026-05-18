@@ -28,7 +28,8 @@ export function Medications() {
             In Stock · Up to $200 OFF
           </div>
         </div>
-
+      </div>
+      <div className="max-w-7xl mx-auto text-center">
         {/* Trust badges */}
         <div className="mb-10 mt-10 md:mb-16">
           <TrustBadgesCarousel />
@@ -36,7 +37,6 @@ export function Medications() {
 
         {/* CTA */}
         <CTA href="https://go.instarx.com/intake" btnText="Get started" price className="text-center" />
-
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-export default function LoseWeightError({ reset }: { reset: () => void }) {
+export default function PageError({ reset }: { reset: () => void }) {
   return (
     <div
       role="alert"

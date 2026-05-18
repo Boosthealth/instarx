@@ -73,7 +73,7 @@ export default function Header() {
           style={{ width: "max-content" }}
         >
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="inline-flex items-center gap-1.5 mx-8 text-xs font-medium text-black">
+            <span key={i} className="inline-flex items-center gap-1.5 mx-8 text-sm font-medium text-black">
               <CheckIcon />
               {item}
             </span>

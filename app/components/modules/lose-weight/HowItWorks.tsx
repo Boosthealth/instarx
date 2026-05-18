@@ -59,6 +59,7 @@ export function HowItWorks() {
             alt="InstaRx app"
             width={460}
             height={920}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 360px, 460px"
             className="object-contain w-full sm:w-70 md:w-90 lg:w-115"
           />
         </div>

@@ -19,8 +19,9 @@ export function Medications() {
           <Image
             src="/lose-weight/medication-card.webp"
             alt="Semaglutide and Tirzepatide vials"
-            width={900}
-            height={675}
+            width={960}
+            height={538}
+            sizes="(max-width: 896px) 100vw, 896px"
             className="mx-auto object-contain rounded-3xl"
           />
           <div className="bg-gradient absolute bottom-8 left-1/2 -translate-x-1/2 inline-flex items-center text-black text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap">

@@ -39,7 +39,12 @@ const footerBottomLinks = [
   { label: "Contact Us", href: "/contact-us" },
 ];
 
-export default function PolicyLayout({ children }: { children: React.ReactNode }) {
+interface PolicyLayoutProps {
+  children: React.ReactNode;
+  contentWidth?: "prose" | "full";
+}
+
+export default function PolicyLayout({ children, contentWidth = "prose" }: PolicyLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -109,7 +114,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
       </header>
 
       {/* Main content */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <main className={`flex-1 w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-16 ${contentWidth === "prose" ? "max-w-4xl mx-auto" : "max-w-7xl mx-auto"}`}>
         {children}
       </main>
 

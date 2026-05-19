@@ -127,7 +127,7 @@ export default function PolicyLayout({ children, contentWidth = "prose" }: Polic
             <div className="lg:min-w-[280px]">
               <Link href="/">
                 <Image
-                  src="/logos/instarx-logo-inverse.png"
+                  src="/logos/instarx-logo-inverse.webp"
                   alt="InstaRx"
                   width={200}
                   height={60}
@@ -257,7 +257,7 @@ export default function PolicyLayout({ children, contentWidth = "prose" }: Polic
           <div className="pb-10">
             <div className="flex justify-center mt-4">
               <Image
-                src="/images/cards_5357343140307497.png"
+                src="/images/cards_5357343140307497.webp"
                 alt="We accept Visa, MasterCard, Discover, and American Express"
                 width={300}
                 height={50}
@@ -272,7 +272,7 @@ export default function PolicyLayout({ children, contentWidth = "prose" }: Polic
                   rel="noopener noreferrer"
                 >
                   <Image
-                    src="/images/legitscript_19343194433531208.png"
+                    src="/images/legitscript_19343194433531208.webp"
                     alt="LegitScript Certified"
                     width={100}
                     height={120}
@@ -280,21 +280,21 @@ export default function PolicyLayout({ children, contentWidth = "prose" }: Polic
                   />
                 </a>
                 <Image
-                  src="/images/hippa-compliant.png"
+                  src="/images/hippa-compliant.webp"
                   alt="HIPAA Compliant"
                   width={100}
                   height={120}
                   className="h-20 w-auto"
                 />
                 <Image
-                  src="/images/stripe-payment.png"
+                  src="/images/stripe-payment.webp"
                   alt="Stripe Secure Payment"
                   width={100}
                   height={120}
                   className="h-20 w-auto"
                 />
                 <Image
-                  src="/images/secure-ssl-encryption.png"
+                  src="/images/secure-ssl-encryption.webp"
                   alt="Secure SSL Encryption"
                   width={100}
                   height={120}

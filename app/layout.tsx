@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import AnalyticsScripts from "./components/AnalyticsScripts";
+import { Figtree } from "next/font/google";
 import "./globals.css";
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-figtree",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://go.instarx.com"),
@@ -49,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={figtree.className}>
       <body>
         <AnalyticsScripts />
         {children}

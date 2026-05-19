@@ -1,0 +1,1 @@
+export { BuyNowBtn } from "./buy-now-btn";

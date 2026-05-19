@@ -39,7 +39,12 @@ const footerBottomLinks = [
   { label: "Contact Us", href: "/contact-us" },
 ];
 
-export default function PolicyLayout({ children }: { children: React.ReactNode }) {
+interface PolicyLayoutProps {
+  children: React.ReactNode;
+  contentWidth?: "prose" | "full";
+}
+
+export default function PolicyLayout({ children, contentWidth = "prose" }: PolicyLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -109,7 +114,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
       </header>
 
       {/* Main content */}
-      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <main className={`flex-1 w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-16 ${contentWidth === "prose" ? "max-w-4xl mx-auto" : "max-w-7xl mx-auto"}`}>
         {children}
       </main>
 
@@ -122,7 +127,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
             <div className="lg:min-w-[280px]">
               <Link href="/">
                 <Image
-                  src="/logos/instarx-logo-inverse.png"
+                  src="/logos/instarx-logo-inverse.webp"
                   alt="InstaRx"
                   width={200}
                   height={60}
@@ -252,7 +257,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
           <div className="pb-10">
             <div className="flex justify-center mt-4">
               <Image
-                src="/images/cards_5357343140307497.png"
+                src="/images/cards_5357343140307497.webp"
                 alt="We accept Visa, MasterCard, Discover, and American Express"
                 width={300}
                 height={50}
@@ -267,7 +272,7 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
                   rel="noopener noreferrer"
                 >
                   <Image
-                    src="/images/legitscript_19343194433531208.png"
+                    src="/images/legitscript_19343194433531208.webp"
                     alt="LegitScript Certified"
                     width={100}
                     height={120}
@@ -275,21 +280,21 @@ export default function PolicyLayout({ children }: { children: React.ReactNode }
                   />
                 </a>
                 <Image
-                  src="/images/hippa-compliant.png"
+                  src="/images/hippa-compliant.webp"
                   alt="HIPAA Compliant"
                   width={100}
                   height={120}
                   className="h-20 w-auto"
                 />
                 <Image
-                  src="/images/stripe-payment.png"
+                  src="/images/stripe-payment.webp"
                   alt="Stripe Secure Payment"
                   width={100}
                   height={120}
                   className="h-20 w-auto"
                 />
                 <Image
-                  src="/images/secure-ssl-encryption.png"
+                  src="/images/secure-ssl-encryption.webp"
                   alt="Secure SSL Encryption"
                   width={100}
                   height={120}

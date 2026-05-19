@@ -15,7 +15,7 @@ function StarBox({ fill = 1 }: { fill?: number }) {
 export const CTA = ({ href, btnText, className, price = false }: { href: string; btnText?: string; className?: string; price?: boolean }) => {
   return (
     <div className={`flex flex-col items-center gap-4 ${className}`}>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
         <Button href={href} text={btnText || "Start Quiz →"} className={`${price ? "min-w-48" : "min-w-60"} w-full sm:w-auto`} />
         {price && <Button href="#pricing" text="See Pricing" color="light" className="min-w-48 w-full sm:w-auto" />}
       </div>

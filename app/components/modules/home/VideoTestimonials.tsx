@@ -32,11 +32,18 @@ function VideoSlide({ src, index }: { src: string; index: number }) {
     );
   }
 
+  // Poster path is derived from the video src so it stays in sync with
+  // the `videos` array (e.g. /video/IMG_2142.mp4 -> /video/IMG_2142-poster.webp).
+  // iOS Safari does not paint the first frame for preload="metadata", so
+  // without a poster the video shows a black box and looks broken.
+  const poster = src.replace(/\.mp4$/, "-poster.webp");
+
   return (
     <video
       controls
       playsInline
       preload="metadata"
+      poster={poster}
       aria-label={`Customer testimonial video ${index + 1}`}
       className="w-full h-full object-cover rounded-2xl bg-black"
       onError={() => setFailed(true)}

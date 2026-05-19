@@ -23,7 +23,7 @@ export default function CompoundedSemaglutidePage() {
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">Indications and Use</h2>
         <p>
-          Semaglutide is a glucagon-like peptide-1 (GLP-1) receptor agonist indicated as an adjunct to a reduced
+          Semaglutide is a glucagon-like peptide-1 (GLP‑1) receptor agonist indicated as an adjunct to a reduced
           calorie diet and increased physical activity for chronic weight management in adults with an initial body
           mass index (BMI) of 30 kg/m&sup2; or greater (obesity), or 27 kg/m&sup2; or greater (overweight) in the
           presence of at least one weight-related comorbid condition (e.g., hypertension, type 2 diabetes mellitus,

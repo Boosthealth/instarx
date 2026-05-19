@@ -11,7 +11,7 @@ export const HowHelp = () => {
                 How GLP-1 medications help you lose weight?
               </h2>
               <p className="text-blak text-lg lg:mt-4">
-                GLP-1 medications mimic the body’s natural hormone, GLP-1, facilitating weight loss by:
+                GLP-1 medications mimic the body’s natural hormone, GLP‑1, facilitating weight loss by:
               </p>
             </div>
             <ul className="flex flex-col gap-3 list-style-none text-black">

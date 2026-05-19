@@ -54,12 +54,12 @@ export default function Hero() {
                 Drop up to 1-2lbs<br />per week!
               </h1>
               <p className="mb-4 max-w-md">
-                Lose up to 17%* of your body weight with prescription GLP-1.
+                Lose up to 17%* of your body weight with prescription GLP‑1.
               </p>
               <p className="mb-6">
                 Starting at{" "}
                 <span className="text-3xl font-bold sm:text-4xl">$148</span>
-                {" "}— Doctor-prescribed GLP-1, delivered in 1-2 days.{" "}
+                {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
                 <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
               </p>
               <ul className="space-y-2 mb-8">

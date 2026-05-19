@@ -44,7 +44,7 @@ export default function Hero() {
         <div
           className="max-w-7xl mx-auto px-6 text-gray-900"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-8 sm:py-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-5 sm:py-14">
 
             {/* Left: text */}
             <div>
@@ -56,13 +56,13 @@ export default function Hero() {
               <p className="mb-4 max-w-md">
                 Lose up to 17%* of your body weight with prescription GLP‑1.
               </p>
-              <p className="mb-6">
+              <p className="mb-5 sm:mb-6">
                 Starting at{" "}
-                <span className="text-3xl font-bold sm:text-4xl">$148</span>
+                <span className="text-2xl font-bold sm:text-3xl">$148</span>
                 {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
                 <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
               </p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-6 sm:mb-8">
                 {checkItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <Image

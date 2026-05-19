@@ -27,8 +27,12 @@ Source of truth: [app/components/AnalyticsScripts.tsx](../app/components/Analyti
 > stay in sync with the pages that render `<EmbeddablesScript />`. If you add a
 > new embeddables landing page, add its path to that set or it will
 > double-fire analytics. (Conversely, if a page stops embedding the flow,
-> remove it or it ships with no analytics — this exact drift previously hid
-> the homepage from analytics after `/` was restructured.)
+> remove it or it ships with no analytics.)
+>
+> **Home/marketing split:** `/` is the Savvy embeddables flow
+> (`flow_a22jeg0agf2ch469bbf95406`) and is intentionally **excluded** from
+> first-party analytics. The marketing site (Hero/Results/Testimonials/…)
+> lives at `/weight-loss` and **does** get GTM + PostHog.
 
 ## Page map
 
@@ -36,9 +40,8 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 
 | Route | Embedded solution (`EmbeddablesScript`) | GTM | PostHog |
 | --- | :---: | :---: | :---: |
-| `/` | ❌ | ✅ | ✅ |
+| `/` | ✅ | ❌ | ❌ |
 | `/contact-us` | ❌ | ✅ | ✅ |
-| `/glp1` | ✅ | ❌ | ❌ |
 | `/glp1-info` | ❌ | ✅ | ✅ |
 | `/glp1-new` | ❌ | ✅ | ✅ |
 | `/glp1-weight-loss` | ✅ | ❌ | ❌ |
@@ -56,15 +59,16 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 | `/safety/nad-plus` | ❌ | ✅ | ✅ |
 | `/safety/sildenafil` | ❌ | ✅ | ✅ |
 | `/safety/tadalafil` | ❌ | ✅ | ✅ |
+| `/weight-loss` | ❌ | ✅ | ✅ |
 
 ## Summary
 
 - **20** total routes.
 - **4** embed the third-party flow and run **no** first-party analytics:
-  `/glp1`, `/glp1-weight-loss`, `/intake`, `/intake01`.
+  `/`, `/glp1-weight-loss`, `/intake`, `/intake01`.
 - **16** are first-party pages running **GTM + PostHog**.
-- `/` was restructured in `main` into a static marketing homepage (it no
-  longer embeds the flow), so it now correctly receives analytics.
-- `/glp1` restores the previous Savvy-flow home page
-  (`flow_a22jeg0agf2ch469bbf95406`); it embeds the flow, so it is excluded
-  from first-party analytics like the other embeddables pages.
+- `/` is the Savvy embeddables flow (`flow_a22jeg0agf2ch469bbf95406`),
+  intentionally excluded from first-party analytics (the flow ships its own).
+- `/weight-loss` holds the marketing site that previously lived at `/`
+  (Hero/Results/Testimonials/etc.) and receives GTM + PostHog.
+- `/glp1` was removed; it now returns 404.

@@ -3,7 +3,7 @@
 Reference for which pages exist, which embed the third-party (Savvy/Embeddables)
 flow, and which analytics each page loads.
 
-**Branch:** `feat/analytics` (merged with latest `main`)
+**Branch:** `main`
 **Last updated:** 2026-05-19
 
 ## How analytics is wired
@@ -38,6 +38,7 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 | --- | :---: | :---: | :---: |
 | `/` | ❌ | ✅ | ✅ |
 | `/contact-us` | ❌ | ✅ | ✅ |
+| `/glp1` | ✅ | ❌ | ❌ |
 | `/glp1-info` | ❌ | ✅ | ✅ |
 | `/glp1-new` | ❌ | ✅ | ✅ |
 | `/glp1-weight-loss` | ✅ | ❌ | ❌ |
@@ -58,9 +59,12 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 
 ## Summary
 
-- **19** total routes.
-- **3** embed the third-party flow and run **no** first-party analytics:
-  `/intake`, `/intake01`, `/glp1-weight-loss`.
+- **20** total routes.
+- **4** embed the third-party flow and run **no** first-party analytics:
+  `/glp1`, `/glp1-weight-loss`, `/intake`, `/intake01`.
 - **16** are first-party pages running **GTM + PostHog**.
 - `/` was restructured in `main` into a static marketing homepage (it no
   longer embeds the flow), so it now correctly receives analytics.
+- `/glp1` restores the previous Savvy-flow home page
+  (`flow_a22jeg0agf2ch469bbf95406`); it embeds the flow, so it is excluded
+  from first-party analytics like the other embeddables pages.

@@ -10,6 +10,7 @@ import { FAQ } from "@/app/components/modules/home/FAQ";
 import { FinalCTA } from "@/app/components/modules/home/FinalCTA";
 import { Footer } from "@/app/components/Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
+import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
 
 export const metadata: Metadata = {
   title: "InstaRx - Lose Weight With GLP-1 Meds - Get Started For Just $199",
@@ -27,6 +28,7 @@ export default function WeightLoss() {
   return (
     <>
       <AnchorScrollFix />
+      <PageViewedEvent pageName="weight loss" />
       <Header />
       <main>
         <Hero />

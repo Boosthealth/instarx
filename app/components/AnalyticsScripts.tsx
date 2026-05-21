@@ -10,10 +10,7 @@ const POSTHOG_API_HOST = "https://us.i.posthog.com";
 // Pages that embed Savvy/Embeddables flows. Those flows ship their own
 // GTM/analytics, so loading ours here double-fires and collides. Keep this
 // list in sync with the pages that render <EmbeddablesScript />.
-// Note: "/" is the Savvy embeddables flow; the marketing site that used
-// to live at "/" now lives at "/weight-loss" (which DOES get analytics).
 const EMBEDDABLES_ROUTES = new Set([
-  "/",
   "/intake",
   "/intake01",
   "/glp1-weight-loss",

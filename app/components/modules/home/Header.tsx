@@ -17,7 +17,7 @@ const navLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Customer Reviews", href: "#reviews" },
   { label: "FAQs", href: "#faqs" },
-  { label: "Plans & Pricing", href: "#pricing" },
+  { label: "Plans & Pricing", href: "https://go.instarx.com/intake" },
 ];
 
 function CheckIcon() {

@@ -79,7 +79,7 @@ export default function Hero() {
               </ul>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start">
                 <Button href="https://go.instarx.com/intake" text="Start Quiz →" className="w-full sm:w-auto" />
-                <Button href="#pricing" text="See pricing" color="light" className="w-full sm:w-auto" />
+                <Button href="https://go.instarx.com/intake" text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
               <p className="text-center text-sm text-gray-700 sm:text-left">
                 Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime

@@ -15,17 +15,29 @@ export function Medications() {
         </p>
 
         {/* Medication card */}
-        <div className="relative mb-4 rounded-3xl overflow-hidden">
-          <Image
-            src="/lose-weight/medication-card.webp"
-            alt="Semaglutide and Tirzepatide vials"
-            width={960}
-            height={538}
-            sizes="(max-width: 896px) 100vw, 896px"
-            className="mx-auto object-contain rounded-3xl"
-          />
-          <div className="bg-gradient absolute bottom-8 left-1/2 -translate-x-1/2 inline-flex items-center text-black text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap">
-            In Stock · Up to $200 OFF
+        <div className="mb-4 rounded-3xl overflow-hidden bg-[#faf6f0]">
+          <div className="flex items-center justify-center gap-4 sm:gap-8 pt-8 px-4">
+            <Image
+              src="/images/sem1x.png"
+              alt="Compounded Semaglutide injection vial"
+              width={375}
+              height={375}
+              sizes="(max-width: 640px) 45vw, 320px"
+              className="w-1/2 max-w-[320px] h-auto object-contain"
+            />
+            <Image
+              src="/images/tirz1x.png"
+              alt="Compounded Tirzepatide injection vial"
+              width={375}
+              height={375}
+              sizes="(max-width: 640px) 45vw, 320px"
+              className="w-1/2 max-w-[320px] h-auto object-contain"
+            />
+          </div>
+          <div className="flex justify-center pb-8 pt-2">
+            <div className="bg-gradient inline-flex items-center text-black text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap">
+              In Stock · Up to $200 OFF
+            </div>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ const marqueeItems = [
 ];
 
 const navLinks = [
-  { label: "Weight Loss", href: "https://my.instarx.com/intake/wm-vtvz7x/" },
+  { label: "Weight Loss", href: "https://go.instarx.com/glp1-weight-loss" },
   { label: "Anti Aging", href: "https://my.instarx.com/intake/na-4syqyo" },
   { label: "Sexual Health", href: "https://my.instarx.com/intake/sh-lbpfcv" },
 ];
@@ -118,14 +118,8 @@ export default function Header() {
             ))}
           </div>
 
-          {/* CTA + Mobile toggle */}
+          {/* Mobile toggle */}
           <div className="flex items-center gap-3">
-            <Link
-              href="https://my.instarx.com/sign-in"
-              className="hidden md:inline-flex items-center px-6 py-2 bg-white text-black border border-gray-200 text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors duration-200"
-            >
-              Login
-            </Link>
             <button
               ref={menuBtnRef}
               className="md:hidden p-3 text-gray-700 hover:text-black transition-colors"
@@ -176,13 +170,6 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <Link
-            href="https://my.instarx.com/sign-in"
-            className="block text-center px-6 py-3 bg-white text-black border border-gray-200 text-base font-semibold rounded-full hover:bg-gray-100 transition-colors duration-200"
-            onClick={() => setMenuOpen(false)}
-          >
-            Login
-          </Link>
         </div>
       )}
     </header>

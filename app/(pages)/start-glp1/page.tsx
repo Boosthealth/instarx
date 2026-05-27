@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import Header from "@/app/components/modules/home/Header";
-import Hero from "@/app/components/modules/home/Hero";
-import Results from "@/app/components/modules/home/Results";
-import { VideoTestimonials } from "@/app/components/modules/home/VideoTestimonials";
-import { HowItWorks } from "@/app/components/modules/home/HowItWorks";
-import { Reviews } from "@/app/components/modules/home/Reviews";
-import { Medications } from "@/app/components/modules/home/Medications";
-import { FAQ } from "@/app/components/modules/home/FAQ";
-import { FinalCTA } from "@/app/components/modules/home/FinalCTA";
+import Header from "@/app/components/modules/glp1/Header";
+import Hero from "@/app/components/modules/glp1/Hero";
+import Difference from "@/app/components/modules/glp1/Difference";
+import Calculator from "@/app/components/modules/glp1/Calculator";
+import FAQ from "@/app/components/modules/glp1/FAQ";
+import Features from "@/app/components/modules/glp1/Features";
+import CTA from "@/app/components/modules/glp1/CTA";
+import Disclaimer from "@/app/components/modules/glp1/Disclaimer";
 import { Footer } from "@/app/components/Footer";
-import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
+import { ScrollReveal } from "@/app/components/modules/glp1/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "InstaRx - Lose Weight With GLP-1 Meds - Get Started For Just $199 | InstaRx",
@@ -26,21 +25,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WeightLoss() {
+export default function StartGLP1() {
   return (
     <>
-      <AnchorScrollFix />
       <PageViewedEvent pageName="Start GLP-1" />
+      <ScrollReveal />
       <Header />
       <main>
         <Hero />
-        <Results />
-        <VideoTestimonials />
-        <HowItWorks />
-        <Reviews />
-        <Medications />
+        <Difference />
+        <Calculator />
         <FAQ />
-        <FinalCTA />
+        <Features />
+        <CTA />
+        <Disclaimer />
       </main>
       <Footer />
     </>

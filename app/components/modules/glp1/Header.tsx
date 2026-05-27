@@ -15,9 +15,7 @@ const marqueeItems = [
 ];
 
 const navLinks = [
-  { label: "Weight Loss", href: "https://go.instarx.com/glp1-weight-loss" },
-  { label: "Anti Aging", href: "https://my.instarx.com/intake/na-4syqyo" },
-  { label: "Sexual Health", href: "https://my.instarx.com/intake/sh-lbpfcv" },
+  { label: "Weight Loss", href: "https://go.instarx.com/intake" },
 ];
 
 

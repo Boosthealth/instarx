@@ -15,7 +15,7 @@ export default function CTA() {
             Your InstaRx feeling awaits
           </h2>
           <Link
-            href="https://go.instarx.com/glp1-weight-loss"
+            href="https://go.instarx.com/intake"
             className="inline-flex items-center gap-2 bg-gray-900 text-white font-semibold px-7 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200 mb-6"
           >
             Find your treatment →
@@ -37,7 +37,7 @@ export default function CTA() {
               Your InstaRx feeling awaits
             </h2>
             <Link
-              href="https://go.instarx.com/glp1-weight-loss"
+              href="https://go.instarx.com/intake"
               className="inline-flex items-center gap-2 bg-gray-900 text-white text-lg font-semibold px-7 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200 w-fit"
             >
               Find your treatment →

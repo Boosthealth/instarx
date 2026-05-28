@@ -15,9 +15,7 @@ const marqueeItems = [
 ];
 
 const navLinks = [
-  { label: "Weight Loss", href: "https://go.instarx.com/glp1-weight-loss" },
-  { label: "Anti Aging", href: "https://my.instarx.com/intake/na-4syqyo" },
-  { label: "Sexual Health", href: "https://my.instarx.com/intake/sh-lbpfcv" },
+  { label: "Weight Loss", href: "https://go.instarx.com/intake" },
 ];
 
 
@@ -94,28 +92,31 @@ export default function Header() {
       {/* Navigation */}
       <nav aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          {/* Logo — self-stretch ensures 64px (h-16) tap target on mobile */}
-          <Link href="/" className="shrink-0 self-stretch flex items-center">
-            <Image
-              src="/logos/instarx-logo.png"
-              alt="InstaRx"
-              width={110}
-              height={34}
-              priority
-            />
-          </Link>
+          {/* Logo + nav links, grouped left */}
+          <div className="flex items-center gap-6 lg:gap-10">
+            {/* Logo — self-stretch ensures 64px (h-16) tap target on mobile */}
+            <Link href="/" className="shrink-0 self-stretch flex items-center">
+              <Image
+                src="/logos/instarx-logo.png"
+                alt="InstaRx"
+                width={110}
+                height={34}
+                priority
+              />
+            </Link>
 
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-semibold text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:rounded"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* Desktop nav links */}
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-semibold text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:rounded"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Mobile toggle */}

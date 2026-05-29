@@ -7,10 +7,10 @@ const GTM_ID = "GTM-NPDBMQX2";
 const POSTHOG_KEY = "phc_5dyMpbsb6sk28QyTlgtcnXfR0PrpPBvgAZlRL6Syrmy";
 const POSTHOG_API_HOST = "https://us.i.posthog.com";
 
-// Pages that embed Savvy/Embeddables flows. The third-party flow (plus the
-// marketing scripts loaded through the GTM container we don't control) owns
-// analytics on these routes, so we keep our GTM/PostHog off them — both to
-// avoid loading ahead of/over the embeddable and to prevent collisions.
+// Pages that embed Savvy/Embeddables flows. The third-party flow owns PostHog
+// on these routes, so we keep OUR PostHog off them to avoid collisions/
+// double-firing. GTM, however, loads everywhere (the GTM container itself
+// manages the marketing scripts and tag de-duping), so it is NOT gated here.
 // Must stay in sync with the pages that render <EmbeddablesScript />.
 const EMBEDDABLES_ROUTES = new Set([
   "/",
@@ -23,10 +23,9 @@ const EMBEDDABLES_ROUTES = new Set([
 export default function AnalyticsScripts() {
   const pathname = usePathname();
 
-  // Skip on embeddables pages — their third-party flow handles analytics.
-  if (pathname !== null && EMBEDDABLES_ROUTES.has(pathname)) {
-    return null;
-  }
+  // PostHog is skipped on embeddables pages (their flow handles it); GTM loads
+  // on every page.
+  const skipPostHog = pathname !== null && EMBEDDABLES_ROUTES.has(pathname);
 
   return (
     <>
@@ -51,15 +50,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </noscript>
       {/* End Google Tag Manager (noscript) */}
 
-      {/* PostHog */}
-      <Script id="posthog" strategy="afterInteractive">
-        {`!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      {/* PostHog — skipped on embeddables pages (their flow handles it) */}
+      {!skipPostHog && (
+        <Script id="posthog" strategy="afterInteractive">
+          {`!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 posthog.init('${POSTHOG_KEY}', {
   api_host: '${POSTHOG_API_HOST}',
   capture_pageleave: true,
   defaults: '2026-01-30'
 });`}
-      </Script>
+        </Script>
+      )}
       {/* End PostHog */}
     </>
   );

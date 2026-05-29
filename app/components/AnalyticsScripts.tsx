@@ -7,10 +7,14 @@ const GTM_ID = "GTM-NPDBMQX2";
 const POSTHOG_KEY = "phc_5dyMpbsb6sk28QyTlgtcnXfR0PrpPBvgAZlRL6Syrmy";
 const POSTHOG_API_HOST = "https://us.i.posthog.com";
 
-// Pages that embed Savvy/Embeddables flows. Those flows ship their own
-// GTM/analytics, so loading ours here double-fires and collides. Keep this
-// list in sync with the pages that render <EmbeddablesScript />.
+// Pages that embed Savvy/Embeddables flows. The third-party flow (plus the
+// marketing scripts loaded through the GTM container we don't control) owns
+// analytics on these routes, so we keep our GTM/PostHog off them — both to
+// avoid loading ahead of/over the embeddable and to prevent collisions.
+// Must stay in sync with the pages that render <EmbeddablesScript />.
 const EMBEDDABLES_ROUTES = new Set([
+  "/",
+  "/glp1",
   "/intake",
   "/intake01",
   "/glp1-weight-loss",

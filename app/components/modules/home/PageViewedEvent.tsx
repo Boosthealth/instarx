@@ -11,7 +11,7 @@ declare global {
 export function PageViewedEvent({ pageName }: { pageName: string }) {
   useEffect(() => {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "page_viewed", page_name: pageName });
+    window.dataLayer.push({ event: "page_viewed", page_name: pageName, page_id: pageName });
   }, [pageName]);
 
   return null;

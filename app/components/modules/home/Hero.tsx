@@ -1,5 +1,35 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { Button } from "./Button";
+import type { WeightLossHeroVariant } from "@/app/lib/experiments";
+
+// A/B test content keyed by Convert variation. `control` renders the original
+// hero verbatim; `variation_1` swaps the headline and primary CTA label.
+const HERO_CONTENT: Record<
+  WeightLossHeroVariant,
+  { headline: ReactNode; primaryCta: string }
+> = {
+  control: {
+    headline: (
+      <>
+        Drop up to 1-2lbs
+        <br />
+        per week!
+      </>
+    ),
+    primaryCta: "Start Quiz →",
+  },
+  variation_1: {
+    headline: (
+      <>
+        Doctor-prescribed GLP-1,
+        <br />
+        delivered to your door
+      </>
+    ),
+    primaryCta: "Get Started →",
+  },
+};
 
 function StarBox({ fill = 1 }: { fill?: number }) {
   const pct = `${Math.round(fill * 100)}%`;
@@ -36,7 +66,13 @@ const checkItems = [
   { icon: "truck.svg", text: "Free 1-2 day shipping, temperature-controlled." },
 ];
 
-export default function Hero() {
+export default function Hero({
+  variant = "control",
+}: {
+  variant?: WeightLossHeroVariant;
+}) {
+  const content = HERO_CONTENT[variant];
+
   return (
     <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
       {/* Gradient card */}
@@ -51,7 +87,7 @@ export default function Hero() {
               <TrustpilotStars />
 
               <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
-                Drop up to 1-2lbs<br />per week!
+                {content.headline}
               </h1>
               <p className="mb-4 max-w-md">
                 Lose up to 17%* of your body weight with prescription GLP‑1.
@@ -78,7 +114,7 @@ export default function Hero() {
                 ))}
               </ul>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start">
-                <Button href="https://go.instarx.com/intake" text="Start Quiz →" className="w-full sm:w-auto" />
+                <Button href="https://go.instarx.com/intake" text={content.primaryCta} className="w-full sm:w-auto" />
                 <Button href="https://go.instarx.com/intake" text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
               <p className="text-center text-sm text-gray-700 sm:text-left">

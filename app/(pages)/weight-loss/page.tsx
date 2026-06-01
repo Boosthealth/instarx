@@ -11,6 +11,9 @@ import { FinalCTA } from "@/app/components/modules/home/FinalCTA";
 import { Footer } from "@/app/components/Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
+import { getVariationKey } from "@/app/lib/convert";
+import { getVisitorId } from "@/app/lib/visitor";
+import { WEIGHT_LOSS_HERO_EXPERIENCE, normalizeHeroVariant } from "@/app/lib/experiments";
 
 export const metadata: Metadata = {
   title: "InstaRx - Lose Weight With GLP-1 Meds - Get Started For Just $199",
@@ -24,14 +27,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WeightLoss() {
+export default async function WeightLoss() {
+  // Server-side A/B bucketing: pick the hero variant for this visitor before
+  // render, so the chosen variant is delivered in the HTML (no client flicker).
+  // Falls back to control when Convert isn't configured or the visitor misses.
+  const visitorId = await getVisitorId();
+  const variationKey = await getVariationKey(WEIGHT_LOSS_HERO_EXPERIENCE, visitorId);
+  const heroVariant = normalizeHeroVariant(variationKey);
+
   return (
     <>
       <AnchorScrollFix />
       <PageViewedEvent pageName="weight loss" />
       <Header />
       <main>
-        <Hero />
+        <Hero variant={heroVariant} />
         <Results />
         <VideoTestimonials />
         <HowItWorks />

@@ -5,7 +5,7 @@ Server-side experimentation using the **Convert.com Full-Stack SDK**
 Variations are decided on the server and delivered in the HTML, so there is no
 client-side flicker (no CLS) and no flash of the control variant.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-02
 
 ## Why bucketing runs in the Server Component (not the proxy)
 
@@ -29,9 +29,10 @@ request ─▶ proxy.ts (Node)                 ─▶ /weight-loss page.tsx (Nod
             • persist cookie for next time        • render <Hero variant={…} />
 ```
 
-> If we later want full-page **split-URL** tests (rewriting one URL to another),
-> the bucketing can move into the proxy and drive a rewrite. That's a larger
-> change; the current setup is the right fit for component/content variations.
+> Content variations work this way. **Split-URL / redirect** tests are the
+> exception: there's no page to render for a redirected arm, so the decision has
+> to happen before render. Those bucket in the **proxy** and 302 the visitor —
+> see the `/intake` funnel split below.
 
 ## Files
 
@@ -91,12 +92,48 @@ into it. To eyeball the variant locally without the dashboard, temporarily pass
 `variant="variation_1"` to `<Hero>` in the page, or have `getVariationKey`
 return `"variation_1"`. Revert before committing.
 
+## The second experiment: `/intake` GLP-1 funnel split (redirect test)
+
+A **split-URL test**, not a content variation. Visitors landing on `/intake`
+are bucketed in `proxy.ts` and 302-redirected to a different intake funnel per
+variation. Keys live in `app/lib/experiments.ts`.
+
+- **Experience key:** `glp_funnel_split` (`GLP_FUNNEL_SPLIT_EXPERIENCE`)
+- **Variations & actions:**
+
+| Variation | Dashboard allocation | Action |
+| --- | --- | --- |
+| `control` | 0% | No redirect — stay on `/intake` (renders the local intake flow) |
+| `variation_1` | 33% | 302 → `https://go.instarx.com/intake01` |
+| `variation_2` | 33% | 302 → `https://quiz.instarx.com/` |
+| `variation_3` | 34% | 302 → `https://intake.instarx.com/` |
+
+In the Convert dashboard, create a **Full-Stack (server-side) experience** keyed
+`glp_funnel_split` with four variations keyed exactly `control`, `variation_1`,
+`variation_2`, `variation_3`, and set the allocation above. Allocation is owned
+by the dashboard; the code just maps whatever key Convert returns to a
+destination. `control`, a bucketing miss, or any unrecognised key → no redirect
+(stay on `/intake`), so the page is always safe to serve.
+
+The redirect destinations live in `GLP_FUNNEL_SPLIT_DESTINATIONS`; update that
+map (not the dashboard) to change where an arm points.
+
 ## Adding another experiment
+
+**Content variation** (render different markup, no URL change):
 
 1. Add the experience/variation keys to `app/lib/experiments.ts`.
 2. Add the route to the `matcher` in `proxy.ts` (so visitors get a `cvt_vid`).
 3. In the page's Server Component: `const v = await getVariationKey(KEY, await getVisitorId())`.
 4. Branch your component on the normalised variant.
+
+**Split-URL / redirect** (send arms to different URLs, like `/intake`):
+
+1. Add the experience key + a destination map to `app/lib/experiments.ts`.
+2. Add the route to the `matcher` in `proxy.ts`.
+3. In `routeResponse()` in `proxy.ts`, branch on the path, call
+   `getVariationKey(KEY, visitorId)`, and `NextResponse.redirect(dest, 302)`
+   when the key maps to a destination (else `NextResponse.next()`).
 
 ## Tracking conversions
 

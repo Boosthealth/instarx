@@ -24,3 +24,37 @@ export function normalizeHeroVariant(
 ): WeightLossHeroVariant {
   return variationKey === "variation_1" ? "variation_1" : "control";
 }
+
+/**
+ * Convert experience key for the /intake GLP-1 funnel split. Unlike the hero
+ * test (a content variation), this is a split-URL / redirect test: the proxy
+ * buckets the visitor and 302-redirects each variation to a different intake
+ * funnel. Bucketing therefore lives in proxy.ts, not the render path.
+ */
+export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split";
+
+/**
+ * Variation key → redirect destination for {@link GLP_FUNNEL_SPLIT_EXPERIENCE}.
+ *
+ * `control` is intentionally absent: it has no redirect (the visitor stays on
+ * /intake) and is allocated 0% in the Convert dashboard. The keys here MUST
+ * match the variation keys configured in Convert exactly.
+ */
+export const GLP_FUNNEL_SPLIT_DESTINATIONS: Record<string, string> = {
+  variation_1: "https://go.instarx.com/intake01",
+  variation_2: "https://quiz.instarx.com/",
+  variation_3: "https://intake.instarx.com/",
+};
+
+/**
+ * Resolve a bucketed variation key to its redirect destination, or `null` to
+ * keep the visitor on /intake. Returns `null` for `control`, a bucketing miss
+ * (key is null/undefined), or any unrecognised key — all of which mean "don't
+ * redirect", matching the control behaviour.
+ */
+export function funnelSplitDestination(
+  variationKey: string | null | undefined,
+): string | null {
+  if (!variationKey) return null;
+  return GLP_FUNNEL_SPLIT_DESTINATIONS[variationKey] ?? null;
+}

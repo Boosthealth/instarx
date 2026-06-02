@@ -137,7 +137,17 @@ export async function getVariationKey(
 
     // runExperience returns a BucketedVariation (object) on success, or a
     // RuleError / BucketingError (plain string) when the visitor isn't bucketed.
-    const result = context.runExperience(experienceKey);
+    //
+    // ignoreLocationProperties: this is a server-side, key-targeted call — the
+    // route we run on (proxy.ts matcher) already decides "where" we are, so we
+    // never hand Convert a URL/location to match. Without this flag the SDK's
+    // rule matcher treats every experience as location-gated, finds no
+    // locationProperties, logs "Location does not match", and refuses to bucket
+    // (returns null → control) for ALL visitors. Audience + traffic allocation
+    // still apply.
+    const result = context.runExperience(experienceKey, {
+      ignoreLocationProperties: true,
+    });
 
     // Send the impression/visit event now (see flushEvents) — otherwise the
     // experiment records no bucketing data on serverless. No-op if nothing was

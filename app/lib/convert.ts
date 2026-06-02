@@ -30,12 +30,14 @@ const ENVIRONMENT = process.env.CONVERT_ENVIRONMENT ?? "production";
 
 // Hard ceiling on how long the FIRST request will wait for the SDK to fetch its
 // config from Convert's CDN. On timeout we fall back to control rather than
-// blocking the render.
-const ON_READY_TIMEOUT_MS = 3000;
+// blocking. Kept short because this also sits on a redirect hot-path
+// (proxy.ts) — a cold-start visitor shouldn't stare at a stalled tab.
+const ON_READY_TIMEOUT_MS = 1500;
 // How often the SDK refreshes the project config from the CDN (5 minutes).
 const DATA_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
 type Sdk = InstanceType<typeof ConvertSDK>;
+type Context = NonNullable<ReturnType<Sdk["createContext"]>>;
 
 // Module-level singleton: reused across warm server invocations so we don't
 // re-fetch the project config on every request. (Each serverless cold start
@@ -69,7 +71,10 @@ function getSdk(): Sdk {
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   let timerId: ReturnType<typeof setTimeout>;
   const timeout = new Promise<T>((_, reject) => {
-    timerId = setTimeout(() => reject(new Error(`Convert SDK timed out after ${ms}ms`)), ms);
+    timerId = setTimeout(
+      () => reject(new Error(`Convert SDK timed out after ${ms}ms`)),
+      ms,
+    );
   });
   // clearTimeout on settle so the timer doesn't keep the event loop alive or
   // pin the promise chain in memory once the race is decided.
@@ -86,6 +91,23 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 async function ensureReady(sdk: Sdk): Promise<void> {
   if (!sdk.data) {
     await withTimeout(sdk.onReady(), ON_READY_TIMEOUT_MS);
+  }
+}
+
+/**
+ * Force-send any queued tracking events (impressions, conversions) to Convert
+ * now, awaiting the network POST. Required on serverless: the SDK batches
+ * events behind a ~10s timer (DEFAULT_RELEASE_INTERVAL) that never fires before
+ * a short-lived invocation ends — so without an explicit flush the proxy
+ * redirect / RSC response is sent and the process freezes with the event still
+ * queued, and Convert records nothing. Never throws: delivery is best-effort
+ * and must not break the request or change the bucketing decision.
+ */
+async function flushEvents(context: Context, reason: string): Promise<void> {
+  try {
+    await context.releaseQueues(reason);
+  } catch (error) {
+    console.error(`[convert] failed to flush events (${reason}):`, error);
   }
 }
 
@@ -116,6 +138,12 @@ export async function getVariationKey(
     // runExperience returns a BucketedVariation (object) on success, or a
     // RuleError / BucketingError (plain string) when the visitor isn't bucketed.
     const result = context.runExperience(experienceKey);
+
+    // Send the impression/visit event now (see flushEvents) — otherwise the
+    // experiment records no bucketing data on serverless. No-op if nothing was
+    // queued (e.g. visitor not bucketed).
+    await flushEvents(context, "bucketing");
+
     if (result !== null && typeof result === "object") {
       const key = (result as BucketedVariation).key;
       if (typeof key === "string") return key;
@@ -142,7 +170,10 @@ export async function trackConversion(
     const sdk = getSdk();
     await ensureReady(sdk);
     const context = sdk.createContext(visitorId);
-    context?.trackConversion(goalKey, attributes);
+    if (!context) return;
+    context.trackConversion(goalKey, attributes);
+    // Flush before the invocation ends, same reason as bucketing.
+    await flushEvents(context, "conversion");
   } catch (error) {
     console.error(`[convert] failed to track "${goalKey}":`, error);
   }

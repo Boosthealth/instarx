@@ -22,6 +22,10 @@ import {
  */
 const VISITOR_COOKIE = "cvt_vid";
 const VISITOR_HEADER = "x-cvt-vid";
+// Query param carrying the visitor id across a redirect to an external funnel
+// domain, which can't read our host-only cvt_vid cookie. The funnel reads this
+// and reports the conversion back to Convert keyed on the same id.
+const VISITOR_QUERY_PARAM = "cvt_vid";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
 export async function proxy(request: NextRequest) {
@@ -37,6 +41,7 @@ export async function proxy(request: NextRequest) {
       path: "/",
       maxAge: ONE_YEAR_SECONDS,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
     });
   }
 
@@ -47,28 +52,47 @@ async function routeResponse(
   request: NextRequest,
   visitorId: string,
 ): Promise<NextResponse> {
-  // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and
-  // redirect the non-control arms to their intake funnel. `control` (0%
-  // allocation), a bucketing miss, or an unknown key → no destination → stay
-  // on /intake and render the page normally.
-  if (request.nextUrl.pathname === "/intake") {
+  // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and 302
+  // the non-control arms to their funnel, carrying the visitor id as a query
+  // param so the funnel (a different domain that can't read our cvt_vid cookie)
+  // can attribute the conversion back to this experiment. Prefetch/crawler
+  // traffic skips bucketing so bots don't burn allocations. `control`, a miss,
+  // an unknown key, or a bot → fall through and stay on /intake.
+  if (request.nextUrl.pathname === "/intake" && !isNonHumanRequest(request)) {
     const variationKey = await getVariationKey(
       GLP_FUNNEL_SPLIT_EXPERIENCE,
       visitorId,
     );
     const destination = funnelSplitDestination(variationKey);
     if (destination) {
-      return NextResponse.redirect(destination, 302);
+      const target = new URL(destination);
+      target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+      return NextResponse.redirect(target, 302);
     }
-    return NextResponse.next();
   }
 
-  // Default (content-variation routes, e.g. /weight-loss): forward the visitor
-  // id so the Server Component can bucket. The decision is made in the render
-  // path, not here.
+  // Everything else we run on — the /weight-loss content test, plus /intake
+  // control / misses / bots that stay put — forwards the visitor id so the
+  // render path can bucket. That decision is made in the Server Component, not
+  // here. Forwarding on the /intake fall-through too means a future content
+  // experiment on /intake works without another proxy change.
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(VISITOR_HEADER, visitorId);
   return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
+// Conservative non-human check: only well-known prefetch/crawler signals, so a
+// real visitor is never misrouted to control. Bots shouldn't consume A/B
+// allocations — they'd skew the split with traffic that never converts.
+function isNonHumanRequest(request: NextRequest): boolean {
+  const purpose =
+    request.headers.get("sec-purpose") ?? request.headers.get("purpose") ?? "";
+  if (purpose.includes("prefetch")) return true;
+
+  const ua = request.headers.get("user-agent")?.toLowerCase() ?? "";
+  return /bot\b|crawler|spider|facebookexternalhit|slackbot|whatsapp|telegrambot|discordbot|bingpreview|google-inspectiontool|lighthouse|pingdom|uptimerobot|headlesschrome/.test(
+    ua,
+  );
 }
 
 // Only run on A/B-tested routes. Add paths here as more server-side

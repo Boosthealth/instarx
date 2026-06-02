@@ -11,7 +11,7 @@ client-side flicker (no CLS) and no flash of the control variant.
 
 Both layers run on Node in Next.js 16 (the proxy — Next 16's renamed
 "middleware" — runs on the Node.js runtime), and the Convert SDK is fetch-based,
-so either layer *could* host it. We deliberately put the bucketing decision in
+so either layer _could_ host it. We deliberately put the bucketing decision in
 the **React Server Component** because:
 
 - The variation is a **component-level content decision**, so it belongs in the
@@ -36,14 +36,14 @@ request ─▶ proxy.ts (Node)                 ─▶ /weight-loss page.tsx (Nod
 
 ## Files
 
-| File | Role |
-| --- | --- |
-| [`proxy.ts`](../proxy.ts) | Assigns the `cvt_vid` visitor cookie + `x-cvt-vid` header. Matched routes only. |
-| [`app/lib/convert.ts`](../app/lib/convert.ts) | `server-only` Convert SDK singleton. `getVariationKey()` + `trackConversion()`, both degrade gracefully. |
-| [`app/lib/visitor.ts`](../app/lib/visitor.ts) | `getVisitorId()` — reads the forwarded header, falls back to the cookie, else `null` (→ control). |
-| [`app/lib/experiments.ts`](../app/lib/experiments.ts) | Experiment/variation keys + variant normalisation. No SDK import. |
-| [`app/(pages)/weight-loss/page.tsx`](<../app/(pages)/weight-loss/page.tsx>) | First experiment: buckets the visitor and passes `variant` to `<Hero>`. |
-| [`app/components/modules/home/Hero.tsx`](../app/components/modules/home/Hero.tsx) | Renders `control` vs `variation_1` (headline + primary CTA). |
+| File                                                                              | Role                                                                                                     |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [`proxy.ts`](../proxy.ts)                                                         | Assigns the `cvt_vid` visitor cookie + `x-cvt-vid` header. Matched routes only.                          |
+| [`app/lib/convert.ts`](../app/lib/convert.ts)                                     | `server-only` Convert SDK singleton. `getVariationKey()` + `trackConversion()`, both degrade gracefully. |
+| [`app/lib/visitor.ts`](../app/lib/visitor.ts)                                     | `getVisitorId()` — reads the forwarded header, falls back to the cookie, else `null` (→ control).        |
+| [`app/lib/experiments.ts`](../app/lib/experiments.ts)                             | Experiment/variation keys + variant normalisation. No SDK import.                                        |
+| [`app/(pages)/weight-loss/page.tsx`](<../app/(pages)/weight-loss/page.tsx>)       | First experiment: buckets the visitor and passes `variant` to `<Hero>`.                                  |
+| [`app/components/modules/home/Hero.tsx`](../app/components/modules/home/Hero.tsx) | Renders `control` vs `variation_1` (headline + primary CTA).                                             |
 
 ## Configuration
 
@@ -77,9 +77,9 @@ the experience key `weight_loss_hero` and two variations keyed exactly
 `control` and `variation_1`. The keys must match the strings in
 `app/lib/experiments.ts`.
 
-| Variation | Headline | Primary CTA |
-| --- | --- | --- |
-| `control` | "Drop up to 1-2lbs per week!" | "Start Quiz →" |
+| Variation     | Headline                                          | Primary CTA     |
+| ------------- | ------------------------------------------------- | --------------- |
+| `control`     | "Drop up to 1-2lbs per week!"                     | "Start Quiz →"  |
 | `variation_1` | "Doctor-prescribed GLP-1, delivered to your door" | "Get Started →" |
 
 > `/weight-loss` is now **dynamically rendered** (it reads per-visitor
@@ -101,12 +101,12 @@ variation. Keys live in `app/lib/experiments.ts`.
 - **Experience key:** `glp_funnel_split` (`GLP_FUNNEL_SPLIT_EXPERIENCE`)
 - **Variations & actions:**
 
-| Variation | Dashboard allocation | Action |
-| --- | --- | --- |
-| `control` | 0% | No redirect — stay on `/intake` (renders the local intake flow) |
-| `variation_1` | 33% | 302 → `https://go.instarx.com/intake01` |
-| `variation_2` | 33% | 302 → `https://quiz.instarx.com/` |
-| `variation_3` | 34% | 302 → `https://intake.instarx.com/` |
+| Variation     | Dashboard allocation | Action                                                          |
+| ------------- | -------------------- | --------------------------------------------------------------- |
+| `control`     | 0%                   | No redirect — stay on `/intake` (renders the local intake flow) |
+| `variation_1` | 33%                  | 302 → `https://go.instarx.com/intake01`                         |
+| `variation_2` | 33%                  | 302 → `https://quiz.instarx.com/`                               |
+| `variation_3` | 34%                  | 302 → `https://intake.instarx.com/`                             |
 
 In the Convert dashboard, create a **Full-Stack (server-side) experience** keyed
 `glp_funnel_split` with four variations keyed exactly `control`, `variation_1`,
@@ -117,6 +117,13 @@ destination. `control`, a bucketing miss, or any unrecognised key → no redirec
 
 The redirect destinations live in `GLP_FUNNEL_SPLIT_DESTINATIONS`; update that
 map (not the dashboard) to change where an arm points.
+
+**Cross-domain attribution.** Each redirect carries the visitor id as a query
+param: `…?cvt_vid=<id>`. The funnel domains can't read our `cvt_vid` cookie
+(it's host-only), so this is how a purchase on the funnel gets tied back to the
+variation we assigned here — see "Tracking conversions" below. Bucketing is also
+skipped for prefetch/crawler traffic (`isNonHumanRequest` in `proxy.ts`) so bots
+don't consume allocations.
 
 ## Adding another experiment
 
@@ -137,6 +144,11 @@ map (not the dashboard) to change where an arm points.
 
 ## Tracking conversions
 
+The goal key must match a goal configured in Convert. **How** you fire it
+depends on where the conversion happens.
+
+### A goal that fires inside this app
+
 ```ts
 import { trackConversion } from "@/app/lib/convert";
 import { getVisitorId } from "@/app/lib/visitor";
@@ -145,4 +157,36 @@ await trackConversion("started_intake", await getVisitorId());
 ```
 
 Call this from a Server Action or Route Handler (Node runtime) at the point the
-goal fires. The goal key must match a goal configured in Convert.
+goal fires. `trackConversion` flushes the event before it returns (see "Event
+flushing" below), so it's safe in a short-lived handler.
+
+### A goal that fires on a redirect funnel (e.g. `glp_funnel_split` → `purchase`)
+
+The funnel split redirects to **external domains** (`go.`/`quiz.`/`intake.`
+instarx.com). The purchase happens there, not in this app, so we can't call
+`trackConversion` from here — and a client-side `convert.track()` on the funnel
+won't work either: it has no access to the server-side bucketing record, and the
+funnel domain can't read our host-only `cvt_vid` cookie.
+
+The conversion must be reported to Convert **with the same `cvt_vid`** we
+bucketed on. We hand that id to the funnel via the `?cvt_vid=<id>` query param on
+the redirect (see above). The funnel then reports the goal keyed on that id, by
+either:
+
+- **REST track API** — `POST https://<track-endpoint>/track/<sdk_key>` with the
+  `cvt_vid` and the goal, from the funnel's checkout-success server event; or
+- **Webhook → this app** — the funnel/payment platform calls a Route Handler
+  here on purchase, passing the `cvt_vid`, and that handler calls
+  `trackConversion("purchase", cvtVid)`.
+
+A client-side `convert.track('purchase')` on the funnel is **not** sufficient on
+its own and won't attribute to the Full-Stack experience.
+
+## Event flushing (serverless)
+
+Bucketing and conversion events are queued by the SDK and, by default, only sent
+on a ~10s batch timer — which never fires before a serverless invocation ends.
+`getVariationKey` and `trackConversion` therefore call `context.releaseQueues()`
+to flush synchronously before returning. Without that, Convert records **no**
+data (the experiment looks like it has zero traffic). Any new code path that
+buckets or tracks must flush the same way.

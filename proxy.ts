@@ -92,7 +92,10 @@ async function routeResponse(
       // rule against an empty bag and silently drops the conversion. Paired
       // with dashboard condition:
       //   Generic Text Value `goal_trigger` Matches exactly `intake_visit`
-      trackConversion("homepage_cta_click", visitorId, {
+      // NB: Convert normalizes goal keys to kebab-case in the dashboard
+      // (typing `homepage_cta_click` gets saved as `homepage-cta-click`),
+      // so the SDK only finds the goal under the hyphenated form.
+      trackConversion("homepage-cta-click", visitorId, {
         goal_trigger: "intake_visit",
       }),
       getVariationKey(GLP_FUNNEL_SPLIT_EXPERIENCE, visitorId),

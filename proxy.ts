@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getVariationKey } from "@/app/lib/convert";
+import { getVariationKey, trackConversion } from "@/app/lib/convert";
 import {
   GLP_FUNNEL_SPLIT_EXPERIENCE,
   HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
@@ -78,11 +78,18 @@ async function routeResponse(
   // can attribute the conversion back to this experiment. Prefetch/crawler
   // traffic skips bucketing so bots don't burn allocations. `control`, a miss,
   // an unknown key, or a bot → fall through and stay on /intake.
+  //
+  // Also fires the `homepage_cta_click` goal — every (human) /intake hit is a
+  // CTA click-through from a lander, so this serves as the CTR metric for the
+  // homepage lander split. Convert only attributes the goal to experiments
+  // the visitor is bucketed into; visitors outside the lander test are a
+  // no-op for it. Run in parallel with bucketing to avoid extra latency on
+  // the redirect hot-path.
   if (request.nextUrl.pathname === "/intake" && !isNonHumanRequest(request)) {
-    const variationKey = await getVariationKey(
-      GLP_FUNNEL_SPLIT_EXPERIENCE,
-      visitorId,
-    );
+    const [, variationKey] = await Promise.all([
+      trackConversion("homepage_cta_click", visitorId),
+      getVariationKey(GLP_FUNNEL_SPLIT_EXPERIENCE, visitorId),
+    ]);
     const destination = funnelSplitDestination(variationKey);
     if (destination) {
       const target = new URL(destination);

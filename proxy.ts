@@ -114,15 +114,23 @@ async function routeResponse(
 // param, no RSC/prefetch headers) so the user's actual visit still buckets
 // normally.
 function isNonHumanRequest(request: NextRequest): boolean {
+  // DEBUG: log what middleware sees so we can verify the prefetch detection
+  const hasRscParam = request.nextUrl.searchParams.has("_rsc");
+  const nextPrefetchHeader = request.headers.get("next-router-prefetch");
+  const rscHeader = request.headers.get("rsc");
+  const allHeaders: Record<string, string> = {};
+  request.headers.forEach((v, k) => { allHeaders[k] = v; });
+  console.log(`[debug-middleware] path=${request.nextUrl.pathname} search="${request.nextUrl.search}" hasRsc=${hasRscParam} nextPrefetch=${nextPrefetchHeader} rsc=${rscHeader} headers=${JSON.stringify(allHeaders)}`);
+
   // Next.js App Router <Link> prefetch — fires when a Link enters the viewport,
   // before any click. App Router RSC prefetches use a `?_rsc=…` query param +
   // `RSC: 1` + `Next-Router-Prefetch: 1` headers, but DON'T reliably include
   // `Sec-Purpose: prefetch` (which is for browser-level prefetches like
   // <link rel="prefetch">). Without these checks every CTA on a lander
   // pre-buckets the visitor into glp_funnel_split before they click.
-  if (request.nextUrl.searchParams.has("_rsc")) return true;
-  if (request.headers.get("next-router-prefetch")) return true;
-  if (request.headers.get("rsc")) return true;
+  if (hasRscParam) return true;
+  if (nextPrefetchHeader) return true;
+  if (rscHeader) return true;
 
   // Browser-level prefetches (Speculation Rules, <link rel="prefetch">,
   // search-engine top-result prefetches): these DO set sec-purpose.

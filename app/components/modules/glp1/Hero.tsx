@@ -44,6 +44,7 @@ export default function Hero() {
             </h1>
             <Link
               href="https://go.instarx.com/intake"
+              prefetch={false}
               className="glp1-entrance inline-flex items-center gap-2 bg-gray-900 text-white text-lg font-semibold px-8 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200"
               style={{ animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both", animationDelay: "220ms" }}
             >

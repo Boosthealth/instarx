@@ -111,6 +111,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={false}
                   className="text-sm font-semibold text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:rounded"
                 >
                   {link.label}
@@ -164,6 +165,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className="py-5 text-xl font-medium text-gray-800 border-b border-gray-100 last:border-0 hover:text-blue-500 transition-colors"
                 onClick={() => setMenuOpen(false)}
               >

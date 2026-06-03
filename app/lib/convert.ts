@@ -168,10 +168,18 @@ export async function getVariationKey(
 /**
  * Report a conversion (goal) for a visitor. No-op when Convert isn't
  * configured or there's no visitor id; never throws.
+ *
+ * `visitorAttributes` are passed when creating the visitor context, so they
+ * can be used to satisfy goal-level conditions in the Convert dashboard
+ * (Convert evaluates goal conditions against the visitor context — without
+ * matching attributes, conditions are unmet and the conversion isn't
+ * recorded). `attributes` is the optional metadata attached to the
+ * conversion event itself.
  */
 export async function trackConversion(
   goalKey: string,
   visitorId: string | null,
+  visitorAttributes?: Record<string, unknown>,
   attributes?: ConversionAttributes,
 ): Promise<void> {
   if (!SDK_KEY || !visitorId) return;
@@ -179,7 +187,7 @@ export async function trackConversion(
   try {
     const sdk = getSdk();
     await ensureReady(sdk);
-    const context = sdk.createContext(visitorId);
+    const context = sdk.createContext(visitorId, visitorAttributes);
     if (!context) return;
     context.trackConversion(goalKey, attributes);
     // Flush before the invocation ends, same reason as bucketing.

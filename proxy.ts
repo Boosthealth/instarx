@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getVariationKey, trackConversion } from "@/app/lib/convert";
+import { getVariationKey } from "@/app/lib/convert";
 import {
   GLP_FUNNEL_SPLIT_EXPERIENCE,
   HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
@@ -79,27 +79,16 @@ async function routeResponse(
   // traffic skips bucketing so bots don't burn allocations. `control`, a miss,
   // an unknown key, or a bot → fall through and stay on /intake.
   //
-  // Also fires the `homepage_cta_click` goal — every (human) /intake hit is a
-  // CTA click-through from a lander, so this serves as the CTR metric for the
-  // homepage lander split. Convert only attributes the goal to experiments
-  // the visitor is bucketed into; visitors outside the lander test are a
-  // no-op for it. Run in parallel with bucketing to avoid extra latency on
-  // the redirect hot-path.
+  // NB: the `homepage-cta-click` goal that backs the lander CTR metric is NOT
+  // fired here — see app/components/CtaClickTracker.tsx, which fires it from a
+  // real DOM click on the lander instead. Firing it on every /intake pageview
+  // inflated the count from bots, prefetches, refreshes, and back-button
+  // revisits.
   if (request.nextUrl.pathname === "/intake" && !isNonHumanRequest(request)) {
-    const [, variationKey] = await Promise.all([
-      // Pass ruleData so the goal's triggering rule in the Convert dashboard
-      // has something to match against. Without it the SDK evaluates the
-      // rule against an empty bag and silently drops the conversion. Paired
-      // with dashboard condition:
-      //   Generic Text Value `goal_trigger` Matches exactly `intake_visit`
-      // NB: Convert normalizes goal keys to kebab-case in the dashboard
-      // (typing `homepage_cta_click` gets saved as `homepage-cta-click`),
-      // so the SDK only finds the goal under the hyphenated form.
-      trackConversion("homepage-cta-click", visitorId, {
-        goal_trigger: "intake_visit",
-      }),
-      getVariationKey(GLP_FUNNEL_SPLIT_EXPERIENCE, visitorId),
-    ]);
+    const variationKey = await getVariationKey(
+      GLP_FUNNEL_SPLIT_EXPERIENCE,
+      visitorId,
+    );
     const destination = funnelSplitDestination(variationKey);
     if (destination) {
       const target = new URL(destination);

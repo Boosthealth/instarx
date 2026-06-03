@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AnalyticsScripts from "./components/AnalyticsScripts";
+import CtaClickTracker from "./components/CtaClickTracker";
 import { Figtree, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
     <html lang="en" className={`${figtree.variable} ${inter.variable} ${figtree.className}`}>
       <body>
         <AnalyticsScripts />
+        <CtaClickTracker />
         {children}
       </body>
     </html>

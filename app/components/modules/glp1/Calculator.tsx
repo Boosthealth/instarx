@@ -58,6 +58,7 @@ export default function Calculator() {
           <div>
             <Link
               href="https://go.instarx.com/intake"
+              prefetch={false}
               className="inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-900 text-lg font-semibold px-6 py-2.5 rounded-full hover:bg-gray-50 transition-colors duration-200"
             >
               Get Started →
@@ -110,6 +111,7 @@ export default function Calculator() {
           {/* CTA */}
           <Link
             href="https://go.instarx.com/intake"
+            prefetch={false}
             className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white text-lg font-semibold px-8 py-3.5 rounded-full hover:bg-gray-800 transition-colors duration-200 w-full"
           >
             Find your treatment →

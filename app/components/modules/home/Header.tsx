@@ -101,6 +101,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors duration-200 lg:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:rounded"
               >
                 {link.label}
@@ -112,6 +113,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="https://go.instarx.com/intake"
+              prefetch={false}
               className="hidden md:inline-flex items-center px-5 py-2 bg-black text-white text-sm font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             >
               Start Your Journey
@@ -152,6 +154,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className="py-5 text-xl font-medium text-gray-800 border-b border-gray-100 last:border-0 hover:text-blue-500 transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
@@ -161,6 +164,7 @@ export default function Header() {
           </nav>
           <Link
             href="https://go.instarx.com/intake"
+            prefetch={false}
             className="block text-center px-6 py-4 bg-black text-white text-base font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             onClick={() => setMenuOpen(false)}
           >

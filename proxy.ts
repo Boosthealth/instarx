@@ -108,9 +108,24 @@ async function routeResponse(
 }
 
 // Conservative non-human check: only well-known prefetch/crawler signals, so a
-// real visitor is never misrouted to control. Bots shouldn't consume A/B
-// allocations — they'd skew the split with traffic that never converts.
+// real visitor is never misrouted to control. Prefetches and bots shouldn't
+// consume A/B allocations — they'd skew visitor counts with traffic that never
+// actually navigated. A real click triggers a full HTTP navigation (no `_rsc=`
+// param, no RSC/prefetch headers) so the user's actual visit still buckets
+// normally.
 function isNonHumanRequest(request: NextRequest): boolean {
+  // Next.js App Router <Link> prefetch — fires when a Link enters the viewport,
+  // before any click. App Router RSC prefetches use a `?_rsc=…` query param +
+  // `RSC: 1` + `Next-Router-Prefetch: 1` headers, but DON'T reliably include
+  // `Sec-Purpose: prefetch` (which is for browser-level prefetches like
+  // <link rel="prefetch">). Without these checks every CTA on a lander
+  // pre-buckets the visitor into glp_funnel_split before they click.
+  if (request.nextUrl.searchParams.has("_rsc")) return true;
+  if (request.headers.get("next-router-prefetch")) return true;
+  if (request.headers.get("rsc")) return true;
+
+  // Browser-level prefetches (Speculation Rules, <link rel="prefetch">,
+  // search-engine top-result prefetches): these DO set sec-purpose.
   const purpose =
     request.headers.get("sec-purpose") ?? request.headers.get("purpose") ?? "";
   if (purpose.includes("prefetch")) return true;

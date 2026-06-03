@@ -2,7 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   GLP_FUNNEL_SPLIT_EXPERIENCE,
+  HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
   funnelSplitDestination,
+  homepageLanderDestination,
 } from "@/app/lib/experiments";
 
 /**
@@ -52,6 +54,24 @@ async function routeResponse(
   request: NextRequest,
   visitorId: string,
 ): Promise<NextResponse> {
+  // / — Homepage lander split (split-URL test). Bucket the visitor and 302
+  // the non-control arms to the assigned GLP-1 lander, carrying the visitor id
+  // as a query param so it persists across the redirect. Same prefetch/bot
+  // skip rationale as the /intake split. `control`, a miss, an unknown key,
+  // or a bot → fall through and stay on the homepage.
+  if (request.nextUrl.pathname === "/" && !isNonHumanRequest(request)) {
+    const variationKey = await getVariationKey(
+      HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
+      visitorId,
+    );
+    const destination = homepageLanderDestination(variationKey);
+    if (destination) {
+      const target = new URL(destination);
+      target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+      return NextResponse.redirect(target, 302);
+    }
+  }
+
   // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and 302
   // the non-control arms to their funnel, carrying the visitor id as a query
   // param so the funnel (a different domain that can't read our cvt_vid cookie)
@@ -98,5 +118,5 @@ function isNonHumanRequest(request: NextRequest): boolean {
 // Only run on A/B-tested routes. Add paths here as more server-side
 // experiments are introduced.
 export const config = {
-  matcher: ["/weight-loss", "/intake"],
+  matcher: ["/", "/weight-loss", "/intake"],
 };

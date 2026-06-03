@@ -87,11 +87,10 @@ async function routeResponse(
   // the redirect hot-path.
   if (request.nextUrl.pathname === "/intake" && !isNonHumanRequest(request)) {
     const [, variationKey] = await Promise.all([
-      // Pass a visitor attribute so the goal-level condition in the Convert
-      // dashboard has something to match against. Without this the goal
-      // condition is evaluated against an empty context and the conversion
-      // is silently dropped (Convert won't record it). Pair this with a
-      // dashboard condition like:
+      // Pass ruleData so the goal's triggering rule in the Convert dashboard
+      // has something to match against. Without it the SDK evaluates the
+      // rule against an empty bag and silently drops the conversion. Paired
+      // with dashboard condition:
       //   Generic Text Value `goal_trigger` Matches exactly `intake_visit`
       trackConversion("homepage_cta_click", visitorId, {
         goal_trigger: "intake_visit",

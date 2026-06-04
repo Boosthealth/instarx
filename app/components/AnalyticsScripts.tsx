@@ -17,6 +17,7 @@ const EMBEDDABLES_ROUTES = new Set([
   "/glp1",
   "/intake",
   "/intake01",
+  "/nad_plus_intake",
   "/glp1-weight-loss",
 ]);
 

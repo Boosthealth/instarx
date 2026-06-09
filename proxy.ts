@@ -59,7 +59,18 @@ async function routeResponse(
   // as a query param so it persists across the redirect. Same prefetch/bot
   // skip rationale as the /intake split. `control`, a miss, an unknown key,
   // or a bot → fall through and stay on the homepage.
-  if (request.nextUrl.pathname === "/" && !isNonHumanRequest(request)) {
+  //
+  // `current_page_key` carve-out: the homepage also serves standalone
+  // Embeddables landers at the root (e.g. `/?current_page_key=landing_page_5`
+  // for Google Shopping campaigns). Those are dedicated landing pages, not the
+  // bare homepage, and must NOT be hijacked into the lander split — doing so
+  // sends paid traffic to the wrong page and breaks ad/landing-page match. Only
+  // the bare homepage (no `current_page_key`) participates in the split.
+  if (
+    request.nextUrl.pathname === "/" &&
+    !request.nextUrl.searchParams.has("current_page_key") &&
+    !isNonHumanRequest(request)
+  ) {
     const variationKey = await getVariationKey(
       HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
       visitorId,

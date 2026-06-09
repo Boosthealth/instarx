@@ -30,6 +30,28 @@ const VISITOR_HEADER = "x-cvt-vid";
 const VISITOR_QUERY_PARAM = "cvt_vid";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
+// Cookie holding the visitor's marketing attribution as a URL-encoded query
+// string (utm_*, gclid, …). Written client-side on first touch by
+// app/components/UtmForwarder.tsx and scoped to `.instarx.com` so it survives
+// the in-page lander → /intake navigation (which Next client-routes, dropping
+// the query string). The /intake redirect reads it to re-attach attribution to
+// the funnel's entry URL, where Embeddables captures it via originUrl. Once the
+// funnel has it, Embeddables owns persistence — we do NOT pass it slide to slide.
+const ATTRIBUTION_COOKIE = "ix_attribution";
+
+// Copy attribution params from `source` onto a redirect target so they survive
+// the 302 into the lander / funnel. Existing target params win (we never clobber
+// a value already on the destination), and cvt_vid is managed separately so it's
+// skipped. Without this, every redirected ad click reaches the funnel/analytics
+// stripped of campaign data — PostHog/GA can't attribute and Google Ads loses gclid.
+function carryForwardParams(target: URL, source: URLSearchParams): void {
+  source.forEach((value, key) => {
+    if (key === VISITOR_QUERY_PARAM) return;
+    if (!value) return;
+    if (!target.searchParams.has(key)) target.searchParams.set(key, value);
+  });
+}
+
 export async function proxy(request: NextRequest) {
   const existingId = request.cookies.get(VISITOR_COOKIE)?.value;
   const visitorId = existingId ?? crypto.randomUUID();
@@ -78,6 +100,9 @@ async function routeResponse(
     const destination = homepageLanderDestination(variationKey);
     if (destination) {
       const target = new URL(destination);
+      // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
+      // the lander pageview and UtmForwarder can persist them for the funnel hop.
+      carryForwardParams(target, request.nextUrl.searchParams);
       target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
       return NextResponse.redirect(target, 302);
     }
@@ -103,6 +128,15 @@ async function routeResponse(
     const destination = funnelSplitDestination(variationKey);
     if (destination) {
       const target = new URL(destination);
+      // Attribution reaches the funnel's entry URL (Embeddables reads it via
+      // originUrl). Prefer params on this request; fall back to the attribution
+      // cookie, since the lander → /intake click is client-routed and arrives
+      // here with the query string stripped.
+      carryForwardParams(target, request.nextUrl.searchParams);
+      const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
+      if (storedAttribution) {
+        carryForwardParams(target, new URLSearchParams(storedAttribution));
+      }
       target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
       return NextResponse.redirect(target, 302);
     }

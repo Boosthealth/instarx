@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AnalyticsScripts from "./components/AnalyticsScripts";
 import CtaClickTracker from "./components/CtaClickTracker";
+import UtmForwarder from "./components/UtmForwarder";
 import { Figtree, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -69,6 +70,7 @@ export default function RootLayout({
       <body>
         <AnalyticsScripts />
         <CtaClickTracker />
+        <UtmForwarder />
         {children}
       </body>
     </html>

@@ -1,4 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import {
+  ATTRIBUTION_COOKIE,
+  captureAttribution,
+} from "@/app/lib/attribution";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   GLP_FUNNEL_SPLIT_EXPERIENCE,
@@ -30,14 +34,16 @@ const VISITOR_HEADER = "x-cvt-vid";
 const VISITOR_QUERY_PARAM = "cvt_vid";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
-// Cookie holding the visitor's marketing attribution as a URL-encoded query
-// string (utm_*, gclid, …). Written client-side on first touch by
-// app/components/UtmForwarder.tsx and scoped to `.instarx.com` so it survives
-// the in-page lander → /intake navigation (which Next client-routes, dropping
-// the query string). The /intake redirect reads it to re-attach attribution to
-// the funnel's entry URL, where Embeddables captures it via originUrl. Once the
-// funnel has it, Embeddables owns persistence — we do NOT pass it slide to slide.
-const ATTRIBUTION_COOKIE = "ix_attribution";
+// The visitor's marketing attribution lives in the `ix_attribution` cookie as
+// a URL-encoded query string (utm_*, gclid, ad_id, …) scoped to `.instarx.com`
+// so it survives the in-page lander → /intake navigation (which Next
+// client-routes, dropping the query string). It's written server-side below on
+// every proxied request that carries attribution params, and client-side by a
+// pre-hydration inline script in app/layout.tsx for entries the proxy doesn't
+// run on (direct lander visits) — see app/lib/attribution.ts. The /intake
+// redirect reads it to re-attach attribution to the funnel's entry URL, where
+// Embeddables captures it via originUrl. Once the funnel has it, Embeddables
+// owns persistence — we do NOT pass it slide to slide.
 
 // Copy attribution params from `source` onto a redirect target so they survive
 // the 302 into the lander / funnel. Existing target params win (we never clobber
@@ -63,6 +69,25 @@ export async function proxy(request: NextRequest) {
   if (!existingId) {
     response.cookies.set(VISITOR_COOKIE, visitorId, {
       path: "/",
+      maxAge: ONE_YEAR_SECONDS,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
+
+  // Persist inbound attribution server-side, on the very first response. The
+  // dominant ad flow enters at `/` (or `/intake`), both proxied — setting the
+  // cookie here means the lander → /intake hop keeps attribution even when
+  // client-side JS never runs (in-app webviews, clicks that beat hydration).
+  // Newer params overwrite the stored set; a bare URL leaves it untouched.
+  // The domain guard keeps the cookie working on *.vercel.app previews.
+  const attribution = captureAttribution(request.nextUrl.searchParams);
+  if (attribution) {
+    response.cookies.set(ATTRIBUTION_COOKIE, attribution, {
+      path: "/",
+      ...(request.nextUrl.hostname.endsWith("instarx.com")
+        ? { domain: ".instarx.com" }
+        : {}),
       maxAge: ONE_YEAR_SECONDS,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
@@ -101,7 +126,8 @@ async function routeResponse(
     if (destination) {
       const target = new URL(destination);
       // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
-      // the lander pageview and UtmForwarder can persist them for the funnel hop.
+      // the lander pageview (the funnel hop itself rides the ix_attribution
+      // cookie, which proxy() sets on this same redirect response).
       carryForwardParams(target, request.nextUrl.searchParams);
       target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
       return NextResponse.redirect(target, 302);

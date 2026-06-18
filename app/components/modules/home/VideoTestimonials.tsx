@@ -12,13 +12,13 @@ const videos = [
 ];
 
 const bottlesLeft = [
-  { src: "/lose-weight/instarx-semaglutide.webp", style: { top: "2%", left: "2%", rotate: "-12deg", width: 110 } },
-  { src: "/lose-weight/instarx-tirzepatide.webp", style: { top: "32%", left: "5%", rotate: "8deg", width: 90 } },
+  { src: "/images/sem-glp1.png", style: { top: "2%", left: "2%", rotate: "-12deg", width: 110 } },
+  { src: "/images/tirz-glp1.png", style: { top: "32%", left: "5%", rotate: "8deg", width: 90 } },
 ];
 
 const bottlesRight = [
-  { src: "/lose-weight/instarx-tirzepatide.webp", style: { top: "2%", right: "2%", rotate: "14deg", width: 100 } },
-  { src: "/lose-weight/instarx-semaglutide.webp", style: { top: "30%", right: "4%", rotate: "-8deg", width: 90 } },
+  { src: "/images/tirz-glp1.png", style: { top: "2%", right: "2%", rotate: "14deg", width: 100 } },
+  { src: "/images/sem-glp1.png", style: { top: "30%", right: "4%", rotate: "-8deg", width: 90 } },
 ];
 
 function VideoSlide({ src, index }: { src: string; index: number }) {
@@ -78,7 +78,7 @@ export function VideoTestimonials() {
                   width: `${b.style.width}px`,
                 }}
               >
-                <Image src={b.src} alt="" width={b.style.width} height={Math.round(b.style.width * 1.4)} />
+                <Image src={b.src} alt="" width={b.style.width} height={b.style.width} />
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ export function VideoTestimonials() {
                   width: `${b.style.width}px`,
                 }}
               >
-                <Image src={b.src} alt="" width={b.style.width} height={Math.round(b.style.width * 1.4)} />
+                <Image src={b.src} alt="" width={b.style.width} height={b.style.width} />
               </div>
             ))}
           </div>

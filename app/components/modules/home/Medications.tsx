@@ -18,18 +18,18 @@ export function Medications() {
         <div className="mb-4 rounded-3xl overflow-hidden bg-[#faf6f0]">
           <div className="flex items-center justify-center gap-4 sm:gap-8 pt-8 px-4">
             <Image
-              src="/images/sem1x.png"
+              src="/images/sem-glp1.png"
               alt="Compounded Semaglutide injection vial"
-              width={375}
-              height={375}
+              width={640}
+              height={640}
               sizes="(max-width: 640px) 45vw, 320px"
               className="w-1/2 max-w-[320px] h-auto object-contain"
             />
             <Image
-              src="/images/tirz1x.png"
+              src="/images/tirz-glp1.png"
               alt="Compounded Tirzepatide injection vial"
-              width={375}
-              height={375}
+              width={640}
+              height={640}
               sizes="(max-width: 640px) 45vw, 320px"
               className="w-1/2 max-w-[320px] h-auto object-contain"
             />

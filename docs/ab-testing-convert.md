@@ -104,7 +104,7 @@ variation. Keys live in `app/lib/experiments.ts`.
 | Variation     | Dashboard allocation | Action                                                          |
 | ------------- | -------------------- | --------------------------------------------------------------- |
 | `control`     | 0%                   | No redirect — stay on `/intake` (renders the local intake flow) |
-| `variation_1` | 33%                  | 302 → `https://go.instarx.com/intake01`                         |
+| `variation_1` | 34%                  | 302 → `https://start.instarx.com/`                              |
 | `variation_2` | 33%                  | 302 → `https://quiz.instarx.com/`                               |
 | `variation_3` | 34%                  | 302 → `https://intake.instarx.com/`                             |
 

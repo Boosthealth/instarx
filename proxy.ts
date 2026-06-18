@@ -1,4 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import {
+  ATTRIBUTION_COOKIE,
+  captureAttribution,
+} from "@/app/lib/attribution";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   GLP_FUNNEL_SPLIT_EXPERIENCE,
@@ -30,6 +34,30 @@ const VISITOR_HEADER = "x-cvt-vid";
 const VISITOR_QUERY_PARAM = "cvt_vid";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
+// The visitor's marketing attribution lives in the `ix_attribution` cookie as
+// a URL-encoded query string (utm_*, gclid, ad_id, …) scoped to `.instarx.com`
+// so it survives the in-page lander → /intake navigation (which Next
+// client-routes, dropping the query string). It's written server-side below on
+// every proxied request that carries attribution params, and client-side by a
+// pre-hydration inline script in app/layout.tsx for entries the proxy doesn't
+// run on (direct lander visits) — see app/lib/attribution.ts. The /intake
+// redirect reads it to re-attach attribution to the funnel's entry URL, where
+// Embeddables captures it via originUrl. Once the funnel has it, Embeddables
+// owns persistence — we do NOT pass it slide to slide.
+
+// Copy attribution params from `source` onto a redirect target so they survive
+// the 302 into the lander / funnel. Existing target params win (we never clobber
+// a value already on the destination), and cvt_vid is managed separately so it's
+// skipped. Without this, every redirected ad click reaches the funnel/analytics
+// stripped of campaign data — PostHog/GA can't attribute and Google Ads loses gclid.
+function carryForwardParams(target: URL, source: URLSearchParams): void {
+  source.forEach((value, key) => {
+    if (key === VISITOR_QUERY_PARAM) return;
+    if (!value) return;
+    if (!target.searchParams.has(key)) target.searchParams.set(key, value);
+  });
+}
+
 export async function proxy(request: NextRequest) {
   const existingId = request.cookies.get(VISITOR_COOKIE)?.value;
   const visitorId = existingId ?? crypto.randomUUID();
@@ -41,6 +69,25 @@ export async function proxy(request: NextRequest) {
   if (!existingId) {
     response.cookies.set(VISITOR_COOKIE, visitorId, {
       path: "/",
+      maxAge: ONE_YEAR_SECONDS,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
+
+  // Persist inbound attribution server-side, on the very first response. The
+  // dominant ad flow enters at `/` (or `/intake`), both proxied — setting the
+  // cookie here means the lander → /intake hop keeps attribution even when
+  // client-side JS never runs (in-app webviews, clicks that beat hydration).
+  // Newer params overwrite the stored set; a bare URL leaves it untouched.
+  // The domain guard keeps the cookie working on *.vercel.app previews.
+  const attribution = captureAttribution(request.nextUrl.searchParams);
+  if (attribution) {
+    response.cookies.set(ATTRIBUTION_COOKIE, attribution, {
+      path: "/",
+      ...(request.nextUrl.hostname.endsWith("instarx.com")
+        ? { domain: ".instarx.com" }
+        : {}),
       maxAge: ONE_YEAR_SECONDS,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
@@ -59,7 +106,18 @@ async function routeResponse(
   // as a query param so it persists across the redirect. Same prefetch/bot
   // skip rationale as the /intake split. `control`, a miss, an unknown key,
   // or a bot → fall through and stay on the homepage.
-  if (request.nextUrl.pathname === "/" && !isNonHumanRequest(request)) {
+  //
+  // `current_page_key` carve-out: the homepage also serves standalone
+  // Embeddables landers at the root (e.g. `/?current_page_key=landing_page_5`
+  // for Google Shopping campaigns). Those are dedicated landing pages, not the
+  // bare homepage, and must NOT be hijacked into the lander split — doing so
+  // sends paid traffic to the wrong page and breaks ad/landing-page match. Only
+  // the bare homepage (no `current_page_key`) participates in the split.
+  if (
+    request.nextUrl.pathname === "/" &&
+    !request.nextUrl.searchParams.has("current_page_key") &&
+    !isNonHumanRequest(request)
+  ) {
     const variationKey = await getVariationKey(
       HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
       visitorId,
@@ -67,6 +125,10 @@ async function routeResponse(
     const destination = homepageLanderDestination(variationKey);
     if (destination) {
       const target = new URL(destination);
+      // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
+      // the lander pageview (the funnel hop itself rides the ix_attribution
+      // cookie, which proxy() sets on this same redirect response).
+      carryForwardParams(target, request.nextUrl.searchParams);
       target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
       return NextResponse.redirect(target, 302);
     }
@@ -92,6 +154,15 @@ async function routeResponse(
     const destination = funnelSplitDestination(variationKey);
     if (destination) {
       const target = new URL(destination);
+      // Attribution reaches the funnel's entry URL (Embeddables reads it via
+      // originUrl). Prefer params on this request; fall back to the attribution
+      // cookie, since the lander → /intake click is client-routed and arrives
+      // here with the query string stripped.
+      carryForwardParams(target, request.nextUrl.searchParams);
+      const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
+      if (storedAttribution) {
+        carryForwardParams(target, new URLSearchParams(storedAttribution));
+      }
       target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
       return NextResponse.redirect(target, 302);
     }

@@ -41,7 +41,7 @@ export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split";
  * match the variation keys configured in Convert exactly.
  */
 export const GLP_FUNNEL_SPLIT_DESTINATIONS: Record<string, string> = {
-  variation_1: "https://go.instarx.com/intake01",
+  variation_1: "https://start.instarx.com/",
   variation_2: "https://quiz.instarx.com/",
   variation_3: "https://intake.instarx.com/",
 };

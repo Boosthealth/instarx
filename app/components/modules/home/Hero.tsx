@@ -43,9 +43,9 @@ function StarBox({ fill = 1 }: { fill?: number }) {
   );
 }
 
-function TrustpilotStars() {
+function TrustpilotStars({ className = "" }: { className?: string }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4">
+    <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 ${className}`.trim()}>
       <span className="text-sm font-bold text-gray-900">Excellent 4.7</span>
       <div className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
         <StarBox fill={1} />
@@ -68,10 +68,47 @@ const checkItems = [
 
 export default function Hero({
   variant = "control",
+  layout = "default",
 }: {
   variant?: WeightLossHeroVariant;
+  layout?: "default" | "a" | "b" | "d" | "c2";
 }) {
   const content = HERO_CONTENT[variant];
+  const isVariant = layout !== "default";
+  // b is the only variant that places the mobile CTA above the price paragraph.
+  const ctaAbovePrice = layout === "b";
+
+  // Mobile-only modifiers for the variant layouts; all resolve back to the
+  // original rendering at the `sm:` breakpoint so desktop stays identical.
+  // Only d and c2 center the upper block on mobile; a and b stay left-aligned.
+  const mobileCenter = layout === "d" || layout === "c2" ? "text-center sm:text-left" : "";
+  const ledeClasses =
+    layout === "c2"
+      ? "hidden sm:block" // C2 drops the 17% lede on mobile, keeps it on desktop
+      : layout === "d"
+        ? "text-center sm:text-left mx-auto sm:mx-0"
+        : "";
+  const priceClasses =
+    layout === "c2"
+      ? "hidden sm:block" // desktop keeps the inline guarantees; mobile uses the stacked, reordered version below
+      : layout === "d"
+        ? "text-center sm:text-left"
+        : "";
+
+  // Single full-width CTA shown on mobile for every variant; its slot in the
+  // flow differs (above vs below the price), so render it from one definition.
+  const mobileCta = (
+    <div className="mb-6 sm:hidden">
+      <Button
+        href="https://go.instarx.com/intake"
+        text="Find your treatment →"
+        className="w-full"
+      />
+      <p className="mt-4 text-center text-sm text-gray-700">
+        Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime
+      </p>
+    </div>
+  );
 
   return (
     <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
@@ -84,20 +121,39 @@ export default function Hero({
 
             {/* Left: text */}
             <div>
-              <TrustpilotStars />
+              <TrustpilotStars className={layout === "c2" ? "justify-center sm:justify-start" : ""} />
 
-              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
+              <h1 className={`text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4 ${mobileCenter}`.trim()}>
                 {content.headline}
               </h1>
-              <p className="mb-4 max-w-md">
+              {/* Lede: C2 removes it on mobile only (desktop keeps it verbatim). */}
+              <p className={`mb-4 max-w-md ${ledeClasses}`.trim()}>
                 Lose up to 17%* of your body weight with prescription GLP‑1.
               </p>
-              <p className="mb-5 sm:mb-6">
+              {/* Variant B: CTA sits above the price paragraph on mobile. */}
+              {ctaAbovePrice && mobileCta}
+              {/* C2: stacked, centered guarantees on mobile only. */}
+              {layout === "c2" && (
+                <p className="mb-5 text-center sm:hidden">
+                  Starting at{" "}
+                  <span className="text-2xl font-bold">$148</span>
+                  {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
+                  <span className="font-semibold">
+                    <span className="block">No insurance needed.</span>
+                    <span className="block">No clinic visits.</span>
+                    <span className="block">No hidden fees.</span>
+                  </span>
+                </p>
+              )}
+              {/* Default/D price paragraph; for C2 this is the desktop-only inline copy (mobile uses the reordered stacked version above). */}
+              <p className={`mb-5 sm:mb-6 ${priceClasses}`.trim()}>
                 Starting at{" "}
                 <span className="text-2xl font-bold sm:text-3xl">$148</span>
                 {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
                 <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
               </p>
+              {/* All variants except B place the CTA below the price paragraph. */}
+              {isVariant && !ctaAbovePrice && mobileCta}
               <ul className="space-y-2 mb-6 sm:mb-8">
                 {checkItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -113,11 +169,19 @@ export default function Hero({
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start">
+              <div
+                className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start${
+                  isVariant ? " hidden sm:flex" : ""
+                }`}
+              >
                 <Button href="https://go.instarx.com/intake" text={content.primaryCta} className="w-full sm:w-auto" />
                 <Button href="https://go.instarx.com/intake" text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
-              <p className="text-center text-sm text-gray-700 sm:text-left">
+              <p
+                className={`text-center text-sm text-gray-700 sm:text-left${
+                  isVariant ? " hidden sm:block" : ""
+                }`}
+              >
                 Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime
               </p>
             </div>

@@ -78,14 +78,22 @@ export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage-lander-split-clone";
 /**
  * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.
  *
- * `control` is intentionally absent: it has no redirect (the visitor stays on
- * the homepage) and is allocated 0% in the Convert dashboard. The keys here
- * MUST match the variation keys configured in Convert exactly.
+ * `control` (Original, 0%) is intentionally absent: it has no redirect (the
+ * visitor stays on the homepage). The keys here MUST match the variation keys
+ * configured in Convert exactly.
+ *
+ * ⚠️ Clone-mangled keys: when this v2 experience was cloned, Convert prefixed
+ * each pre-existing variation's key with its numeric id and does NOT let you
+ * edit variation keys once the test is Active. So the blue/pink arms are keyed
+ * "<id>-variation-1" / "<id>-variation-2", NOT "variation_1"/"variation_2".
+ * Only `variation_3` (added by hand before activation) is clean. Verified
+ * against Convert's live CDN config (experience 1004202320). Display names in
+ * the Convert UI are still "Variation 1/2/3"; these are the underlying keys.
  */
 export const HOMEPAGE_LANDER_SPLIT_DESTINATIONS: Record<string, string> = {
-  variation_1: "https://go.instarx.com/start-glp1",
-  variation_2: "https://go.instarx.com/glp2",
-  variation_3: "https://go.instarx.com/glp2-da",
+  "1004475375-variation-1": "https://go.instarx.com/start-glp1", // BLUE (Variation 1, 40%)
+  "1004475376-variation-2": "https://go.instarx.com/glp2", // PINK (Variation 2, 20%)
+  variation_3: "https://go.instarx.com/glp2-da", // PINK 2.0 (Variation 3, 40%)
 };
 
 /**

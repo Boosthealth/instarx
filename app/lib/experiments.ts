@@ -65,7 +65,7 @@ export function funnelSplitDestination(
  * the homepage and 302-redirects each variation to a different GLP-1 lander.
  * Bucketing therefore lives in proxy.ts, not the render path.
  */
-export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split";
+export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split_v2";
 
 /**
  * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.
@@ -77,6 +77,7 @@ export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split";
 export const HOMEPAGE_LANDER_SPLIT_DESTINATIONS: Record<string, string> = {
   variation_1: "https://go.instarx.com/start-glp1",
   variation_2: "https://go.instarx.com/glp2",
+  variation_3: "https://go.instarx.com/glp2-da",
 };
 
 /**

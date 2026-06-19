@@ -77,6 +77,7 @@ export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split";
 export const HOMEPAGE_LANDER_SPLIT_DESTINATIONS: Record<string, string> = {
   variation_1: "https://go.instarx.com/start-glp1",
   variation_2: "https://go.instarx.com/glp2",
+  variation_3: "https://go.instarx.com/glp2-da",
 };
 
 /**

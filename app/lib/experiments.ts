@@ -65,7 +65,7 @@ export function funnelSplitDestination(
  * the homepage and 302-redirects each variation to a different GLP-1 lander.
  * Bucketing therefore lives in proxy.ts, not the render path.
  */
-export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split";
+export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split_v2";
 
 /**
  * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.

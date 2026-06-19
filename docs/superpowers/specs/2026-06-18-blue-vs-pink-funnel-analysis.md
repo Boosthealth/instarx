@@ -127,7 +127,7 @@ what the code shows, ordered by leverage × ease:
 | - | ---------- | ------------ | ---------------------------- | ------ | ----- |
 | 1 | **Hero headline** variants lift CTR | Gate 1 (click) | CTR → lead-rate | **Low** | Convert harness already wired in [`home/Hero.tsx`](../../../app/components/modules/home/Hero.tsx) (`control` vs `variation_1`). Cheapest test; plumbing exists. |
 | 2 | **Price placement** — soften/move the raw `$148`; lead with "$150 off today" framing (already used in `HowItWorks`/`FinalCTA`) | Gate 1 (click) | CTR → lead-rate | Med | Recover clicks without losing qualification. Risk: too soft re-imports BLUE's drop-off. |
-| 3 | **Hero CTA label & count** — single primary button vs current dual "Get Started / See pricing" | Gate 1 (click) | CTR (primary-button clicks) | Low | A second button can split intent and depress primary CTR. |
+| 3 | **Hero CTA label & count / placement** — single primary button vs current dual "Get Started / See pricing"; CTA above the fold on mobile | Gate 1 (click) | CTR (primary-button clicks) | Low | A second button can split intent and depress primary CTR. **In flight — see §5 (CTA Placement test).** |
 | 4 | **Hero density** — lighter hero deferring the 4 bullets + Trustpilot to the (strong) modules below | Gate 1 (click) | CTR → lead-rate | Med | Tests how much front-loaded detail is actually costing clicks. |
 
 ### Testing protocol
@@ -152,6 +152,58 @@ preserves PINK's high-qualification identity. The real question:
 These pull in opposite directions. The A/B tests above exist to answer it with
 data instead of opinion — but only the CTR/lead-rate gates will answer it on a
 reasonable timeline.
+
+---
+
+## 5. In flight — PINK CTA Placement test (mobile)
+
+**Source:** `ab-testing/image (146).png` — "GLP-2 CTA Placement — mobile (390px)".
+**Maps to:** backlog item #3 (Gate 1 / CTR).
+**Hypothesis:** PINK's primary "Find your treatment" CTA **falls below the fold
+on mobile** (it sits after the checklist), costing clicks. Pulling it above the
+fold should lift mobile CTR toward BLUE's level.
+
+### The six columns (legend: grey = live pink · green = new variant · blue = BLUE reference)
+
+| Col | Variant                  | Change vs live pink                                                                 |
+| --- | ------------------------ | ---------------------------------------------------------------------------------- |
+| 1   | **Current (live pink)** — grey | 2 buttons, below checklist → CTA falls below the fold (the control)          |
+| 2   | **C2 — centered, no 17% line** | A-placement; headline + price funnel centered; "17%" line removed; bullets left-aligned like A; all copy kept |
+| 3   | **B — above $148** *(recommended)* | CTA **above** the price                                                  |
+| 4   | **A — below $148**       | CTA directly **under** the price (above the checklist)                              |
+| 5   | **D — A + centered lede** | CTA under price like A; headline + 17% line centered                               |
+| 6   | **Blue (current winner)** — blue | BLUE lander, CTA under headline — included as the **CTR benchmark**, not a build target |
+
+Four new PINK arrangements (A, B, C2, D) all move the CTA above the fold; B is
+the recommended bet.
+
+### Delivery: URL-per-variant, not a split test
+
+Each variant ships as its **own page route/URL**, and marketing campaigns are
+pointed at specific URLs. (The variants are being built in a separate working
+session; this doc is the shared reference, not the implementation.)
+
+> ⚠️ **This is not a clean A/B test.** With URL-per-variant + separately-targeted
+> campaigns, each arm draws a *different traffic source/audience*. A CTR
+> difference can therefore come from **campaign targeting**, not from the hero
+> layout — the variable you actually want to isolate is confounded with the
+> audience. Read results accordingly.
+
+### How to judge it fairly
+
+- **Hold targeting as constant as you can.** Same campaign objective, audience,
+  placements, and budget pacing across the variant URLs. The more the campaigns
+  differ, the less the CTR delta tells you about the hero.
+- **Prefer on-page CTR** (hero-CTA clicks ÷ landing-page views) over ad CTR, so
+  you measure the hero, not the ad creative.
+- **Primary metric = mobile CTR**, since that's what the test moves and what
+  reaches significance fastest. Lead-rate is the guardrail; sales remain too
+  small to rank (see §3).
+- **Watch the guardrail:** a layout that lifts CTR but drops lead-rate is
+  re-importing BLUE's qualification problem — net neutral or worse.
+- **If a clean read is required later,** the same variants can be run through the
+  Convert server-side harness (one URL, random bucketing) to remove the
+  targeting confound — see [`ab-testing-convert.md`](../../ab-testing-convert.md).
 
 ---
 

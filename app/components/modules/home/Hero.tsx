@@ -45,7 +45,7 @@ function StarBox({ fill = 1 }: { fill?: number }) {
 
 function TrustpilotStars({ className = "" }: { className?: string }) {
   return (
-    <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 ${className}`}>
+    <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 ${className}`.trim()}>
       <span className="text-sm font-bold text-gray-900">Excellent 4.7</span>
       <div className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
         <StarBox fill={1} />
@@ -76,6 +76,22 @@ export default function Hero({
   const content = HERO_CONTENT[variant];
   const isVariant = layout !== "default";
 
+  // Mobile-only modifiers for the variant layouts; all resolve back to the
+  // original rendering at the `sm:` breakpoint so desktop stays identical.
+  const mobileCenter = isVariant ? "text-center sm:text-left" : "";
+  const ledeClasses =
+    layout === "c2"
+      ? "hidden sm:block" // C2 drops the 17% lede on mobile, keeps it on desktop
+      : layout === "d"
+        ? "text-center sm:text-left mx-auto sm:mx-0"
+        : "";
+  const priceClasses =
+    layout === "c2"
+      ? "hidden sm:block" // desktop-only verbatim copy; mobile uses the stacked version below
+      : layout === "d"
+        ? "text-center sm:text-left"
+        : "";
+
   return (
     <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
       {/* Gradient card */}
@@ -89,23 +105,11 @@ export default function Hero({
             <div>
               <TrustpilotStars className={layout === "c2" ? "justify-center sm:justify-start" : ""} />
 
-              <h1
-                className={`text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4${
-                  isVariant ? " text-center sm:text-left" : ""
-                }`}
-              >
+              <h1 className={`text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4 ${mobileCenter}`.trim()}>
                 {content.headline}
               </h1>
               {/* Lede: C2 removes it on mobile only (desktop keeps it verbatim). */}
-              <p
-                className={`mb-4 max-w-md${
-                  layout === "c2"
-                    ? " hidden sm:block"
-                    : isVariant
-                      ? " text-center sm:text-left mx-auto sm:mx-0"
-                      : ""
-                }`}
-              >
+              <p className={`mb-4 max-w-md ${ledeClasses}`.trim()}>
                 Lose up to 17%* of your body weight with prescription GLP‑1.
               </p>
               {/* C2: stacked, centered guarantees on mobile only. */}
@@ -122,11 +126,7 @@ export default function Hero({
                 </p>
               )}
               {/* Default/D price paragraph; for C2 this is the desktop-only verbatim copy. */}
-              <p
-                className={`mb-5 sm:mb-6${layout === "d" ? " text-center sm:text-left" : ""}${
-                  layout === "c2" ? " hidden sm:block" : ""
-                }`}
-              >
+              <p className={`mb-5 sm:mb-6 ${priceClasses}`.trim()}>
                 Starting at{" "}
                 <span className="text-2xl font-bold sm:text-3xl">$148</span>
                 {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}

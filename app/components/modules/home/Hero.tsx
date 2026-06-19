@@ -75,14 +75,13 @@ export default function Hero({
 }) {
   const content = HERO_CONTENT[variant];
   const isVariant = layout !== "default";
-  // Only d and c2 center the upper block on mobile; a and b stay left-aligned.
-  const isCentered = layout === "d" || layout === "c2";
   // b is the only variant that places the mobile CTA above the price paragraph.
   const ctaAbovePrice = layout === "b";
 
   // Mobile-only modifiers for the variant layouts; all resolve back to the
   // original rendering at the `sm:` breakpoint so desktop stays identical.
-  const mobileCenter = isCentered ? "text-center sm:text-left" : "";
+  // Only d and c2 center the upper block on mobile; a and b stay left-aligned.
+  const mobileCenter = layout === "d" || layout === "c2" ? "text-center sm:text-left" : "";
   const ledeClasses =
     layout === "c2"
       ? "hidden sm:block" // C2 drops the 17% lede on mobile, keeps it on desktop
@@ -91,7 +90,7 @@ export default function Hero({
         : "";
   const priceClasses =
     layout === "c2"
-      ? "hidden sm:block" // desktop-only verbatim copy; mobile uses the stacked version below
+      ? "hidden sm:block" // desktop keeps the inline guarantees; mobile uses the stacked, reordered version below
       : layout === "d"
         ? "text-center sm:text-left"
         : "";
@@ -146,7 +145,7 @@ export default function Hero({
                   </span>
                 </p>
               )}
-              {/* Default/D price paragraph; for C2 this is the desktop-only verbatim copy. */}
+              {/* Default/D price paragraph; for C2 this is the desktop-only inline copy (mobile uses the reordered stacked version above). */}
               <p className={`mb-5 sm:mb-6 ${priceClasses}`.trim()}>
                 Starting at{" "}
                 <span className="text-2xl font-bold sm:text-3xl">$148</span>

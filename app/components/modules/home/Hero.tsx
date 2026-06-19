@@ -43,9 +43,9 @@ function StarBox({ fill = 1 }: { fill?: number }) {
   );
 }
 
-function TrustpilotStars() {
+function TrustpilotStars({ className = "" }: { className?: string }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-4">
+    <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-4 ${className}`}>
       <span className="text-sm font-bold text-gray-900">Excellent 4.7</span>
       <div className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
         <StarBox fill={1} />
@@ -68,10 +68,13 @@ const checkItems = [
 
 export default function Hero({
   variant = "control",
+  layout = "default",
 }: {
   variant?: WeightLossHeroVariant;
+  layout?: "default" | "d" | "c2";
 }) {
   const content = HERO_CONTENT[variant];
+  const isVariant = layout !== "default";
 
   return (
     <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
@@ -84,20 +87,63 @@ export default function Hero({
 
             {/* Left: text */}
             <div>
-              <TrustpilotStars />
+              <TrustpilotStars className={layout === "c2" ? "justify-center sm:justify-start" : ""} />
 
-              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
+              <h1
+                className={`text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4${
+                  isVariant ? " text-center sm:text-left" : ""
+                }`}
+              >
                 {content.headline}
               </h1>
-              <p className="mb-4 max-w-md">
+              {/* Lede: C2 removes it on mobile only (desktop keeps it verbatim). */}
+              <p
+                className={`mb-4 max-w-md${
+                  layout === "c2"
+                    ? " hidden sm:block"
+                    : isVariant
+                      ? " text-center sm:text-left mx-auto sm:mx-0"
+                      : ""
+                }`}
+              >
                 Lose up to 17%* of your body weight with prescription GLP‑1.
               </p>
-              <p className="mb-5 sm:mb-6">
+              {/* C2: stacked, centered guarantees on mobile only. */}
+              {layout === "c2" && (
+                <p className="mb-5 text-center sm:hidden">
+                  Starting at{" "}
+                  <span className="text-2xl font-bold">$148</span>
+                  {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
+                  <span className="font-semibold">
+                    <span className="block">No insurance needed.</span>
+                    <span className="block">No clinic visits.</span>
+                    <span className="block">No hidden fees.</span>
+                  </span>
+                </p>
+              )}
+              {/* Default/D price paragraph; for C2 this is the desktop-only verbatim copy. */}
+              <p
+                className={`mb-5 sm:mb-6${layout === "d" ? " text-center sm:text-left" : ""}${
+                  layout === "c2" ? " hidden sm:block" : ""
+                }`}
+              >
                 Starting at{" "}
                 <span className="text-2xl font-bold sm:text-3xl">$148</span>
                 {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
                 <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
               </p>
+              {isVariant && (
+                <div className="mb-6 sm:hidden">
+                  <Button
+                    href="https://go.instarx.com/intake"
+                    text="Find your treatment →"
+                    className="w-full"
+                  />
+                  <p className="mt-4 text-center text-sm text-gray-700">
+                    Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime
+                  </p>
+                </div>
+              )}
               <ul className="space-y-2 mb-6 sm:mb-8">
                 {checkItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -113,11 +159,19 @@ export default function Hero({
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start">
+              <div
+                className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:justify-start${
+                  isVariant ? " hidden sm:flex" : ""
+                }`}
+              >
                 <Button href="https://go.instarx.com/intake" text={content.primaryCta} className="w-full sm:w-auto" />
                 <Button href="https://go.instarx.com/intake" text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
-              <p className="text-center text-sm text-gray-700 sm:text-left">
+              <p
+                className={`text-center text-sm text-gray-700 sm:text-left${
+                  isVariant ? " hidden sm:block" : ""
+                }`}
+              >
                 Zero Hidden Fees &nbsp;·&nbsp; Zero Monthly Membership &nbsp;·&nbsp; Cancel Anytime
               </p>
             </div>

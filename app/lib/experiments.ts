@@ -64,8 +64,16 @@ export function funnelSplitDestination(
  * split, this is a split-URL / redirect test: the proxy buckets the visitor at
  * the homepage and 302-redirects each variation to a different GLP-1 lander.
  * Bucketing therefore lives in proxy.ts, not the render path.
+ *
+ * NB: this is the v2 experience (Convert experience ID 1004202320, display name
+ * "homepage_lander_split_v2") — a clone of the original homepage_lander_split,
+ * created because Convert can't add a variation to a started experiment. The
+ * string below is the experience *key*, which Convert auto-generated on clone
+ * as "homepage-lander-split-clone" and does NOT let you edit once the test is
+ * Active. The SDK matches on this key, so it must stay verbatim — the readable
+ * "homepage_lander_split_v2" is only the display name, not the key.
  */
-export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage_lander_split_v2";
+export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage-lander-split-clone";
 
 /**
  * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.

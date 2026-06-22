@@ -65,15 +65,19 @@ export function funnelSplitDestination(
  * the homepage and 302-redirects each variation to a different GLP-1 lander.
  * Bucketing therefore lives in proxy.ts, not the render path.
  *
- * NB: this is the v2 experience (Convert experience ID 1004202320, display name
- * "homepage_lander_split_v2") — a clone of the original homepage_lander_split,
- * created because Convert can't add a variation to a started experiment. The
- * string below is the experience *key*, which Convert auto-generated on clone
- * as "homepage-lander-split-clone" and does NOT let you edit once the test is
- * Active. The SDK matches on this key, so it must stay verbatim — the readable
- * "homepage_lander_split_v2" is only the display name, not the key.
+ * NB: this is the v3 experience (Convert experience ID 1004202365, display name
+ * "homepage_lander_split_v3") — a clone of v2 (homepage_lander_split_v2, ID
+ * 1004202320), created to drop the losing "pink 2.0" /glp2-da arm (old
+ * variation_3) and rebalance the two survivors to a clean 50/50. We had to
+ * clone because Convert won't let you edit traffic allocation on an experiment
+ * once it has collected data. The string below is the experience *key*, which
+ * Convert auto-generated on this (second) clone as "hmpg-lndr-splt-cln-cln"
+ * (homepage-lander-split-clone-clone, abbreviated) and does NOT let you edit
+ * once the test is Active. The SDK matches on this key, so it must stay
+ * verbatim — the readable "homepage_lander_split_v3" is only the display name,
+ * not the key.
  */
-export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage-lander-split-clone";
+export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "hmpg-lndr-splt-cln-cln";
 
 /**
  * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.
@@ -82,18 +86,17 @@ export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "homepage-lander-split-clone";
  * visitor stays on the homepage). The keys here MUST match the variation keys
  * configured in Convert exactly.
  *
- * ⚠️ Clone-mangled keys: when this v2 experience was cloned, Convert prefixed
- * each pre-existing variation's key with its numeric id and does NOT let you
- * edit variation keys once the test is Active. So the blue/pink arms are keyed
- * "<id>-variation-1" / "<id>-variation-2", NOT "variation_1"/"variation_2".
- * Only `variation_3` (added by hand before activation) is clean. Verified
- * against Convert's live CDN config (experience 1004202320). Display names in
- * the Convert UI are still "Variation 1/2/3"; these are the underlying keys.
+ * ⚠️ Clone-mangled keys: each clone re-prefixes the variation keys with fresh
+ * numeric ids and Convert does NOT let you edit them once the test is Active.
+ * On this v3 clone (experience 1004202365) the arms are keyed
+ * "1004475474-variation-1" / "1004475475-variation-2" — NOT "variation_1/2",
+ * and NOT the v2 ids (…375/…376). Verified against the live Convert config.
+ * Display names in the UI are still "Variation 1/2"; these are the underlying
+ * keys. The old "pink 2.0" /glp2-da arm (variation_3) was dropped in v3.
  */
 export const HOMEPAGE_LANDER_SPLIT_DESTINATIONS: Record<string, string> = {
-  "1004475375-variation-1": "https://go.instarx.com/start-glp1", // BLUE (Variation 1, 40%)
-  "1004475376-variation-2": "https://go.instarx.com/glp2", // PINK (Variation 2, 20%)
-  variation_3: "https://go.instarx.com/glp2-da", // PINK 2.0 (Variation 3, 40%)
+  "1004475474-variation-1": "https://go.instarx.com/start-glp1", // BLUE (Variation 1, 50%)
+  "1004475475-variation-2": "https://go.instarx.com/glp2", // PINK (Variation 2, 50%)
 };
 
 /**

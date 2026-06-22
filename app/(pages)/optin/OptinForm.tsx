@@ -9,6 +9,23 @@ import PolicyLayout from "../../components/PolicyLayout";
 // the page is still demoable.
 const OPTIN_POST_URL = "";
 
+// USPS two-letter codes for the 50 states + DC, used for the State dropdown.
+const US_STATES = [
+  ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"],
+  ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"],
+  ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"],
+  ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"],
+  ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"],
+  ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"],
+  ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"],
+  ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"],
+  ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"],
+  ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"],
+  ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"],
+  ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"],
+  ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
+] as const;
+
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function OptinForm() {
@@ -30,11 +47,29 @@ export default function OptinForm() {
     const accountTexts = data.get("account_texts") === "on";
     const marketingTexts = data.get("marketing_texts") === "on";
 
-    // The form is noValidate (so we own messaging), so re-check the phone here:
-    // strip formatting and require at least 10 digits.
+    // The form is noValidate (so we own messaging), so re-check key fields here.
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const address = String(data.get("address") || "").trim();
+    const city = String(data.get("city") || "").trim();
+    const state = String(data.get("state") || "");
+    const zip = String(data.get("zip") || "").trim();
     const phone = String(data.get("phone") || "");
+
+    if (!name || !email || !address || !city) {
+      setError("Please fill in all required fields.");
+      return;
+    }
     if (phone.replace(/\D/g, "").length < 10) {
       setError("Please enter a valid phone number with at least 10 digits.");
+      return;
+    }
+    if (!state) {
+      setError("Please select your state.");
+      return;
+    }
+    if (!/^\d{5}(-\d{4})?$/.test(zip)) {
+      setError("Please enter a valid 5-digit ZIP code.");
       return;
     }
 
@@ -50,10 +85,13 @@ export default function OptinForm() {
     setStatus("submitting");
 
     const payload = {
-      name: String(data.get("name") || ""),
+      name,
       phone,
-      email: String(data.get("email") || ""),
-      address: String(data.get("address") || ""),
+      email,
+      address,
+      city,
+      state,
+      zip,
       accountTexts,
       marketingTexts,
       tcpaConsent: tcpa,
@@ -167,16 +205,71 @@ export default function OptinForm() {
 
             <div className="optin-field">
               <label htmlFor="address">
-                Mailing address <span className="optin-req">*</span>
+                Street address <span className="optin-req">*</span>
               </label>
               <input
                 id="address"
                 name="address"
                 type="text"
-                placeholder="Street, City, State, ZIP"
+                placeholder="123 Main St, Apt 4"
                 autoComplete="street-address"
                 required
               />
+            </div>
+
+            <div className="optin-row">
+              <div className="optin-field optin-col-city">
+                <label htmlFor="city">
+                  City <span className="optin-req">*</span>
+                </label>
+                <input
+                  id="city"
+                  name="city"
+                  type="text"
+                  placeholder="Los Angeles"
+                  autoComplete="address-level2"
+                  required
+                />
+              </div>
+
+              <div className="optin-field optin-col-state">
+                <label htmlFor="state">
+                  State <span className="optin-req">*</span>
+                </label>
+                <select
+                  id="state"
+                  name="state"
+                  autoComplete="address-level1"
+                  defaultValue=""
+                  required
+                >
+                  <option value="" disabled>
+                    State
+                  </option>
+                  {US_STATES.map(([code, name]) => (
+                    <option key={code} value={code}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="optin-field optin-col-zip">
+                <label htmlFor="zip">
+                  ZIP <span className="optin-req">*</span>
+                </label>
+                <input
+                  id="zip"
+                  name="zip"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="90001"
+                  autoComplete="postal-code"
+                  pattern="\d{5}(-\d{4})?"
+                  title="Enter a 5-digit ZIP code."
+                  required
+                />
+              </div>
             </div>
 
             <div className="optin-consent">

@@ -150,6 +150,59 @@
   box-shadow: 0 0 0 3px rgba(21, 137, 180, 0.12);
 }
 
+/* Select matches the text inputs, with a chevron affordance. */
+.optin-field select {
+  width: 100%;
+  height: 50px;
+  border: 1.5px solid var(--optin-border);
+  border-radius: 11px;
+  padding: 0 38px 0 15px;
+  font-family: var(--optin-fb);
+  font-size: 16px;
+  color: var(--optin-text-1);
+  background-color: var(--optin-surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238ba5b2' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+.optin-field select:focus {
+  outline: none;
+  border-color: var(--optin-teal-600);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(21, 137, 180, 0.12);
+}
+/* Unselected placeholder option shows muted, like an input placeholder. */
+.optin-field select:invalid {
+  color: var(--optin-text-3);
+}
+
+/* City / State / ZIP on one row, stacking on narrow widths. */
+.optin-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.optin-row .optin-field {
+  flex: 1 1 100%;
+}
+@media (min-width: 420px) {
+  .optin-row .optin-col-city {
+    flex: 1 1 100%;
+  }
+  .optin-row .optin-col-state {
+    flex: 2 1 0;
+  }
+  .optin-row .optin-col-zip {
+    flex: 1 1 0;
+  }
+}
+
 /* Consent block */
 .optin-consent {
   margin-top: 6px;

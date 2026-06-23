@@ -52,7 +52,7 @@ export function FinalCTA() {
               safely and effectively from the comfort of home.
             </p>
             <V2Button href={INTAKE_HREF} variant="onink" className="relative">
-              Get started →
+              Find your treatment →
             </V2Button>
           </div>
         </Reveal>

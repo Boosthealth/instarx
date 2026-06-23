@@ -1,0 +1,367 @@
+/*
+ * Scoped styles for the /optin SMS opt-in lander. The site chrome (header,
+ * footer, logo) comes from PolicyLayout; these styles only cover the centered
+ * opt-in content (hero + form card). Everything is namespaced under
+ * `.optin-wrap` / `.optin-*` so it never collides with the global Tailwind
+ * layer. The design uses Fraunces + DM Sans, loaded via next/font in page.tsx
+ * and exposed as the CSS vars below.
+ */
+.optin-wrap {
+  --optin-teal-900: #072d3f;
+  --optin-teal-800: #0c4f6b;
+  --optin-teal-700: #106b8e;
+  --optin-teal-600: #1589b4;
+  --optin-teal-400: #4bb1d4;
+  --optin-teal-200: #a8d9ec;
+  --optin-teal-100: #d4edf7;
+  --optin-teal-50: #ebf6fb;
+  --optin-coral: #ff6145;
+  --optin-coral-hover: #e5533a;
+  --optin-surface: #f6f9fb;
+  --optin-border: #dde7ed;
+  --optin-text-1: #0d1b24;
+  --optin-text-2: #44606f;
+  --optin-text-3: #8ba5b2;
+  --optin-red: #d64531;
+  --optin-fh: var(--font-fraunces), Georgia, serif;
+  --optin-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --optin-shadow-card: 0 1px 4px rgba(12, 79, 107, 0.08), 0 0 0 1px rgba(12, 79, 107, 0.06);
+  --optin-shadow-coral: 0 6px 20px rgba(255, 97, 69, 0.32);
+
+  /* Hero + form area fill the full container width (PolicyLayout's max-w-7xl);
+     the form card itself stays centered within at a comfortable width. */
+  width: 100%;
+  font-family: var(--optin-fb);
+  color: var(--optin-text-1);
+  -webkit-font-smoothing: antialiased;
+}
+
+.optin-wrap *,
+.optin-wrap *::before,
+.optin-wrap *::after {
+  box-sizing: border-box;
+}
+
+.optin-wrap svg {
+  display: block;
+}
+
+/* Hero band — spans the full container width */
+.optin-hero {
+  background: linear-gradient(160deg, var(--optin-teal-800), var(--optin-teal-700));
+  color: #fff;
+  padding: 44px 32px 48px;
+  border-radius: 20px;
+  text-align: center;
+}
+.optin-eyebrow {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--optin-teal-100);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.optin-hero h1 {
+  font-family: var(--optin-fh);
+  font-weight: 600;
+  font-size: clamp(29px, 4vw, 40px);
+  line-height: 1.16;
+  letter-spacing: -0.4px;
+  margin: 0 auto 12px;
+  max-width: 22ch;
+}
+.optin-hero h1 i {
+  color: var(--optin-teal-200);
+  font-style: italic;
+}
+.optin-hero p {
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 48ch;
+  margin: 0 auto;
+}
+
+/* Form card — centered within the full-width area, overlapping the hero */
+.optin-card {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  margin: -24px auto 0;
+  border-radius: 18px;
+  box-shadow: var(--optin-shadow-card);
+  padding: 26px 24px 28px;
+  position: relative;
+}
+.optin-card-title {
+  font-family: var(--optin-fh);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+.optin-card-sub {
+  font-size: 13px;
+  color: var(--optin-text-2);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.optin-field {
+  margin-bottom: 13px;
+}
+.optin-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--optin-text-2);
+  margin-bottom: 6px;
+}
+.optin-req {
+  color: var(--optin-coral);
+}
+.optin-field input {
+  width: 100%;
+  height: 50px;
+  border: 1.5px solid var(--optin-border);
+  border-radius: 11px;
+  padding: 0 15px;
+  font-family: var(--optin-fb);
+  font-size: 16px;
+  color: var(--optin-text-1);
+  background: var(--optin-surface);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.optin-field input::placeholder {
+  color: var(--optin-text-3);
+}
+.optin-field input:focus {
+  outline: none;
+  border-color: var(--optin-teal-600);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(21, 137, 180, 0.12);
+}
+
+/* Select matches the text inputs, with a chevron affordance. */
+.optin-field select {
+  width: 100%;
+  height: 50px;
+  border: 1.5px solid var(--optin-border);
+  border-radius: 11px;
+  padding: 0 38px 0 15px;
+  font-family: var(--optin-fb);
+  font-size: 16px;
+  color: var(--optin-text-1);
+  background-color: var(--optin-surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238ba5b2' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+.optin-field select:focus {
+  outline: none;
+  border-color: var(--optin-teal-600);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(21, 137, 180, 0.12);
+}
+/* Unselected placeholder option shows muted, like an input placeholder. */
+.optin-field select:invalid {
+  color: var(--optin-text-3);
+}
+
+/* City / State / ZIP on one row, stacking on narrow widths. */
+.optin-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.optin-row .optin-field {
+  flex: 1 1 100%;
+}
+@media (min-width: 420px) {
+  .optin-row .optin-col-city {
+    flex: 1 1 100%;
+  }
+  .optin-row .optin-col-state {
+    flex: 2 1 0;
+  }
+  .optin-row .optin-col-zip {
+    flex: 1 1 0;
+  }
+}
+
+/* Consent block */
+.optin-consent {
+  margin-top: 6px;
+  background: var(--optin-surface);
+  border: 1px solid var(--optin-border);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+}
+.optin-consent-head {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--optin-teal-800);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.optin-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+.optin-check:last-child {
+  margin-bottom: 0;
+}
+.optin-check input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1.5px solid var(--optin-teal-400);
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s;
+}
+.optin-check input:checked {
+  background: var(--optin-teal-600);
+  border-color: var(--optin-teal-600);
+}
+.optin-check input:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.optin-check label {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--optin-text-2);
+  cursor: pointer;
+}
+.optin-check label b {
+  color: var(--optin-text-1);
+  font-weight: 600;
+}
+.optin-check label a {
+  color: var(--optin-teal-600);
+  text-decoration: underline;
+}
+
+.optin-finelegal {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--optin-text-3);
+  margin-top: 11px;
+}
+.optin-finelegal b {
+  color: var(--optin-text-2);
+  font-weight: 600;
+}
+.optin-finelegal a {
+  color: var(--optin-text-3);
+  text-decoration: underline;
+}
+
+/* Inline validation / submit error */
+.optin-error {
+  margin-top: 14px;
+  background: #fdecea;
+  border: 1px solid #f5c4bd;
+  color: var(--optin-red);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  border-radius: 11px;
+  padding: 11px 13px;
+}
+
+/* CTA */
+.optin-cta {
+  width: 100%;
+  height: 54px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 13px;
+  background: var(--optin-coral);
+  color: #fff;
+  font-family: var(--optin-fb);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  box-shadow: var(--optin-shadow-coral);
+  transition: background 0.15s;
+}
+.optin-cta:hover {
+  background: var(--optin-coral-hover);
+}
+.optin-cta:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.optin-submicro {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--optin-text-3);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Success state */
+.optin-success {
+  text-align: center;
+  padding: 14px 6px 10px;
+}
+.optin-success-ic {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  background: var(--optin-teal-50);
+  color: var(--optin-teal-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.optin-success-sub {
+  font-size: 13.5px;
+  color: var(--optin-text-2);
+  line-height: 1.55;
+  margin: 6px auto 0;
+  max-width: 34ch;
+}
+.optin-success-sub b {
+  color: var(--optin-text-1);
+  font-weight: 600;
+}

@@ -55,7 +55,7 @@ export function Header() {
         </nav>
 
         <V2Button href={INTAKE_HREF} variant="primary" className="!px-5 !py-2.5">
-          Start the quiz →
+          Find your treatment →
         </V2Button>
       </div>
     </header>

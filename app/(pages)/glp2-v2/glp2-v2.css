@@ -229,24 +229,24 @@
   background: #fff;
   transform: translateY(-1px);
 }
-/* Frosted-glass button — for hero secondary CTA over the gradient */
+/* Frosted-glass button — hero secondary CTA, matches Coivas "How it works"
+   (faint fill, thin border at slightly higher opacity than the pill, 8px blur,
+   no shadow). */
 .v2-btn--glass {
-  background: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.18);
   color: var(--v2-ink);
-  border-color: rgba(255, 255, 255, 0.65);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6) inset,
-    0 10px 30px -14px rgba(60, 40, 30, 0.25);
-  -webkit-backdrop-filter: blur(14px) saturate(135%);
-  backdrop-filter: blur(14px) saturate(135%);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .v2-btn--glass {
-    background: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.55);
   }
 }
 .v2-btn--glass:hover {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.4);
   transform: translateY(-1px);
 }
 
@@ -273,23 +273,22 @@
   box-shadow: var(--v2-shadow-soft);
 }
 
-/* ---- Frosted glass (Coivas-style) ----
-   Tuned to read over our smooth pink->beige gradient, not just photos: a warm
-   translucent fill + real backdrop blur, a bright top-edge highlight border,
-   and a soft drop shadow for lift. @supports keeps a solid-ish fallback where
-   backdrop-filter is unavailable so text stays legible. */
+/* ---- Frosted glass (Coivas-style, subtle) ----
+   Matches Coivas's restraint: a faint white fill (~10%), a thin low-opacity
+   border, an 8px blur, and NO drop shadow. Coivas sits this over a dark photo;
+   our backdrop is a light gradient, so the fill/border are nudged just enough
+   to stay perceptible without becoming a heavy frosted slab. @supports raises
+   the fill slightly where backdrop-filter is unavailable so text stays legible. */
 .v2-glass {
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6) inset,
-    0 10px 30px -12px rgba(60, 40, 30, 0.28);
-  -webkit-backdrop-filter: blur(14px) saturate(135%);
-  backdrop-filter: blur(14px) saturate(135%);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .v2-glass {
-    background: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.55);
   }
 }
 /* Glass pill — for tags/eyebrows */

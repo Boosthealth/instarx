@@ -30,16 +30,26 @@ export function Header() {
       }}
     >
       <div className="v2-container flex items-center justify-between gap-6 py-4">
-        <a href="#top" aria-label="InstaRx home" className="flex items-center">
-          <Image
-            src="/logos/instarx-logo.png"
-            alt="InstaRx"
-            width={128}
-            height={32}
-            className="h-7 w-auto"
-            priority
-          />
-        </a>
+        <div className="flex items-center gap-4">
+          <a href="#top" aria-label="InstaRx home" className="flex items-center">
+            <Image
+              src="/logos/instarx-logo.png"
+              alt="InstaRx"
+              width={128}
+              height={32}
+              className="h-7 w-auto"
+              priority
+            />
+          </a>
+          {/* Glass promo tag (Coivas-style label near the brand). Wrapper owns
+              the responsive hide so it beats .v2-glass-pill's inline-flex. */}
+          <span className="hidden lg:block">
+            <span className="v2-glass v2-glass-pill">
+              <span className="v2-glass-dot" aria-hidden="true" />
+              $150 off · First month $148
+            </span>
+          </span>
+        </div>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {navLinks.map((link) => (

@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
  * editorial palette, so we don't reuse the shared `home/Button` (it hardcodes a
  * blue hover). Styling comes from glp2-v2.css (`.v2-btn*`). */
 
-type BtnVariant = "primary" | "ghost" | "light" | "onink";
+type BtnVariant = "primary" | "ghost" | "light" | "onink" | "glass";
 
 export function V2Button({
   href,

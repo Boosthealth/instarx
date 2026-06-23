@@ -12,17 +12,39 @@
 .v2 {
   --v2-cream: #fbf7f2; /* dominant canvas */
   --v2-cream-2: #f4ece3; /* alternating sections / cards */
-  --v2-blush: #f7e9ec; /* soft pink wash panels */
-  --v2-blush-deep: #f0d9df;
-  --v2-ink: #1a1714; /* headlines / primary text */
+  --v2-beige: #ece0d2; /* warm beige fill (secondary buttons, chips) */
+  --v2-beige-deep: #e0d1bf;
+  --v2-blush: #f3ebe1; /* soft warm beige wash panels (neutral, no pink cast) */
+  --v2-blush-deep: #e7dccd;
+  --v2-ink: #1a1714; /* headlines / primary text / primary buttons */
   --v2-ink-soft: #5b524b; /* secondary text */
   --v2-ink-mute: #8a7d72; /* captions / eyebrow on cream */
-  --v2-rose: #c76b86; /* primary accent */
-  --v2-rose-deep: #b05576; /* hover / active */
-  --v2-rose-tint: #e8c4cf;
+
+  /* Accent is now warm-ink, NOT pink. Pink only ever lives inside gradients.
+     The --v2-rose* names are kept (widely referenced) but remapped to ink so
+     eyebrows / italic accents / fills read black-and-beige, not magenta. */
+  --v2-rose: var(--v2-ink); /* legacy alias → ink */
+  --v2-rose-deep: #3a322c; /* legacy alias → deep warm brown-black */
+  --v2-rose-tint: var(--v2-beige); /* legacy alias → beige */
+
   --v2-line: #e7ddd2; /* hairline rules / card borders */
   --v2-line-strong: #d8cabb;
-  --v2-gold: #b08a4f; /* tiny tertiary accent for stars/badges */
+  --v2-gold: #b08a4f; /* stars / small badges */
+
+  /* Signature pink + beige gradient — hero backdrop + final CTA band only. */
+  --v2-gradient: linear-gradient(
+    115deg,
+    #f6e7ea 0%,
+    #f7ece3 42%,
+    #f3e6d6 72%,
+    #efe3d2 100%
+  );
+  --v2-gradient-strong: linear-gradient(
+    120deg,
+    #f0d3da 0%,
+    #f4e2dc 45%,
+    #efe1cf 100%
+  );
 
   --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -166,26 +188,28 @@
 }
 .v2-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-rose);
+  box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-ink);
 }
+/* Primary = solid black */
 .v2-btn--primary {
-  background: var(--v2-rose);
+  background: var(--v2-ink);
   color: #fff;
-  box-shadow: 0 8px 22px -10px rgba(176, 85, 118, 0.7);
+  box-shadow: 0 8px 22px -12px rgba(26, 23, 20, 0.6);
 }
 .v2-btn--primary:hover {
-  background: var(--v2-rose-deep);
+  background: #000;
   transform: translateY(-1px);
-  box-shadow: 0 12px 28px -10px rgba(176, 85, 118, 0.8);
+  box-shadow: 0 12px 28px -12px rgba(26, 23, 20, 0.7);
 }
+/* Ghost/secondary = warm beige fill with ink text */
 .v2-btn--ghost {
-  background: transparent;
+  background: var(--v2-beige);
   color: var(--v2-ink);
-  border-color: var(--v2-line-strong);
+  border-color: transparent;
 }
 .v2-btn--ghost:hover {
-  border-color: var(--v2-rose);
-  color: var(--v2-rose-deep);
+  background: var(--v2-beige-deep);
+  transform: translateY(-1px);
 }
 .v2-btn--light {
   background: #fff;
@@ -193,9 +217,9 @@
   border-color: var(--v2-line);
 }
 .v2-btn--light:hover {
-  border-color: var(--v2-rose);
-  color: var(--v2-rose-deep);
+  border-color: var(--v2-ink);
 }
+/* On dark (ink) panels — cream/beige button */
 .v2-btn--onink {
   background: var(--v2-cream);
   color: var(--v2-ink);
@@ -258,7 +282,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--v2-rose);
+  background: var(--v2-beige-deep);
   margin-left: 3rem;
 }
 @keyframes v2-marquee {

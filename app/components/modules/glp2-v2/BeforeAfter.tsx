@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useId } from "react";
 import Image from "next/image";
 
 /* Before/after comparison slider, adapted from home/BeforeAfterSlider with the
- * focus ring re-skinned to the rose palette and a softer handle. Kept local to
+ * focus ring re-skinned to the ink palette and a softer handle. Kept local to
  * the glp2-v2 module so the shared component stays untouched. */
 export function BeforeAfter() {
   const [position, setPosition] = useState(50);
@@ -122,7 +122,7 @@ export function BeforeAfter() {
           height="18"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#b05576"
+          stroke="#1a1714"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"

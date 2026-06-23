@@ -9,7 +9,7 @@ const MAX = 400;
 const LOSS_RATE = 0.17; // up to 17% body weight
 
 /* Weight projection calculator. Adapted from home/WeightCalculator (same MIN/MAX
- * clamp + parse-on-blur), re-skinned to the rose/cream palette and reframed
+ * clamp + parse-on-blur), re-skinned to the cream/beige palette and reframed
  * around a −17% trajectory with start/projected end-weights. */
 export function Calculator() {
   const [raw, setRaw] = useState("260");
@@ -93,7 +93,7 @@ export function Calculator() {
               <span style={{ color: "rgba(251,247,242,0.7)" }}>
                 Today · {weight} lbs
               </span>
-              <span aria-hidden="true" style={{ color: "var(--v2-rose-tint)" }}>
+              <span aria-hidden="true" style={{ color: "var(--v2-beige)" }}>
                 →
               </span>
               <span style={{ color: "rgba(251,247,242,0.7)" }}>
@@ -102,7 +102,7 @@ export function Calculator() {
             </div>
             <p
               className="text-xs font-semibold uppercase tracking-[0.2em]"
-              style={{ color: "var(--v2-rose-tint)" }}
+              style={{ color: "var(--v2-beige)" }}
             >
               You could easily lose
             </p>

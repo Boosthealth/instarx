@@ -7,22 +7,18 @@ export function FinalCTA() {
     <section className="v2-section v2-bg-cream">
       <div className="v2-container">
         <Reveal>
+          {/* Pink→beige gradient band — bookends the hero gradient. Pink lives
+              only inside this gradient; text and button are ink/black. */}
           <div
             className="relative overflow-hidden rounded-[32px] px-6 py-16 text-center sm:px-12 sm:py-20"
-            style={{ background: "var(--v2-ink)", color: "var(--v2-cream)" }}
+            style={{
+              background: "var(--v2-gradient-strong)",
+              color: "var(--v2-ink)",
+            }}
           >
-            {/* soft rose glow */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 -translate-y-1/3 rounded-full"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(199,107,134,0.55) 0%, rgba(199,107,134,0) 65%)",
-              }}
-            />
             <span
               className="relative mb-6 inline-flex rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]"
-              style={{ background: "var(--v2-rose)", color: "#fff" }}
+              style={{ background: "var(--v2-ink)", color: "var(--v2-cream)" }}
             >
               $150 off instantly
             </span>
@@ -34,24 +30,21 @@ export function FinalCTA() {
                 fontSize: "clamp(2.1rem, 4.5vw, 3.5rem)",
                 lineHeight: 1.08,
                 letterSpacing: "-0.015em",
-                color: "#fff",
+                color: "var(--v2-ink)",
               }}
             >
               Lose the weight without the{" "}
-              <span style={{ fontStyle: "italic", color: "var(--v2-rose-tint)" }}>
-                struggle
-              </span>
-              .
+              <span style={{ fontStyle: "italic" }}>struggle</span>.
             </h2>
             <p
               className="relative mx-auto mb-9 max-w-xl"
-              style={{ color: "rgba(251,247,242,0.72)", fontSize: "1.1rem" }}
+              style={{ color: "var(--v2-ink-soft)", fontSize: "1.1rem" }}
             >
               This isn&apos;t a fad. It&apos;s medicine backed by science. Over
               10,000 members are already losing up to 17% of their body weight
               safely and effectively from the comfort of home.
             </p>
-            <V2Button href={INTAKE_HREF} variant="onink" className="relative">
+            <V2Button href={INTAKE_HREF} variant="primary" className="relative">
               Find your treatment →
             </V2Button>
           </div>

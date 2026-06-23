@@ -1,0 +1,118 @@
+"use client";
+
+import { useState, useRef, useEffect, type CSSProperties } from "react";
+import { faqGroups } from "./content";
+
+/* Categorized FAQ accordion. One panel open at a time across the whole list
+ * (single `open` key). First item opens by default. Height animates via
+ * scrollHeight measured from a ref so it works with variable-length answers. */
+export function FAQ() {
+  const [open, setOpen] = useState<string>("0-0");
+
+  return (
+    <section className="v2-section v2-bg-cream-2">
+      <div className="v2-container">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div>
+            <p className="v2-eyebrow v2-kicker-rule mb-5">FAQ</p>
+            <h2 className="v2-h2 mb-5">
+              We&apos;re here to <span className="v2-accent">help</span>.
+            </h2>
+            <p className="v2-lede">Got questions? We&apos;ve got answers.</p>
+          </div>
+
+          <div>
+            {faqGroups.map((group, gi) => (
+              <div key={group.group} className={gi > 0 ? "mt-10" : ""}>
+                <h3
+                  className="mb-2 text-xs font-semibold uppercase tracking-[0.18em]"
+                  style={{ color: "var(--v2-rose-deep)" }}
+                >
+                  {group.group}
+                </h3>
+                {group.items.map((item, ii) => {
+                  const key = `${gi}-${ii}`;
+                  return (
+                    <FaqRow
+                      key={key}
+                      id={key}
+                      question={item.q}
+                      answer={item.a}
+                      isOpen={open === key}
+                      onToggle={() => setOpen((cur) => (cur === key ? "" : key))}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FaqRow({
+  id,
+  question,
+  answer,
+  isOpen,
+  onToggle,
+}: {
+  id: string;
+  question: string;
+  answer: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const innerRef = useRef<HTMLDivElement>(null);
+  // Measure the answer's natural height into state so the max-height transition
+  // animates to an exact value without reading the ref during render. Re-measure
+  // on open and on resize (long answers wrap differently across breakpoints).
+  const [contentHeight, setContentHeight] = useState(0);
+  useEffect(() => {
+    const measure = () => {
+      if (innerRef.current) setContentHeight(innerRef.current.scrollHeight);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const panelStyle: CSSProperties = { maxHeight: isOpen ? contentHeight : 0 };
+
+  return (
+    <div className="v2-faq-item">
+      <button
+        type="button"
+        className="v2-faq-q"
+        aria-expanded={isOpen}
+        aria-controls={`faq-panel-${id}`}
+        onClick={onToggle}
+      >
+        <span>{question}</span>
+        <span className="v2-faq-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <line
+              x1="12"
+              y1="5"
+              x2="12"
+              y2="19"
+              style={{
+                transform: isOpen ? "scaleY(0)" : "scaleY(1)",
+                transformOrigin: "center",
+                transition: "transform 0.25s ease",
+              }}
+            />
+          </svg>
+        </span>
+      </button>
+      <div id={`faq-panel-${id}`} className="v2-faq-a" style={panelStyle} role="region">
+        <div ref={innerRef} className="v2-faq-a__inner">
+          {answer}
+        </div>
+      </div>
+    </div>
+  );
+}

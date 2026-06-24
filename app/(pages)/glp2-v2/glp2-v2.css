@@ -955,6 +955,8 @@
   width: 100%;
   margin: clamp(0.75rem, 1.5vw, 1.25rem);
   border-radius: clamp(16px, 1.8vw, 24px);
+  /* much softer than the shared .v2-glass border (0.5) — barely-there edge */
+  border-color: rgba(255, 255, 255, 0.16);
 }
 .v2-community__inner {
   display: grid;
@@ -968,13 +970,6 @@
     grid-template-columns: 1.15fr 0.85fr;
     gap: 2.5rem;
   }
-}
-.v2-community__tag {
-  margin-bottom: 1.1rem;
-  color: #fff;
-}
-.v2-community__tag .v2-glass-dot {
-  background: #fff;
 }
 .v2-community__title {
   font-family: var(--v2-fh);
@@ -2235,6 +2230,7 @@
   font-size: 0.9rem;
   color: var(--v2-ink-mute);
 }
+
 
 
 

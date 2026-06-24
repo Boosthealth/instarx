@@ -7,11 +7,12 @@ import {
 } from "lucide-react";
 import { V2Button, Stars } from "./ui";
 import { GradientBg } from "./GradientBg";
+import { ReassuranceLine } from "./ReassuranceLine";
 import { heroChecks, INTAKE_HREF } from "./content";
 
-// Transparent-background cutout: the subject stands on the gradient and bleeds
-// off the bottom of the hero card.
-const HERO_IMG = "/images/hero-woman-cutout.png";
+// Transparent-background cutout (portrait): the subject stands on the gradient
+// and bleeds off the bottom of the hero card.
+const HERO_IMG = "/images/hero2.png";
 
 // Maps the lucide icon name in content.ts to the imported component.
 const TRUST_ICONS: Record<string, LucideIcon> = {
@@ -32,7 +33,52 @@ export function Hero() {
         <GradientBg />
         <div className="v2-hero-scrim" aria-hidden="true" />
 
-        <div className="v2-container relative z-10 grid grid-cols-1 items-center gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-14 lg:pb-0 lg:pt-12">
+        {/* Subject as a BACKGROUND layer, not a grid column. She's pinned to the
+            bottom-right of the card at her natural aspect ratio (object-contain),
+            so she is never cropped on any side — only her lower body extends past
+            the card's bottom edge (clipped by overflow:hidden). Content layers on
+            top; she shows through the open right side of the hero. */}
+        <div className="v2-hero-photo">
+          <Image
+            src={HERO_IMG}
+            alt="A happy woman holding her InstaRx GLP-1 medication"
+            width={2661}
+            height={3042}
+            sizes="(max-width: 1023px) 70vw, 620px"
+            className="v2-hero-photo__img"
+            style={{ filter: "saturate(1.04) contrast(1.02)" }}
+            priority
+          />
+
+          {/* Floating matte-white glass price card — nested in the photo layer so
+              it positions relative to the subject (over her hand/torso) at every
+              breakpoint. */}
+          <div className="v2-glass v2-glass--matte v2-hero-price flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5">
+            <div>
+              <p
+                className="text-xs font-semibold uppercase tracking-wider"
+                style={{ color: "var(--v2-ink-mute)" }}
+              >
+                First month
+              </p>
+              <p className="v2-h3" style={{ fontStyle: "normal" }}>
+                $148{" "}
+                <span
+                  className="align-middle text-sm font-normal line-through"
+                  style={{
+                    fontFamily: "var(--v2-fb)",
+                    color: "var(--v2-ink-mute)",
+                  }}
+                >
+                  $298
+                </span>
+              </p>
+            </div>
+            <span className="v2-chip v2-chip--solid">$150 off</span>
+          </div>
+        </div>
+
+        <div className="v2-container v2-hero-grid relative z-10">
           {/* Left: copy (sits on a subtle darker wash for contrast) */}
           <div className="v2-hero-copy">
             {/* Glass category pill (Coivas-style). HSA/FSA lives in the trust-bar
@@ -92,59 +138,6 @@ export function Hero() {
               </span>
             </div>
           </div>
-
-          {/* Right: large transparent-cutout subject that stands directly on the
-              gradient and bleeds off the bottom edge of the hero card (the card's
-              overflow:hidden does the waist crop). A soft halo separates her from
-              the gradient; the glass price card floats over her lower-left. */}
-          <div className="v2-hero-figure">
-            {/* Soft spotlight halo behind the subject — gently lifts her off the
-                gradient without a hard frame. */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[115%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(255,252,248,0.55) 0%, rgba(255,252,248,0.22) 45%, rgba(255,252,248,0) 70%)",
-              }}
-            />
-            <Image
-              src={HERO_IMG}
-              alt="A happy woman holding her InstaRx GLP-1 medication"
-              width={1536}
-              height={1024}
-              sizes="(max-width: 1024px) 80vw, 620px"
-              className="v2-hero-figure__img"
-              style={{ filter: "saturate(1.04) contrast(1.02)" }}
-              priority
-            />
-
-            {/* floating matte-white glass price card — overlaps the subject's
-                lower-left as a deliberate offer chip. */}
-            <div className="v2-glass v2-glass--matte v2-hero-price flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5">
-              <div>
-                <p
-                  className="text-xs font-semibold uppercase tracking-wider"
-                  style={{ color: "var(--v2-ink-mute)" }}
-                >
-                  First month
-                </p>
-                <p className="v2-h3" style={{ fontStyle: "normal" }}>
-                  $148{" "}
-                  <span
-                    className="align-middle text-sm font-normal line-through"
-                    style={{
-                      fontFamily: "var(--v2-fb)",
-                      color: "var(--v2-ink-mute)",
-                    }}
-                  >
-                    $298
-                  </span>
-                </p>
-              </div>
-              <span className="v2-chip v2-chip--solid">$150 off</span>
-            </div>
-          </div>
         </div>
 
         {/* 3-column glass trust-bar. On desktop it's an absolute overlay pinned
@@ -171,9 +164,9 @@ export function Hero() {
           </ul>
         </div>
 
-        <p className="v2-hero-fineprint v2-container relative z-10 text-sm">
-          Zero hidden fees · Zero monthly membership · Cancel anytime
-        </p>
+        <div className="v2-hero-fineprint v2-container relative z-10 flex justify-center">
+          <ReassuranceLine align="center" />
+        </div>
       </div>
     </section>
   );

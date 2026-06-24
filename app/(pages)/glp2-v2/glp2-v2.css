@@ -380,17 +380,17 @@
 .v2-hero-card {
   position: relative;
   overflow: hidden;
-  border-radius: clamp(20px, 2.4vw, 36px);
+  border-radius: 10px;
   background: var(--v2-gradient);
-  box-shadow:
-    0 1px 2px rgba(60, 40, 30, 0.05),
-    0 30px 60px -40px rgba(60, 40, 30, 0.4);
+  box-shadow: none;
 }
 /* Desktop: reserve room at the bottom of the card for the overlay trust-bar +
-   fineprint, which are absolutely positioned over the lower part of the photo. */
+   fineprint, and a min-height so the (bottom-anchored) subject always has room
+   above her head — she's never clipped at the top. */
 @media (min-width: 1024px) {
   .v2-hero-card {
     padding-bottom: clamp(7rem, 9vw, 9.5rem);
+    min-height: clamp(560px, 46vw, 720px);
   }
 }
 /* Subtle darker wash behind the left copy column for stronger contrast — the
@@ -435,66 +435,102 @@
   );
 }
 
-/* ---- Hero figure (large transparent cutout that bleeds off the card) ----
-   The subject stands directly on the gradient. The figure cell defines a height;
-   the image is bottom-anchored and oversized, so its lower edge extends past the
-   cell and is clipped by the hero card's overflow:hidden (a clean waist crop).
-   The negative bottom margin pulls the bleed below the grid's padding without
-   adding the cropped pixels to the grid's height (so the trust-bar isn't pushed
-   down). */
-.v2-hero-figure {
-  position: relative;
-  align-self: stretch;
-  height: clamp(440px, 50vw, 620px);
-  margin-bottom: clamp(-8rem, -11vw, -6rem);
-}
-.v2-hero-figure__img {
+/* ---- Hero photo as a background layer (never cropped) ----
+   The subject is NOT a grid column. She's pinned to the bottom-right of the hero
+   card and sized by HEIGHT at her natural aspect ratio (object-contain), so no
+   side or top is ever clipped — only her lower body extends past the card's
+   bottom edge and is clipped by overflow:hidden. Content layers on top. */
+.v2-hero-photo {
   position: absolute;
+  /* No z-index here: keeping the wrapper out of its own stacking context lets the
+     nested price card (z-index 25) sit ABOVE the trust-bar overlay (z-20). The
+     photo still renders behind the content because it's first in the DOM and the
+     content layers carry their own positive z-index. */
+  /* Bottom-anchored (not top:0) so she stands in the bottom-right corner. Width
+     drives her size; her height follows the image ratio. Sized LARGER so she
+     reads as the dominant element on the right. */
   bottom: 0;
-  /* Extend the figure rightward beyond its grid column to the card's edge, so she
-     has horizontal room and isn't cropped tight on her sides. Anchored to the
-     right; the left side overhangs harmlessly toward the copy (transparent). */
-  right: clamp(-3.5rem, -4vw, -2rem);
-  width: clamp(440px, 52vw, 720px);
-  height: 100%;
-  /* `cover` crops the source's transparent margins so she reads large. The low
-     vertical position gives HEADROOM (full crown); horizontal 50% keeps her
-     centred in her own frame, no side clip. */
-  object-fit: cover;
-  object-position: 50% 4%;
+  /* Pin her toward the centred content container's right edge. The portrait
+     source has transparent space on her RIGHT, so a small negative offset nudges
+     her visible body out to the container edge instead of leaving a gap. */
+  right: max(0px, calc((100% - var(--v2-maxw)) / 2 + clamp(1.25rem, 4vw, 2.5rem) - clamp(1rem, 3vw, 3rem)));
+  /* Portrait ratio (~0.875 w/h) is much taller per unit width, so the width is
+     smaller than the old landscape image while she still reads large. */
+  width: clamp(360px, 38vw, 560px);
   pointer-events: none;
 }
-/* Floating offer chip — sits over her torso/forearm, clear of the trust-bar
-   overlay in the lower band. Anchored to the figure's left so it reads as resting
-   on her, not floating in empty gradient. */
+.v2-hero-photo__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* No object-fit needed — the img sizes to its natural ratio at the wrapper
+     width, so she is NEVER cropped on any side. The card's min-height (below)
+     guarantees there's room above her head. */
+  object-fit: contain;
+}
+/* The content grid: copy on the left, the right side intentionally open so the
+   background photo shows through. Single column; the photo fills the right via
+   its own absolute positioning, not a grid track. */
+.v2-hero-grid {
+  padding-block: clamp(2rem, 4vw, 3rem) 0;
+}
+@media (min-width: 1024px) {
+  .v2-hero-copy {
+    /* Wide enough that "Drop up to 1–2 lbs" stays on one line (2-line headline),
+       while still clearing the subject anchored on the right. */
+    max-width: 38rem;
+  }
+}
+/* Floating offer card — nested in the photo layer, positioned relative to the
+   subject so it rides on her hand/torso. The photo wrapper is her width and
+   right-anchored; placing the card just left of her centre lands it on her hand. */
 .v2-hero-price {
   position: absolute;
-  z-index: 3;
-  bottom: clamp(8.5rem, 14vw, 12rem);
-  left: clamp(0.5rem, 2vw, 2.5rem);
+  /* Above the trust-bar overlay (z-20) so the offer card always sits in front. */
+  z-index: 25;
+  /* On her body (right of the bottle), kept inside the figure so it never
+     overlaps the copy on the left. */
+  bottom: clamp(7rem, 12vw, 10rem);
+  left: clamp(2rem, 5vw, 5rem);
   width: max-content;
-  max-width: 15rem;
+  /* Wide enough that the "$150 off" badge stays a pill on one line. */
+  max-width: none;
+  pointer-events: auto;
 }
 @media (max-width: 1023px) {
-  /* Single-column stack: the figure becomes a normal centered block, no bleed,
-     so nothing is awkwardly cropped between sections on small screens. */
-  .v2-hero-figure {
-    min-height: 0;
+  /* Stack vertically. The card becomes a flex column; `order` puts the photo
+     AFTER the copy even though it's first in the DOM. The photo is a centered,
+     contained block (uncropped); the price card floats at its lower edge. */
+  .v2-hero-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .v2-hero-grid {
+    order: 1;
+  }
+  .v2-hero-photo {
+    order: 2;
+    position: relative;
+    right: auto;
+    height: clamp(320px, 70vw, 460px);
+    margin: 1.5rem auto 0;
     display: flex;
     justify-content: center;
   }
-  .v2-hero-figure__img {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    width: min(82%, 420px);
-    transform: none;
-    margin-bottom: 0;
+  .v2-hero-photo__img {
+    object-position: bottom center;
+  }
+  .v2-trustbar-wrap {
+    order: 3;
+  }
+  .v2-hero-fineprint {
+    order: 4;
   }
   .v2-hero-price {
     left: 50%;
+    right: auto;
+    bottom: clamp(1.5rem, 6vw, 3rem);
     transform: translateX(-50%);
-    bottom: -0.75rem;
   }
 }
 
@@ -632,15 +668,16 @@
 
 /* ---- Buttons ---- */
 .v2-btn {
-  /* Default button — 40px tall, regular-medium weight. Hero CTAs use
-     .v2-btn--lg for a larger size. On hover the whole button lifts ~2px with a
-     springy ease (YMI-style) and the diagonal arrow swaps; colors stay put. */
+  /* Default button — 52px tall, the standard CTA size across all sections. The
+     header CTA is pinned back to 40px via .v2-header .v2-btn. On hover the whole
+     button lifts ~2px with a springy ease (YMI-style) and the diagonal arrow
+     swaps; colors stay put. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  height: 40px;
-  padding: 0 1.4rem;
+  height: 52px;
+  padding: 0 1.6rem;
   font-family: var(--v2-fb);
   font-weight: 500;
   font-size: 0.95rem;
@@ -677,6 +714,13 @@
   height: 52px;
   padding: 0 1.9rem;
   font-size: 1.02rem;
+}
+/* Header CTA stays compact at 40px — the only button that isn't the standard
+   52px size. Slightly tighter padding + type to match the smaller height. */
+.v2-header .v2-btn {
+  height: 40px;
+  padding: 0 1.25rem;
+  font-size: 0.9rem;
 }
 /* ---- Diagonal arrow swap (YMI-style) ----
    Two stacked ↗ arrows clipped to a small box; on hover the visible one (--a)
@@ -785,6 +829,7 @@
   letter-spacing: 0.02em;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
+  white-space: nowrap; /* keep "$150 off" on one line — never wrap into a blob */
   /* No border — a clean soft-beige pill that sits flat on the matte-white card. */
   background: var(--v2-blush);
   color: var(--v2-ink);
@@ -805,6 +850,13 @@
   border: 1px solid var(--v2-line);
   border-radius: 22px;
   box-shadow: var(--v2-shadow-soft);
+}
+
+/* Calculator result card — its own class so it can drop the border + shadow
+   without affecting the shared .v2-card (used by Comparison + Reviews). */
+.v2-calc-card {
+  background: #fff;
+  border-radius: 22px;
 }
 
 /* ---- Frosted glass (Coivas-style, subtle) ----
@@ -1332,6 +1384,209 @@
   padding-left: 0.95rem;
 }
 
+/* ---- Trust row (icon credibility points + Trustpilot-style rating) ----
+   Appended to the Results + Medications sections. Editorial re-skin of the
+   original /glp2 trust badges + rating. */
+.v2-trust {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--v2-line);
+}
+.v2-trust__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem 2.5rem;
+}
+.v2-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--v2-ink-soft);
+}
+.v2-trust__item svg {
+  flex: none;
+  color: var(--v2-ink);
+}
+.v2-trust__rating {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.875rem;
+}
+.v2-trust__score {
+  font-weight: 700;
+  color: var(--v2-ink);
+}
+.v2-trust__count {
+  color: var(--v2-ink-soft);
+}
+.v2-trust__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+/* Each star fills left-to-right by --fill (the last one is 70% for the 4.7). */
+.v2-trust-star {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: var(--v2-line-strong);
+}
+.v2-trust-star svg {
+  display: block;
+  fill: currentColor;
+}
+.v2-trust-star::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 100%);
+  overflow: hidden;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") left center / 16px 16px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") left center / 16px 16px no-repeat;
+  background: var(--v2-gold);
+}
+
+/* ---- CTA reassurance line (icon + label points) ----
+   "No hidden fees · No monthly membership · Cancel anytime" with small icons,
+   shown under CTAs in the Hero, Calculator, and Medications sections. */
+.v2-reassure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.25rem;
+  font-family: var(--v2-fb);
+  font-size: 0.85rem;
+  color: var(--v2-ink-mute);
+}
+.v2-reassure__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.v2-reassure__item svg {
+  flex: none;
+  color: var(--v2-ink-soft);
+}
+
+/* ---- Stacked testimonial carousel ----
+   Centre card highlighted (ink on cream → inverted), flanking cards fan out
+   behind it, muted and rotated. Click a side card (or the arrows) to advance.
+   Editorial re-skin of a community "stagger" pattern — our tokens, our fonts. */
+.v2-stagger {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.v2-stagger__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: clamp(1.5rem, 2.4vw, 2.1rem);
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid var(--v2-line);
+  box-shadow: var(--v2-shadow-soft);
+  cursor: pointer;
+  transition:
+    transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background-color 0.4s ease,
+    box-shadow 0.4s ease,
+    opacity 0.4s ease;
+  opacity: 0.85;
+}
+.v2-stagger__card:not([data-center]):hover {
+  border-color: var(--v2-line-strong);
+}
+.v2-stagger__card[data-center] {
+  z-index: 10;
+  opacity: 1;
+  cursor: default;
+  background: var(--v2-ink);
+  border-color: var(--v2-ink);
+  box-shadow: var(--v2-shadow-card);
+}
+.v2-stagger__stars {
+  color: var(--v2-gold);
+  margin-bottom: 1rem;
+}
+.v2-stagger__card[data-center] .v2-stagger__stars {
+  color: #f0c98b;
+}
+.v2-stagger__quote {
+  flex: 1;
+  font-family: var(--v2-fh);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  line-height: 1.38;
+  letter-spacing: -0.01em;
+  color: var(--v2-ink);
+  overflow: hidden;
+}
+.v2-stagger__card[data-center] .v2-stagger__quote {
+  color: var(--v2-cream);
+}
+.v2-stagger__by {
+  margin-top: 1.1rem;
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+}
+.v2-stagger__name {
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-stagger__tag {
+  color: var(--v2-ink-soft);
+}
+.v2-stagger__card[data-center] .v2-stagger__name {
+  color: #fff;
+}
+.v2-stagger__card[data-center] .v2-stagger__tag {
+  color: rgba(251, 247, 242, 0.7);
+}
+.v2-stagger__nav {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 20;
+}
+.v2-stagger__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--v2-line-strong);
+  color: var(--v2-ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.v2-stagger__btn:hover {
+  background: var(--v2-ink);
+  color: var(--v2-cream);
+}
+.v2-stagger__btn:focus-visible {
+  outline: 2px solid var(--v2-ink);
+  outline-offset: 2px;
+}
+
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .v2-reveal {
@@ -1345,5 +1600,8 @@
   }
   .v2-ticker__track {
     animation: none;
+  }
+  .v2-stagger__card {
+    transition: none;
   }
 }

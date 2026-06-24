@@ -1,12 +1,15 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { V2Button } from "./ui";
+import { TrustRow } from "./TrustRow";
+import { ReassuranceLine } from "./ReassuranceLine";
 import { medicationPoints, INTAKE_HREF } from "./content";
 
 export function Medications() {
   return (
     <section id="medications" className="v2-section v2-bg-lilac">
-      <div className="v2-container grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="v2-container">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal>
           <div
             className="relative flex items-center justify-center rounded-[28px] px-8 py-14"
@@ -74,9 +77,14 @@ export function Medications() {
               See pricing
             </V2Button>
           </div>
-          <p className="mt-4 text-sm" style={{ color: "var(--v2-ink-mute)" }}>
-            No hidden fees · No monthly membership · Cancel anytime
-          </p>
+          <div className="mt-4">
+            <ReassuranceLine align="start" />
+          </div>
+        </Reveal>
+        </div>
+
+        <Reveal>
+          <TrustRow />
         </Reveal>
       </div>
     </section>

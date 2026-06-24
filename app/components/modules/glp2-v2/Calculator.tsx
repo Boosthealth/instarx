@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { V2Button } from "./ui";
+import { ReassuranceLine } from "./ReassuranceLine";
 import { INTAKE_HREF } from "./content";
 
 const MIN = 150;
@@ -38,16 +39,13 @@ export function Calculator() {
             <V2Button href={INTAKE_HREF} variant="primary" arrow>
               Find your treatment
             </V2Button>
-            <p
-              className="mt-5 text-sm"
-              style={{ color: "var(--v2-ink-mute)" }}
-            >
-              No hidden fees · No monthly membership · Cancel anytime
-            </p>
+            <div className="mt-5">
+              <ReassuranceLine align="start" />
+            </div>
           </div>
 
           {/* Right: interactive slider + two-stat result */}
-          <div className="v2-card p-6 sm:p-8">
+          <div className="v2-calc-card p-6 sm:p-8">
             <div className="mb-2 flex items-baseline justify-between">
               <label
                 htmlFor="v2-weight"
@@ -107,10 +105,10 @@ export function Calculator() {
               <span>{MAX} lbs</span>
             </div>
 
-            {/* two-stat result */}
+            {/* two-stat result — uses the hero's pink→peach gradient */}
             <div
               className="mt-7 grid grid-cols-2 overflow-hidden rounded-2xl"
-              style={{ background: "var(--v2-cream-2)" }}
+              style={{ background: "var(--v2-gradient)" }}
             >
               <div className="px-5 py-6">
                 <p
@@ -136,7 +134,7 @@ export function Calculator() {
               </div>
               <div
                 className="px-5 py-6"
-                style={{ borderLeft: "1px solid var(--v2-line)" }}
+                style={{ borderLeft: "1px solid rgba(255,255,255,0.45)" }}
               >
                 <p
                   className="mb-1 text-xs font-medium"

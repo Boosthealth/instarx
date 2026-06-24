@@ -435,45 +435,34 @@
   background: var(--v2-ink);
 }
 
-/* ---- Announcement marquee ---- */
-.v2-ticker {
+/* ---- Static announcement bar (Coivas-style) ---- */
+.v2-announce {
   background: var(--v2-ink);
   color: var(--v2-cream);
-  overflow: hidden;
-  white-space: nowrap;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
 }
-.v2-ticker__track {
-  display: inline-flex;
+.v2-announce__link {
+  display: flex;
   align-items: center;
-  gap: 0;
-  padding-block: 0.55rem;
-  animation: v2-marquee 38s linear infinite;
-  will-change: transform;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.81rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(251, 247, 242, 0.92);
+  text-decoration: none;
 }
-.v2-ticker__item {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(251, 247, 242, 0.82);
-  padding-inline: 1.5rem;
-  display: inline-flex;
-  align-items: center;
+.v2-announce__link svg {
+  transition: transform 0.22s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-.v2-ticker__item::after {
-  content: "";
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--v2-beige-deep);
-  margin-left: 3rem;
+.v2-announce__link:hover svg {
+  transform: translateX(3px);
 }
-@keyframes v2-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
+@media (prefers-reduced-motion: reduce) {
+  .v2-announce__link svg {
+    transition: none;
   }
 }
 
@@ -582,9 +571,6 @@
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .v2-ticker__track {
-    animation: none;
-  }
   .v2-reveal {
     opacity: 1;
     transform: none;

@@ -10,7 +10,7 @@ export function FAQ() {
   const [open, setOpen] = useState<string>("0-0");
 
   return (
-    <section className="v2-section v2-bg-cream-2">
+    <section id="faq" className="v2-section v2-bg-cream-2">
       <div className="v2-container">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>

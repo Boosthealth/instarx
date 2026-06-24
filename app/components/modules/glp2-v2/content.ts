@@ -8,18 +8,14 @@
 
 export const INTAKE_HREF = "https://go.instarx.com/intake";
 
-export const tickerItems = [
-  "Licensed providers & pharmacies",
-  "Safe & effective medications",
-  "10k+ success stories",
-  "Personalized treatment plans",
-  "100% U.S. licensed",
-];
+// Static announcement bar (Coivas-style): one concise, generic line + arrow.
+export const announcement = "Doctor-prescribed GLP-1, delivered in 1–2 days.";
 
 export const navLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Medications", href: "#medications" },
   { label: "Reviews", href: "#reviews" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export const heroChecks = [

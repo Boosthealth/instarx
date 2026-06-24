@@ -3,7 +3,7 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import { Footer } from "@/app/components/Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
-import { Ticker } from "@/app/components/modules/glp2-v2/Ticker";
+import { AnnounceBar } from "@/app/components/modules/glp2-v2/AnnounceBar";
 import { Header } from "@/app/components/modules/glp2-v2/Header";
 import { Hero } from "@/app/components/modules/glp2-v2/Hero";
 import { FeaturedIn } from "@/app/components/modules/glp2-v2/FeaturedIn";
@@ -51,7 +51,7 @@ export default function Glp2V2() {
     <div className={`v2 v2-grain ${fraunces.variable} ${dmSans.variable}`}>
       <AnchorScrollFix />
       <PageViewedEvent pageName="glp2-v2" />
-      <Ticker />
+      <AnnounceBar />
       <Header />
       <main>
         <Hero />

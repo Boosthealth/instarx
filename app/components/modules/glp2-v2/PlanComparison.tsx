@@ -13,7 +13,7 @@ import { INTAKE_HREF } from "./content";
 const COMPARISON_ROWS = [
   {
     feature: "Same flat price at every dose — no memberships or contracts.",
-    competitor: "Prices climb as your dose goes up · surprise fees.",
+    competitor: "Prices climb · surprise fees.",
   },
   {
     feature: "Free 1–2 day shipping, cold-chain packed.",
@@ -25,11 +25,11 @@ const COMPARISON_ROWS = [
   },
   {
     feature: "Compounded by certified U.S. pharmacies.",
-    competitor: "Pharmacy sourcing is opaque or unverified.",
+    competitor: "Opaque pharmacy sourcing.",
   },
   {
     feature: "Ongoing care that stays with you past month one.",
-    competitor: "Short-term, meds-only — then you're on your own.",
+    competitor: "Short-term, meds-only.",
   },
 ] as const;
 

@@ -341,37 +341,51 @@
 }
 
 /* ---- Section gradient washes (EOS-style, per-section hue variation) ----
-   Each is a soft, low-opacity radial-bloom pair over the cream base. They lean
-   different hues — pink, purple, yellow, peach, beige — but stay quiet enough
-   that dark body text remains fully legible. */
+   Each is a radial-bloom pair over the cream base, leaning a distinct hue —
+   pink, lilac, yellow, peach, sand. Strengthened (~20% more alpha + deeper,
+   more saturated bloom colors + wider radii) so the color actually reads
+   mid-scroll instead of disappearing into the cream. The blooms still anchor to
+   the section CORNERS and fade to transparent before the center, so the dark
+   body copy (which lives center-column) keeps a near-cream backdrop and stays
+   fully legible. */
 .v2-bg-pink {
   background:
-    radial-gradient(60% 65% at 12% 18%, rgba(246, 219, 228, 0.7) 0%, rgba(246, 219, 228, 0) 70%),
-    radial-gradient(55% 60% at 92% 82%, rgba(243, 230, 212, 0.65) 0%, rgba(243, 230, 212, 0) 70%),
+    radial-gradient(70% 76% at 10% 12%, rgba(244, 204, 218, 0.52) 0%, rgba(244, 204, 218, 0) 72%),
+    radial-gradient(62% 68% at 94% 88%, rgba(240, 222, 198, 0.46) 0%, rgba(240, 222, 198, 0) 72%),
+    var(--v2-cream);
+}
+/* Softer pink — for the first colored band right after the hero ("Real results").
+   The hero is already a saturated pink/beige card; a full-strength pink wash
+   immediately below it reads as two loud bands stacked. This lands lighter still
+   so the section breathes as a calm landing, then color builds again downpage. */
+.v2-bg-pink--soft {
+  background:
+    radial-gradient(66% 72% at 10% 14%, rgba(244, 204, 218, 0.32) 0%, rgba(244, 204, 218, 0) 72%),
+    radial-gradient(58% 64% at 94% 86%, rgba(240, 222, 198, 0.3) 0%, rgba(240, 222, 198, 0) 72%),
     var(--v2-cream);
 }
 .v2-bg-lilac {
   background:
-    radial-gradient(60% 65% at 86% 14%, rgba(230, 222, 240, 0.75) 0%, rgba(230, 222, 240, 0) 70%),
-    radial-gradient(55% 60% at 8% 86%, rgba(245, 227, 218, 0.55) 0%, rgba(245, 227, 218, 0) 70%),
+    radial-gradient(70% 76% at 90% 10%, rgba(220, 209, 236, 0.52) 0%, rgba(220, 209, 236, 0) 72%),
+    radial-gradient(62% 68% at 6% 90%, rgba(242, 218, 204, 0.42) 0%, rgba(242, 218, 204, 0) 72%),
     var(--v2-cream);
 }
 .v2-bg-yellow {
   background:
-    radial-gradient(65% 70% at 15% 20%, rgba(248, 236, 203, 0.8) 0%, rgba(248, 236, 203, 0) 70%),
-    radial-gradient(50% 55% at 95% 72%, rgba(243, 231, 223, 0.55) 0%, rgba(243, 231, 223, 0) 70%),
+    radial-gradient(74% 78% at 12% 16%, rgba(245, 228, 184, 0.54) 0%, rgba(245, 228, 184, 0) 72%),
+    radial-gradient(58% 64% at 96% 76%, rgba(240, 224, 210, 0.42) 0%, rgba(240, 224, 210, 0) 72%),
     var(--v2-cream);
 }
 .v2-bg-peach {
   background:
-    radial-gradient(60% 65% at 88% 22%, rgba(247, 220, 198, 0.75) 0%, rgba(247, 220, 198, 0) 70%),
-    radial-gradient(55% 60% at 10% 80%, rgba(241, 224, 234, 0.5) 0%, rgba(241, 224, 234, 0) 70%),
+    radial-gradient(70% 76% at 92% 18%, rgba(245, 209, 181, 0.52) 0%, rgba(245, 209, 181, 0) 72%),
+    radial-gradient(62% 68% at 8% 84%, rgba(238, 214, 228, 0.4) 0%, rgba(238, 214, 228, 0) 72%),
     var(--v2-cream);
 }
 .v2-bg-sand {
   background:
-    radial-gradient(65% 70% at 18% 50%, rgba(239, 226, 207, 0.75) 0%, rgba(239, 226, 207, 0) 72%),
-    radial-gradient(50% 55% at 95% 12%, rgba(238, 242, 241, 0.65) 0%, rgba(238, 242, 241, 0) 65%),
+    radial-gradient(76% 78% at 16% 50%, rgba(234, 217, 193, 0.52) 0%, rgba(234, 217, 193, 0) 74%),
+    radial-gradient(54% 58% at 96% 10%, rgba(228, 236, 235, 0.48) 0%, rgba(228, 236, 235, 0) 66%),
     var(--v2-cream);
 }
 .v2-bg-white {

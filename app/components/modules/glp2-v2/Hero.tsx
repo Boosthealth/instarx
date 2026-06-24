@@ -12,7 +12,7 @@ import { heroChecks, INTAKE_HREF } from "./content";
 
 // Transparent-background cutout (portrait): the subject stands on the gradient
 // and bleeds off the bottom of the hero card.
-const HERO_IMG = "/images/hero2.png";
+const HERO_IMG = "/images/hero-4.png";
 
 // Maps the lucide icon name in content.ts to the imported component.
 const TRUST_ICONS: Record<string, LucideIcon> = {
@@ -42,8 +42,8 @@ export function Hero() {
           <Image
             src={HERO_IMG}
             alt="A happy woman holding her InstaRx GLP-1 medication"
-            width={2661}
-            height={3042}
+            width={1696}
+            height={2200}
             sizes="(max-width: 1023px) 70vw, 620px"
             className="v2-hero-photo__img"
             style={{ filter: "saturate(1.04) contrast(1.02)" }}
@@ -135,7 +135,7 @@ export function Hero() {
                 Excellent 4.7
               </span>
               <Stars count={5} size={16} />
-              <span className="text-sm" style={{ color: "var(--v2-ink-mute)" }}>
+              <span className="text-sm" style={{ color: "var(--v2-ink-soft)" }}>
                 10,000+ happy customers · No insurance needed
               </span>
             </div>

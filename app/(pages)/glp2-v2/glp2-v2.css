@@ -389,7 +389,7 @@
    above her head — she's never clipped at the top. */
 @media (min-width: 1024px) {
   .v2-hero-card {
-    padding-bottom: clamp(8.5rem, 11vw, 11rem);
+    padding-bottom: clamp(9.5rem, 12vw, 12.5rem);
     min-height: clamp(560px, 46vw, 720px);
   }
 }
@@ -484,6 +484,10 @@
   /* contain keeps her whole; bottom-anchor so the headroom appears at the top. */
   object-fit: contain;
   object-position: bottom center;
+  /* Lift the image ~35px so her head sits ~40px below the card top. The PNG
+     carries ~5.6% transparent padding above her hair, which otherwise left a
+     larger visual gap; her lower body extends past the card bottom (clipped). */
+  transform: translateY(-35px);
 }
 /* The content grid: copy on the left, the right side intentionally open so the
    background photo shows through. Single column; the photo fills the right via
@@ -496,6 +500,8 @@
     /* Wide enough that "Drop up to 1–2 lbs" stays on one line (2-line headline),
        while still clearing the subject anchored on the right. */
     max-width: 38rem;
+    /* lift the rating row up off the absolutely-pinned trust-bar below */
+    padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
   }
 }
 /* Floating offer card — nested in the photo layer, positioned relative to the
@@ -578,7 +584,7 @@
 .v2-hero-fineprint {
   margin-top: 2rem;
   padding-bottom: 2.5rem;
-  color: var(--v2-ink-mute);
+  color: var(--v2-ink-soft);
 }
 @media (min-width: 1024px) {
   .v2-trustbar-wrap {
@@ -592,7 +598,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: clamp(0.85rem, 1.4vw, 1.15rem);
+    bottom: clamp(0.6rem, 1vw, 0.85rem);
     margin-top: 0;
     padding-bottom: 0;
   }
@@ -1664,7 +1670,7 @@
   gap: 0.4rem 1.25rem;
   font-family: var(--v2-fb);
   font-size: 0.85rem;
-  color: var(--v2-ink-mute);
+  color: var(--v2-ink-soft);
 }
 .v2-reassure__item {
   display: inline-flex;

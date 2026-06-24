@@ -916,6 +916,100 @@
   }
 }
 
+/* ---- Community photo band (Mochi-style, reuses the hero glass treatment) ---- */
+.v2-community {
+  padding-block: var(--v2-pad-y);
+}
+.v2-community__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(20px, 2.4vw, 36px);
+  min-height: clamp(420px, 42vw, 560px);
+  display: flex;
+  align-items: flex-end;
+  box-shadow: var(--v2-shadow-card);
+}
+.v2-community__photo {
+  object-fit: cover;
+  object-position: center 30%;
+  z-index: 0;
+}
+/* Darken toward the bottom so the glass card + text always read. */
+.v2-community__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 23, 20, 0.1) 0%,
+    rgba(26, 23, 20, 0.05) 45%,
+    rgba(26, 23, 20, 0.45) 100%
+  );
+  pointer-events: none;
+}
+/* Glass overlay card anchored to the bottom of the photo (Mochi layout). */
+.v2-community__glass {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin: clamp(0.75rem, 1.5vw, 1.25rem);
+  border-radius: clamp(16px, 1.8vw, 24px);
+  /* a bit more opaque than the nav glass so dense copy stays legible on photo */
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.32);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  backdrop-filter: blur(16px) saturate(120%);
+}
+.v2-community__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1.75rem;
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+}
+@media (min-width: 900px) {
+  .v2-community__inner {
+    grid-template-columns: 1.1fr auto;
+    gap: 2.5rem;
+  }
+}
+.v2-community__title {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+.v2-community__title .v2-accent {
+  color: #fff; /* keep the italic accent white on the photo */
+}
+.v2-community__sub {
+  margin-top: 0.9rem;
+  max-width: 34rem;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+}
+.v2-community__copy .v2-eyebrow {
+  color: rgba(255, 255, 255, 0.82);
+}
+.v2-community__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+@media (min-width: 560px) {
+  .v2-community__actions {
+    flex-direction: row;
+  }
+}
+@media (min-width: 900px) {
+  .v2-community__actions {
+    flex-direction: column;
+  }
+}
+
 /* ---- Pills / chips ---- */
 .v2-chip {
   display: inline-flex;
@@ -1732,13 +1826,13 @@
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  background: #000;
-  /* Glossy glass edge to match our glass surfaces: a thin lit-white border plus
-     a soft inner highlight ring (drawn with inset shadows so they layer over
-     the clipped video). */
-  border: 1px solid var(--v2-glass-edge);
+  /* Glass edge, never a dark border. The edge is drawn as an INSET white ring
+     (layered over the clipped video) so it stays lit-white regardless of how
+     dark the video is. The drop shadow is warm + soft, not a hard dark line.
+     No black background, so nothing dark can peek at the rounded corners. */
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.14),
     var(--v2-shadow-card);
   transform: translateY(18px);
   opacity: 0;
@@ -1755,7 +1849,8 @@
 .v2-mech-vcard:hover {
   transform: translateY(-6px);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
     0 18px 40px -18px rgba(60, 40, 30, 0.4);
 }
 .v2-mech-video {
@@ -1961,6 +2056,11 @@
   position: absolute;
   top: clamp(1rem, 2vw, 1.4rem);
   right: clamp(1rem, 2vw, 1.4rem);
+  /* Glass pill on the matte-white card: nudge the translucent fill up so the
+     frosted edge stays visible on white (same fix as the footer pill). */
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
 }
 .v2-medcard__dot {
   width: 6px;
@@ -1997,15 +2097,41 @@
   /* a soft grounded shadow under the product only — defined, ≤8px blur */
   filter: drop-shadow(0 6px 8px rgba(60, 40, 30, 0.12));
 }
-/* Identity — the type uses the shared .v2-eyebrow; the name follows tightly. */
-.v2-medcard__name {
+/* Identity — the type uses the shared .v2-eyebrow; the name + optional inline
+   flag sit on one baseline-aligned row. */
+.v2-medcard__namerow {
   margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.v2-medcard__name {
   font-family: var(--v2-fh);
   font-weight: 600;
   font-size: clamp(1.5rem, 2.4vw, 1.95rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--v2-ink);
+}
+/* Small "Most comprehensive" flag next to the name — a small micro-label on the
+   signature hero pink/beige gradient, so it reads as a colorful premium accent
+   (the one spot of brand color here). Dark ink text stays legible on the light
+   gradient. */
+.v2-medcard__flag {
+  display: inline-flex;
+  margin-left: auto;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--v2-gradient);
+  font-family: var(--v2-fb);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--v2-ink);
+  white-space: nowrap;
+  transform: translateY(-0.12em);
 }
 .v2-medcard__tagline {
   margin-top: 0.6rem;
@@ -2055,8 +2181,14 @@
   font-weight: 600;
   letter-spacing: -0.01em;
 }
+/* Per-card CTA — pushed to the bottom so both cards' buttons align even when the
+   spec copy differs in height. */
+.v2-medcard__cta {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
 
-/* CTA below the diptych */
+/* Rating line below the diptych */
 .v2-medcta {
   margin-top: clamp(2.5rem, 5vw, 3.5rem);
   display: flex;
@@ -2098,6 +2230,67 @@
   font-size: 0.9rem;
   color: var(--v2-ink-mute);
 }
+
+/* ---- "Choose your path" comparison ----
+   Reuses the .v2-medcard glass shell + .v2-medgrid + .v2-eyebrow + .v2-chip.
+   These rules cover the comparison-only bits: an inline vial+identity header and
+   stacked spec rows (label above a longer sentence value). */
+.v2-cmp__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 64px;
+}
+/* Only the flagged card needs to clear the absolute "Most comprehensive" chip. */
+.v2-medcard:has(.v2-medcard__status) .v2-cmp__head {
+  padding-right: 8rem;
+}
+.v2-cmp__vial {
+  width: auto;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(60, 40, 30, 0.12));
+}
+.v2-cmp__specs {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-cmp__row {
+  padding: 0.95rem 0;
+  border-bottom: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-cmp__row:last-child {
+  border-bottom: 0;
+}
+.v2-cmp__row dt {
+  font-family: var(--v2-fb);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v2-ink-mute);
+}
+.v2-cmp__row dd {
+  margin-top: 0.3rem;
+  font-family: var(--v2-fb);
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--v2-ink-soft);
+  text-wrap: pretty;
+}
+.v2-cmp__cta {
+  margin-top: 1.5rem;
+}
+.v2-cmp__note {
+  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  max-width: 38rem;
+  text-align: center;
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--v2-ink-mute);
+}
+
 
 
 /* TEMP-REVEAL-OFF */

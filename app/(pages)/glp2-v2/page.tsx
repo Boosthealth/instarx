@@ -10,10 +10,10 @@ import { FeaturedIn } from "@/app/components/modules/glp2-v2/FeaturedIn";
 import { Results } from "@/app/components/modules/glp2-v2/Results";
 import { Calculator } from "@/app/components/modules/glp2-v2/Calculator";
 import { Mechanism } from "@/app/components/modules/glp2-v2/Mechanism";
-import { Comparison } from "@/app/components/modules/glp2-v2/Comparison";
 import { HowItWorks } from "@/app/components/modules/glp2-v2/HowItWorks";
 import { Reviews } from "@/app/components/modules/glp2-v2/Reviews";
 import { Medications } from "@/app/components/modules/glp2-v2/Medications";
+import { Community } from "@/app/components/modules/glp2-v2/Community";
 import { FAQ } from "@/app/components/modules/glp2-v2/FAQ";
 import { WhatAreYouWaitingFor } from "@/app/components/modules/glp2-v2/WhatAreYouWaitingFor";
 import { Ticker } from "@/app/components/modules/glp2-v2/Ticker";
@@ -61,10 +61,10 @@ export default function Glp2V2() {
         <Results />
         <Calculator />
         <Mechanism />
-        <Comparison />
         <HowItWorks />
         <Reviews />
         <Medications />
+        <Community />
         <FAQ />
         <WhatAreYouWaitingFor />
         <Ticker />

@@ -12,15 +12,13 @@
   },
   "dependencies": {
     "@convertcom/js-sdk": "^4.4.2",
-    "@react-three/fiber": "^9.6.1",
-    "@shadergradient/react": "^2.4.20",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.41.0",
     "lucide-react": "^1.16.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "server-only": "^0.0.1",
-    "three": "^0.184.0"
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

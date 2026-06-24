@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { V2Button, Stars } from "./ui";
-import { ShaderBg } from "./ShaderBg";
+import { GradientBg } from "./GradientBg";
 import { heroChecks, INTAKE_HREF } from "./content";
 
 const HERO_IMG =
@@ -12,10 +12,10 @@ export function Hero() {
     // card floats inset from the browser edges; the header stays full-width above.
     <section id="top" className="v2-hero-wrap">
       <div className="v2-hero-card">
-        {/* Animated WebGL mesh gradient (purple->pink->beige). The CSS
-            --v2-gradient on .v2-hero-card is the SSR/reduced-motion fallback
-            underneath. A soft scrim keeps the left copy legible over it. */}
-        <ShaderBg />
+        {/* Animated pastel gradient (framer-motion crossfade: pink/purple/beige).
+            The CSS --v2-gradient on .v2-hero-card is the SSR fallback underneath.
+            A soft scrim keeps the left copy legible. */}
+        <GradientBg />
         <div className="v2-hero-scrim" aria-hidden="true" />
 
         <div className="v2-container relative z-10 grid grid-cols-1 items-center gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-14">

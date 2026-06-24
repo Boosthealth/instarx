@@ -297,18 +297,19 @@
 .v2-hero-copy {
   position: relative;
 }
-/* The hero scrim (.v2-hero-scrim) now handles copy legibility over the shader,
-   so the copy column needs no extra wash. */
+/* The hero scrim (.v2-hero-scrim) handles copy legibility over the animated
+   gradient, so the copy column needs no extra wash. */
 
-/* ---- Hero shader background + legibility scrim ----
-   The animated WebGL mesh gradient (ShaderBg) fills the card behind the content.
-   The shader is more saturated than the static CSS gradient, so this scrim — a
-   soft cream wash, stronger on the left where the copy lives — keeps the dark
-   serif headline and body text legible. Sits above the shader, below content. */
-.v2-shaderbg {
-  /* canvas inherits the card's rounded corners */
+/* ---- Hero animated gradient background + legibility scrim ----
+   .v2-gradientbg is the framer-motion crossfade layer (GradientBg) filling the
+   card behind the content. The scrim is a soft cream wash, stronger on the left
+   where the copy lives, so the dark serif headline / body stay legible over the
+   shifting pastels. Scrim sits above the gradient, below the content. */
+.v2-gradientbg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   border-radius: inherit;
-  overflow: hidden;
 }
 .v2-hero-scrim {
   position: absolute;
@@ -317,9 +318,9 @@
   pointer-events: none;
   background: linear-gradient(
     100deg,
-    rgba(251, 247, 242, 0.66) 0%,
-    rgba(251, 247, 242, 0.42) 38%,
-    rgba(251, 247, 242, 0.12) 70%,
+    rgba(251, 247, 242, 0.5) 0%,
+    rgba(251, 247, 242, 0.28) 40%,
+    rgba(251, 247, 242, 0.08) 72%,
     rgba(251, 247, 242, 0) 100%
   );
 }
@@ -683,11 +684,12 @@
 
 .v2-waiting__sub {
   margin: 1.4rem auto 0;
-  max-width: 34ch;
+  max-width: 52ch;
   font-family: var(--v2-fb);
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-  line-height: 1.5;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.55;
   color: var(--v2-ink-soft);
+  text-wrap: pretty;
 }
 
 .v2-waiting__trust {

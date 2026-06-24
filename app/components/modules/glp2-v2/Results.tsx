@@ -3,7 +3,7 @@ import { Reveal } from "./Reveal";
 
 export function Results() {
   return (
-    <section className="v2-section v2-bg-cream">
+    <section className="v2-section v2-bg-pink">
       <div className="v2-container grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal className="order-2 lg:order-1">
           <BeforeAfter />

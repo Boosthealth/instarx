@@ -1,10 +1,24 @@
 import Image from "next/image";
+import {
+  Stethoscope,
+  ClipboardCheck,
+  BadgeDollarSign,
+  type LucideIcon,
+} from "lucide-react";
 import { V2Button, Stars } from "./ui";
 import { GradientBg } from "./GradientBg";
 import { heroChecks, INTAKE_HREF } from "./content";
 
-const HERO_IMG =
-  "/images/YMI_httpss.mj.runzjh3wTP036k_Create_a_photo_of_a_happy_woman__d32d1251-0c8b-4af2-a97d-91315b1c4c78_0.png";
+// Transparent-background cutout: the subject stands on the gradient and bleeds
+// off the bottom of the hero card.
+const HERO_IMG = "/images/hero-woman-cutout.png";
+
+// Maps the lucide icon name in content.ts to the imported component.
+const TRUST_ICONS: Record<string, LucideIcon> = {
+  Stethoscope,
+  ClipboardCheck,
+  BadgeDollarSign,
+};
 
 export function Hero() {
   return (
@@ -18,64 +32,34 @@ export function Hero() {
         <GradientBg />
         <div className="v2-hero-scrim" aria-hidden="true" />
 
-        <div className="v2-container relative z-10 grid grid-cols-1 items-center gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-14">
+        <div className="v2-container relative z-10 grid grid-cols-1 items-center gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-14 lg:pb-0 lg:pt-12">
           {/* Left: copy (sits on a subtle darker wash for contrast) */}
           <div className="v2-hero-copy">
-            {/* Glass tag wrapping the category label (Coivas-style) */}
+            {/* Glass category pill (Coivas-style). HSA/FSA lives in the trust-bar
+                below, so it's not repeated here — the lone pill reads cleaner. */}
             <div className="mb-6 flex flex-wrap items-center gap-3">
               <span className="v2-glass v2-glass-pill">
                 <span className="v2-glass-dot" aria-hidden="true" />
                 GLP-1 Weight Loss
               </span>
-              <span
-                className="text-xs font-semibold uppercase tracking-[0.16em]"
-                style={{ color: "var(--v2-ink-mute)" }}
-              >
-                HSA / FSA eligible
-              </span>
             </div>
 
-            <h1 className="v2-display mb-6">
-              Drop up to <span className="v2-accent">1–2 lbs</span>
+            <h1 className="v2-display v2-hero-h1 mb-5">
+              Drop up to <span className="v2-accent">1–2&nbsp;lbs</span>
               <br />
               per week
             </h1>
 
-            <p className="v2-lede mb-5 max-w-md">
+            {/* Benefit sub-line — the price lives in the offer card (right), so
+                the lede stays a clean benefit statement and doesn't repeat $148. */}
+            <p className="v2-lede mb-6 max-w-lg">
               Lose up to{" "}
               <span style={{ color: "var(--v2-ink)", fontWeight: 600 }}>17%*</span>{" "}
-              of your body weight with prescription GLP-1.
+              of your body weight with prescription GLP-1 — doctor-prescribed and
+              delivered in 1–2 days.
             </p>
 
-            <p className="mb-7 max-w-md" style={{ color: "var(--v2-ink-soft)" }}>
-              Starting at{" "}
-              <span
-                className="v2-h3"
-                style={{ fontStyle: "normal", color: "var(--v2-ink)" }}
-              >
-                $148
-              </span>{" "}
-              — doctor-prescribed GLP-1, delivered in 1–2 days.{" "}
-              <span style={{ color: "var(--v2-ink)", fontWeight: 600 }}>
-                No insurance needed. No hidden fees. No clinic visits.
-              </span>
-            </p>
-
-            {/* Trustpilot-style social proof */}
-            <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span
-                className="text-sm font-semibold"
-                style={{ color: "var(--v2-ink)" }}
-              >
-                Excellent 4.7
-              </span>
-              <Stars count={5} size={16} />
-              <span className="text-sm" style={{ color: "var(--v2-ink-mute)" }}>
-                10,000+ happy customers
-              </span>
-            </div>
-
-            <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
               <V2Button
                 href={INTAKE_HREF}
                 variant="primary"
@@ -94,59 +78,50 @@ export function Hero() {
               </V2Button>
             </div>
 
-            <ul className="space-y-3">
-              {heroChecks.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                    style={{ background: "rgba(255,255,255,0.6)" }}
-                  >
-                    <Image
-                      src={`/lose-weight/${item.icon}`}
-                      alt=""
-                      aria-hidden="true"
-                      width={15}
-                      height={15}
-                    />
-                  </span>
-                  <span style={{ color: "var(--v2-ink-soft)" }}>{item.text}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Trustpilot-style social proof — sits just under the CTAs */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span
+                className="text-sm font-semibold"
+                style={{ color: "var(--v2-ink)" }}
+              >
+                Excellent 4.7
+              </span>
+              <Stars count={5} size={16} />
+              <span className="text-sm" style={{ color: "var(--v2-ink-mute)" }}>
+                10,000+ happy customers · No insurance needed
+              </span>
+            </div>
           </div>
 
-          {/* Right: lifestyle photo + floating glass price card */}
-          <div className="relative">
-            {/* Spotlight halo behind the photo — makes the subject pop. */}
+          {/* Right: large transparent-cutout subject that stands directly on the
+              gradient and bleeds off the bottom edge of the hero card (the card's
+              overflow:hidden does the waist crop). A soft halo separates her from
+              the gradient; the glass price card floats over her lower-left. */}
+          <div className="v2-hero-figure">
+            {/* Soft spotlight halo behind the subject — gently lifts her off the
+                gradient without a hard frame. */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[115%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(255,252,248,0.9) 0%, rgba(255,252,248,0.4) 42%, rgba(255,252,248,0) 70%)",
+                  "radial-gradient(circle, rgba(255,252,248,0.55) 0%, rgba(255,252,248,0.22) 45%, rgba(255,252,248,0) 70%)",
               }}
             />
-            <div
-              className="relative overflow-hidden rounded-[24px]"
-              style={{
-                boxShadow:
-                  "0 2px 6px rgba(60,40,30,0.08), 0 40px 70px -34px rgba(60,40,30,0.55)",
-              }}
-            >
-              <Image
-                src={HERO_IMG}
-                alt="A happy woman holding her InstaRx GLP-1 medication"
-                width={1272}
-                height={952}
-                sizes="(max-width: 1024px) 100vw, 540px"
-                className="h-full w-full object-cover"
-                style={{ filter: "saturate(1.06) contrast(1.04)" }}
-                priority
-              />
-            </div>
+            <Image
+              src={HERO_IMG}
+              alt="A happy woman holding her InstaRx GLP-1 medication"
+              width={1536}
+              height={1024}
+              sizes="(max-width: 1024px) 80vw, 620px"
+              className="v2-hero-figure__img"
+              style={{ filter: "saturate(1.04) contrast(1.02)" }}
+              priority
+            />
 
-            {/* floating glass price card */}
-            <div className="v2-glass absolute -bottom-4 left-4 right-4 mx-auto flex max-w-sm items-center justify-between gap-3 rounded-2xl px-5 py-3.5 sm:left-auto sm:right-6 sm:max-w-xs">
+            {/* floating matte-white glass price card — overlaps the subject's
+                lower-left as a deliberate offer chip. */}
+            <div className="v2-glass v2-glass--matte v2-hero-price flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5">
               <div>
                 <p
                   className="text-xs font-semibold uppercase tracking-wider"
@@ -167,15 +142,36 @@ export function Hero() {
                   </span>
                 </p>
               </div>
-              <span className="v2-chip">$150 off</span>
+              <span className="v2-chip v2-chip--solid">$150 off</span>
             </div>
           </div>
         </div>
 
-        <p
-          className="v2-container relative z-10 pb-10 text-sm"
-          style={{ color: "var(--v2-ink-mute)" }}
-        >
+        {/* 3-column glass trust-bar. On desktop it's an absolute overlay pinned
+            to the bottom of the hero card, deliberately overlapping the lower
+            part of the photo so the frosted glass has the subject + gradient to
+            blur (Intercom-style). On small screens it drops back into normal flow
+            below the stacked content. */}
+        <div className="v2-trustbar-wrap v2-container">
+          <ul className="v2-trustbar">
+            {heroChecks.map((item, i) => {
+              const Icon = TRUST_ICONS[item.icon];
+              return (
+                <li key={i} className="v2-trustbar__item">
+                  <span className="v2-trustbar__icon" aria-hidden="true">
+                    {Icon ? <Icon size={20} strokeWidth={1.75} /> : null}
+                  </span>
+                  <div className="v2-trustbar__text">
+                    <p className="v2-trustbar__label">{item.label}</p>
+                    <p className="v2-trustbar__desc">{item.text}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <p className="v2-hero-fineprint v2-container relative z-10 text-sm">
           Zero hidden fees · Zero monthly membership · Cancel anytime
         </p>
       </div>

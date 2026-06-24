@@ -20,6 +20,17 @@ const footerSupportLinks = [
   { label: "Contact Us", href: "/contact-us" },
 ];
 
+/* Accepted card networks. Each is a self-contained SVG "chip": the full-color
+ * brand mark on a white rounded card, so the recognizable colors (Mastercard's
+ * circles, Discover's orange) read against the dark footer. The chips share a
+ * uniform internal height, so all four render at one CSS height. */
+const PAYMENT_CARDS = [
+  { src: "/images/cards/visa.svg", alt: "Visa" },
+  { src: "/images/cards/mastercard.svg", alt: "Mastercard" },
+  { src: "/images/cards/discover.svg", alt: "Discover" },
+  { src: "/images/cards/amex.svg", alt: "American Express" },
+];
+
 const footerBottomLinks = [
   { label: "Safety", href: "/policies/safety" },
   { label: "Shipping and Refund Policy", href: "/policies/refund-policy" },
@@ -27,6 +38,21 @@ const footerBottomLinks = [
   { label: "Terms of Use", href: "/policies/terms-and-conditions" },
   { label: "Telehealth Consent", href: "/policies/telehealth-consent" },
   { label: "Contact Us", href: "/contact-us" },
+];
+
+/* Compliance seals shown in the footer. Reduced to the two that carry the most
+ * weight for a telehealth pharmacy: HIPAA (privacy) and LegitScript (legitimacy). */
+const TRUST_BADGES = [
+  {
+    src: "/images/badges/hipaa-seal.svg",
+    alt: "HIPAA Compliant",
+    href: null,
+  },
+  {
+    src: "/images/badges/legitscript.svg",
+    alt: "LegitScript Certified",
+    href: "https://www.legitscript.com/websites/?checker_keywords=instarx.com",
+  },
 ];
 
 export const Footer = () => {
@@ -147,7 +173,65 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Divider + Bottom bar */}
+          {/* Accepted payment methods */}
+          <div className="border-t border-gray-600 py-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
+              {PAYMENT_CARDS.map((card) => (
+                <Image
+                  key={card.src}
+                  src={card.src}
+                  alt={card.alt}
+                  height={32}
+                  width={64}
+                  className="h-8 w-auto"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Trust strip: compliance seals + "secure & encrypted" reassurance */}
+          <div className="border-t border-gray-600 py-8">
+            <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-center sm:gap-10">
+              <div className="flex items-center gap-6">
+                {TRUST_BADGES.map((badge) =>
+                  badge.href ? (
+                    <a
+                      key={badge.src}
+                      href={badge.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0"
+                    >
+                      <Image
+                        src={badge.src}
+                        alt={badge.alt}
+                        width={84}
+                        height={84}
+                        className="h-[84px] w-auto"
+                      />
+                    </a>
+                  ) : (
+                    <Image
+                      key={badge.src}
+                      src={badge.src}
+                      alt={badge.alt}
+                      width={84}
+                      height={84}
+                      className="h-[84px] w-auto shrink-0"
+                    />
+                  ),
+                )}
+              </div>
+              <div className="max-w-md text-center sm:text-left">
+                <p className="text-base font-semibold text-white">Secure &amp; Encrypted</p>
+                <p className="mt-1 text-sm text-gray-400">
+                  Your information is encrypted and protected. We never sell your data.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
           <div className="border-t border-gray-600 py-5">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-sm text-gray-400">&copy; 2026 InstaRX. All rights reserved.</p>
@@ -161,57 +245,6 @@ export const Footer = () => {
                     {link.label}
                   </Link>
                 ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Payment icons + LegitScript badge */}
-          <div className="pb-10">
-            <div className="flex justify-center mt-4">
-              <Image
-                src="/images/cards_5357343140307497.webp"
-                alt="We accept Visa, MasterCard, Discover, and American Express"
-                width={300}
-                height={50}
-                className="h-10 w-auto"
-              />
-            </div>
-            <div className="flex justify-center mt-6">
-              <div className="inline-flex items-center flex-wrap justify-center gap-6 px-8 py-5">
-                <a
-                  href="https://www.legitscript.com/websites/?checker_keywords=instarx.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Image
-                    src="/images/legitscript_19343194433531208.webp"
-                    alt="LegitScript Certified"
-                    width={100}
-                    height={120}
-                    className="h-20 w-auto"
-                  />
-                </a>
-                <Image
-                  src="/images/hippa-compliant-img.webp"
-                  alt="HIPAA Compliant"
-                  width={100}
-                  height={120}
-                  className="h-20 w-auto"
-                />
-                <Image
-                  src="/images/stripe-payment.webp"
-                  alt="Stripe Secure Payment"
-                  width={100}
-                  height={120}
-                  className="h-20 w-auto"
-                />
-                <Image
-                  src="/images/secure-ssl.webp"
-                  alt="Secure SSL Encryption"
-                  width={100}
-                  height={120}
-                  className="h-20 w-auto"
-                />
               </div>
             </div>
           </div>

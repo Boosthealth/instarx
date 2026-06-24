@@ -7,7 +7,7 @@ import { comparison } from "./content";
  * stacked on mobile. Rows are driven by content.ts so copy stays editable. */
 export function Comparison() {
   return (
-    <section className="v2-section v2-bg-cream-2">
+    <section className="v2-section v2-bg-lilac">
       <div className="v2-container">
         <Reveal className="mx-auto mb-12 max-w-2xl text-center">
           <p className="v2-eyebrow mb-5 inline-flex justify-center">

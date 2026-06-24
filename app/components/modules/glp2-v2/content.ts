@@ -18,17 +18,30 @@ export const navLinks = [
   { label: "FAQ", href: "#faq" },
 ];
 
+/* Hero trust-bar (Coivas-style strip below the hero): each item is an icon +
+ * a short bold label + a one-line description. `icon` is a lucide-react name,
+ * resolved in Hero.tsx. Every factual claim (choice of peptide, HSA/FSA, flat
+ * pricing, shipping speed + cold chain) is preserved from the prior copy. */
+/* Balanced for the 3-up strip: each label is 2–3 words and each description is a
+ * single short line of comparable length, so the columns read as equal weight.
+ * Facts preserved: peptide choice, HSA/FSA + Rx included, flat price, free fast
+ * shipping. */
 export const heroChecks = [
   {
-    icon: "clipboard-check.svg",
-    text: "100% online doctor visits. Semaglutide or Tirzepatide, your choice.",
+    icon: "Stethoscope",
+    label: "Online, doctor-led",
+    text: "Semaglutide or Tirzepatide.",
   },
   {
-    icon: "clipboard-list.svg",
-    text: "Tailored visit & prescription included. HSA/FSA accepted.",
+    icon: "ClipboardCheck",
+    label: "Tailored & covered",
+    text: "Rx included · HSA/FSA accepted.",
   },
-  { icon: "shield-check.svg", text: "Same price, every dose." },
-  { icon: "truck.svg", text: "Free 1–2 day shipping, temperature-controlled." },
+  {
+    icon: "BadgeDollarSign",
+    label: "One flat price",
+    text: "Same price · free 1–2 day shipping.",
+  },
 ];
 
 export const comparison = {
@@ -90,6 +103,29 @@ export const kitItems = [
   "A clear, step-by-step injection guide",
 ];
 
+/* Timeline steps for the "Get your meds in 1–2 days" section. Each `when` is
+ * rendered as a small tag, with the step copy to its right. Mirrors the layout
+ * on go.instarx.com/glp2. */
+export const timeline = [
+  { when: "Today", text: "Get $150 off today. Discount applied at checkout." },
+  {
+    when: "In 1 day",
+    text: "Doctor review — a licensed U.S. physician reviews your profile and writes your prescription.",
+  },
+  {
+    when: "Within 1 day",
+    text: "Insta-Ship — our licensed U.S. pharmacies prepare your kit and express ship it to your door in 1–2 days.",
+  },
+  {
+    when: "Free & discreet 1–2 day delivery",
+    text: "Receive your medication and supply kit.",
+  },
+  {
+    when: "Ongoing care & support",
+    text: "Begin treatment with InstaRx nursing staff, and start losing weight.",
+  },
+];
+
 export const reviews = [
   {
     quote:
@@ -133,16 +169,8 @@ export const faqGroups = [
         a: "InstaRx is 100% online. Take our short quiz, get reviewed by a licensed U.S. physician, and have your medication delivered to your door in 1–2 days.",
       },
       {
-        q: "How do I sign up?",
-        a: "Start the quiz, complete your medical intake, and a licensed physician will review your information. Once approved, your prescription is sent to a compounding pharmacy and shipped to you.",
-      },
-      {
         q: "How do I know which dosage is right for me?",
         a: "Your physician customizes your titration based on your goals and health profile, then adjusts it over time with your care team as your body adapts.",
-      },
-      {
-        q: "Are there instructions on how to take my medication?",
-        a: "Yes. Every temperature-controlled kit includes a clear, step-by-step injection guide, along with sterile syringes and alcohol prep pads.",
       },
     ],
   },
@@ -181,14 +209,6 @@ export const faqGroups = [
       {
         q: "Can I cancel at any time?",
         a: "Yes. There's no monthly membership and no long-term commitment — cancel any time.",
-      },
-      {
-        q: "Is your customer service team in the U.S.?",
-        a: "Yes. Our customer support team is based in the United States.",
-      },
-      {
-        q: "How do I get in touch if I have questions?",
-        a: "Message your medical team any time, or reach customer care at patientcare@instarx.com or (866) 673-8730.",
       },
     ],
   },

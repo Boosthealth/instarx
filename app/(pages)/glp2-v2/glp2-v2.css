@@ -134,8 +134,11 @@
 .v2-lede {
   font-size: clamp(1.15rem, 1.5vw, 1.3rem); /* bumped: a real step above body */
   line-height: 1.55;
-  color: var(--v2-ink-soft);
-  font-weight: 450;
+  /* Darker + slightly heavier than before for more contrast/punch — the lede was
+     reading soft on the tinted hero. Near-ink now (~11:1), still a step under the
+     headline. */
+  color: #2c2722;
+  font-weight: 500;
 }
 
 /* ---- Body / label / caption tier ----
@@ -383,11 +386,26 @@
     0 1px 2px rgba(60, 40, 30, 0.05),
     0 30px 60px -40px rgba(60, 40, 30, 0.4);
 }
+/* Desktop: reserve room at the bottom of the card for the overlay trust-bar +
+   fineprint, which are absolutely positioned over the lower part of the photo. */
+@media (min-width: 1024px) {
+  .v2-hero-card {
+    padding-bottom: clamp(7rem, 9vw, 9.5rem);
+  }
+}
 /* Subtle darker wash behind the left copy column for stronger contrast — the
    dark serif headline pops harder against it. Desktop only (where the 2-col
    split exists); fades to transparent toward the image side. */
 .v2-hero-copy {
   position: relative;
+}
+/* Hero H1 — a touch smaller than the shared .v2-display so "Drop up to 1–2 lbs"
+   fits on ONE line in the copy column; the authored <br> then puts "per week" on
+   line two. Two lines total, never three. (The calculator keeps the larger
+   .v2-display size, untouched.) */
+.v2-hero-h1 {
+  font-size: clamp(2.5rem, 4.6vw, 4.05rem);
+  text-wrap: balance;
 }
 /* The hero scrim (.v2-hero-scrim) handles copy legibility over the animated
    gradient, so the copy column needs no extra wash. */
@@ -417,14 +435,110 @@
   );
 }
 
+/* ---- Hero figure (large transparent cutout that bleeds off the card) ----
+   The subject stands directly on the gradient. The figure cell defines a height;
+   the image is bottom-anchored and oversized, so its lower edge extends past the
+   cell and is clipped by the hero card's overflow:hidden (a clean waist crop).
+   The negative bottom margin pulls the bleed below the grid's padding without
+   adding the cropped pixels to the grid's height (so the trust-bar isn't pushed
+   down). */
+.v2-hero-figure {
+  position: relative;
+  align-self: stretch;
+  height: clamp(440px, 50vw, 620px);
+  margin-bottom: clamp(-8rem, -11vw, -6rem);
+}
+.v2-hero-figure__img {
+  position: absolute;
+  bottom: 0;
+  /* Extend the figure rightward beyond its grid column to the card's edge, so she
+     has horizontal room and isn't cropped tight on her sides. Anchored to the
+     right; the left side overhangs harmlessly toward the copy (transparent). */
+  right: clamp(-3.5rem, -4vw, -2rem);
+  width: clamp(440px, 52vw, 720px);
+  height: 100%;
+  /* `cover` crops the source's transparent margins so she reads large. The low
+     vertical position gives HEADROOM (full crown); horizontal 50% keeps her
+     centred in her own frame, no side clip. */
+  object-fit: cover;
+  object-position: 50% 4%;
+  pointer-events: none;
+}
+/* Floating offer chip — sits over her torso/forearm, clear of the trust-bar
+   overlay in the lower band. Anchored to the figure's left so it reads as resting
+   on her, not floating in empty gradient. */
+.v2-hero-price {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(8.5rem, 14vw, 12rem);
+  left: clamp(0.5rem, 2vw, 2.5rem);
+  width: max-content;
+  max-width: 15rem;
+}
+@media (max-width: 1023px) {
+  /* Single-column stack: the figure becomes a normal centered block, no bleed,
+     so nothing is awkwardly cropped between sections on small screens. */
+  .v2-hero-figure {
+    min-height: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .v2-hero-figure__img {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    width: min(82%, 420px);
+    transform: none;
+    margin-bottom: 0;
+  }
+  .v2-hero-price {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -0.75rem;
+  }
+}
+
+/* ---- Trust-bar wrapper: overlay on desktop, flow on mobile ----
+   On small screens it's a normal block under the stacked content (with top
+   padding to clear the price card). On desktop it becomes an absolute overlay
+   pinned near the bottom of the hero card, overlapping the photo so the frosted
+   glass blurs the subject + gradient behind it. */
+.v2-trustbar-wrap {
+  position: relative;
+  z-index: 20;
+  padding-top: 2.5rem;
+}
+.v2-hero-fineprint {
+  margin-top: 1.25rem;
+  padding-bottom: 2.5rem;
+  color: var(--v2-ink-mute);
+}
+@media (min-width: 1024px) {
+  .v2-trustbar-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(3rem, 4vw, 3.75rem);
+    padding-top: 0;
+  }
+  .v2-hero-fineprint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(1.1rem, 1.8vw, 1.5rem);
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
+
 /* ---- Hero trust-bar (Coivas-style strip) ----
-   One rounded container spanning the hero, four columns separated by hairline
+   One rounded container spanning the hero, three columns separated by hairline
    dividers. Flat: a frosted near-white fill + a single hairline border, no drop
    shadow. Each column = a soft rounded-square icon tile + bold label + muted
-   one-line description. Responsive: 4 → 2×2 → 1 column. */
+   one-line description. Responsive: 3 columns → 1 column. */
 .v2-trustbar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
   border-radius: 18px;
   /* Genuine frost (Intercom-style): a light translucent fill that lets the
@@ -491,56 +605,25 @@
 .v2-trustbar__desc {
   margin-top: 0.15rem;
   font-family: var(--v2-fb);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   line-height: 1.35;
-  color: var(--v2-ink-soft);
+  color: #2c2722; /* darker than --v2-ink-soft for more contrast under the label */
   text-wrap: pretty;
 }
-/* Tablet: 2×2 grid. Reset the universal left-divider, then draw dividers only
-   where they make sense — a left divider on the right column, a top divider on
-   the bottom row. */
-@media (max-width: 900px) {
-  .v2-trustbar {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .v2-trustbar__item + .v2-trustbar__item::before {
-    content: none;
-  }
-  .v2-trustbar__item:nth-child(even)::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.9rem;
-    bottom: 0.9rem;
-    width: 1px;
-    background: var(--v2-glass-divider);
-  }
-  .v2-trustbar__item:nth-child(n + 3)::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0.9rem;
-    right: 0.9rem;
-    height: 1px;
-    background: var(--v2-glass-divider);
-  }
-}
-/* Mobile: single column. One top hairline between stacked rows. */
-@media (max-width: 560px) {
+/* Small screens: stack to a single column. Swap the vertical column dividers for
+   horizontal hairlines between the stacked rows. */
+@media (max-width: 760px) {
   .v2-trustbar {
     grid-template-columns: 1fr;
   }
-  .v2-trustbar__item:nth-child(even)::before {
-    content: none;
-  }
-  .v2-trustbar__item:nth-child(n + 2)::after {
-    content: "";
-    position: absolute;
+  .v2-trustbar__item + .v2-trustbar__item::before {
+    /* Turn the left-divider into a top hairline between stacked rows. */
     top: 0;
+    bottom: auto;
     left: 1.35rem;
     right: 1.35rem;
+    width: auto;
     height: 1px;
-    background: var(--v2-glass-divider);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -670,14 +753,13 @@
   background: #fff;
   transform: translateY(-1px);
 }
-/* Frosted-glass secondary — used on every secondary CTA. A frosted white fill +
-   blur gives it presence on the colorful hero gradient, while a thin INK border
-   (not white) keeps it defined on plain cream sections too, so the same button
-   reads on any background. Hover lightens the fill (lift comes from the base). */
+/* Frosted-glass secondary — a frosted white fill + blur with a WHITE edge (no
+   dark border), matching the hero's glass surfaces (trust-bar, price card).
+   Hover lightens the fill. */
 .v2-btn--glass {
   background: rgba(255, 255, 255, 0.35);
   color: var(--v2-ink);
-  border-color: rgba(26, 23, 20, 0.22);
+  border-color: var(--v2-glass-edge);
   box-shadow: none;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -690,7 +772,7 @@
 .v2-btn--glass:hover,
 .v2-btn--glass:focus-visible {
   background: rgba(255, 255, 255, 0.6);
-  border-color: rgba(26, 23, 20, 0.35);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 /* ---- Pills / chips ---- */
@@ -899,11 +981,17 @@
 
 /* Compact two-column FAQ grid: category blocks flow into two columns so the
    whole section stays short and even instead of one tall single-column list. */
+/* Two fixed columns (explicit, not auto-flowed). Each .v2-faq-col is its own
+   stack aligned to the top, so opening a question grows only that column and
+   never reflows content across the gap. */
 .v2-faq-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem 4rem;
+  gap: 4rem;
   align-items: start;
+}
+.v2-faq-group:not(:first-child) {
+  margin-top: 2.5rem;
 }
 .v2-faq-cat {
   margin-bottom: 0.5rem;
@@ -917,7 +1005,7 @@
 @media (max-width: 768px) {
   .v2-faq-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 }
 

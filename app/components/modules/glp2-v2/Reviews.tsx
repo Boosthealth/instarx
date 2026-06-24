@@ -4,7 +4,7 @@ import { reviews } from "./content";
 
 export function Reviews() {
   return (
-    <section id="reviews" className="v2-section v2-bg-blush">
+    <section id="reviews" className="v2-section v2-bg-pink">
       <div className="v2-container">
         <Reveal className="mx-auto mb-14 max-w-2xl text-center">
           <p className="v2-eyebrow mb-5 inline-flex justify-center">

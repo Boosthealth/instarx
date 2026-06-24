@@ -17,7 +17,7 @@ const PRESS_LOGOS = [
 
 export function FeaturedIn() {
   return (
-    <section className="v2-bg-cream-2">
+    <section className="v2-bg-cream">
       <div className="v2-container py-12 text-center">
         <p
           className="mb-7 text-xs font-semibold uppercase tracking-[0.22em]"

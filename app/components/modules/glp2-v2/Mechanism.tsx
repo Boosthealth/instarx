@@ -5,7 +5,7 @@ import { Reveal } from "./Reveal";
  * still-life on a cream panel; copy preserved from the premium rewrite. */
 export function Mechanism() {
   return (
-    <section className="v2-section v2-bg-cream">
+    <section className="v2-section v2-bg-pink">
       <div className="v2-container grid grid-cols-1 items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <Reveal className="order-2 lg:order-1">
           <div

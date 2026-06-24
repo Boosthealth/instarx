@@ -1579,6 +1579,12 @@
   padding-top: 2rem;
   border-top: 1px solid var(--v2-line);
 }
+/* Medications: no divider, and sit close to the cards + the rating below it. */
+#medications .v2-trust {
+  margin-top: 1.5rem;
+  padding-top: 0;
+  border-top: 0;
+}
 .v2-trust__row {
   display: flex;
   flex-wrap: wrap;
@@ -1685,7 +1691,7 @@
   padding: clamp(1.5rem, 2.4vw, 2.1rem);
   border-radius: 10px;
   background: #fff;
-  border: 1px solid var(--v2-line);
+  /* No border — depth comes from the soft shadow alone. */
   box-shadow: var(--v2-shadow-soft);
   cursor: pointer;
   transition:
@@ -1695,15 +1701,11 @@
     opacity 0.4s ease;
   opacity: 0.85;
 }
-.v2-stagger__card:not([data-center]):hover {
-  border-color: var(--v2-line-strong);
-}
 .v2-stagger__card[data-center] {
   z-index: 10;
   opacity: 1;
   cursor: default;
   background: var(--v2-ink);
-  border-color: var(--v2-ink);
   box-shadow: var(--v2-shadow-card);
 }
 .v2-stagger__stars {
@@ -1745,13 +1747,18 @@
 }
 .v2-stagger__nav {
   position: absolute;
-  bottom: 0;
+  /* Lifted off the container's bottom edge so the buttons (and their shadow)
+     aren't clipped by .v2-stagger's overflow:hidden. */
+  bottom: clamp(0.5rem, 2vw, 1.25rem);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 0.75rem;
   z-index: 20;
 }
+/* Arrow nav buttons use the primary-button treatment: solid ink, white icon,
+   the primary shadow; on hover it deepens to #000 + a lifted shadow. The chevron
+   icons themselves don't transition. */
 .v2-stagger__btn {
   display: inline-flex;
   align-items: center;
@@ -1759,19 +1766,25 @@
   width: 48px;
   height: 48px;
   border-radius: 999px;
-  background: #fff;
-  border: 1px solid var(--v2-line-strong);
-  color: var(--v2-ink);
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-.v2-stagger__btn:hover {
+  border: 0;
   background: var(--v2-ink);
-  color: var(--v2-cream);
+  color: #fff;
+  box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.v2-stagger__btn:hover,
+.v2-stagger__btn:focus-visible {
+  background: #000;
+  box-shadow: 0 10px 26px -14px rgba(26, 23, 20, 0.7);
 }
 .v2-stagger__btn:focus-visible {
-  outline: 2px solid var(--v2-ink);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--v2-cream),
+    0 0 0 5px var(--v2-ink);
 }
 
 /* ---- Floating decorative bottles (How-it-works background) ----
@@ -1962,6 +1975,40 @@
   .v2-mech-videos {
     grid-template-columns: 1fr;
     max-width: 280px;
+  }
+}
+
+/* ---- "Get your meds in 1–2 days" — phone attached to the section bottom ---- */
+.v2-hiw {
+  /* drop the section's bottom padding so the phone reads as anchored to the
+     section's lower edge; the copy column keeps its own bottom breathing room. */
+  padding-bottom: 0;
+  overflow: hidden;
+}
+.v2-hiw__copy {
+  /* give the text column the bottom space the section no longer provides */
+  padding-bottom: var(--v2-pad-y);
+}
+.v2-hiw__media {
+  display: flex;
+  justify-content: center;
+  align-self: end;
+}
+@media (min-width: 1024px) {
+  .v2-hiw__media {
+    justify-content: flex-end;
+  }
+}
+.v2-hiw__phone {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  object-fit: contain;
+}
+@media (min-width: 1024px) {
+  .v2-hiw__phone {
+    max-width: 480px;
   }
 }
 
@@ -2190,7 +2237,7 @@
 
 /* Rating line below the diptych */
 .v2-medcta {
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2230,6 +2277,7 @@
   font-size: 0.9rem;
   color: var(--v2-ink-mute);
 }
+
 
 
 

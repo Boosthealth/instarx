@@ -11,11 +11,11 @@
  */
 .v2 {
   --v2-cream: #fbf7f2; /* dominant canvas */
-  --v2-cream-2: #f4ece3; /* alternating sections / cards */
-  --v2-beige: #ece0d2; /* warm beige fill (secondary buttons, chips) */
-  --v2-beige-deep: #e0d1bf;
-  --v2-blush: #f3ebe1; /* soft warm beige wash panels (neutral, no pink cast) */
-  --v2-blush-deep: #e7dccd;
+  --v2-cream-2: #f1e7da; /* alternating sections / cards (deeper for contrast) */
+  --v2-beige: #e6d7c5; /* warm beige fill (secondary buttons, chips) */
+  --v2-beige-deep: #d8c6af;
+  --v2-blush: #efe2d3; /* soft warm beige wash panels (deeper, still neutral) */
+  --v2-blush-deep: #e0d0bc;
   --v2-ink: #1a1714; /* headlines / primary text / primary buttons */
   --v2-ink-soft: #5b524b; /* secondary text */
   --v2-ink-mute: #8a7d72; /* captions / eyebrow on cream */
@@ -31,20 +31,27 @@
   --v2-line-strong: #d8cabb;
   --v2-gold: #b08a4f; /* stars / small badges */
 
-  /* Signature pink + beige gradient — hero backdrop + final CTA band only. */
+  /* Signature pink + beige gradient — hero backdrop + final CTA band. Deeper
+     and more saturated than before so it reads as real color (more contrast /
+     pop), while staying strictly pink + beige. The animated blobs below drift
+     on top of this base. */
   --v2-gradient: linear-gradient(
-    115deg,
-    #f6e7ea 0%,
-    #f7ece3 42%,
-    #f3e6d6 72%,
-    #efe3d2 100%
+    118deg,
+    #f4d4dc 0%,
+    #f6dcd0 40%,
+    #efd9c2 72%,
+    #e9d3bd 100%
   );
   --v2-gradient-strong: linear-gradient(
     120deg,
-    #f0d3da 0%,
-    #f4e2dc 45%,
-    #efe1cf 100%
+    #eec0cc 0%,
+    #f1d4c8 48%,
+    #e7cdb4 100%
   );
+  /* Drifting blob colors for the animated hero gradient. */
+  --v2-blob-pink: #f3b9c8;
+  --v2-blob-peach: #f6cdb3;
+  --v2-blob-beige: #e8d2b6;
 
   --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -265,6 +272,106 @@
     transparent
   );
   border: 0;
+}
+
+/* ---- Animated hero gradient (slow drifting pink/beige blobs) ----
+   A decorative layer behind the hero content: three soft radial blobs that
+   slowly drift + scale, giving the gradient a living, breathing feel (the
+   lightweight CSS stand-in for an animated shader gradient). Sits above the
+   base --v2-gradient and below the content. Disabled under reduced motion. */
+.v2-hero-anim {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.v2-hero-anim::before,
+.v2-hero-anim::after,
+.v2-hero-anim > span {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.7;
+  will-change: transform;
+}
+.v2-hero-anim::before {
+  width: 46vw;
+  height: 46vw;
+  max-width: 720px;
+  max-height: 720px;
+  top: -14%;
+  right: -6%;
+  background: radial-gradient(
+    circle,
+    var(--v2-blob-pink) 0%,
+    rgba(243, 185, 200, 0) 68%
+  );
+  animation: v2-drift-a 26s ease-in-out infinite;
+}
+.v2-hero-anim::after {
+  width: 40vw;
+  height: 40vw;
+  max-width: 640px;
+  max-height: 640px;
+  bottom: -20%;
+  left: -8%;
+  background: radial-gradient(
+    circle,
+    var(--v2-blob-peach) 0%,
+    rgba(246, 205, 179, 0) 68%
+  );
+  animation: v2-drift-b 32s ease-in-out infinite;
+}
+.v2-hero-anim > span {
+  width: 36vw;
+  height: 36vw;
+  max-width: 560px;
+  max-height: 560px;
+  top: 28%;
+  left: 32%;
+  opacity: 0.5;
+  background: radial-gradient(
+    circle,
+    var(--v2-blob-beige) 0%,
+    rgba(232, 210, 182, 0) 70%
+  );
+  animation: v2-drift-c 38s ease-in-out infinite;
+}
+@keyframes v2-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-6%, 8%, 0) scale(1.12);
+  }
+}
+@keyframes v2-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(8%, -6%, 0) scale(0.92);
+  }
+}
+@keyframes v2-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-7%, -5%, 0) scale(1.1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-hero-anim::before,
+  .v2-hero-anim::after,
+  .v2-hero-anim > span {
+    animation: none;
+  }
 }
 
 /* ---- Buttons ---- */

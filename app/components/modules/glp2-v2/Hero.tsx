@@ -15,25 +15,12 @@ export function Hero() {
         paddingTop: "calc(var(--v2-header-h, 72px) + 1.5rem)",
       }}
     >
-      {/* subtle warm glow accents layered on the gradient for depth */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 -top-24 h-[44rem] w-[44rem] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(246,222,228,0.7) 0%, rgba(246,222,228,0) 60%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -left-32 h-[40rem] w-[40rem] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(240,228,210,0.7) 0%, rgba(240,228,210,0) 60%)",
-        }}
-      />
+      {/* Animated drifting pink/beige blobs — living gradient layer (CSS-only). */}
+      <div className="v2-hero-anim" aria-hidden="true">
+        <span />
+      </div>
 
-      <div className="v2-container relative grid grid-cols-1 items-center gap-10 pb-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-20">
+      <div className="v2-container relative z-10 grid grid-cols-1 items-center gap-10 pb-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-20">
         {/* Left: copy */}
         <div>
           {/* Glass tag wrapping the category label (Coivas-style) */}
@@ -132,9 +119,22 @@ export function Hero() {
 
         {/* Right: portrait + floating glass price card */}
         <div className="relative">
+          {/* Spotlight halo behind the portrait — makes the subject pop off the
+              gradient (DirectMeds-style focal glow). */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(255,252,248,0.85) 0%, rgba(255,252,248,0.35) 42%, rgba(255,252,248,0) 70%)",
+            }}
+          />
           <div
             className="relative overflow-hidden rounded-[24px]"
-            style={{ boxShadow: "var(--v2-shadow-card)" }}
+            style={{
+              boxShadow:
+                "0 2px 6px rgba(60,40,30,0.08), 0 40px 70px -34px rgba(60,40,30,0.55)",
+            }}
           >
             <Image
               src="/lose-weight/hero-lady.webp"
@@ -143,6 +143,7 @@ export function Hero() {
               height={620}
               sizes="(max-width: 1024px) 100vw, 540px"
               className="h-full w-full object-cover"
+              style={{ filter: "saturate(1.08) contrast(1.05)" }}
               priority
             />
           </div>

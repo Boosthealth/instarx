@@ -297,120 +297,31 @@
 .v2-hero-copy {
   position: relative;
 }
-@media (min-width: 1024px) {
-  .v2-hero-copy::before {
-    content: "";
-    position: absolute;
-    inset: -3rem -2rem -3rem -50vw;
-    z-index: -1;
-    background: linear-gradient(
-      100deg,
-      rgba(120, 70, 80, 0.16) 0%,
-      rgba(120, 70, 80, 0.1) 45%,
-      rgba(120, 70, 80, 0) 100%
-    );
-    pointer-events: none;
-  }
-}
+/* The hero scrim (.v2-hero-scrim) now handles copy legibility over the shader,
+   so the copy column needs no extra wash. */
 
-/* ---- Animated hero gradient (slow drifting pink/beige blobs) ----
-   A decorative layer behind the hero content: three soft radial blobs that
-   slowly drift + scale, giving the gradient a living, breathing feel (the
-   lightweight CSS stand-in for an animated shader gradient). Sits above the
-   base --v2-gradient and below the content. Disabled under reduced motion. */
-.v2-hero-anim {
+/* ---- Hero shader background + legibility scrim ----
+   The animated WebGL mesh gradient (ShaderBg) fills the card behind the content.
+   The shader is more saturated than the static CSS gradient, so this scrim — a
+   soft cream wash, stronger on the left where the copy lives — keeps the dark
+   serif headline and body text legible. Sits above the shader, below content. */
+.v2-shaderbg {
+  /* canvas inherits the card's rounded corners */
+  border-radius: inherit;
+  overflow: hidden;
+}
+.v2-hero-scrim {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  z-index: 1;
   pointer-events: none;
-  z-index: 0;
-}
-.v2-hero-anim::before,
-.v2-hero-anim::after,
-.v2-hero-anim > span {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.7;
-  will-change: transform;
-}
-.v2-hero-anim::before {
-  width: 46vw;
-  height: 46vw;
-  max-width: 720px;
-  max-height: 720px;
-  top: -14%;
-  right: -6%;
-  background: radial-gradient(
-    circle,
-    var(--v2-blob-pink) 0%,
-    rgba(243, 185, 200, 0) 68%
+  background: linear-gradient(
+    100deg,
+    rgba(251, 247, 242, 0.66) 0%,
+    rgba(251, 247, 242, 0.42) 38%,
+    rgba(251, 247, 242, 0.12) 70%,
+    rgba(251, 247, 242, 0) 100%
   );
-  animation: v2-drift-a 26s ease-in-out infinite;
-}
-.v2-hero-anim::after {
-  width: 40vw;
-  height: 40vw;
-  max-width: 640px;
-  max-height: 640px;
-  bottom: -20%;
-  left: -8%;
-  background: radial-gradient(
-    circle,
-    var(--v2-blob-peach) 0%,
-    rgba(246, 205, 179, 0) 68%
-  );
-  animation: v2-drift-b 32s ease-in-out infinite;
-}
-.v2-hero-anim > span {
-  width: 36vw;
-  height: 36vw;
-  max-width: 560px;
-  max-height: 560px;
-  top: 28%;
-  left: 32%;
-  opacity: 0.5;
-  background: radial-gradient(
-    circle,
-    var(--v2-blob-beige) 0%,
-    rgba(232, 210, 182, 0) 70%
-  );
-  animation: v2-drift-c 38s ease-in-out infinite;
-}
-@keyframes v2-drift-a {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-6%, 8%, 0) scale(1.12);
-  }
-}
-@keyframes v2-drift-b {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.05);
-  }
-  50% {
-    transform: translate3d(8%, -6%, 0) scale(0.92);
-  }
-}
-@keyframes v2-drift-c {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-7%, -5%, 0) scale(1.1);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .v2-hero-anim::before,
-  .v2-hero-anim::after,
-  .v2-hero-anim > span {
-    animation: none;
-  }
 }
 
 /* ---- Buttons ---- */
@@ -800,6 +711,147 @@
   height: 3px;
   border-radius: 999px;
   background: var(--v2-line-strong);
+}
+
+/* ---- Light editorial footer (/glp2-v2 only) ---- */
+.v2-foot {
+  background: var(--v2-cream);
+  border-top: 1px solid var(--v2-line);
+  font-family: var(--v2-fb);
+  color: var(--v2-ink-soft);
+}
+.v2-foot__top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+@media (max-width: 1080px) {
+  .v2-foot__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 2rem;
+  }
+  .v2-foot__brand,
+  .v2-foot__rail {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .v2-foot__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Brand column */
+.v2-foot__tagline {
+  margin-top: 1.25rem;
+  max-width: 32ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+}
+.v2-foot__contact {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.v2-foot__contact a {
+  font-size: 0.92rem;
+  color: var(--v2-ink);
+  text-decoration: none;
+  width: fit-content;
+  transition: color 0.18s ease;
+}
+.v2-foot__contact a:hover {
+  color: var(--v2-rose-deep);
+  text-decoration: underline;
+}
+
+/* Link columns — hairline divider on the left edge of each (mirrors Coivas) */
+.v2-foot__col {
+  position: relative;
+}
+@media (min-width: 1081px) {
+  .v2-foot__col {
+    padding-left: clamp(1.5rem, 2.5vw, 2.5rem);
+  }
+  .v2-foot__col::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    width: 1px;
+    background: var(--v2-line);
+  }
+}
+.v2-foot__heading {
+  font-family: var(--v2-fb);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--v2-ink);
+  margin-bottom: 1rem;
+}
+.v2-foot__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.v2-foot__link {
+  font-size: 0.92rem;
+  color: var(--v2-ink-soft);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.v2-foot__link:hover {
+  color: var(--v2-ink);
+}
+
+/* Secure rail */
+.v2-foot__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+  padding: 0.55rem 1.05rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-foot__pill svg {
+  color: var(--v2-gold);
+}
+.v2-foot__reassure {
+  margin-top: 1rem;
+  max-width: 30ch;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--v2-ink-mute);
+}
+.v2-foot__seals {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Bottom bar */
+.v2-foot__bottom {
+  border-top: 1px solid var(--v2-line);
+  padding-block: 1.4rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.v2-foot__copy,
+.v2-foot__legal {
+  font-size: 0.82rem;
+  color: var(--v2-ink-mute);
 }
 
 /* ---- Reduced motion ---- */

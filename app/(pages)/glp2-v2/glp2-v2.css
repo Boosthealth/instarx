@@ -37,10 +37,10 @@
      on top of this base. */
   --v2-gradient: linear-gradient(
     118deg,
-    #f4d4dc 0%,
-    #f6dcd0 40%,
-    #efd9c2 72%,
-    #e9d3bd 100%
+    #efc6d2 0%,
+    #f3d2c4 40%,
+    #ead0b4 72%,
+    #e3cab0 100%
   );
   --v2-gradient-strong: linear-gradient(
     120deg,
@@ -272,6 +272,45 @@
     transparent
   );
   border: 0;
+}
+
+/* ---- Contained hero (Lightship-style) ----
+   The wrap provides a gutter so the card floats inset from the browser edges;
+   the card holds the gradient + blobs + content and clips them to rounded
+   corners. The header stays full-width above (no bleed-up). */
+.v2-hero-wrap {
+  padding: clamp(0.6rem, 1.4vw, 1.1rem);
+  padding-top: clamp(0.4rem, 1vw, 0.8rem);
+}
+.v2-hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(20px, 2.4vw, 36px);
+  background: var(--v2-gradient);
+  box-shadow:
+    0 1px 2px rgba(60, 40, 30, 0.05),
+    0 30px 60px -40px rgba(60, 40, 30, 0.4);
+}
+/* Subtle darker wash behind the left copy column for stronger contrast — the
+   dark serif headline pops harder against it. Desktop only (where the 2-col
+   split exists); fades to transparent toward the image side. */
+.v2-hero-copy {
+  position: relative;
+}
+@media (min-width: 1024px) {
+  .v2-hero-copy::before {
+    content: "";
+    position: absolute;
+    inset: -3rem -2rem -3rem -50vw;
+    z-index: -1;
+    background: linear-gradient(
+      100deg,
+      rgba(120, 70, 80, 0.16) 0%,
+      rgba(120, 70, 80, 0.1) 45%,
+      rgba(120, 70, 80, 0) 100%
+    );
+    pointer-events: none;
+  }
 }
 
 /* ---- Animated hero gradient (slow drifting pink/beige blobs) ----
@@ -674,6 +713,93 @@
   padding-bottom: 1.4rem;
   color: var(--v2-ink-soft);
   max-width: 60ch;
+}
+
+/* ---- "What are you waiting for?" closing CTA ---- */
+.v2-waiting {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--v2-cream);
+}
+/* Soft warm gradient wash: airy cream center, cool lift top-left, warm peach
+   bloom lower-right — an EOS-style golden-hour feel without any imagery. */
+.v2-waiting__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 55% at 12% 8%, rgba(233, 241, 246, 0.85) 0%, rgba(233, 241, 246, 0) 60%),
+    radial-gradient(55% 50% at 92% 78%, rgba(244, 209, 199, 0.55) 0%, rgba(244, 209, 199, 0) 62%),
+    radial-gradient(70% 60% at 80% 18%, rgba(247, 232, 214, 0.7) 0%, rgba(247, 232, 214, 0) 60%),
+    linear-gradient(160deg, #fcf8f2 0%, #f7efe4 55%, #f3e7d8 100%);
+}
+
+.v2-waiting__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px rgba(26, 23, 20, 0.05);
+  padding: 0.5rem 1.1rem;
+  font-family: var(--v2-fb);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v2-ink-mute);
+  backdrop-filter: blur(4px);
+}
+
+.v2-waiting__title {
+  margin: 1.6rem auto 0;
+  max-width: 22ch;
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--v2-ink);
+  text-wrap: balance;
+}
+/* Keep the authored two-line break only where there's room for it; on narrow
+   screens it collapses to the trailing space so the headline reflows naturally. */
+@media (max-width: 520px) {
+  .v2-waiting__br {
+    display: none;
+  }
+}
+
+.v2-waiting__sub {
+  margin: 1.4rem auto 0;
+  max-width: 34ch;
+  font-family: var(--v2-fb);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--v2-ink-soft);
+}
+
+.v2-waiting__trust {
+  margin: 2.4rem auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem 1.1rem;
+  font-family: var(--v2-fb);
+  font-size: 0.92rem;
+  color: var(--v2-ink-mute);
+}
+.v2-waiting__trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.v2-waiting__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--v2-line-strong);
 }
 
 /* ---- Reduced motion ---- */

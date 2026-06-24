@@ -5,7 +5,7 @@ import { medicationPoints, INTAKE_HREF } from "./content";
 
 export function Medications() {
   return (
-    <section id="medications" className="v2-section v2-bg-cream">
+    <section id="medications" className="v2-section v2-bg-lilac">
       <div className="v2-container grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal>
           <div
@@ -70,7 +70,7 @@ export function Medications() {
             <V2Button href={INTAKE_HREF} variant="primary" className="w-full sm:w-auto" arrow>
               Find your treatment
             </V2Button>
-            <V2Button href={INTAKE_HREF} variant="ghost" className="w-full sm:w-auto">
+            <V2Button href={INTAKE_HREF} variant="glass" className="w-full sm:w-auto">
               See pricing
             </V2Button>
           </div>

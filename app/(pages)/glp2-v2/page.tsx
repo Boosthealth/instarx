@@ -13,6 +13,7 @@ import { Mechanism } from "@/app/components/modules/glp2-v2/Mechanism";
 import { HowItWorks } from "@/app/components/modules/glp2-v2/HowItWorks";
 import { Reviews } from "@/app/components/modules/glp2-v2/Reviews";
 import { Medications } from "@/app/components/modules/glp2-v2/Medications";
+import { PlanComparison } from "@/app/components/modules/glp2-v2/PlanComparison";
 import { Community } from "@/app/components/modules/glp2-v2/Community";
 import { FAQ } from "@/app/components/modules/glp2-v2/FAQ";
 import { WhatAreYouWaitingFor } from "@/app/components/modules/glp2-v2/WhatAreYouWaitingFor";
@@ -64,6 +65,7 @@ export default function Glp2V2() {
         <HowItWorks />
         <Reviews />
         <Medications />
+        <PlanComparison />
         <Community />
         <FAQ />
         <WhatAreYouWaitingFor />

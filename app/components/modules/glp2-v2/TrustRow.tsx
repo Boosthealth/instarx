@@ -59,8 +59,8 @@ function Star({ fill }: { fill: number }) {
 }
 
 /* `showRating` (default true) appends the Trustpilot-style rating after the
-   badge strip. Set it false to render just the four credibility points — used
-   in Medications, which already closes with its own rating. */
+   badge strip. TrustRow is currently rendered only in Results (with the
+   default showRating={true}). The prop is kept for future reuse. */
 export function TrustRow({ showRating = true }: { showRating?: boolean }) {
   return (
     <div className="v2-trust">

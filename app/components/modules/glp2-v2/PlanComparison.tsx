@@ -72,12 +72,14 @@ export function PlanComparison() {
                   <span className="v2-compare__check" aria-hidden="true">
                     <Check size={14} strokeWidth={2.5} />
                   </span>
+                  <span className="sr-only">InstaRx: </span>
                   Included
                 </span>
                 <span className="v2-compare__cell v2-compare__cell--them">
                   <span className="v2-compare__x" aria-hidden="true">
                     <X size={14} strokeWidth={2.5} />
                   </span>
+                  <span className="sr-only">Other providers: </span>
                   {row.competitor}
                 </span>
               </li>

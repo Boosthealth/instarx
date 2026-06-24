@@ -2505,6 +2505,8 @@
   bottom: 0;
   /* Aligns to the centre grid track: left rail is 1.4fr of (1.4+0.9+1.1=3.4)
      plus one gap. Use a percentage band that sits under the "Included" cells. */
+  /* CAUTION: left/width are hand-tuned to the 1.4fr 0.9fr 1.1fr column ratio
+     and must be re-derived if that ratio or the row padding changes. */
   left: 41.2%;
   width: 26.5%;
   border-radius: 16px;
@@ -2601,16 +2603,7 @@
     justify-content: flex-start;
   }
   .v2-compare__cell--us {
-    /* Re-tint the check inline (no centre card on mobile). */
+    /* Align the check to the row top (no centre card on mobile). */
     align-self: start;
   }
 }
-
-
-
-
-
-
-
-
-

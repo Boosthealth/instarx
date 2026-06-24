@@ -913,86 +913,64 @@
   }
 }
 
-/* ---- Community photo band (Mochi-style, reuses our .v2-glass + tag styles) ----
-   The photo already gives the section its height, so the top/bottom padding is
-   tight. A real-person photo fills the rounded card; a glass panel (our exact
-   .v2-glass treatment) sits over the bottom with the headline + CTAs on the left
-   and a shorter supporting paragraph lower-right. */
+/* ---- Community band (full-bleed, hero-style) ----
+   A rich pink->beige gradient spans edge to edge to bring color mid-scroll;
+   copy + CTA on the left, a real-person cutout on the right (mirrors the hero
+   split). The band breaks out of the page padding for true full width. */
 .v2-community {
-  padding-block: clamp(1.5rem, 3vw, 2.75rem);
+  /* full-bleed: the section itself spans the viewport; no container padding */
 }
-.v2-community__card {
+.v2-community__band {
   position: relative;
   overflow: hidden;
-  border-radius: clamp(20px, 2.4vw, 36px);
-  min-height: clamp(440px, 44vw, 600px);
-  display: flex;
-  align-items: flex-end;
-  box-shadow: var(--v2-shadow-card);
+  /* deeper, more saturated pink->beige than the hero for extra pop */
+  background: linear-gradient(
+    115deg,
+    #f0b9cb 0%,
+    #f2c6bd 38%,
+    #ecccac 70%,
+    #e6c8a6 100%
+  );
 }
-.v2-community__photo {
-  object-fit: cover;
-  object-position: center 30%;
-  z-index: 0;
-}
-/* Scrim - darker toward the bottom-left where the copy sits, so text reads. */
-.v2-community__scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(180deg, rgba(26, 23, 20, 0) 35%, rgba(26, 23, 20, 0.45) 100%),
-    linear-gradient(90deg, rgba(26, 23, 20, 0.4) 0%, rgba(26, 23, 20, 0) 55%);
-  pointer-events: none;
-}
-/* Glass overlay panel - uses our .v2-glass class directly; only layout here. */
-.v2-community__glass {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  margin: clamp(0.75rem, 1.5vw, 1.25rem);
-  border-radius: clamp(16px, 1.8vw, 24px);
-  /* much softer than the shared .v2-glass border (0.5) — barely-there edge */
-  border-color: rgba(255, 255, 255, 0.16);
-}
-.v2-community__inner {
+.v2-community__grid {
+  max-width: var(--v2-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
   display: grid;
   grid-template-columns: 1fr;
-  align-items: end;
+  align-items: center;
   gap: 1.5rem;
-  padding: clamp(1.5rem, 2.6vw, 2.5rem);
 }
 @media (min-width: 900px) {
-  .v2-community__inner {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 2.5rem;
+  .v2-community__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    /* let the figure run to the bottom edge of the band */
+    align-items: stretch;
   }
+}
+.v2-community__copy {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  position: relative;
+  z-index: 1;
 }
 .v2-community__title {
   font-family: var(--v2-fh);
   font-weight: 600;
-  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
-  line-height: 1.08;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.06;
   letter-spacing: -0.015em;
-  color: #fff;
-}
-.v2-community__title .v2-accent {
-  color: #fff;
+  color: var(--v2-ink);
 }
 .v2-community__sub {
+  margin-top: 1.1rem;
   max-width: 30rem;
-  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.88);
-}
-@media (min-width: 900px) {
-  .v2-community__sub {
-    justify-self: end;
-    align-self: end;
-  }
+  color: var(--v2-ink-soft);
 }
 .v2-community__actions {
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1000,6 +978,28 @@
 @media (min-width: 560px) {
   .v2-community__actions {
     flex-direction: row;
+  }
+}
+/* Figure column — the cutout sits bottom-aligned and runs to the band edge. */
+.v2-community__figure {
+  position: relative;
+  align-self: end;
+  display: flex;
+  justify-content: center;
+}
+.v2-community__photo {
+  width: auto;
+  height: 100%;
+  max-height: clamp(360px, 42vw, 560px);
+  object-fit: contain;
+  object-position: bottom center;
+}
+@media (max-width: 899px) {
+  .v2-community__figure {
+    order: -1; /* photo above copy on mobile */
+  }
+  .v2-community__photo {
+    max-height: 340px;
   }
 }
 

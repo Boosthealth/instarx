@@ -17,6 +17,7 @@ import { Medications } from "@/app/components/modules/glp2-v2/Medications";
 import { FAQ } from "@/app/components/modules/glp2-v2/FAQ";
 import { WhatAreYouWaitingFor } from "@/app/components/modules/glp2-v2/WhatAreYouWaitingFor";
 import { Ticker } from "@/app/components/modules/glp2-v2/Ticker";
+import { FloatingCTA } from "@/app/components/modules/glp2-v2/FloatingCTA";
 import "./glp2-v2.css";
 
 // Editorial/luxe-wellness type pairing — same house style as /optin. Loaded
@@ -69,6 +70,7 @@ export default function Glp2V2() {
         <Ticker />
       </main>
       <V2Footer />
+      <FloatingCTA />
     </div>
   );
 }

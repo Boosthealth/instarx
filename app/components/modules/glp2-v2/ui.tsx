@@ -14,6 +14,7 @@ export function V2Button({
   variant = "primary",
   className = "",
   arrow = false,
+  tabIndex,
 }: {
   href: string;
   children: ReactNode;
@@ -21,6 +22,9 @@ export function V2Button({
   className?: string;
   /* Append a diagonal arrow that swaps on hover (YMI-style). */
   arrow?: boolean;
+  /* Override focusability — used to pull the floating CTA out of the tab order
+     while it's hidden. */
+  tabIndex?: number;
 }) {
   // prefetch={false}: matches the shared Button — every CTA points at /intake,
   // and viewport prefetch would pre-bucket visitors in the experiment proxy.
@@ -28,6 +32,7 @@ export function V2Button({
     <Link
       href={href}
       prefetch={false}
+      tabIndex={tabIndex}
       className={`v2-btn v2-btn--${variant} ${className}`.trim()}
     >
       <span className="v2-btn__text">{children}</span>

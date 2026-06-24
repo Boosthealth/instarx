@@ -399,13 +399,23 @@
 .v2-hero-copy {
   position: relative;
 }
-/* Hero H1 — a touch smaller than the shared .v2-display so "Drop up to 1–2 lbs"
-   fits on ONE line in the copy column; the authored <br> then puts "per week" on
-   line two. Two lines total, never three. (The calculator keeps the larger
+/* Hero H1 — a touch smaller than the shared .v2-display. On desktop the authored
+   <br> (.v2-hero-br) puts "per week" on line two after "Drop up to 1–2 lbs". On
+   mobile that <br> is hidden so the headline wraps NATURALLY instead of forcing a
+   too-wide single line off the card edge. (The calculator keeps the larger
    .v2-display size, untouched.) */
 .v2-hero-h1 {
-  font-size: clamp(2.5rem, 4.6vw, 4.05rem);
+  font-size: clamp(2.25rem, 9vw, 4.05rem);
   text-wrap: balance;
+}
+/* The authored line break only applies once there's room for it (≥640px). */
+.v2-hero-br {
+  display: none;
+}
+@media (min-width: 640px) {
+  .v2-hero-br {
+    display: inline;
+  }
 }
 /* The hero scrim (.v2-hero-scrim) handles copy legibility over the animated
    gradient, so the copy column needs no extra wash. */
@@ -505,6 +515,13 @@
     display: flex;
     flex-direction: column;
   }
+  /* Defensive: flex items default to min-width:auto. Letting them shrink to fit
+     keeps any wide content (a long word, the price card) from stretching the
+     column past the viewport on small phones. */
+  .v2-hero-card > * {
+    min-width: 0;
+    max-width: 100%;
+  }
   .v2-hero-grid {
     order: 1;
   }
@@ -512,12 +529,19 @@
     order: 2;
     position: relative;
     right: auto;
-    height: clamp(320px, 70vw, 460px);
+    width: 100%;
+    height: auto;
     margin: 1.5rem auto 0;
     display: flex;
     justify-content: center;
   }
   .v2-hero-photo__img {
+    /* Size by WIDTH (capped) so the portrait image can NEVER exceed the viewport
+       — sizing by height let her computed width (~0.875×height) overflow on
+       narrow phones and pushed horizontal overflow onto the whole page. */
+    width: min(78%, 360px);
+    height: auto;
+    object-fit: contain;
     object-position: bottom center;
   }
   .v2-trustbar-wrap {
@@ -817,6 +841,67 @@
 .v2-btn--glass:focus-visible {
   background: rgba(255, 255, 255, 0.6);
   border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---- Floating bottom CTA (Hims-style) ----
+   A glass pill with a soft white glow that slides up from the bottom once the
+   user is past the hero, and slides away when the closing CTA comes into view.
+   Hidden state is translated down + faded + non-interactive so it can't be
+   clicked or tabbed while off-screen. */
+.v2-floatcta {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 45;
+  transform: translate(-50%, 160%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+}
+.v2-floatcta.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Soft white glow ring behind the pill (Hims' "trophy" border, in white). */
+.v2-floatcta__glow {
+  position: absolute;
+  inset: -7px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 6px 22px rgba(255, 255, 255, 0.55),
+    0 10px 40px -8px rgba(60, 40, 30, 0.35);
+  pointer-events: none;
+}
+/* The floating button itself sits above the glow; a touch more opaque than the
+   inline glass secondary so it reads as a solid control on any background. */
+.v2-floatcta__btn {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(26, 23, 20, 0.16);
+  box-shadow: 0 1px 2px rgba(60, 40, 30, 0.06);
+}
+.v2-floatcta__btn:hover,
+.v2-floatcta__btn:focus-visible {
+  background: #fff;
+  border-color: rgba(26, 23, 20, 0.28);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-floatcta {
+    transition: opacity 0.3s ease;
+  }
+  .v2-floatcta,
+  .v2-floatcta.is-visible {
+    transform: translate(-50%, 0);
+  }
+  .v2-floatcta:not(.is-visible) {
+    /* still hidden, just no slide */
+    opacity: 0;
+  }
 }
 
 /* ---- Pills / chips ---- */
@@ -1496,7 +1581,7 @@
   flex-direction: column;
   text-align: left;
   padding: clamp(1.5rem, 2.4vw, 2.1rem);
-  border-radius: 24px;
+  border-radius: 10px;
   background: #fff;
   border: 1px solid var(--v2-line);
   box-shadow: var(--v2-shadow-soft);
@@ -1587,6 +1672,188 @@
   outline-offset: 2px;
 }
 
+/* ---- Floating decorative bottles (How-it-works background) ----
+   Bottles scattered behind the section: varied size/rotation, some blurred for
+   depth. --py is set by scroll-parallax JS; a slow CSS float adds life. Both are
+   purely decorative and disabled under reduced motion. */
+.v2-bottles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.v2-bottles__item {
+  position: absolute;
+  display: block;
+  transform: translateY(var(--py, 0px));
+  will-change: transform;
+}
+.v2-bottles__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(var(--rot, 0deg));
+  animation: v2-bottle-float var(--float-dur, 6s) ease-in-out var(--float-delay, 0s) infinite;
+}
+@keyframes v2-bottle-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+/* ---- "Kill the cravings" mechanism section (centered + bottles + videos) ---- */
+.v2-mech {
+  position: relative;
+  overflow: hidden;
+}
+.v2-mech-videos {
+  margin-top: 3.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  max-width: 1040px;
+  margin-inline: auto;
+}
+/* Card wrapper: rounded frame that lifts on hover (21st-style) and fades/slides
+   in on scroll, staggered per index via --i. */
+.v2-mech-vcard {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: var(--v2-shadow-card);
+  transform: translateY(18px);
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
+    opacity 0.6s ease,
+    box-shadow 0.35s ease;
+  transition-delay: calc(var(--i, 0) * 0.12s);
+}
+.v2-mech-vcard.is-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+.v2-mech-vcard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px -18px rgba(60, 40, 30, 0.4);
+}
+.v2-mech-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Poster overlay: a full-card button with a centered glass play control, a soft
+   bottom scrim, and the name + result caption. Replaces the native HTML5 player
+   chrome until the viewer hits play (then native controls take over). */
+.v2-mech-vplay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+}
+.v2-mech-vplay__scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 78%;
+  /* Two layers: a warm pink→peach brand wash (our --v2-gradient hues) for the
+     on-brand tint, over a deep ink base that keeps the white caption legible at
+     the very bottom. */
+  background:
+    linear-gradient(to top, rgba(189, 90, 142, 0.45) 0%, rgba(243, 210, 196, 0.26) 45%, transparent 100%),
+    linear-gradient(to top, rgba(20, 14, 12, 0.92) 0%, rgba(20, 14, 12, 0.45) 38%, transparent 92%);
+  pointer-events: none;
+}
+/* Enlarged caption block, anchored to the lower portion of the card. */
+.v2-mech-vplay__cap {
+  position: absolute;
+  left: 1.4rem;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  display: flex;
+  flex-direction: column;
+}
+.v2-mech-vplay__mark {
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.5rem;
+}
+.v2-mech-vplay__name {
+  font-family: var(--v2-fb);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.v2-mech-vplay__result {
+  margin-top: 0.15rem;
+  font-family: var(--v2-fb);
+  font-size: 1rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* Play CTA pinned at the bottom of the caption. */
+.v2-mech-vplay__cta {
+  margin-top: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.v2-mech-vplay__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--v2-ink);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.55);
+  padding-left: 2px; /* optically centre the play glyph */
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.v2-mech-vplay:hover .v2-mech-vplay__btn {
+  transform: scale(1.1);
+}
+.v2-mech-vplay__cta-label {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+/* Once playing, the poster <video> shows native controls; nothing else needed. */
+.v2-mech-video--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--v2-cream-2);
+  color: var(--v2-ink-mute);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem;
+}
+@media (max-width: 720px) {
+  .v2-mech-videos {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 480px;
+  }
+}
+@media (max-width: 420px) {
+  .v2-mech-videos {
+    grid-template-columns: 1fr;
+    max-width: 280px;
+  }
+}
+
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .v2-reveal {
@@ -1604,4 +1871,241 @@
   .v2-stagger__card {
     transition: none;
   }
+  .v2-bottles__item {
+    transform: none;
+  }
+  .v2-bottles__img {
+    animation: none;
+  }
 }
+
+
+
+
+/* ---- Medications spec-sheet diptych ----
+   Two product cards, one per peptide. The vial is the hero (on a soft radial
+   glow stage), then identity + spec rows separated by hairlines, and an in-stock
+   status. Flat: white card + a single hairline border, a subtle hover lift
+   (transform only, no heavy shadow). On-brand lilac section behind. */
+.v2-medgrid {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+@media (max-width: 720px) {
+  .v2-medgrid {
+    grid-template-columns: 1fr;
+  }
+}
+.v2-medcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: 16px;
+  /* Glass card (matches the hero's frosted surfaces): a near-opaque white fill so
+     the product + text stay crisp, a translucent-WHITE edge (no brown/grey
+     border), and a blur so the lilac section reads softly through the rim. */
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--v2-glass-edge);
+  -webkit-backdrop-filter: saturate(150%) blur(16px);
+  backdrop-filter: saturate(150%) blur(16px);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-medcard {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+.v2-medcard:hover {
+  transform: translateY(-4px);
+  /* Brighter glass edge on hover (white, never brown). */
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.86);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-medcard {
+    transition: none;
+  }
+  .v2-medcard:hover {
+    transform: none;
+  }
+}
+/* In-stock status — glass pill, matching the hero eyebrow / timeline tags
+   (frosted white fill + white edge + blur, uppercase tracked label). */
+.v2-medcard__status {
+  position: absolute;
+  top: clamp(1rem, 2vw, 1.4rem);
+  right: clamp(1rem, 2vw, 1.4rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--v2-glass-edge);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-family: var(--v2-fb);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v2-ink);
+}
+.v2-medcard__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a9d6e; /* a real green — the one place a status color earns it */
+  box-shadow: 0 0 0 3px rgba(58, 157, 110, 0.18);
+}
+/* Vial stage — soft radial glow lifts the product without a hard frame */
+.v2-medcard__stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: clamp(190px, 26vw, 260px);
+  margin-bottom: 1.5rem;
+}
+.v2-medcard__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    58% 52% at 50% 64%,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(247, 240, 248, 0.6) 45%,
+    rgba(247, 240, 248, 0) 72%
+  );
+}
+.v2-medcard__vial {
+  position: relative;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  /* a soft grounded shadow under the product only — defined, ≤8px blur */
+  filter: drop-shadow(0 6px 8px rgba(60, 40, 30, 0.12));
+}
+/* Identity */
+.v2-medcard__type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--v2-fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.v2-medcard__typedot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.v2-medcard__name {
+  margin-top: 0.5rem;
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.4vw, 1.95rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--v2-ink);
+}
+.v2-medcard__tagline {
+  margin-top: 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--v2-ink-soft);
+  text-wrap: pretty;
+}
+/* Spec rows — separated by faint neutral hairlines (a translucent dark line, not
+   a brown/grey border). The TOP rule opens the spec block; each row gets a bottom
+   hairline EXCEPT the last ("Best for"), so the block doesn't close with a stray
+   line. */
+.v2-medcard__specs {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-medcard__spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-medcard__spec:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.v2-medcard__spec dt {
+  flex: none;
+  font-family: var(--v2-fb);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--v2-ink-mute);
+}
+.v2-medcard__spec dd {
+  text-align: right;
+  font-family: var(--v2-fb);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-medcard__spec dd.is-emph {
+  font-family: var(--v2-fh);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* CTA below the diptych */
+.v2-medcta {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+.v2-medcta__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--v2-fb);
+  font-size: 0.88rem;
+  color: var(--v2-ink-soft);
+}
+.v2-medcta__note svg {
+  color: #3a9d6e;
+  flex: none;
+}
+/* Trustpilot-style rating directly under the CTA note — matches the hero's
+   social-proof line (bold ink score, gold stars, muted count). No divider. */
+.v2-medcta__rating {
+  margin-top: 0.35rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem 0.65rem;
+}
+.v2-medcta__score {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-medcta__count {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  color: var(--v2-ink-mute);
+}
+

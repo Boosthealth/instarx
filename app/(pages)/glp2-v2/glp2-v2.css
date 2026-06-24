@@ -217,20 +217,21 @@
   font-weight: 500;
   color: var(--v2-ink-soft);
   text-decoration: none;
-  padding-bottom: 2px;
   transition: color 0.2s ease;
 }
+/* Underline hugs the text (Lightship-style): sits ~2px below the baseline,
+   thin, and grows from the left on hover. */
 .v2-navlink::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 0;
-  height: 1.5px;
+  bottom: -2px;
+  height: 1px;
   width: 100%;
-  background: var(--v2-ink);
+  background: currentColor;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.28s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .v2-navlink:hover,
 .v2-navlink:focus-visible {
@@ -327,26 +328,36 @@
 
 /* ---- Buttons ---- */
 .v2-btn {
+  /* Default button — 40px tall, regular-medium weight (Lightship-style: lighter
+     than our old 600). Hero CTAs use .v2-btn--lg for a larger size. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
+  height: 40px;
+  padding: 0 1.4rem;
   font-family: var(--v2-fb);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-  padding: 0.95rem 1.9rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
   border-radius: 999px;
   border: 1px solid transparent;
   cursor: pointer;
   transition:
-    transform 0.18s ease,
-    background-color 0.18s ease,
-    box-shadow 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease;
+    transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
   text-decoration: none;
   white-space: nowrap;
+}
+/* Large button — hero CTAs. Taller, a touch more padding + size. */
+.v2-btn--lg {
+  height: 52px;
+  padding: 0 1.9rem;
+  font-size: 1.02rem;
+  gap: 0.55rem;
 }
 /* Lucide arrow inside buttons — slides right on hover (Coivas-style). */
 .v2-btn__arrow {
@@ -361,27 +372,24 @@
     transition: none;
   }
 }
-/* Small button — 40px tall, for the header CTA. */
-.v2-btn--sm {
-  height: 40px;
-  padding: 0 1.15rem;
-  font-size: 0.9rem;
-  gap: 0.3rem;
-}
 .v2-btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-ink);
 }
-/* Primary = solid black */
+/* Primary = solid black. Hover: a gentle scale-up + deeper shadow (Lightship's
+   smooth press feel) rather than a vertical jump. */
 .v2-btn--primary {
   background: var(--v2-ink);
   color: #fff;
-  box-shadow: 0 8px 22px -12px rgba(26, 23, 20, 0.6);
+  box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
 }
 .v2-btn--primary:hover {
   background: #000;
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px -12px rgba(26, 23, 20, 0.7);
+  transform: scale(1.025);
+  box-shadow: 0 12px 30px -14px rgba(26, 23, 20, 0.75);
+}
+.v2-btn--primary:active {
+  transform: scale(0.99);
 }
 /* Ghost/secondary = warm beige fill with ink text */
 .v2-btn--ghost {
@@ -391,7 +399,10 @@
 }
 .v2-btn--ghost:hover {
   background: var(--v2-beige-deep);
-  transform: translateY(-1px);
+  transform: scale(1.025);
+}
+.v2-btn--ghost:active {
+  transform: scale(0.99);
 }
 .v2-btn--light {
   background: #fff;
@@ -428,7 +439,17 @@
 }
 .v2-btn--glass:hover {
   background: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
+  transform: scale(1.025);
+}
+.v2-btn--glass:active {
+  transform: scale(0.99);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-btn--primary:hover,
+  .v2-btn--ghost:hover,
+  .v2-btn--glass:hover {
+    transform: none;
+  }
 }
 
 /* ---- Pills / chips ---- */
@@ -589,6 +610,25 @@
   cursor: grab;
 }
 
+/* ---- FAQ section ---- */
+.v2-faq {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+/* Very subtle warm wash (derived from section-cream-wash). Near-flat cream with
+   a faint warm glow on the left and a cool lift top-right — much quieter than
+   the closing-CTA gradient, so it adds depth without hurting FAQ legibility. */
+.v2-faq__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 70% at 0% 50%, rgba(247, 232, 214, 0.55) 0%, rgba(247, 232, 214, 0) 70%),
+    radial-gradient(50% 45% at 100% 12%, rgba(238, 245, 246, 0.6) 0%, rgba(238, 245, 246, 0) 65%),
+    linear-gradient(160deg, #fdfaf5 0%, #f4ece1 100%);
+}
+
 /* ---- FAQ accordion ---- */
 .v2-faq-item {
   border-bottom: 1px solid var(--v2-line);
@@ -647,21 +687,6 @@
     linear-gradient(160deg, #fcf8f2 0%, #f7efe4 55%, #f3e7d8 100%);
 }
 
-.v2-waiting__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px rgba(26, 23, 20, 0.05);
-  padding: 0.5rem 1.1rem;
-  font-family: var(--v2-fb);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--v2-ink-mute);
-  backdrop-filter: blur(4px);
-}
 
 .v2-waiting__title {
   margin: 1.6rem auto 0;
@@ -692,33 +717,62 @@
   text-wrap: pretty;
 }
 
-.v2-waiting__trust {
-  margin: 2.4rem auto 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem 1.1rem;
-  font-family: var(--v2-fb);
-  font-size: 0.92rem;
-  color: var(--v2-ink-mute);
+/* ---- Trust ticker (between the closing CTA and the footer) ----
+   A seamless horizontal marquee: the item group is rendered twice and the track
+   animates to -50%, so it loops without a seam. White band, hairline rules. */
+.v2-ticker {
+  overflow: hidden;
+  background: #fff;
 }
-.v2-waiting__trust-item {
+.v2-ticker__track {
+  display: flex;
+  width: max-content;
+  animation: v2-ticker-scroll 38s linear infinite;
+}
+.v2-ticker:hover .v2-ticker__track {
+  animation-play-state: paused;
+}
+.v2-ticker__group {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+.v2-ticker__item {
   display: inline-flex;
   align-items: center;
-  gap: 1.1rem;
+  gap: 0.6rem;
+  padding-block: 1.05rem;
+  font-family: var(--v2-fb);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v2-ink-soft);
+  white-space: nowrap;
 }
-.v2-waiting__dot {
+.v2-ticker__item svg {
+  color: var(--v2-ink-mute);
+  flex: none;
+}
+.v2-ticker__dot {
   width: 3px;
   height: 3px;
+  margin-inline: 1.6rem;
   border-radius: 999px;
   background: var(--v2-line-strong);
+}
+@keyframes v2-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ---- Light editorial footer (/glp2-v2 only) ---- */
 .v2-foot {
   background: var(--v2-cream);
-  border-top: 1px solid var(--v2-line);
   font-family: var(--v2-fb);
   color: var(--v2-ink-soft);
 }
@@ -791,7 +845,7 @@
 .v2-foot__heading {
   font-family: var(--v2-fb);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: var(--v2-ink);
   margin-bottom: 1rem;
 }
@@ -801,27 +855,26 @@
   gap: 0.7rem;
 }
 .v2-foot__link {
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   color: var(--v2-ink-soft);
   text-decoration: none;
+  white-space: nowrap;
   transition: color 0.18s ease;
 }
 .v2-foot__link:hover {
   color: var(--v2-ink);
 }
 
-/* Secure rail */
+/* Secure rail — pill reuses the hero's .v2-glass .v2-glass-pill treatment.
+   The footer sits on flat cream (not a gradient), so the translucent glass fill
+   would read as near-invisible; nudge the backing up just enough to stay
+   perceptible while keeping the frosted look. Only the icon tint is footer-only. */
 .v2-foot__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
-  padding: 0.55rem 1.05rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--v2-ink);
+  white-space: nowrap;
+  letter-spacing: 0.08em;
 }
 .v2-foot__pill svg {
   color: var(--v2-gold);
@@ -866,5 +919,8 @@
   .v2-btn,
   .v2-faq-a {
     transition: none;
+  }
+  .v2-ticker__track {
+    animation: none;
   }
 }

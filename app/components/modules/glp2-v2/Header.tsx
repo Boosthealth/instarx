@@ -63,7 +63,7 @@ export function Header() {
           <V2Button
             href={INTAKE_HREF}
             variant="primary"
-            className="v2-btn--sm justify-self-end"
+            className="justify-self-end"
             arrow
           >
             Find your treatment

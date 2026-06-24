@@ -79,7 +79,7 @@ export function Hero() {
               <V2Button
                 href={INTAKE_HREF}
                 variant="primary"
-                className="w-full sm:w-auto"
+                className="v2-btn--lg w-full sm:w-auto"
                 arrow
               >
                 Find your treatment
@@ -88,7 +88,7 @@ export function Hero() {
               <V2Button
                 href={INTAKE_HREF}
                 variant="glass"
-                className="w-full sm:w-auto"
+                className="v2-btn--lg w-full sm:w-auto"
               >
                 See pricing
               </V2Button>

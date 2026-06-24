@@ -64,26 +64,29 @@ function Star({ fill }: { fill: number }) {
 export function TrustRow({ showRating = true }: { showRating?: boolean }) {
   return (
     <div className="v2-trust">
-      <ul className="v2-trust__row">
-        {BADGES.map((badge) => (
-          <li key={badge.label} className="v2-trust__item">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              {badge.icon}
-            </svg>
-            <span>{badge.label}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="v2-trust__panel">
+        <ul className="v2-trust__row">
+          {BADGES.map((badge) => (
+            <li key={badge.label} className="v2-trust__item">
+              <span className="v2-trust__icon" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {badge.icon}
+                </svg>
+              </span>
+              <span>{badge.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {showRating && (
         <div className="v2-trust__rating" role="img" aria-label="Rated Excellent, 4.7 out of 5 stars">

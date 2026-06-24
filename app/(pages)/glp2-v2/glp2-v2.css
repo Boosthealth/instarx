@@ -1613,35 +1613,75 @@
    original /glp2 trust badges + rating. */
 .v2-trust {
   margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--v2-line);
 }
-/* Medications: no divider, and sit close to the cards + the rating below it. */
-#medications .v2-trust {
-  margin-top: 1.5rem;
-  padding-top: 0;
-  border-top: 0;
+/* The four credibility points lifted into one soft editorial panel (echoes the
+   hero trust-bar's structure — icon tiles + hairline dividers — without the
+   frosted-glass-over-photo treatment, since there's no photo behind it here). */
+.v2-trust__panel {
+  border-radius: 18px;
+  background: var(--v2-cream-2);
+  border: 1px solid var(--v2-line);
+  padding: 0.35rem 0.5rem;
 }
 .v2-trust__row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .v2-trust__item {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
+  padding: 1rem 1.15rem;
+  position: relative;
   font-family: var(--v2-fb);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.3;
-  color: var(--v2-ink-soft);
-}
-.v2-trust__item svg {
-  flex: none;
   color: var(--v2-ink);
+}
+/* Hairline divider on the left edge of every item except the first. */
+.v2-trust__item + .v2-trust__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  bottom: 0.85rem;
+  width: 1px;
+  background: var(--v2-line);
+}
+.v2-trust__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--v2-cream);
+  color: var(--v2-ink);
+}
+/* Responsive: 4 cols -> 2 cols (drop the inter-column divider on the new
+   first-of-row), then -> stacked single column on the smallest phones. */
+@media (max-width: 860px) {
+  .v2-trust__row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .v2-trust__item:nth-child(odd)::before {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .v2-trust__row {
+    grid-template-columns: 1fr;
+  }
+  .v2-trust__item::before {
+    display: none;
+  }
 }
 .v2-trust__rating {
   margin-top: 1.6rem;

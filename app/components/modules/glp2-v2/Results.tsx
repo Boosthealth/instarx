@@ -9,9 +9,6 @@ export function Results() {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal className="order-2 lg:order-1">
             <BeforeAfter />
-            <p className="mt-4 text-sm" style={{ color: "var(--v2-ink-mute)" }}>
-              Drag to compare · 6 months on GLP-1
-            </p>
           </Reveal>
 
           <Reveal className="order-1 lg:order-2" delay={80}>

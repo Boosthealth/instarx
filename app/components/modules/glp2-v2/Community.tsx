@@ -7,7 +7,7 @@ import { INTAKE_HREF } from "./content";
  * brings color to the page mid-scroll: a rich pink→beige gradient spans edge to
  * edge, with the copy + CTA on the left and a real-person cutout (woman holding
  * a GLP-1 vial) filling the right. Mirrors the hero's split layout. */
-const COMMUNITY_IMG = "/images/1 hero.png";
+const COMMUNITY_IMG = "/images/2 hero.png";
 
 export function Community() {
   return (

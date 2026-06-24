@@ -5,9 +5,12 @@ import Image from "next/image";
 import { V2Button } from "./ui";
 import { navLinks, INTAKE_HREF } from "./content";
 
-/* Page-local editorial header. Transparent over the cream canvas; on scroll it
- * gains a cream backdrop + bottom hairline for legibility. Mobile collapses the
- * nav to a single CTA (the page is a focused lander — no hamburger needed). */
+/* Page-local editorial header. Transparent over the hero gradient at the top;
+ * on scroll a translucent frosted-glass background + hairline fades in
+ * (Lightship-style). The blur stays mounted and only the background opacity /
+ * border animate, so the transition eases smoothly instead of snapping. The nav
+ * text stays dark ink at both states (our backdrop is light, so no white->dark
+ * color flip is needed). Mobile keeps a single CTA — no hamburger. */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -20,13 +23,21 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-40 transition-colors duration-300"
+      className="sticky top-0 z-40"
       style={{
-        backgroundColor: scrolled ? "rgba(251,247,242,0.85)" : "transparent",
-        backdropFilter: scrolled ? "saturate(180%) blur(12px)" : "none",
+        backgroundColor: scrolled
+          ? "rgba(251,247,242,0.72)"
+          : "rgba(251,247,242,0)",
+        // Blur stays mounted at both states so toggling doesn't snap; it's
+        // imperceptible when the background is fully transparent.
+        WebkitBackdropFilter: "saturate(150%) blur(10px)",
+        backdropFilter: "saturate(150%) blur(10px)",
         borderBottom: scrolled
           ? "1px solid var(--v2-line)"
           : "1px solid transparent",
+        boxShadow: scrolled ? "0 6px 24px -20px rgba(60,40,30,0.5)" : "none",
+        transition:
+          "background-color 0.35s cubic-bezier(0.165,0.84,0.44,1), border-color 0.35s ease, box-shadow 0.35s ease",
       }}
     >
       <div className="v2-container flex items-center justify-between gap-6 py-4">

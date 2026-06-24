@@ -4,43 +4,50 @@ import { timeline } from "./content";
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="v2-section v2-bg-white">
+    <section id="how-it-works" className="v2-section v2-bg-white v2-hiw">
       <div className="v2-container">
-        {/* Two columns: timeline list on the left, bottom-aligned phone on the
-            right. White background so the app screenshot's white edges blend. */}
+        {/* Two columns: timeline list on the left, phone attached to the section
+            bottom on the right. White background so the app screenshot's white
+            edges blend; the section's bottom padding is removed (.v2-hiw) so the
+            phone reads as anchored to the section's lower edge. */}
         <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
-          <Reveal>
+          <Reveal className="v2-hiw__copy">
+            <p className="v2-eyebrow v2-kicker-rule mb-5 inline-flex">
+              The process
+            </p>
             <h2 className="v2-h2 mb-4">
               Get your weight loss meds in{" "}
               <span className="v2-accent">1–2 days</span>
             </h2>
             <p className="v2-lede mb-10">
-              Concierge medical weight loss without the waiting room.
+              Concierge weight loss — without the waiting room.
             </p>
 
-            <ol className="v2-timeline">
+            {/* Vertical stepper: a connecting rail down the left with a node per
+                step; the glass tag + text sit to the right of each node. */}
+            <ol className="v2-step">
               {timeline.map((step) => (
-                <li key={step.when} className="v2-timeline__row">
-                  <div className="v2-timeline__head">
-                    <span className="v2-glass v2-glass-pill v2-timeline__tag">
+                <li key={step.when} className="v2-step__row">
+                  <span className="v2-step__node" aria-hidden="true" />
+                  <div className="v2-step__content">
+                    <span className="v2-glass v2-glass-pill v2-step__tag">
                       {step.when}
                     </span>
-                    <span className="v2-timeline__rule" aria-hidden="true" />
+                    <p className="v2-step__text">{step.text}</p>
                   </div>
-                  <p className="v2-timeline__text">{step.text}</p>
                 </li>
               ))}
             </ol>
           </Reveal>
 
-          <Reveal delay={120} className="flex justify-center lg:justify-end">
+          <Reveal delay={120} className="v2-hiw__media">
             <Image
-              src="/lose-weight/timeline.webp"
+              src="/images/phone.png"
               alt="The InstaRx app showing the weight-loss intake flow"
-              width={460}
-              height={920}
+              width={1600}
+              height={2070}
               sizes="(max-width: 1024px) 90vw, 500px"
-              className="h-auto w-full max-w-[360px] object-contain lg:max-w-[480px]"
+              className="v2-hiw__phone"
             />
           </Reveal>
         </div>

@@ -1,12 +1,13 @@
 import { Reveal } from "./Reveal";
-import { V2Button } from "./ui";
+import { V2Button, Stars } from "./ui";
+import { ReassuranceLine } from "./ReassuranceLine";
 import { INTAKE_HREF } from "./content";
 
 /* Closing CTA section that sits directly above the footer. Mirrors the airy
  * "what are you waiting for?" pattern: small eyebrow pill, oversized two-line
- * headline, short supporting line, and a single dark pill CTA — all on a soft
- * warm gradient wash (EOS-style). The trust points now live in the Ticker that
- * runs between this section and the footer. */
+ * headline, short supporting line, dual CTAs, the icon reassurance line, and a
+ * Trustpilot-style rating strip — all on a soft warm gradient wash (EOS-style).
+ * The trust ticker runs between this section and the footer. */
 export function WhatAreYouWaitingFor() {
   return (
     <section className="v2-waiting">
@@ -33,15 +34,43 @@ export function WhatAreYouWaitingFor() {
               safely and effectively from the comfort of home.
             </p>
 
-            <div className="mt-9 flex justify-center">
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <V2Button
                 href={INTAKE_HREF}
                 variant="primary"
-                className="v2-btn--lg"
+                className="w-full sm:w-auto"
                 arrow
               >
                 Find your treatment
               </V2Button>
+              <V2Button
+                href={INTAKE_HREF}
+                variant="glass"
+                className="w-full sm:w-auto"
+              >
+                See pricing
+              </V2Button>
+            </div>
+
+            <div className="mt-6 flex justify-center">
+              <ReassuranceLine align="center" />
+            </div>
+
+            {/* Trustpilot-style rating strip */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <span
+                className="text-sm font-semibold"
+                style={{ color: "var(--v2-ink)" }}
+              >
+                Excellent 4.7
+              </span>
+              <Stars count={5} size={16} />
+              <span
+                className="text-sm"
+                style={{ color: "var(--v2-ink-mute)" }}
+              >
+                10,000+ happy customers
+              </span>
             </div>
           </div>
         </Reveal>

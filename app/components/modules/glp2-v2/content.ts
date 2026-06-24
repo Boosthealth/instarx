@@ -44,30 +44,39 @@ export const heroChecks = [
   },
 ];
 
-export const comparison = {
-  rows: [
-    {
-      label: "How it works",
-      sema: "A proven single-action peptide for appetite control",
-      tirz: "A next-generation dual-action peptide for deeper metabolic support",
-    },
-    {
-      label: "Weight reduction",
-      sema: "Supports up to 15% body weight reduction",
-      tirz: "Supports up to 20.9% body weight reduction",
-    },
-    {
-      label: "Best for",
-      sema: "Ideal for long-term balance and consistency",
-      tirz: "Ideal for accelerated transformation and fat reduction",
-    },
-    {
-      label: "In short",
-      sema: "A strong starting point for most clients",
-      tirz: "The most comprehensive option for advanced goals",
-    },
-  ],
-};
+
+/* Medications section — a spec-sheet diptych + pick-your-peptide. One card per
+ * compounded peptide: real vial, identity, three spec rows, an in-stock status,
+ * and its own CTA. Tirzepatide carries a small "Most comprehensive" flag by its
+ * name. (Merges the old Comparison "Choose your path" section.) */
+export const medications = [
+  {
+    name: "Semaglutide",
+    type: "Single-action GLP-1",
+    img: "/images/sem-glp1.png",
+    tagline: "A proven appetite-control peptide for steady, sustainable loss.",
+    flag: null as string | null,
+    cta: "Choose Semaglutide",
+    specs: [
+      { label: "Mechanism", value: "GLP-1 receptor agonist" },
+      { label: "Avg. weight loss", value: "up to 15%", emphasize: true },
+      { label: "Best for", value: "Long-term balance & consistency" },
+    ],
+  },
+  {
+    name: "Tirzepatide",
+    type: "Dual-action GLP-1 / GIP",
+    img: "/images/tirz-glp1.png",
+    tagline: "A next-gen dual-action peptide for deeper metabolic results.",
+    flag: "Most comprehensive",
+    cta: "Choose Tirzepatide",
+    specs: [
+      { label: "Mechanism", value: "GLP-1 + GIP dual agonist" },
+      { label: "Avg. weight loss", value: "up to 20.9%", emphasize: true },
+      { label: "Best for", value: "Accelerated transformation" },
+    ],
+  },
+];
 
 export const steps = [
   {
@@ -107,22 +116,22 @@ export const kitItems = [
  * rendered as a small tag, with the step copy to its right. Mirrors the layout
  * on go.instarx.com/glp2. */
 export const timeline = [
-  { when: "Today", text: "Get $150 off today. Discount applied at checkout." },
+  { when: "Today", text: "Get $150 off — applied at checkout." },
   {
     when: "In 1 day",
-    text: "Doctor review — a licensed U.S. physician reviews your profile and writes your prescription.",
+    text: "A licensed U.S. physician reviews you and writes your prescription.",
   },
   {
     when: "Within 1 day",
-    text: "Insta-Ship — our licensed U.S. pharmacies prepare your kit and express ship it to your door in 1–2 days.",
+    text: "Our U.S. pharmacies prepare your kit and express ship it.",
   },
   {
-    when: "Free & discreet 1–2 day delivery",
-    text: "Receive your medication and supply kit.",
+    when: "Free 1–2 day delivery",
+    text: "Your medication and supply kit arrive at your door.",
   },
   {
-    when: "Ongoing care & support",
-    text: "Begin treatment with InstaRx nursing staff, and start losing weight.",
+    when: "Ongoing care",
+    text: "Begin treatment with InstaRx nursing staff, and start losing.",
   },
 ];
 
@@ -150,6 +159,32 @@ export const reviews = [
       "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
     name: "Darlene N.",
     tag: "Life-changing",
+  },
+  // NOTE: verify all testimonials are from real, consenting InstaRx members
+  // before launch — FTC endorsement rules apply to medical products.
+  {
+    quote:
+      "The whole thing was easier than I expected — the quiz took a few minutes and my kit arrived two days later.",
+    name: "Megan R.",
+    tag: "Down 19 lbs in 3 months",
+  },
+  {
+    quote:
+      "Having a real provider answer my questions made me feel comfortable starting. I never felt rushed.",
+    name: "Priya S.",
+    tag: "Felt supported the whole way",
+  },
+  {
+    quote:
+      "Flat pricing with no surprise fees is exactly why I stuck with it. Simple and predictable every month.",
+    name: "Jordan T.",
+    tag: "No hidden costs",
+  },
+  {
+    quote:
+      "A few months in and my appetite is steadier, the cravings are gone, and the routine just fits my life.",
+    name: "Lauren M.",
+    tag: "Cravings finally gone",
   },
 ];
 

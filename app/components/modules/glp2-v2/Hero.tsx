@@ -91,9 +91,11 @@ export function Hero() {
             </div>
 
             <h1 className="v2-display v2-hero-h1 mb-5">
-              Drop up to <span className="v2-accent">1–2&nbsp;lbs</span>
-              <br />
-              per week
+              Drop up to{" "}
+              <span className="v2-accent" style={{ whiteSpace: "nowrap" }}>
+                1–2 lbs
+              </span>
+              <br className="v2-hero-br" /> per week
             </h1>
 
             {/* Benefit sub-line — the price lives in the offer card (right), so
@@ -143,8 +145,8 @@ export function Hero() {
         {/* 3-column glass trust-bar. On desktop it's an absolute overlay pinned
             to the bottom of the hero card, deliberately overlapping the lower
             part of the photo so the frosted glass has the subject + gradient to
-            blur (Intercom-style). On small screens it drops back into normal flow
-            below the stacked content. */}
+            blur (Intercom-style). On small screens it drops to a single column in
+            normal flow below the stacked content. */}
         <div className="v2-trustbar-wrap v2-container">
           <ul className="v2-trustbar">
             {heroChecks.map((item, i) => {

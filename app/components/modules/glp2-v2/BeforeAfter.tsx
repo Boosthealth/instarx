@@ -46,15 +46,14 @@ export function BeforeAfter() {
   return (
     <div
       ref={containerRef}
-      className="relative aspect-[4/5] cursor-col-resize select-none overflow-hidden rounded-[24px] sm:aspect-[4/4]"
+      className="relative aspect-square cursor-col-resize select-none overflow-hidden rounded-[24px]"
       style={{ boxShadow: "var(--v2-shadow-card)", border: "1px solid var(--v2-line)" }}
     >
       <Image
-        src="/lose-weight/model1-before.webp"
+        src="/images/before.png"
         alt="Before weight loss"
         fill
-        className="object-cover"
-        style={{ objectPosition: "center 0%" }}
+        className="object-cover object-center"
         sizes="(min-width: 1024px) 50vw, 100vw"
       />
       <div
@@ -62,28 +61,20 @@ export function BeforeAfter() {
         className="absolute inset-0"
         style={{ clipPath: `inset(0 0 0 ${position}%)` }}
       >
-        <div className="absolute inset-0" style={{ transform: "translateY(0.5%)" }}>
-          <Image
-            src="/lose-weight/model1-after.webp"
-            alt="After weight loss"
-            fill
-            className="object-cover object-top"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
-        </div>
+        <Image
+          src="/images/after.png"
+          alt="After weight loss"
+          fill
+          className="object-cover object-center"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+        />
       </div>
 
-      {/* before / after labels */}
-      <span
-        className="absolute left-4 top-4 z-20 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-        style={{ background: "rgba(26,23,20,0.55)", color: "#fff", backdropFilter: "blur(4px)" }}
-      >
+      {/* before / after labels — our glossy glass pills */}
+      <span className="v2-glass v2-glass-pill absolute left-4 top-4 z-20" style={{ color: "#fff" }}>
         Before
       </span>
-      <span
-        className="absolute right-4 top-4 z-20 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-        style={{ background: "var(--v2-rose)", color: "#fff" }}
-      >
+      <span className="v2-glass v2-glass-pill absolute right-4 top-4 z-20" style={{ color: "#fff" }}>
         After
       </span>
 

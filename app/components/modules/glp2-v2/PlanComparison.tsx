@@ -47,7 +47,7 @@ export function PlanComparison() {
           </h2>
         </Reveal>
 
-        <Reveal className="v2-compare">
+        <Reveal className="v2-compare" delay={80}>
           {/* Column headers — empty over the feature rail, brand over the
               InstaRx card, muted over competitors. */}
           <div className="v2-compare__head" aria-hidden="true">
@@ -87,7 +87,7 @@ export function PlanComparison() {
           </ul>
         </Reveal>
 
-        <Reveal className="v2-compare__cta">
+        <Reveal className="v2-compare__cta" delay={160}>
           <p className="v2-compare__join">
             Join 10,000+ Americans losing weight with InstaRx
           </p>

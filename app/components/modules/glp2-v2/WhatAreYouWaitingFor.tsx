@@ -14,7 +14,9 @@ export function WhatAreYouWaitingFor() {
       {/* soft warm gradient backdrop */}
       <div className="v2-waiting__bg" aria-hidden="true" />
       <div className="v2-container relative">
-        <Reveal>
+        {/* Peak entrance — gentle scale-up + fade (not the standard rise) marks
+            the closing CTA as the page's destination (peak-end rule). */}
+        <Reveal className="v2-reveal--peak">
           <div className="mx-auto max-w-3xl px-2 py-24 text-center sm:py-32">
             {/* eyebrow pill — same glass treatment as the hero "GLP-1 Weight Loss"
                 tag, minus the leading dot. */}

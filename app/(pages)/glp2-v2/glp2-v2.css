@@ -1215,12 +1215,25 @@
 .v2-reveal {
   opacity: 0;
   transform: translateY(18px);
+  /* 0.5s (was 0.7s) — long enough to read as an intentional rise, short enough
+     that it finishes before the user scrolls past. Strong ease-out curve. */
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .v2-reveal.is-in {
   opacity: 1;
+  transform: none;
+}
+
+/* Closing-CTA entrance — the final section is the emotional peak (peak-end rule),
+   so it earns a distinct reveal: a gentle scale-up + fade instead of the standard
+   rise, marking it as the destination rather than just another section. Applied
+   via .v2-reveal--peak alongside the base .v2-reveal. */
+.v2-reveal--peak {
+  transform: scale(0.985);
+}
+.v2-reveal--peak.is-in {
   transform: none;
 }
 

@@ -19,9 +19,28 @@ export function V2Button({
   children: ReactNode;
   variant?: BtnVariant;
   className?: string;
-  /* Append a lucide ArrowRight (matches Coivas). Slides right on hover. */
+  /* Append a lucide ArrowRight (matches Coivas). */
   arrow?: boolean;
 }) {
+  // The label (text + arrow) is rendered twice and stacked; on hover the slider
+  // translates up one copy's height so the first copy slides out the top and the
+  // duplicate slides up into place — bymonolog's vertical text-swap. Both the
+  // text and the arrow move together because they share each copy. CSS lives in
+  // glp2-v2.css (`.v2-btn__label*`).
+  const copy = (
+    <span className="v2-btn__line">
+      <span className="v2-btn__text">{children}</span>
+      {arrow && (
+        <ArrowRight
+          className="v2-btn__arrow"
+          size={18}
+          strokeWidth={2}
+          aria-hidden="true"
+        />
+      )}
+    </span>
+  );
+
   // prefetch={false}: matches the shared Button — every CTA points at /intake,
   // and viewport prefetch would pre-bucket visitors in the experiment proxy.
   return (
@@ -30,10 +49,12 @@ export function V2Button({
       prefetch={false}
       className={`v2-btn v2-btn--${variant} ${className}`.trim()}
     >
-      {children}
-      {arrow && (
-        <ArrowRight className="v2-btn__arrow" size={18} strokeWidth={2} aria-hidden="true" />
-      )}
+      <span className="v2-btn__label">
+        <span className="v2-btn__slider">
+          {copy}
+          <span aria-hidden="true">{copy}</span>
+        </span>
+      </span>
     </Link>
   );
 }

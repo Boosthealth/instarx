@@ -375,7 +375,7 @@
    corners. The header stays full-width above (no bleed-up). */
 .v2-hero-wrap {
   padding: clamp(0.6rem, 1.4vw, 1.1rem);
-  padding-top: clamp(0.4rem, 1vw, 0.8rem);
+  padding-top: clamp(0.15rem, 0.4vw, 0.35rem);
 }
 .v2-hero-card {
   position: relative;
@@ -389,7 +389,7 @@
    above her head — she's never clipped at the top. */
 @media (min-width: 1024px) {
   .v2-hero-card {
-    padding-bottom: clamp(7rem, 9vw, 9.5rem);
+    padding-bottom: clamp(8.5rem, 11vw, 11rem);
     min-height: clamp(560px, 46vw, 720px);
   }
 }
@@ -467,16 +467,23 @@
   /* Portrait ratio (~0.875 w/h) is much taller per unit width, so the width is
      smaller than the old landscape image while she still reads large. */
   width: clamp(360px, 38vw, 560px);
+  /* Cap the photo height so there's ~40px of headroom above her head. She's
+     bottom-anchored, so the cap pushes the image's top edge down by that amount
+     (never cropping her). */
+  max-height: 100%;
   pointer-events: none;
 }
 .v2-hero-photo__img {
   display: block;
-  width: 100%;
-  height: auto;
-  /* No object-fit needed — the img sizes to its natural ratio at the wrapper
-     width, so she is NEVER cropped on any side. The card's min-height (below)
-     guarantees there's room above her head. */
+  /* width:auto + height:100% so the max-height cap on the wrapper actually
+     constrains the rendered image (object-fit keeps her uncropped, bottom-aligned). */
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  /* contain keeps her whole; bottom-anchor so the headroom appears at the top. */
   object-fit: contain;
+  object-position: bottom center;
 }
 /* The content grid: copy on the left, the right side intentionally open so the
    background photo shows through. Single column; the photo fills the right via
@@ -566,10 +573,10 @@
 .v2-trustbar-wrap {
   position: relative;
   z-index: 20;
-  padding-top: 2.5rem;
+  padding-top: 3.25rem;
 }
 .v2-hero-fineprint {
-  margin-top: 1.25rem;
+  margin-top: 2rem;
   padding-bottom: 2.5rem;
   color: var(--v2-ink-mute);
 }
@@ -578,14 +585,14 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: clamp(3rem, 4vw, 3.75rem);
+    bottom: clamp(4rem, 5.2vw, 5.25rem);
     padding-top: 0;
   }
   .v2-hero-fineprint {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: clamp(1.1rem, 1.8vw, 1.5rem);
+    bottom: clamp(0.85rem, 1.4vw, 1.15rem);
     margin-top: 0;
     padding-bottom: 0;
   }

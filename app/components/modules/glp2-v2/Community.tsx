@@ -3,10 +3,12 @@ import { Reveal } from "./Reveal";
 import { V2Button } from "./ui";
 import { INTAKE_HREF } from "./content";
 
-/* "Thousands losing weight, together" — a full-bleed, hero-style band that
+/* "The kind of progress people stay for" — a full-bleed, hero-style band that
  * brings color to the page mid-scroll: a rich pink→beige gradient spans edge to
  * edge, with the copy + CTA on the left and a real-person cutout (woman holding
- * a GLP-1 vial) filling the right. Mirrors the hero's split layout. */
+ * a GLP-1 vial) filling the right. Mirrors the hero's split layout. This band
+ * owns the retention/stickiness angle — members keep going past month one —
+ * which no other section on the page claims, so it doesn't restate the hero. */
 const COMMUNITY_IMG = "/images/2 hero.png";
 
 export function Community() {
@@ -17,13 +19,13 @@ export function Community() {
           {/* Left: copy + CTA */}
           <Reveal className="v2-community__copy">
             <h2 className="v2-community__title">
-              Thousands losing weight,{" "}
-              <span className="v2-accent">together</span>.
+              The kind of progress people{" "}
+              <span className="v2-accent">stay</span> for.
             </h2>
             <p className="v2-community__sub">
-              Over 10,000 members are losing up to 17% of their body weight with
-              InstaRx — backed by U.S.-licensed physicians and 1:1 care every
-              step of the way.
+              GLP-1 isn't a one-month fix — and most members don't treat it like
+              one. They keep going well past their first month, because steady
+              support makes it stick when willpower alone doesn't.
             </p>
             <div className="v2-community__actions">
               <V2Button

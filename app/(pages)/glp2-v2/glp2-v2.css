@@ -222,12 +222,14 @@
   border-radius: 999px;
   opacity: 0;
   transition: opacity 0.4s ease;
-  -webkit-backdrop-filter: saturate(150%) blur(10px);
-  backdrop-filter: saturate(150%) blur(10px);
+  -webkit-backdrop-filter: saturate(120%) blur(16px);
+  backdrop-filter: saturate(120%) blur(16px);
   /* Keep blur mounted but harmless until revealed: no paint when opacity 0.
-     No border (per design) — depth comes from the soft shadow alone. */
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 10px 30px -22px rgba(60, 40, 30, 0.6);
+     No border (per design). More-transparent frost: the page bleeds through and
+     the stronger blur (not opacity) keeps nav text legible, so the band reads as
+     glass dissolving into the page rather than a white chip on top of it. */
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 22px -18px rgba(60, 40, 30, 0.35);
   pointer-events: none;
 }
 .v2-header.is-scrolled .v2-header__glass {
@@ -467,9 +469,9 @@
   /* Portrait ratio (~0.875 w/h) is much taller per unit width, so the width is
      smaller than the old landscape image while she still reads large. */
   width: clamp(360px, 38vw, 560px);
-  /* Cap the photo height so there's ~40px of headroom above her head. She's
-     bottom-anchored, so the cap pushes the image's top edge down by that amount
-     (never cropping her). */
+  /* Fill the card height; she's bottom-anchored so any excess height clips at
+     the top (overflow:hidden), never cropping her body — headroom above her head
+     comes from the PNG's transparent top padding. */
   max-height: 100%;
   pointer-events: none;
 }
@@ -481,13 +483,12 @@
   height: 100%;
   max-width: 100%;
   margin-inline: auto;
-  /* contain keeps her whole; bottom-anchor so the headroom appears at the top. */
+  /* contain keeps her whole; bottom-anchor so she's ATTACHED to the card's
+     bottom edge (no gap). The headroom above her head comes from the PNG's own
+     ~5.6% transparent top padding — no lift transform (a translateY here would
+     pull her bottom edge UP off the card and reopen a gap below her). */
   object-fit: contain;
   object-position: bottom center;
-  /* Lift the image ~35px so her head sits ~40px below the card top. The PNG
-     carries ~5.6% transparent padding above her hair, which otherwise left a
-     larger visual gap; her lower body extends past the card bottom (clipped). */
-  transform: translateY(-35px);
 }
 /* The content grid: copy on the left, the right side intentionally open so the
    background photo shows through. Single column; the photo fills the right via
@@ -512,8 +513,12 @@
   /* Above the trust-bar overlay (z-20) so the offer card always sits in front. */
   z-index: 25;
   /* On her body (right of the bottle), kept inside the figure so it never
-     overlaps the copy on the left. */
-  bottom: clamp(7rem, 12vw, 10rem);
+     overlaps the copy on the left. The bottom offset is tuned to always clear
+     the trust-bar overlay (pinned at clamp(4rem,5.2vw,5.25rem) + ~72px tall):
+     at the narrow desktop end (1024px) the old 12vw value let the card dip ~34px
+     INTO the bar's third column. Raising the floor + base term keeps the card
+     ~16px above the bar at 1024px and lifts cleanly with width. */
+  bottom: clamp(10.75rem, 6vw + 5.75rem, 13rem);
   left: clamp(2rem, 5vw, 5rem);
   width: max-content;
   /* Wide enough that the "$150 off" badge stays a pill on one line. */
@@ -560,6 +565,14 @@
   .v2-trustbar-wrap {
     order: 3;
   }
+  /* The cream legibility scrim only serves the desktop LEFT copy column (which
+     overlays the gradient beside the subject). On mobile the copy is stacked at
+     the top over the bare gradient and the subject is centered BELOW — there the
+     scrim just sits on top of her and mutes the photo. Drop it on small screens
+     so she renders at full saturation/contrast. */
+  .v2-hero-scrim {
+    display: none;
+  }
   .v2-hero-fineprint {
     order: 4;
   }
@@ -579,11 +592,20 @@
 .v2-trustbar-wrap {
   position: relative;
   z-index: 20;
-  padding-top: 3.25rem;
+  /* Mobile/tablet: tuck the frosted trust-bar UP so it overlaps the lower edge of
+     the photo (mirroring the desktop overlay treatment) — this removes the gap
+     below her body entirely and reads as intentional layering rather than a void.
+     The negative margin is safe: the price card sits ~24-48px ABOVE the photo
+     bottom, so the bar never collides with it. (Desktop overrides this to an
+     absolute overlay below.) */
+  margin-top: -2rem;
 }
 .v2-hero-fineprint {
   margin-top: 2rem;
-  padding-bottom: 2.5rem;
+  /* More room below the "No hidden fees · …" line on mobile so it doesn't sit
+     flush against the hero card's bottom edge / the next section. (Desktop
+     overrides this to an absolute pin below.) */
+  padding-bottom: 4rem;
   color: var(--v2-ink-soft);
 }
 @media (min-width: 1024px) {
@@ -593,12 +615,17 @@
     right: 0;
     bottom: clamp(4rem, 5.2vw, 5.25rem);
     padding-top: 0;
+    margin-top: 0;
   }
   .v2-hero-fineprint {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: clamp(0.6rem, 1vw, 0.85rem);
+    /* Sit just under the trust-bar strip (~12px gap). The strip is pinned at
+       clamp(4rem,5.2vw,5.25rem); pinning the fineprint with the SAME 5.2vw term
+       (minus a constant) keeps the gap to the strip constant across desktop
+       widths instead of widening from ~31px at 1024 to ~48px at 1680. */
+    bottom: clamp(2rem, calc(5.2vw - 1.9rem), 3.4rem);
     margin-top: 0;
     padding-bottom: 0;
   }
@@ -1680,6 +1707,27 @@
 .v2-reassure__item svg {
   flex: none;
   color: var(--v2-ink-soft);
+}
+/* Mobile: keep all three reassurance points on a single line instead of
+   wrapping (the 3rd item — "Cancel anytime" — was dropping to its own row on
+   narrow phones). No wrap + a smaller font/gap, scaled by viewport so the line
+   stays balanced down to ~320px. */
+@media (max-width: 600px) {
+  .v2-reassure {
+    flex-wrap: nowrap;
+    gap: clamp(0.3rem, 2vw, 0.95rem);
+    font-size: clamp(0.54rem, 2.55vw, 0.8rem);
+    white-space: nowrap;
+  }
+  .v2-reassure__item {
+    gap: 0.25rem;
+  }
+  /* Shrink the icons in step with the text so the row stays balanced and never
+     forces an overflow on the narrowest phones (~320px). */
+  .v2-reassure__item svg {
+    width: clamp(11px, 3.4vw, 15px);
+    height: clamp(11px, 3.4vw, 15px);
+  }
 }
 
 /* ---- Stacked testimonial carousel ----

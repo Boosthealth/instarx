@@ -7,18 +7,18 @@ import Image from "next/image";
  * white "LA" knocked out of a dark box), so they get a desaturate-only
  * treatment. Single-color logos are flattened to one ink tone for even weight. */
 const PRESS_LOGOS = [
-  { src: "/lose-weight/press/ok-magazine.svg", alt: "OK! magazine", h: 34 },
-  { src: "/lose-weight/press/balancing-act.svg", alt: "The Balancing Act", h: 26 },
-  { src: "/lose-weight/press/womans-world.svg", alt: "Woman's World", h: 22 },
-  { src: "/lose-weight/press/la-weekly.svg", alt: "LA Weekly", h: 26, twoTone: true },
-  { src: "/lose-weight/press/lifetime.svg", alt: "Lifetime", h: 26 },
-  { src: "/lose-weight/press/health-uncensored.svg", alt: "Health Uncensored with Dr. Drew", h: 40 },
+  { src: "/lose-weight/press/ok-magazine.svg", alt: "OK! magazine", h: 37 },
+  { src: "/lose-weight/press/balancing-act.svg", alt: "The Balancing Act", h: 29 },
+  { src: "/lose-weight/press/womans-world.svg", alt: "Woman's World", h: 24 },
+  { src: "/lose-weight/press/la-weekly.svg", alt: "LA Weekly", h: 29, twoTone: true },
+  { src: "/lose-weight/press/lifetime.svg", alt: "Lifetime", h: 29 },
+  { src: "/lose-weight/press/health-uncensored.svg", alt: "Health Uncensored with Dr. Drew", h: 44 },
 ] as const;
 
 export function FeaturedIn() {
   return (
     <section className="v2-bg-cream">
-      <div className="v2-container py-12 text-center">
+      <div className="v2-container pt-12 pb-16 text-center">
         <p
           className="mb-7 text-xs font-semibold uppercase tracking-[0.22em]"
           style={{ color: "var(--v2-ink-mute)" }}
@@ -34,7 +34,7 @@ export function FeaturedIn() {
                 height={logo.h}
                 width={logo.h * 6}
                 sizes="(max-width: 640px) 40vw, 200px"
-                className="h-[var(--logo-h)] w-auto object-contain opacity-55 transition-opacity hover:opacity-80"
+                className="h-[var(--logo-h)] w-auto object-contain opacity-80 transition-opacity hover:opacity-100"
                 style={
                   {
                     "--logo-h": `${logo.h}px`,
@@ -43,8 +43,8 @@ export function FeaturedIn() {
                      * strip (OK! red, Lifetime pink, light-gray Health). */
                     filter:
                       "twoTone" in logo && logo.twoTone
-                        ? "grayscale(1) contrast(1.1)"
-                        : "brightness(0) invert(8%)",
+                        ? "grayscale(1) contrast(1.3)"
+                        : "brightness(0)",
                   } as React.CSSProperties
                 }
               />

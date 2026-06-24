@@ -72,8 +72,12 @@ export function Calculator() {
                       ),
                     )
                   }
-                  className="w-[3.5ch] bg-transparent text-right text-2xl font-bold focus:outline-none"
-                  style={{ color: "var(--v2-ink)", fontFamily: "var(--v2-fb)" }}
+                  className="w-[4ch] bg-transparent text-right text-2xl font-bold leading-snug focus:outline-none"
+                  style={{
+                    color: "var(--v2-ink)",
+                    fontFamily: "var(--v2-fb)",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
                   aria-label="Your current weight in pounds"
                 />
                 <span

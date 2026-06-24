@@ -26,17 +26,35 @@ export function HowItWorks() {
             {/* Vertical stepper: a connecting rail down the left with a node per
                 step; the glass tag + text sit to the right of each node. */}
             <ol className="v2-step">
-              {timeline.map((step) => (
-                <li key={step.when} className="v2-step__row">
-                  <span className="v2-step__node" aria-hidden="true" />
-                  <div className="v2-step__content">
-                    <span className="v2-glass v2-glass-pill v2-step__tag">
-                      {step.when}
-                    </span>
-                    <p className="v2-step__text">{step.text}</p>
-                  </div>
-                </li>
-              ))}
+              {timeline.map((step) => {
+                const isOffer = "offer" in step && step.offer;
+                const isOngoing = "ongoing" in step && step.ongoing;
+                return (
+                  <li
+                    key={step.when}
+                    className={`v2-step__row${
+                      isOngoing ? " v2-step__row--ongoing" : ""
+                    }`}
+                  >
+                    <span
+                      className={`v2-step__node${
+                        isOngoing ? " v2-step__node--open" : ""
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <div className="v2-step__content">
+                      <span
+                        className={`v2-glass v2-glass-pill v2-step__tag${
+                          isOffer ? " v2-step__tag--offer" : ""
+                        }`}
+                      >
+                        {step.when}
+                      </span>
+                      <p className="v2-step__text">{step.text}</p>
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
           </Reveal>
 

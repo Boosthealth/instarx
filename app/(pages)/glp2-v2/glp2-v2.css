@@ -2086,8 +2086,9 @@
   overflow: hidden;
 }
 .v2-hiw__copy {
-  /* give the text column the bottom space the section no longer provides */
-  padding-bottom: var(--v2-pad-y);
+  /* give the text column the bottom space the section no longer provides —
+     trimmed to 75% of the section pad so the timeline sits a touch tighter. */
+  padding-bottom: calc(var(--v2-pad-y) * 0.75);
 }
 .v2-hiw__media {
   display: flex;
@@ -2126,21 +2127,50 @@
   grid-template-columns: 22px 1fr;
   gap: 1rem;
   padding-bottom: 1.6rem;
+  /* Node centre y inside each row — the dot sits on the vertical midline of the
+     timing label (a 0.68rem/1.25 caption ≈ 0.85rem tall, centre ≈ 0.43rem).
+     Drives both the node offset and the rail ends so they stay in sync. */
+  --v2-step-node-y: 0.43rem;
+}
+/* The offer row leads with a taller padded badge, so its node sits lower to stay
+   centred on it. */
+.v2-step__row:first-child {
+  --v2-step-node-y: 0.78rem;
 }
 .v2-step__row:last-child {
   padding-bottom: 0;
 }
 /* the connecting rail: a vertical line centered on the node column, drawn behind
-   the node so the node sits on top of it. */
+   the node so the node sits on top of it. Runs from this node's centre down to
+   the next node's centre. */
 .v2-step__row::before {
   content: "";
   position: absolute;
   /* centre of the 22px node column (11px) minus half the 2px rail = 10px */
   left: 10px;
-  top: 10px;
-  bottom: -1.6rem;
+  top: var(--v2-step-node-y);
+  /* reach the next row's node centre: the 1.6rem gap below + the next node's
+     own offset. Every following row uses the base 0.43rem, so this is constant
+     regardless of the current row's (possibly taller) lead element. */
+  bottom: calc(-1.6rem - 0.43rem);
   width: 2px;
-  background: var(--v2-line);
+  /* Soft fade down each segment so the rail recedes toward the next node and
+     the eye travels downward through the steps. */
+  background: linear-gradient(
+    to bottom,
+    var(--v2-line-strong) 0%,
+    var(--v2-line) 100%
+  );
+}
+/* The final segment (into the open "ongoing" node) dissolves to nothing —
+   reinforces that care continues past the timeline rather than stopping dead. */
+.v2-step__row--ongoing::before,
+.v2-step__row:has(+ .v2-step__row--ongoing)::before {
+  background: linear-gradient(
+    to bottom,
+    var(--v2-line) 0%,
+    rgba(231, 221, 210, 0) 100%
+  );
 }
 .v2-step__row:last-child::before {
   display: none;
@@ -2152,7 +2182,8 @@
   justify-self: center;
   width: 13px;
   height: 13px;
-  margin-top: 5px;
+  /* pull the node's own centre onto the pill midline */
+  margin-top: calc(var(--v2-step-node-y) - 6.5px);
   border-radius: 50%;
   /* solid ink dot with a white inner ring + cream halo, so it reads as a
      deliberate step marker sitting on the rail. */
@@ -2161,26 +2192,50 @@
     inset 0 0 0 2px #fff,
     0 0 0 4px var(--v2-cream);
 }
+/* Final "ongoing care" marker: a hollow ink ring instead of a filled dot, so it
+   reads as "this one continues" rather than a completed step. */
+.v2-step__node--open {
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 2px var(--v2-ink),
+    0 0 0 4px var(--v2-cream);
+}
 .v2-step__content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.55rem;
-  padding-top: 1px;
+  gap: 0.7rem;
 }
-/* tag reuses the glass pill; nudge the white backing so it reads on the white
-   section (same fix as the footer pill). */
+/* Timing labels are markers, not the message — render them quiet (no pill
+   chrome, muted ink, tighter tracking) so the step sentence carries the weight.
+   The pill backing/shadow are dropped; just a small uppercase caption. */
 .v2-step__tag {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   line-height: 1.25;
+  color: var(--v2-ink-mute);
+}
+/* The discount is an offer, not a stage — give it a warm gold badge so it pops
+   as a perk while the four real steps stay quiet captions. */
+.v2-step__tag--offer {
+  padding: 0.34rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(176, 138, 79, 0.12);
+  color: var(--v2-gold);
+  letter-spacing: 0.12em;
 }
 .v2-step__text {
   font-family: var(--v2-fb);
   font-size: 1rem;
   line-height: 1.5;
   color: var(--v2-ink);
+  /* Labels are now flush captions (no pill padding), so the sentence lines up
+     at the same left edge as the timing label above it. */
 }
 
 /* ---- Reduced motion ---- */

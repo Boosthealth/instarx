@@ -116,7 +116,13 @@ export const kitItems = [
  * rendered as a small tag, with the step copy to its right. Mirrors the layout
  * on go.instarx.com/glp2. */
 export const timeline = [
-  { when: "Today", text: "Get $150 off — applied at checkout." },
+  {
+    when: "Today",
+    text: "Get $150 off — applied at checkout.",
+    // The discount is an offer, not a process stage — flagged so it renders as
+    // an accent badge that sets it apart from the four genuine steps below.
+    offer: true,
+  },
   {
     when: "In 1 day",
     text: "A licensed U.S. physician reviews you and writes your prescription.",
@@ -132,6 +138,9 @@ export const timeline = [
   {
     when: "Ongoing care",
     text: "Begin treatment with InstaRx nursing staff, and start losing.",
+    // The journey continues past delivery — rendered with an open node to
+    // signal "ongoing" rather than a completed step.
+    ongoing: true,
   },
 ];
 

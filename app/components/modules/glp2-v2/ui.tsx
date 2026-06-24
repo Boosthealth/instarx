@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 /* Small shared primitives for the /glp2-v2 lander. The page uses a cream/beige
@@ -19,28 +19,9 @@ export function V2Button({
   children: ReactNode;
   variant?: BtnVariant;
   className?: string;
-  /* Append a lucide ArrowRight (matches Coivas). */
+  /* Append a diagonal arrow that swaps on hover (YMI-style). */
   arrow?: boolean;
 }) {
-  // The label (text + arrow) is rendered twice and stacked; on hover the slider
-  // translates up one copy's height so the first copy slides out the top and the
-  // duplicate slides up into place — bymonolog's vertical text-swap. Both the
-  // text and the arrow move together because they share each copy. CSS lives in
-  // glp2-v2.css (`.v2-btn__label*`).
-  const copy = (
-    <span className="v2-btn__line">
-      <span className="v2-btn__text">{children}</span>
-      {arrow && (
-        <ArrowRight
-          className="v2-btn__arrow"
-          size={18}
-          strokeWidth={2}
-          aria-hidden="true"
-        />
-      )}
-    </span>
-  );
-
   // prefetch={false}: matches the shared Button — every CTA points at /intake,
   // and viewport prefetch would pre-bucket visitors in the experiment proxy.
   return (
@@ -49,12 +30,16 @@ export function V2Button({
       prefetch={false}
       className={`v2-btn v2-btn--${variant} ${className}`.trim()}
     >
-      <span className="v2-btn__label">
-        <span className="v2-btn__slider">
-          {copy}
-          <span aria-hidden="true">{copy}</span>
+      <span className="v2-btn__text">{children}</span>
+      {arrow && (
+        // YMI-style diagonal arrow swap: two ↗ arrows stacked in a clipped box;
+        // on hover the visible one exits top-right and the duplicate slides in
+        // from bottom-left, with a springy ease. CSS in glp2-v2.css.
+        <span className="v2-btn__arrowswap" aria-hidden="true">
+          <ArrowUpRight className="v2-btn__ar v2-btn__ar--a" size={18} strokeWidth={2} />
+          <ArrowUpRight className="v2-btn__ar v2-btn__ar--b" size={18} strokeWidth={2} />
         </span>
-      </span>
+      )}
     </Link>
   );
 }

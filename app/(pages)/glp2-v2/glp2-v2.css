@@ -20,16 +20,23 @@
   --v2-ink-soft: #423b34; /* secondary text — punchier (was #5b524b); 9.0:1 worst-case */
   --v2-ink-mute: #635a51; /* captions / disclaimers — now clears 4.5:1 (was #8a7d72 @ 3.3:1, failing); 5.5:1 worst-case */
 
-  /* Accent is now warm-ink, NOT pink. Pink only ever lives inside gradients.
-     The --v2-rose* names are kept (widely referenced) but remapped to ink so
-     eyebrows / italic accents / fills read black-and-beige, not magenta. */
-  --v2-rose: var(--v2-ink); /* legacy alias → ink */
-  --v2-rose-deep: #3a322c; /* legacy alias → deep warm brown-black */
-  --v2-rose-tint: var(--v2-beige); /* legacy alias → beige */
+  /* No accent color on text. Pink/purple live ONLY in the hero/CTA gradients.
+     The --v2-rose* names are kept (widely referenced) but map to ink tiers so
+     every eyebrow / italic accent / label / icon reads as confident dark ink —
+     primary or secondary only, never magenta. */
+  --v2-rose: var(--v2-ink); /* → primary ink (icons, slider fill, checkmark bg) */
+  --v2-rose-deep: var(--v2-ink); /* → primary ink (was #3a322c; now true ink for punch) */
+  --v2-rose-tint: var(--v2-beige); /* → beige (soft fills only, not text) */
 
   --v2-line: #e7ddd2; /* hairline rules / card borders */
   --v2-line-strong: #d8cabb;
   --v2-gold: #b08a4f; /* stars / small badges */
+
+  /* Neutral (non-beige) hairlines for glass surfaces — Intercom-style. A faint
+     dark line reads as a divider on light glass; a translucent-white line reads
+     as the lit edge/highlight. Neither carries the warm beige of --v2-line. */
+  --v2-glass-divider: rgba(26, 23, 20, 0.1);
+  --v2-glass-edge: rgba(255, 255, 255, 0.75);
 
   /* Signature pink + beige gradient — hero backdrop + final CTA band. Deeper
      and more saturated than before so it reads as real color (more contrast /
@@ -52,11 +59,6 @@
   --v2-blob-pink: #f3b9c8;
   --v2-blob-peach: #f6cdb3;
   --v2-blob-beige: #e8d2b6;
-
-  /* Button hover "pop" — a pink-with-purple-undertone fill that slides up on
-     hover (our on-theme answer to Lightship's coral). */
-  --v2-rose-pop: #bd5a8e;
-  --v2-rose-pop-deep: #a8497d;
 
   --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -111,24 +113,56 @@
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
-/* italic accent inside serif headlines — the signature editorial move */
+/* italic accent inside serif headlines — the signature editorial move.
+   Emphasis comes from italic + weight ONLY, not color: it stays full ink so the
+   headline reads as one confident unit (forhers-style), no tinted word. */
 .v2-accent {
   font-style: italic;
   font-weight: 500;
-  color: var(--v2-rose-deep);
+  color: var(--v2-ink);
 }
 .v2-eyebrow {
   font-family: var(--v2-fb);
   font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em; /* tighter than the old 0.2em — modern, less "kicker" */
   text-transform: uppercase;
-  color: var(--v2-rose-deep);
+  /* Secondary ink, not an accent color — labels read as quiet ink, not magenta. */
+  color: var(--v2-ink-soft);
 }
 .v2-lede {
-  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  font-size: clamp(1.15rem, 1.5vw, 1.3rem); /* bumped: a real step above body */
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+  font-weight: 450;
+}
+
+/* ---- Body / label / caption tier ----
+   One coherent ramp so components stop reaching for raw text-xs / text-sm with
+   inherited 1.65 leading. Each tier names its size, line-height, weight and ink
+   so hierarchy reads the same in every section (forhers-style: punchy, dark,
+   no light-gray body). */
+.v2-body {
+  font-size: 1.0625rem; /* 17px — matches the .v2 root body size */
   line-height: 1.6;
   color: var(--v2-ink-soft);
+}
+.v2-body-sm {
+  font-size: 0.95rem; /* ~15px — secondary paragraphs, list copy */
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+}
+.v2-label {
+  font-size: 0.8125rem; /* 13px — UI labels, meta, tags (sentence/normal case) */
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--v2-ink); /* labels are confident ink, not muted */
+  letter-spacing: 0.005em;
+}
+.v2-caption {
+  font-size: 0.8125rem; /* 13px — disclaimers, footnotes, fine print */
+  line-height: 1.45;
+  color: var(--v2-ink-mute); /* the muted tier — now contrast-safe at 5.5:1 */
 }
 .v2-kicker-rule {
   display: inline-flex;
@@ -304,21 +338,10 @@
     radial-gradient(50% 55% at 95% 12%, rgba(238, 242, 241, 0.65) 0%, rgba(238, 242, 241, 0) 65%),
     var(--v2-cream);
 }
-
-/* ---- "In every temperature-controlled kit" card — colorful pop accent ----
-   A bolder multi-hue bloom (pink + peach + lilac) than the subtle section
-   washes. It's a bordered, clipped card, so the stronger color lives entirely
-   inside the card edge and reads as a deliberate focal accent. Dark eyebrow /
-   checklist text stays legible because the blooms sit on a light cream base. */
-.v2-kit-card {
-  border: 1px solid var(--v2-line);
-  background:
-    radial-gradient(70% 90% at 8% 6%, rgba(245, 197, 214, 0.65) 0%, rgba(245, 197, 214, 0) 60%),
-    radial-gradient(70% 90% at 96% 18%, rgba(226, 209, 240, 0.6) 0%, rgba(226, 209, 240, 0) 58%),
-    radial-gradient(80% 100% at 70% 100%, rgba(246, 205, 179, 0.62) 0%, rgba(246, 205, 179, 0) 62%),
-    radial-gradient(60% 80% at 30% 88%, rgba(247, 232, 196, 0.5) 0%, rgba(247, 232, 196, 0) 60%),
-    var(--v2-cream);
+.v2-bg-white {
+  background: #fff;
 }
+
 .v2-hairline {
   height: 1px;
   background: linear-gradient(
@@ -381,21 +404,144 @@
   );
 }
 
-/* ---- Buttons ---- */
-.v2-btn {
-  /* Default button — 40px tall, regular-medium weight (Lightship-style: lighter
-     than our old 600). Hero CTAs use .v2-btn--lg for a larger size.
-     Hover uses a colored fill that slides up from below (Lightship's Register
-     button): the fill lives in ::before, clipped by overflow:hidden, and the
-     label/arrow sit above it. --v2-btn-fill sets the slide-in color per variant. */
-  position: relative;
+/* ---- Hero trust-bar (Coivas-style strip) ----
+   One rounded container spanning the hero, four columns separated by hairline
+   dividers. Flat: a frosted near-white fill + a single hairline border, no drop
+   shadow. Each column = a soft rounded-square icon tile + bold label + muted
+   one-line description. Responsive: 4 → 2×2 → 1 column. */
+.v2-trustbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+  border-radius: 18px;
+  /* Genuine frost (Intercom-style): a light translucent fill that lets the
+     pink/beige gradient read through, a strong blur, a translucent-WHITE edge
+     and a soft inner top-highlight — no warm/beige border. No drop shadow. */
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+  border: 1px solid var(--v2-glass-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   overflow: hidden;
-  isolation: isolate;
-  --v2-btn-fill: var(--v2-rose-pop);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  /* No blur → raise the fill so the panel stays legible as solid glass. */
+  .v2-trustbar {
+    background: rgba(255, 255, 255, 0.78);
+  }
+}
+.v2-trustbar__item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.05rem 1.35rem;
+  position: relative;
+}
+/* Hairline divider on the left edge of every item except the first in its row.
+   The :not(:first-child) rule covers the 4-col layout; row-aware overrides for
+   the stacked layouts live in the media queries below. */
+.v2-trustbar__item + .v2-trustbar__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 1px;
+  background: var(--v2-glass-divider);
+}
+.v2-trustbar__icon {
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  /* Frosted chip — translucent white fill + white edge, no beige. */
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--v2-glass-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  color: var(--v2-ink);
+}
+.v2-trustbar__text {
+  min-width: 0;
+}
+.v2-trustbar__label {
+  font-family: var(--v2-fb);
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.25;
+  color: var(--v2-ink);
+  letter-spacing: -0.005em;
+}
+.v2-trustbar__desc {
+  margin-top: 0.15rem;
+  font-family: var(--v2-fb);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--v2-ink-soft);
+  text-wrap: pretty;
+}
+/* Tablet: 2×2 grid. Reset the universal left-divider, then draw dividers only
+   where they make sense — a left divider on the right column, a top divider on
+   the bottom row. */
+@media (max-width: 900px) {
+  .v2-trustbar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .v2-trustbar__item + .v2-trustbar__item::before {
+    content: none;
+  }
+  .v2-trustbar__item:nth-child(even)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    width: 1px;
+    background: var(--v2-glass-divider);
+  }
+  .v2-trustbar__item:nth-child(n + 3)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0.9rem;
+    right: 0.9rem;
+    height: 1px;
+    background: var(--v2-glass-divider);
+  }
+}
+/* Mobile: single column. One top hairline between stacked rows. */
+@media (max-width: 560px) {
+  .v2-trustbar {
+    grid-template-columns: 1fr;
+  }
+  .v2-trustbar__item:nth-child(even)::before {
+    content: none;
+  }
+  .v2-trustbar__item:nth-child(n + 2)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.35rem;
+    right: 1.35rem;
+    height: 1px;
+    background: var(--v2-glass-divider);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* nothing animated here; declared for parity with the rest of the file */
+}
+
+/* ---- Buttons ---- */
+.v2-btn {
+  /* Default button — 40px tall, regular-medium weight. Hero CTAs use
+     .v2-btn--lg for a larger size. The diagonal arrow swaps on hover
+     (YMI-style); the button colors stay put (no color fill). */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   height: 40px;
   padding: 0 1.4rem;
   font-family: var(--v2-fb);
@@ -406,67 +552,49 @@
   border: 1px solid transparent;
   cursor: pointer;
   transition:
+    background-color 0.25s ease,
     box-shadow 0.25s ease,
     color 0.25s ease,
     border-color 0.25s ease;
   text-decoration: none;
   white-space: nowrap;
 }
-/* Slide-up fill layer */
-.v2-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--v2-btn-fill);
-  transform: translateY(101%);
-  transition: transform 0.34s cubic-bezier(0.65, 0, 0.35, 1);
-}
-.v2-btn:hover::before,
-.v2-btn:focus-visible::before {
-  transform: translateY(0);
-}
 /* Large button — hero CTAs. Taller, a touch more padding + size. */
 .v2-btn--lg {
   height: 52px;
   padding: 0 1.9rem;
   font-size: 1.02rem;
-  gap: 0.55rem;
 }
-/* ---- Label vertical slide-up swap (bymonolog-style) ----
-   The label viewport clips to one line; the slider stacks two identical copies
-   (label + arrow). On hover the slider translates up one copy's height so the
-   first copy exits the top and the duplicate rises into place — text AND arrow
-   move together as a unit. Slow, elegant ease (matches monolog's feel). */
-.v2-btn__label {
-  display: block;
+/* ---- Diagonal arrow swap (YMI-style) ----
+   Two stacked ↗ arrows clipped to a small box; on hover the visible one (--a)
+   exits up-right and the duplicate (--b), parked down-left, slides into place.
+   Springy ease gives it a little life. */
+.v2-btn__arrowswap {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
   overflow: hidden;
-  /* Clip to exactly one line so only one copy shows at rest. */
-  height: 1.25em;
-}
-.v2-btn__slider {
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.v2-btn:hover .v2-btn__slider,
-.v2-btn:focus-visible .v2-btn__slider {
-  transform: translateY(-50%);
-}
-.v2-btn__line {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  height: 1.25em;
-  line-height: 1.25;
 }
-.v2-btn__arrow {
-  flex-shrink: 0;
+.v2-btn__ar {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s cubic-bezier(0.48, 1.4, 0.5, 1);
+}
+.v2-btn__ar--b {
+  transform: translate(-110%, 110%);
+}
+.v2-btn:hover .v2-btn__ar--a,
+.v2-btn:focus-visible .v2-btn__ar--a {
+  transform: translate(110%, -110%);
+}
+.v2-btn:hover .v2-btn__ar--b,
+.v2-btn:focus-visible .v2-btn__ar--b {
+  transform: translate(0, 0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .v2-btn__slider {
+  .v2-btn__ar {
     transition: none;
   }
 }
@@ -474,30 +602,26 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-ink);
 }
-/* Primary = solid black at rest; on hover the pink-purple fill slides up from
-   below (Lightship's Register button) and the text stays white. */
+/* Primary = solid black. Subtle hover: a touch darker + lifted shadow. */
 .v2-btn--primary {
   background: var(--v2-ink);
   color: #fff;
   box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
-  --v2-btn-fill: var(--v2-rose-pop);
 }
 .v2-btn--primary:hover,
 .v2-btn--primary:focus-visible {
-  color: #fff;
-  box-shadow: 0 12px 30px -14px rgba(168, 73, 125, 0.55);
+  background: #000;
+  box-shadow: 0 10px 26px -14px rgba(26, 23, 20, 0.7);
 }
-/* Ghost/secondary = warm beige at rest; on hover the same pop fill slides up and
-   the text flips to white. */
+/* Ghost/secondary = warm beige fill with ink text. */
 .v2-btn--ghost {
   background: var(--v2-beige);
   color: var(--v2-ink);
   border-color: transparent;
-  --v2-btn-fill: var(--v2-rose-pop);
 }
 .v2-btn--ghost:hover,
 .v2-btn--ghost:focus-visible {
-  color: #fff;
+  background: var(--v2-beige-deep);
 }
 .v2-btn--light {
   background: #fff;
@@ -532,11 +656,6 @@
     background: rgba(255, 255, 255, 0.55);
   }
 }
-/* Glass keeps its frosted-only hover — no slide-up fill (it would fight the
-   transparency), so suppress the ::before fill for this variant. */
-.v2-btn--glass::before {
-  content: none;
-}
 .v2-btn--glass:hover {
   background: rgba(255, 255, 255, 0.4);
   transform: scale(1.025);
@@ -545,10 +664,6 @@
   transform: scale(0.99);
 }
 @media (prefers-reduced-motion: reduce) {
-  /* Fill swaps instantly instead of sliding; glass scale is dropped. */
-  .v2-btn::before {
-    transition: none;
-  }
   .v2-btn--glass:hover {
     transform: none;
   }
@@ -1009,6 +1124,50 @@
 .v2-foot__legal {
   font-size: 0.82rem;
   color: var(--v2-ink-mute);
+}
+
+/* ---- "Get your meds in 1–2 days" timeline ----
+   Each row is a tag (the "when") followed by the step copy to its right,
+   separated by a hairline. No connector arrows. On narrow screens the tag sits
+   above its text. */
+.v2-timeline {
+  display: flex;
+  flex-direction: column;
+}
+.v2-timeline__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.36fr) 1fr;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding-block: 1.15rem;
+  border-top: 1px solid var(--v2-line);
+}
+.v2-timeline__row:last-child {
+  border-bottom: 1px solid var(--v2-line);
+}
+/* Tag reuses the hero's .v2-glass .v2-glass-pill treatment (frosted pill, no
+   dot). The section is white, where the translucent glass fill would be near
+   invisible, so nudge the backing up just enough to stay perceptible — same fix
+   as the footer "Secure & Encrypted" pill. */
+.v2-timeline__tag {
+  justify-self: start;
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+  line-height: 1.25;
+  text-align: center;
+}
+.v2-timeline__text {
+  font-family: var(--v2-fb);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--v2-ink);
+}
+@media (max-width: 640px) {
+  .v2-timeline__row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
 }
 
 /* ---- Reduced motion ---- */

@@ -58,7 +58,10 @@ function Star({ fill }: { fill: number }) {
   );
 }
 
-export function TrustRow() {
+/* `showRating` (default true) appends the Trustpilot-style rating after the
+   badge strip. Set it false to render just the four credibility points — used
+   in Medications, which already closes with its own rating. */
+export function TrustRow({ showRating = true }: { showRating?: boolean }) {
   return (
     <div className="v2-trust">
       <ul className="v2-trust__row">
@@ -82,17 +85,19 @@ export function TrustRow() {
         ))}
       </ul>
 
-      <div className="v2-trust__rating" role="img" aria-label="Rated Excellent, 4.7 out of 5 stars">
-        <span className="v2-trust__score">Excellent 4.7</span>
-        <span className="v2-trust__stars">
-          <Star fill={1} />
-          <Star fill={1} />
-          <Star fill={1} />
-          <Star fill={1} />
-          <Star fill={0.7} />
-        </span>
-        <span className="v2-trust__count">10,000+ happy customers</span>
-      </div>
+      {showRating && (
+        <div className="v2-trust__rating" role="img" aria-label="Rated Excellent, 4.7 out of 5 stars">
+          <span className="v2-trust__score">Excellent 4.7</span>
+          <span className="v2-trust__stars">
+            <Star fill={1} />
+            <Star fill={1} />
+            <Star fill={1} />
+            <Star fill={1} />
+            <Star fill={0.7} />
+          </span>
+          <span className="v2-trust__count">10,000+ happy customers</span>
+        </div>
+      )}
     </div>
   );
 }

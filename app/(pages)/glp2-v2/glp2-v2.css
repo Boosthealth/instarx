@@ -1619,8 +1619,10 @@
    frosted-glass-over-photo treatment, since there's no photo behind it here). */
 .v2-trust__panel {
   border-radius: 18px;
-  background: var(--v2-cream-2);
-  border: 1px solid var(--v2-line);
+  /* Pure white, no border — lifts off the cream page on contrast alone, with a
+     soft warm shadow (matching the card convention) so it doesn't read flat. */
+  background: #fff;
+  box-shadow: 0 8px 22px -18px rgba(60, 40, 30, 0.35);
   padding: 0.35rem 0.5rem;
 }
 .v2-trust__row {
@@ -1662,7 +1664,8 @@
   width: 38px;
   height: 38px;
   border-radius: 11px;
-  background: var(--v2-cream);
+  /* cream-2 (not cream) so the tile reads against the white panel. */
+  background: var(--v2-cream-2);
   color: var(--v2-ink);
 }
 /* Responsive: 4 cols -> 2 cols (drop the inter-column divider on the new
@@ -2467,7 +2470,7 @@
    grid still aligns the three cells on one baseline. */
 .v2-compare {
   position: relative;
-  max-width: 64rem;
+  max-width: 72rem;
   margin-inline: auto;
 }
 .v2-compare__head,
@@ -2564,8 +2567,10 @@
   color: var(--v2-cream);
 }
 .v2-compare__x {
-  border: 1px solid var(--v2-line-strong);
-  color: var(--v2-ink-mute);
+  /* Filled muted tint + darker glyph so the ✗ reads as a deliberate "they
+     don't" — still clearly recessed vs. the solid-ink InstaRx checks. */
+  background: var(--v2-beige);
+  color: var(--v2-ink-soft);
 }
 .v2-compare__cta {
   margin-top: clamp(2rem, 4vw, 3rem);

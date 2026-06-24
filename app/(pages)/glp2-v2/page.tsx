@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
-import { Footer } from "@/app/components/Footer";
+import { V2Footer } from "@/app/components/modules/glp2-v2/V2Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
 import { AnnounceBar } from "@/app/components/modules/glp2-v2/AnnounceBar";
@@ -15,7 +15,7 @@ import { HowItWorks } from "@/app/components/modules/glp2-v2/HowItWorks";
 import { Reviews } from "@/app/components/modules/glp2-v2/Reviews";
 import { Medications } from "@/app/components/modules/glp2-v2/Medications";
 import { FAQ } from "@/app/components/modules/glp2-v2/FAQ";
-import { FinalCTA } from "@/app/components/modules/glp2-v2/FinalCTA";
+import { WhatAreYouWaitingFor } from "@/app/components/modules/glp2-v2/WhatAreYouWaitingFor";
 import "./glp2-v2.css";
 
 // Editorial/luxe-wellness type pairing — same house style as /optin. Loaded
@@ -64,9 +64,9 @@ export default function Glp2V2() {
         <Reviews />
         <Medications />
         <FAQ />
-        <FinalCTA />
+        <WhatAreYouWaitingFor />
       </main>
-      <Footer />
+      <V2Footer />
     </div>
   );
 }

@@ -67,8 +67,8 @@ export function Medications() {
             ))}
           </ul>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <V2Button href={INTAKE_HREF} variant="primary" className="w-full sm:w-auto">
-              Find your treatment →
+            <V2Button href={INTAKE_HREF} variant="primary" className="w-full sm:w-auto" arrow>
+              Find your treatment
             </V2Button>
             <V2Button href={INTAKE_HREF} variant="ghost" className="w-full sm:w-auto">
               See pricing

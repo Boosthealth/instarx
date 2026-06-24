@@ -44,8 +44,8 @@ export function FinalCTA() {
               10,000 members are already losing up to 17% of their body weight
               safely and effectively from the comfort of home.
             </p>
-            <V2Button href={INTAKE_HREF} variant="primary" className="relative">
-              Find your treatment →
+            <V2Button href={INTAKE_HREF} variant="primary" className="relative" arrow>
+              Find your treatment
             </V2Button>
           </div>
         </Reveal>

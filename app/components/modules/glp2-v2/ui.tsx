@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
-/* Small shared primitives for the /glp2-v2 lander. The page uses a rose/cream
+/* Small shared primitives for the /glp2-v2 lander. The page uses a cream/beige
  * editorial palette, so we don't reuse the shared `home/Button` (it hardcodes a
  * blue hover). Styling comes from glp2-v2.css (`.v2-btn*`). */
 
@@ -12,11 +13,14 @@ export function V2Button({
   children,
   variant = "primary",
   className = "",
+  arrow = false,
 }: {
   href: string;
   children: ReactNode;
   variant?: BtnVariant;
   className?: string;
+  /* Append a lucide ArrowRight (matches Coivas). Slides right on hover. */
+  arrow?: boolean;
 }) {
   // prefetch={false}: matches the shared Button — every CTA points at /intake,
   // and viewport prefetch would pre-bucket visitors in the experiment proxy.
@@ -27,6 +31,9 @@ export function V2Button({
       className={`v2-btn v2-btn--${variant} ${className}`.trim()}
     >
       {children}
+      {arrow && (
+        <ArrowRight className="v2-btn__arrow" size={18} strokeWidth={2} aria-hidden="true" />
+      )}
     </Link>
   );
 }

@@ -118,8 +118,8 @@ export function Calculator() {
           </div>
 
           <div className="mt-8 text-center">
-            <V2Button href={INTAKE_HREF} variant="primary">
-              Find your treatment →
+            <V2Button href={INTAKE_HREF} variant="primary" arrow>
+              Find your treatment
             </V2Button>
             <p className="mt-4 text-sm" style={{ color: "var(--v2-ink-mute)" }}>
               No hidden fees · No monthly membership · Cancel anytime

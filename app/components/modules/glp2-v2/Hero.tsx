@@ -95,8 +95,9 @@ export function Hero() {
               href={INTAKE_HREF}
               variant="primary"
               className="w-full sm:w-auto"
+              arrow
             >
-              Find your treatment →
+              Find your treatment
             </V2Button>
             {/* Glass secondary button */}
             <V2Button

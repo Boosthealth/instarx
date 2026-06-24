@@ -53,7 +53,7 @@ export function Header() {
             aria-label="Primary"
           >
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="v2-navlink">
+              <a key={link.href} href={link.href} className="v2-ulink v2-navlink">
                 {link.label}
               </a>
             ))}

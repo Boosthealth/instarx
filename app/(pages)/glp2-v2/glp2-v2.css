@@ -250,22 +250,24 @@
 
 /* ---- Nav link with animated underline (Lightship-style) ----
    Thin underline grows left->right on hover/focus and retracts on leave. */
-.v2-navlink {
+/* ---- Animated underline for text links (shared) ----
+   The shared treatment for every text link on the page (nav, footer, contact):
+   a thin underline that hugs the text and grows from the left on hover/focus.
+   `inline-block` + a tight `line-height` makes the link box hug its text, so the
+   underline sits right under the letters even when the link lives in a tall flex
+   row (e.g. the 54px header) — no big gap. */
+.v2-ulink {
   position: relative;
-  font-family: var(--v2-fb);
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--v2-ink-soft);
+  display: inline-block;
+  line-height: 1.15;
   text-decoration: none;
   transition: color 0.2s ease;
 }
-/* Underline hugs the text (Lightship-style): sits ~2px below the baseline,
-   thin, and grows from the left on hover. */
-.v2-navlink::after {
+.v2-ulink::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -2px;
+  bottom: -1px;
   height: 1px;
   width: 100%;
   background: currentColor;
@@ -273,19 +275,29 @@
   transform-origin: left center;
   transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+.v2-ulink:hover::after,
+.v2-ulink:focus-visible::after {
+  transform: scaleX(1);
+}
+.v2-ulink:focus-visible {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-ulink::after {
+    transition: none;
+  }
+}
+
+/* Header nav links — inherit the shared underline, add their own size/color. */
+.v2-navlink {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--v2-ink-soft);
+}
 .v2-navlink:hover,
 .v2-navlink:focus-visible {
   color: var(--v2-ink);
-  outline: none;
-}
-.v2-navlink:hover::after,
-.v2-navlink:focus-visible::after {
-  transform: scaleX(1);
-}
-@media (prefers-reduced-motion: reduce) {
-  .v2-navlink::after {
-    transition: none;
-  }
 }
 
 .v2-section {
@@ -1071,13 +1083,6 @@
 .v2-foot__contact a {
   font-size: 0.92rem;
   color: var(--v2-ink);
-  text-decoration: none;
-  width: fit-content;
-  transition: color 0.18s ease;
-}
-.v2-foot__contact a:hover {
-  color: var(--v2-rose-deep);
-  text-decoration: underline;
 }
 
 /* Link columns — hairline divider on the left edge of each (mirrors Coivas) */
@@ -1113,11 +1118,10 @@
 .v2-foot__link {
   font-size: 0.82rem;
   color: var(--v2-ink-soft);
-  text-decoration: none;
   white-space: nowrap;
-  transition: color 0.18s ease;
 }
-.v2-foot__link:hover {
+.v2-foot__link:hover,
+.v2-foot__link:focus-visible {
   color: var(--v2-ink);
 }
 
@@ -1180,12 +1184,12 @@
   gap: 0.7rem;
   padding-block: 1.15rem;
 }
-/* Tag + a hairline that extends from it across the rest of the column width,
-   so the divider reads as emanating from each tag. */
+/* Tag + a hairline that extends straight from its right edge across the rest of
+   the column width, so the divider reads as emanating from each tag. */
 .v2-timeline__head {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0;
   width: 100%;
 }
 .v2-timeline__rule {
@@ -1208,6 +1212,9 @@
   font-size: 1rem;
   line-height: 1.5;
   color: var(--v2-ink);
+  /* Indent to match the tag's inner text (the glass pill's 0.95rem left
+     padding), so the paragraph starts on the same vertical line as the label. */
+  padding-left: 0.95rem;
 }
 
 /* ---- Reduced motion ---- */

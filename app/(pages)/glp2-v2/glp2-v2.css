@@ -897,6 +897,30 @@
     linear-gradient(160deg, #fdfaf5 0%, #f4ece1 100%);
 }
 
+/* Compact two-column FAQ grid: category blocks flow into two columns so the
+   whole section stays short and even instead of one tall single-column list. */
+.v2-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 4rem;
+  align-items: start;
+}
+.v2-faq-cat {
+  margin-bottom: 0.5rem;
+  font-family: var(--v2-fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v2-ink-soft);
+}
+@media (max-width: 768px) {
+  .v2-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
 /* ---- FAQ accordion ---- */
 .v2-faq-item {
   border-bottom: 1px solid var(--v2-line);
@@ -1078,11 +1102,14 @@
   margin-top: 1.25rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* don't stretch the links to full column width */
   gap: 0.35rem;
 }
 .v2-foot__contact a {
   font-size: 0.92rem;
   color: var(--v2-ink);
+  /* hug the text so the underline matches the text width, not the column */
+  width: fit-content;
 }
 
 /* Link columns — hairline divider on the left edge of each (mirrors Coivas) */

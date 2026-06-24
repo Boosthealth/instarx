@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { V2Button, Stars } from "./ui";
-import { TrustRow } from "./TrustRow";
 import { medications, INTAKE_HREF } from "./content";
 
 /* Medications — a spec-sheet diptych + pick-your-peptide (merges the old
@@ -86,12 +85,6 @@ export function Medications() {
             </Reveal>
           ))}
         </div>
-
-        {/* Credibility strip — four trust points (shared TrustRow, no rating
-            here since the rating closes the section just below). */}
-        <Reveal>
-          <TrustRow showRating={false} />
-        </Reveal>
 
         {/* Rating closes the section */}
         <Reveal className="v2-medcta">

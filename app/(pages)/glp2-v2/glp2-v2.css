@@ -916,15 +916,19 @@
   }
 }
 
-/* ---- Community photo band (Mochi-style, reuses the hero glass treatment) ---- */
+/* ---- Community photo band (Mochi-style, reuses our .v2-glass + tag styles) ----
+   The photo already gives the section its height, so the top/bottom padding is
+   tight. A real-person photo fills the rounded card; a glass panel (our exact
+   .v2-glass treatment) sits over the bottom with the headline + CTAs on the left
+   and a shorter supporting paragraph lower-right. */
 .v2-community {
-  padding-block: var(--v2-pad-y);
+  padding-block: clamp(1.5rem, 3vw, 2.75rem);
 }
 .v2-community__card {
   position: relative;
   overflow: hidden;
   border-radius: clamp(20px, 2.4vw, 36px);
-  min-height: clamp(420px, 42vw, 560px);
+  min-height: clamp(440px, 44vw, 600px);
   display: flex;
   align-items: flex-end;
   box-shadow: var(--v2-shadow-card);
@@ -934,44 +938,43 @@
   object-position: center 30%;
   z-index: 0;
 }
-/* Darken toward the bottom so the glass card + text always read. */
+/* Scrim - darker toward the bottom-left where the copy sits, so text reads. */
 .v2-community__scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 23, 20, 0.1) 0%,
-    rgba(26, 23, 20, 0.05) 45%,
-    rgba(26, 23, 20, 0.45) 100%
-  );
+  background:
+    linear-gradient(180deg, rgba(26, 23, 20, 0) 35%, rgba(26, 23, 20, 0.45) 100%),
+    linear-gradient(90deg, rgba(26, 23, 20, 0.4) 0%, rgba(26, 23, 20, 0) 55%);
   pointer-events: none;
 }
-/* Glass overlay card anchored to the bottom of the photo (Mochi layout). */
+/* Glass overlay panel - uses our .v2-glass class directly; only layout here. */
 .v2-community__glass {
   position: relative;
   z-index: 2;
   width: 100%;
   margin: clamp(0.75rem, 1.5vw, 1.25rem);
   border-radius: clamp(16px, 1.8vw, 24px);
-  /* a bit more opaque than the nav glass so dense copy stays legible on photo */
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.32);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
-  backdrop-filter: blur(16px) saturate(120%);
 }
 .v2-community__inner {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: center;
-  gap: 1.75rem;
-  padding: clamp(1.75rem, 3vw, 2.75rem);
+  align-items: end;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 2.6vw, 2.5rem);
 }
 @media (min-width: 900px) {
   .v2-community__inner {
-    grid-template-columns: 1.1fr auto;
+    grid-template-columns: 1.15fr 0.85fr;
     gap: 2.5rem;
   }
+}
+.v2-community__tag {
+  margin-bottom: 1.1rem;
+  color: #fff;
+}
+.v2-community__tag .v2-glass-dot {
+  background: #fff;
 }
 .v2-community__title {
   font-family: var(--v2-fh);
@@ -982,19 +985,22 @@
   color: #fff;
 }
 .v2-community__title .v2-accent {
-  color: #fff; /* keep the italic accent white on the photo */
+  color: #fff;
 }
 .v2-community__sub {
-  margin-top: 0.9rem;
-  max-width: 34rem;
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  max-width: 30rem;
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
 }
-.v2-community__copy .v2-eyebrow {
-  color: rgba(255, 255, 255, 0.82);
+@media (min-width: 900px) {
+  .v2-community__sub {
+    justify-self: end;
+    align-self: end;
+  }
 }
 .v2-community__actions {
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1002,11 +1008,6 @@
 @media (min-width: 560px) {
   .v2-community__actions {
     flex-direction: row;
-  }
-}
-@media (min-width: 900px) {
-  .v2-community__actions {
-    flex-direction: column;
   }
 }
 
@@ -2181,11 +2182,15 @@
   font-weight: 600;
   letter-spacing: -0.01em;
 }
-/* Per-card CTA — pushed to the bottom so both cards' buttons align even when the
-   spec copy differs in height. */
+/* Per-card CTA — left-aligned (not full-width), pushed to the bottom so both
+   cards' buttons line up even when the spec copy differs in height. The
+   margin-top:auto eats the slack above; padding-top guarantees a min gap. */
 .v2-medcard__cta {
-  margin-top: auto;
-  padding-top: 1.5rem;
+  /* Gap above the CTA must be MARGIN, not padding — padding-top would inflate
+     the pill's own (black) box upward into the spec row above it. margin-top:auto
+     still pushes it to the card bottom; the rem value sets the breathing room. */
+  align-self: flex-start;
+  margin-top: 1.5rem;
 }
 
 /* Rating line below the diptych */
@@ -2231,67 +2236,7 @@
   color: var(--v2-ink-mute);
 }
 
-/* ---- "Choose your path" comparison ----
-   Reuses the .v2-medcard glass shell + .v2-medgrid + .v2-eyebrow + .v2-chip.
-   These rules cover the comparison-only bits: an inline vial+identity header and
-   stacked spec rows (label above a longer sentence value). */
-.v2-cmp__head {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 64px;
-}
-/* Only the flagged card needs to clear the absolute "Most comprehensive" chip. */
-.v2-medcard:has(.v2-medcard__status) .v2-cmp__head {
-  padding-right: 8rem;
-}
-.v2-cmp__vial {
-  width: auto;
-  height: 64px;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 6px rgba(60, 40, 30, 0.12));
-}
-.v2-cmp__specs {
-  margin-top: 1.5rem;
-  border-top: 1px solid rgba(26, 23, 20, 0.08);
-}
-.v2-cmp__row {
-  padding: 0.95rem 0;
-  border-bottom: 1px solid rgba(26, 23, 20, 0.08);
-}
-.v2-cmp__row:last-child {
-  border-bottom: 0;
-}
-.v2-cmp__row dt {
-  font-family: var(--v2-fb);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--v2-ink-mute);
-}
-.v2-cmp__row dd {
-  margin-top: 0.3rem;
-  font-family: var(--v2-fb);
-  font-size: 0.98rem;
-  line-height: 1.45;
-  color: var(--v2-ink-soft);
-  text-wrap: pretty;
-}
-.v2-cmp__cta {
-  margin-top: 1.5rem;
-}
-.v2-cmp__note {
-  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
-  max-width: 38rem;
-  text-align: center;
-  font-family: var(--v2-fb);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--v2-ink-mute);
-}
 
 
 
-/* TEMP-REVEAL-OFF */
-.v2-reveal { opacity: 1 !important; transform: none !important; }
+

@@ -142,7 +142,6 @@ export function Mechanism() {
 
       <div className="v2-container relative" style={{ zIndex: 1 }}>
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="v2-eyebrow v2-kicker-rule mb-5 inline-flex">How it works</p>
           <h2 className="v2-h2 mb-6">
             Kill the cravings, feel full faster, and switch on fat-burning mode —
             with <span className="v2-accent">GLP-1/GIP</span>.

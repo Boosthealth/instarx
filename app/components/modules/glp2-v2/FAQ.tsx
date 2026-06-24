@@ -24,7 +24,6 @@ export function FAQ() {
       <div className="v2-faq__bg" aria-hidden="true" />
       <div className="v2-container relative">
         <div className="mx-auto mb-12 max-w-2xl text-center lg:mb-16">
-          <p className="v2-eyebrow v2-kicker-rule mb-5 inline-flex">FAQ</p>
           <h2 className="v2-h2 mb-5">
             We&apos;re here to <span className="v2-accent">help</span>.
           </h2>

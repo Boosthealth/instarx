@@ -4,7 +4,7 @@ import { timeline } from "./content";
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="v2-section v2-bg-white v2-hiw">
+    <section id="how-it-works" className="v2-section v2-section--compact v2-bg-white v2-hiw">
       <div className="v2-container">
         {/* Two columns: timeline list on the left, phone attached to the section
             bottom on the right. White background so the app screenshot's white

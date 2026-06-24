@@ -17,8 +17,8 @@
   --v2-blush: #efe2d3; /* soft warm beige wash panels (deeper, still neutral) */
   --v2-blush-deep: #e0d0bc;
   --v2-ink: #1a1714; /* headlines / primary text / primary buttons — 14.6:1 */
-  --v2-ink-soft: #423b34; /* secondary text — punchier (was #5b524b); 9.0:1 worst-case */
-  --v2-ink-mute: #635a51; /* captions / disclaimers — now clears 4.5:1 (was #8a7d72 @ 3.3:1, failing); 5.5:1 worst-case */
+  --v2-ink-soft: #332d27; /* secondary text — deepened (was #423b34) so body never reads washed-out on the warm cream; 12.1:1 worst-case */
+  --v2-ink-mute: #4d453d; /* captions / disclaimers — deepened (was #635a51) so fine print stops receding into the canvas; 7.0:1 worst-case */
 
   /* No accent color on text. Pink/purple live ONLY in the hero/CTA gradients.
      The --v2-rose* names are kept (widely referenced) but map to ink tiers so
@@ -30,7 +30,10 @@
 
   --v2-line: #e7ddd2; /* hairline rules / card borders */
   --v2-line-strong: #d8cabb;
-  --v2-gold: #b08a4f; /* stars / small badges */
+  --v2-gold: #b08a4f; /* stars / decorative icons (3:1 — large/decorative only) */
+  --v2-gold-ink: #7d5e30; /* text-safe gold for small labels — deeper so it clears AA
+                             on cream/white (5.3–6:1). Used on the few accent labels:
+                             FAQ categories, medication tier labels, "As featured in". */
 
   /* White hairlines for glass surfaces — it's glass, so dividers and the edge
      read as lit white lines, not grey/dark. The edge is a subtle thin ring; the
@@ -77,7 +80,7 @@
   color: var(--v2-ink);
   font-family: var(--v2-fb);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.55; /* tightened from 1.65 — on a light bg, less leading reads more editorial/confident (dark-bg copy needs more, light-bg copy needs less) */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
@@ -131,6 +134,11 @@
   /* Secondary ink, not an accent color — labels read as quiet ink, not magenta. */
   color: var(--v2-ink-soft);
 }
+/* Gold eyebrow — opt-in warm-bronze accent for the few labels that carry it
+   (medication tier labels, "As featured in"). Text-safe shade clears AA. */
+.v2-eyebrow--gold {
+  color: var(--v2-gold-ink);
+}
 .v2-lede {
   font-size: clamp(1.15rem, 1.5vw, 1.3rem); /* bumped: a real step above body */
   line-height: 1.55;
@@ -148,7 +156,7 @@
    no light-gray body). */
 .v2-body {
   font-size: 1.0625rem; /* 17px — matches the .v2 root body size */
-  line-height: 1.6;
+  line-height: 1.55; /* tightened from 1.6 to match the new editorial root leading */
   color: var(--v2-ink-soft);
 }
 .v2-body-sm {
@@ -307,6 +315,16 @@
 
 .v2-section {
   padding-block: var(--v2-pad-y);
+}
+/* Section rhythm modifiers — break the uniform --v2-pad-y so the long middle run
+   doesn't read as one continuous slab. Tight groupings + generous separations:
+   pull two thematically-linked sections closer (--compact) and give pivotal,
+   standalone sections more air (--airy). */
+.v2-section--compact {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+.v2-section--airy {
+  padding-block: clamp(5.5rem, 11vw, 9.5rem);
 }
 .v2-bg-cream {
   background: var(--v2-cream);
@@ -1277,7 +1295,9 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--v2-ink-soft);
+  /* Warm bronze accent — one of three deliberate gold placements that thread the
+     hero's warmth through the mid-scroll. Text-safe shade (clears AA). */
+  color: var(--v2-gold-ink);
 }
 @media (max-width: 768px) {
   .v2-faq-grid {

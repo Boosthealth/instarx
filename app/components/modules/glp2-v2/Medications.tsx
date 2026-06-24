@@ -51,8 +51,9 @@ export function Medications() {
                 />
               </div>
 
-              {/* Identity — regular eyebrow, name, + inline flag on the premium pick */}
-              <p className="v2-eyebrow">{med.type}</p>
+              {/* Identity — tier label in warm gold (one of three deliberate gold
+                  accents on the page), name, + inline flag on the premium pick */}
+              <p className="v2-eyebrow v2-eyebrow--gold">{med.type}</p>
               <div className="v2-medcard__namerow">
                 <h3 className="v2-medcard__name">{med.name}</h3>
                 {med.flag && (

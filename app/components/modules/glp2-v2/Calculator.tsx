@@ -20,7 +20,7 @@ export function Calculator() {
   const pct = ((weight - MIN) / (MAX - MIN)) * 100;
 
   return (
-    <section className="v2-section v2-bg-lilac">
+    <section className="v2-section v2-section--airy v2-bg-lilac">
       <div className="v2-container">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left: pitch + CTA */}

@@ -20,8 +20,8 @@ export function FeaturedIn() {
     <section className="v2-bg-cream">
       <div className="v2-container pt-12 pb-16 text-center">
         <p
-          className="mb-7 text-xs font-semibold uppercase tracking-[0.22em]"
-          style={{ color: "var(--v2-ink-mute)" }}
+          className="mb-7 text-xs font-semibold uppercase tracking-[0.14em]"
+          style={{ color: "var(--v2-gold-ink)" }}
         >
           As featured in
         </p>

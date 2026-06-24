@@ -53,6 +53,11 @@
   --v2-blob-peach: #f6cdb3;
   --v2-blob-beige: #e8d2b6;
 
+  /* Button hover "pop" — a pink-with-purple-undertone fill that slides up on
+     hover (our on-theme answer to Lightship's coral). */
+  --v2-rose-pop: #bd5a8e;
+  --v2-rose-pop-deep: #a8497d;
+
   --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -264,6 +269,41 @@
   background: var(--v2-ink);
   color: var(--v2-cream);
 }
+
+/* ---- Section gradient washes (EOS-style, per-section hue variation) ----
+   Each is a soft, low-opacity radial-bloom pair over the cream base. They lean
+   different hues — pink, purple, yellow, peach, beige — but stay quiet enough
+   that dark body text remains fully legible. */
+.v2-bg-pink {
+  background:
+    radial-gradient(60% 65% at 12% 18%, rgba(246, 219, 228, 0.7) 0%, rgba(246, 219, 228, 0) 70%),
+    radial-gradient(55% 60% at 92% 82%, rgba(243, 230, 212, 0.65) 0%, rgba(243, 230, 212, 0) 70%),
+    var(--v2-cream);
+}
+.v2-bg-lilac {
+  background:
+    radial-gradient(60% 65% at 86% 14%, rgba(230, 222, 240, 0.75) 0%, rgba(230, 222, 240, 0) 70%),
+    radial-gradient(55% 60% at 8% 86%, rgba(245, 227, 218, 0.55) 0%, rgba(245, 227, 218, 0) 70%),
+    var(--v2-cream);
+}
+.v2-bg-yellow {
+  background:
+    radial-gradient(65% 70% at 15% 20%, rgba(248, 236, 203, 0.8) 0%, rgba(248, 236, 203, 0) 70%),
+    radial-gradient(50% 55% at 95% 72%, rgba(243, 231, 223, 0.55) 0%, rgba(243, 231, 223, 0) 70%),
+    var(--v2-cream);
+}
+.v2-bg-peach {
+  background:
+    radial-gradient(60% 65% at 88% 22%, rgba(247, 220, 198, 0.75) 0%, rgba(247, 220, 198, 0) 70%),
+    radial-gradient(55% 60% at 10% 80%, rgba(241, 224, 234, 0.5) 0%, rgba(241, 224, 234, 0) 70%),
+    var(--v2-cream);
+}
+.v2-bg-sand {
+  background:
+    radial-gradient(65% 70% at 18% 50%, rgba(239, 226, 207, 0.75) 0%, rgba(239, 226, 207, 0) 72%),
+    radial-gradient(50% 55% at 95% 12%, rgba(238, 242, 241, 0.65) 0%, rgba(238, 242, 241, 0) 65%),
+    var(--v2-cream);
+}
 .v2-hairline {
   height: 1px;
   background: linear-gradient(
@@ -329,7 +369,14 @@
 /* ---- Buttons ---- */
 .v2-btn {
   /* Default button — 40px tall, regular-medium weight (Lightship-style: lighter
-     than our old 600). Hero CTAs use .v2-btn--lg for a larger size. */
+     than our old 600). Hero CTAs use .v2-btn--lg for a larger size.
+     Hover uses a colored fill that slides up from below (Lightship's Register
+     button): the fill lives in ::before, clipped by overflow:hidden, and the
+     label/arrow sit above it. --v2-btn-fill sets the slide-in color per variant. */
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --v2-btn-fill: var(--v2-rose-pop);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -344,13 +391,25 @@
   border: 1px solid transparent;
   cursor: pointer;
   transition:
-    transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1),
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
   text-decoration: none;
   white-space: nowrap;
+}
+/* Slide-up fill layer */
+.v2-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--v2-btn-fill);
+  transform: translateY(101%);
+  transition: transform 0.34s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.v2-btn:hover::before,
+.v2-btn:focus-visible::before {
+  transform: translateY(0);
 }
 /* Large button — hero CTAs. Taller, a touch more padding + size. */
 .v2-btn--lg {
@@ -376,33 +435,30 @@
   outline: none;
   box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-ink);
 }
-/* Primary = solid black. Hover: a gentle scale-up + deeper shadow (Lightship's
-   smooth press feel) rather than a vertical jump. */
+/* Primary = solid black at rest; on hover the pink-purple fill slides up from
+   below (Lightship's Register button) and the text stays white. */
 .v2-btn--primary {
   background: var(--v2-ink);
   color: #fff;
   box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
+  --v2-btn-fill: var(--v2-rose-pop);
 }
-.v2-btn--primary:hover {
-  background: #000;
-  transform: scale(1.025);
-  box-shadow: 0 12px 30px -14px rgba(26, 23, 20, 0.75);
+.v2-btn--primary:hover,
+.v2-btn--primary:focus-visible {
+  color: #fff;
+  box-shadow: 0 12px 30px -14px rgba(168, 73, 125, 0.55);
 }
-.v2-btn--primary:active {
-  transform: scale(0.99);
-}
-/* Ghost/secondary = warm beige fill with ink text */
+/* Ghost/secondary = warm beige at rest; on hover the same pop fill slides up and
+   the text flips to white. */
 .v2-btn--ghost {
   background: var(--v2-beige);
   color: var(--v2-ink);
   border-color: transparent;
+  --v2-btn-fill: var(--v2-rose-pop);
 }
-.v2-btn--ghost:hover {
-  background: var(--v2-beige-deep);
-  transform: scale(1.025);
-}
-.v2-btn--ghost:active {
-  transform: scale(0.99);
+.v2-btn--ghost:hover,
+.v2-btn--ghost:focus-visible {
+  color: #fff;
 }
 .v2-btn--light {
   background: #fff;
@@ -437,6 +493,11 @@
     background: rgba(255, 255, 255, 0.55);
   }
 }
+/* Glass keeps its frosted-only hover — no slide-up fill (it would fight the
+   transparency), so suppress the ::before fill for this variant. */
+.v2-btn--glass::before {
+  content: none;
+}
 .v2-btn--glass:hover {
   background: rgba(255, 255, 255, 0.4);
   transform: scale(1.025);
@@ -445,8 +506,10 @@
   transform: scale(0.99);
 }
 @media (prefers-reduced-motion: reduce) {
-  .v2-btn--primary:hover,
-  .v2-btn--ghost:hover,
+  /* Fill swaps instantly instead of sliding; glass scale is dropped. */
+  .v2-btn::before {
+    transition: none;
+  }
   .v2-btn--glass:hover {
     transform: none;
   }

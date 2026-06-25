@@ -580,7 +580,7 @@
   bottom: clamp(10.75rem, 6vw + 5.75rem, 13rem);
   left: clamp(2rem, 5vw, 5rem);
   width: max-content;
-  /* Wide enough that the "$150 off" badge stays a pill on one line. */
+  /* Wide enough that the "$100 off" badge stays a pill on one line. */
   max-width: none;
   pointer-events: auto;
 }
@@ -1127,13 +1127,13 @@
   letter-spacing: 0.02em;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
-  white-space: nowrap; /* keep "$150 off" on one line — never wrap into a blob */
+  white-space: nowrap; /* keep "$100 off" on one line — never wrap into a blob */
   /* No border — a clean soft-beige pill that sits flat on the matte-white card. */
   background: var(--v2-blush);
   color: var(--v2-ink);
 }
 /* Solid chip — borrows the primary-button treatment (solid ink fill, white
-   text, pill, soft button shadow) for a punchy badge like "$150 off". It's a
+   text, pill, soft button shadow) for a punchy badge like "$100 off". It's a
    static label, so no hover/arrow — just the button's resting look. */
 .v2-chip--solid {
   background: var(--v2-ink);

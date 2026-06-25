@@ -118,7 +118,7 @@ export const kitItems = [
 export const timeline = [
   {
     when: "Today",
-    text: "Get $150 off — applied at checkout.",
+    text: "Get $100 off — applied at checkout.",
     // The discount is an offer, not a process stage — flagged so it renders as
     // an accent badge that sets it apart from the four genuine steps below.
     offer: true,

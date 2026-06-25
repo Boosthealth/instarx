@@ -1,0 +1,2941 @@
+/*
+ * Scoped styles for the /glp2-v2 premium editorial GLP-1 lander.
+ *
+ * Direction: editorial / luxe-wellness. Cream/beige canvas, dusty-rose accent,
+ * Fraunces (display) + DM Sans (body) loaded via next/font in page.tsx. Layout
+ * is mostly Tailwind utilities on the components; this file owns the palette
+ * tokens, font wiring, marquee + scroll-reveal motion, grain texture, and a few
+ * primitives that are cleaner as plain CSS than long utility chains. Everything
+ * is namespaced under `.v2` so it never collides with the global Tailwind layer
+ * or the shared `home` module.
+ */
+.v2 {
+  --v2-cream: #fbf7f2; /* dominant canvas */
+  --v2-cream-2: #f1e7da; /* alternating sections / cards (deeper for contrast) */
+  --v2-beige: #e6d7c5; /* warm beige fill (secondary buttons, chips) */
+  --v2-beige-deep: #d8c6af;
+  --v2-blush: #efe2d3; /* soft warm beige wash panels (deeper, still neutral) */
+  --v2-blush-deep: #e0d0bc;
+  --v2-ink: #1a1714; /* headlines / primary text / primary buttons — 14.6:1 */
+  --v2-ink-soft: #332d27; /* secondary text — deepened (was #423b34) so body never reads washed-out on the warm cream; 12.1:1 worst-case */
+  --v2-ink-mute: #4d453d; /* captions / disclaimers — deepened (was #635a51) so fine print stops receding into the canvas; 7.0:1 worst-case */
+
+  /* No accent color on text. Pink/purple live ONLY in the hero/CTA gradients.
+     The --v2-rose* names are kept (widely referenced) but map to ink tiers so
+     every eyebrow / italic accent / label / icon reads as confident dark ink —
+     primary or secondary only, never magenta. */
+  --v2-rose: var(--v2-ink); /* → primary ink (icons, slider fill, checkmark bg) */
+  --v2-rose-deep: var(--v2-ink); /* → primary ink (was #3a322c; now true ink for punch) */
+  --v2-rose-tint: var(--v2-beige); /* → beige (soft fills only, not text) */
+
+  --v2-line: #e7ddd2; /* hairline rules / card borders */
+  --v2-line-strong: #d8cabb;
+  --v2-gold: #b08a4f; /* stars / decorative icons (3:1 — large/decorative only) */
+  --v2-gold-ink: #7d5e30; /* text-safe gold for small labels — deeper so it clears AA
+                             on cream/white (5.3–6:1). Used on the few accent labels:
+                             FAQ categories, medication tier labels, "As featured in". */
+
+  /* White hairlines for glass surfaces — it's glass, so dividers and the edge
+     read as lit white lines, not grey/dark. The edge is a subtle thin ring; the
+     divider a slightly softer white. Neither carries the warm beige of
+     --v2-line. */
+  --v2-glass-divider: rgba(255, 255, 255, 0.55);
+  --v2-glass-edge: rgba(255, 255, 255, 0.55);
+
+  /* Signature pink + beige gradient — hero backdrop + final CTA band. Deeper
+     and more saturated than before so it reads as real color (more contrast /
+     pop), while staying strictly pink + beige. The animated blobs below drift
+     on top of this base. */
+  --v2-gradient: linear-gradient(
+    118deg,
+    #efc6d2 0%,
+    #f3d2c4 40%,
+    #ead0b4 72%,
+    #e3cab0 100%
+  );
+  --v2-gradient-strong: linear-gradient(
+    120deg,
+    #eec0cc 0%,
+    #f1d4c8 48%,
+    #e7cdb4 100%
+  );
+  /* Drifting blob colors for the animated hero gradient. */
+  --v2-blob-pink: #f3b9c8;
+  --v2-blob-peach: #f6cdb3;
+  --v2-blob-beige: #e8d2b6;
+
+  --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --v2-shadow-soft: 0 2px 4px rgba(60, 40, 30, 0.04),
+    0 18px 40px -24px rgba(60, 40, 30, 0.22);
+  --v2-shadow-card: 0 1px 2px rgba(60, 40, 30, 0.05),
+    0 24px 48px -30px rgba(60, 40, 30, 0.28);
+
+  --v2-maxw: 1200px;
+  --v2-pad-y: clamp(4.5rem, 9vw, 8rem);
+  --v2-header-h: 75px; /* total header height; hero bleeds up behind the sticky header */
+
+  background: var(--v2-cream);
+  color: var(--v2-ink);
+  font-family: var(--v2-fb);
+  font-size: 17px;
+  line-height: 1.55; /* tightened from 1.65 — on a light bg, less leading reads more editorial/confident (dark-bg copy needs more, light-bg copy needs less) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: clip;
+}
+
+.v2 *,
+.v2 *::before,
+.v2 *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Typography primitives ---- */
+.v2-display {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(2.75rem, 6vw, 4.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--v2-ink);
+}
+.v2-h2 {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--v2-ink);
+}
+.v2-h3 {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+/* italic accent inside serif headlines — the signature editorial move.
+   Emphasis comes from italic + weight ONLY, not color: it stays full ink so the
+   headline reads as one confident unit (forhers-style), no tinted word. */
+.v2-accent {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--v2-ink);
+}
+.v2-eyebrow {
+  font-family: var(--v2-fb);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em; /* tighter than the old 0.2em — modern, less "kicker" */
+  text-transform: uppercase;
+  /* Secondary ink, not an accent color — labels read as quiet ink, not magenta. */
+  color: var(--v2-ink-soft);
+}
+/* Gold eyebrow — opt-in warm-bronze accent for the few labels that carry it
+   (medication tier labels, "As featured in"). Text-safe shade clears AA. */
+.v2-eyebrow--gold {
+  color: var(--v2-gold-ink);
+}
+.v2-lede {
+  font-size: clamp(1.15rem, 1.5vw, 1.3rem); /* bumped: a real step above body */
+  line-height: 1.55;
+  /* Darker + slightly heavier than before for more contrast/punch — the lede was
+     reading soft on the tinted hero. Near-ink now (~11:1), still a step under the
+     headline. */
+  color: #2c2722;
+  font-weight: 500;
+}
+
+/* ---- Body / label / caption tier ----
+   One coherent ramp so components stop reaching for raw text-xs / text-sm with
+   inherited 1.65 leading. Each tier names its size, line-height, weight and ink
+   so hierarchy reads the same in every section (forhers-style: punchy, dark,
+   no light-gray body). */
+.v2-body {
+  font-size: 1.0625rem; /* 17px — matches the .v2 root body size */
+  line-height: 1.55; /* tightened from 1.6 to match the new editorial root leading */
+  color: var(--v2-ink-soft);
+}
+.v2-body-sm {
+  font-size: 0.95rem; /* ~15px — secondary paragraphs, list copy */
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+}
+.v2-label {
+  font-size: 0.8125rem; /* 13px — UI labels, meta, tags (sentence/normal case) */
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--v2-ink); /* labels are confident ink, not muted */
+  letter-spacing: 0.005em;
+}
+.v2-caption {
+  font-size: 0.8125rem; /* 13px — disclaimers, footnotes, fine print */
+  line-height: 1.45;
+  color: var(--v2-ink-mute); /* the muted tier — now contrast-safe at 5.5:1 */
+}
+.v2-kicker-rule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.v2-kicker-rule::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--v2-rose);
+}
+
+/* ---- Layout helpers ---- */
+.v2-container {
+  width: 100%;
+  max-width: var(--v2-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* ---- Header (full-width -> content-width glass on scroll, Lightship-style) ----
+   At top: __inner spans the viewport (minus a small edge gutter) so items sit
+   near the screen edges, fully transparent. On scroll, .is-scrolled shrinks
+   __inner's max-width to the content container (1200px) — easing the items
+   inward — and fades in __glass, a rounded frosted band, behind the row. */
+.v2-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  width: 100%;
+}
+.v2-header__inner {
+  position: relative;
+  margin-inline: auto;
+  /* Full-bleed by default: wide so items hug the screen edges. */
+  max-width: 100%;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-block: 0.65rem;
+  transition:
+    max-width 0.45s cubic-bezier(0.165, 0.84, 0.44, 1),
+    padding 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.v2-header.is-scrolled .v2-header__inner {
+  /* Pull in to the content-container width, slightly inset so the glass band
+     reads as a floating bar aligned with the sections below. */
+  max-width: calc(var(--v2-maxw) + 2.5rem);
+  padding-block: 0.55rem;
+}
+.v2-header__glass {
+  position: absolute;
+  inset: 0.4rem clamp(0.6rem, 2vw, 1.1rem);
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  -webkit-backdrop-filter: saturate(120%) blur(16px);
+  backdrop-filter: saturate(120%) blur(16px);
+  /* Keep blur mounted but harmless until revealed: no paint when opacity 0.
+     No border (per design). More-transparent frost: the page bleeds through and
+     the stronger blur (not opacity) keeps nav text legible, so the band reads as
+     glass dissolving into the page rather than a white chip on top of it. */
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 22px -18px rgba(60, 40, 30, 0.35);
+  pointer-events: none;
+}
+.v2-header.is-scrolled .v2-header__glass {
+  opacity: 1;
+}
+/* Header grid. Below lg the centre nav is hidden (display:none), so the row is
+   a 2-column grid — logo left, CTA right. A 3-col template here would leave the
+   CTA auto-flowing into the empty middle slot and reading as centred. At lg+ the
+   nav appears and the row becomes 3 columns: logo / nav / CTA. */
+.v2-header__row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 54px;
+  padding-inline: clamp(0.25rem, 1.5vw, 1rem);
+}
+@media (min-width: 1024px) {
+  .v2-header__row {
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-header__inner,
+  .v2-header__glass {
+    transition: none;
+  }
+}
+
+/* ---- Nav link with animated underline (Lightship-style) ----
+   Thin underline grows left->right on hover/focus and retracts on leave. */
+/* ---- Animated underline for text links (shared) ----
+   The shared treatment for every text link on the page (nav, footer, contact):
+   a thin underline that hugs the text and grows from the left on hover/focus.
+   `inline-block` + a tight `line-height` makes the link box hug its text, so the
+   underline sits right under the letters even when the link lives in a tall flex
+   row (e.g. the 54px header) — no big gap. */
+.v2-ulink {
+  position: relative;
+  display: inline-block;
+  line-height: 1.15;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.v2-ulink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.v2-ulink:hover::after,
+.v2-ulink:focus-visible::after {
+  transform: scaleX(1);
+}
+/* Tap-padded links (footer columns, contact): the link box is padded vertically
+   to reach a ~44px touch target, which would drop the underline to the padded
+   box bottom. Pull the underline back up so it stays on the text baseline. */
+.v2-foot__link::after {
+  bottom: calc(0.92rem - 1px);
+}
+.v2-foot__contact a::after {
+  bottom: calc(0.85rem - 1px);
+}
+.v2-ulink:focus-visible {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-ulink::after {
+    transition: none;
+  }
+}
+
+/* Header nav links — inherit the shared underline, add their own size/color.
+   Padded vertically so the tap target fills more of the 54px header row (the
+   text was only ~17px tall); the underline ::after is pulled back to the text
+   baseline below. */
+.v2-navlink {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--v2-ink-soft);
+  padding-block: 0.85rem;
+}
+.v2-navlink::after {
+  bottom: calc(0.85rem - 1px);
+}
+.v2-navlink:hover,
+.v2-navlink:focus-visible {
+  color: var(--v2-ink);
+}
+
+.v2-section {
+  padding-block: var(--v2-pad-y);
+}
+/* Section rhythm modifiers — break the uniform --v2-pad-y so the long middle run
+   doesn't read as one continuous slab. Tight groupings + generous separations:
+   pull two thematically-linked sections closer (--compact) and give pivotal,
+   standalone sections more air (--airy). */
+.v2-section--compact {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+.v2-section--airy {
+  padding-block: clamp(5.5rem, 11vw, 9.5rem);
+}
+.v2-bg-cream {
+  background: var(--v2-cream);
+}
+.v2-bg-cream-2 {
+  background: var(--v2-cream-2);
+}
+.v2-bg-blush {
+  background: var(--v2-blush);
+}
+.v2-bg-ink {
+  background: var(--v2-ink);
+  color: var(--v2-cream);
+}
+
+/* ---- Section gradient washes (EOS-style, per-section hue variation) ----
+   Each is a radial-bloom pair over the cream base, leaning a distinct hue —
+   pink, lilac, yellow, peach, sand. Strengthened (~20% more alpha + deeper,
+   more saturated bloom colors + wider radii) so the color actually reads
+   mid-scroll instead of disappearing into the cream. The blooms still anchor to
+   the section CORNERS and fade to transparent before the center, so the dark
+   body copy (which lives center-column) keeps a near-cream backdrop and stays
+   fully legible. */
+.v2-bg-pink {
+  background:
+    radial-gradient(70% 76% at 10% 12%, rgba(244, 204, 218, 0.52) 0%, rgba(244, 204, 218, 0) 72%),
+    radial-gradient(62% 68% at 94% 88%, rgba(240, 222, 198, 0.46) 0%, rgba(240, 222, 198, 0) 72%),
+    var(--v2-cream);
+}
+/* Softer pink — for the first colored band right after the hero ("Real results").
+   The hero is already a saturated pink/beige card; a full-strength pink wash
+   immediately below it reads as two loud bands stacked. This lands lighter still
+   so the section breathes as a calm landing, then color builds again downpage. */
+.v2-bg-pink--soft {
+  background:
+    radial-gradient(66% 72% at 10% 14%, rgba(244, 204, 218, 0.32) 0%, rgba(244, 204, 218, 0) 72%),
+    radial-gradient(58% 64% at 94% 86%, rgba(240, 222, 198, 0.3) 0%, rgba(240, 222, 198, 0) 72%),
+    var(--v2-cream);
+}
+.v2-bg-lilac {
+  background:
+    radial-gradient(70% 76% at 90% 10%, rgba(220, 209, 236, 0.52) 0%, rgba(220, 209, 236, 0) 72%),
+    radial-gradient(62% 68% at 6% 90%, rgba(242, 218, 204, 0.42) 0%, rgba(242, 218, 204, 0) 72%),
+    var(--v2-cream);
+}
+.v2-bg-yellow {
+  background:
+    radial-gradient(74% 78% at 12% 16%, rgba(245, 228, 184, 0.54) 0%, rgba(245, 228, 184, 0) 72%),
+    radial-gradient(58% 64% at 96% 76%, rgba(240, 224, 210, 0.42) 0%, rgba(240, 224, 210, 0) 72%),
+    var(--v2-cream);
+}
+.v2-bg-peach {
+  background:
+    radial-gradient(70% 76% at 92% 18%, rgba(245, 209, 181, 0.52) 0%, rgba(245, 209, 181, 0) 72%),
+    radial-gradient(62% 68% at 8% 84%, rgba(238, 214, 228, 0.4) 0%, rgba(238, 214, 228, 0) 72%),
+    var(--v2-cream);
+}
+.v2-bg-sand {
+  background:
+    radial-gradient(76% 78% at 16% 50%, rgba(234, 217, 193, 0.52) 0%, rgba(234, 217, 193, 0) 74%),
+    radial-gradient(54% 58% at 96% 10%, rgba(228, 236, 235, 0.48) 0%, rgba(228, 236, 235, 0) 66%),
+    var(--v2-cream);
+}
+.v2-bg-white {
+  background: #fff;
+}
+
+.v2-hairline {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--v2-line-strong),
+    transparent
+  );
+  border: 0;
+}
+
+/* ---- Contained hero (Lightship-style) ----
+   The wrap provides a gutter so the card floats inset from the browser edges;
+   the card holds the gradient + blobs + content and clips them to rounded
+   corners. The header stays full-width above (no bleed-up). */
+.v2-hero-wrap {
+  padding: clamp(0.6rem, 1.4vw, 1.1rem);
+  padding-top: clamp(0.15rem, 0.4vw, 0.35rem);
+}
+.v2-hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--v2-gradient);
+  box-shadow: none;
+}
+/* Desktop: reserve room at the bottom of the card for the overlay trust-bar +
+   fineprint, and a min-height so the (bottom-anchored) subject always has room
+   above her head — she's never clipped at the top. */
+@media (min-width: 1024px) {
+  .v2-hero-card {
+    padding-bottom: clamp(9.5rem, 12vw, 12.5rem);
+    min-height: clamp(560px, 46vw, 720px);
+  }
+}
+/* Subtle darker wash behind the left copy column for stronger contrast — the
+   dark serif headline pops harder against it. Desktop only (where the 2-col
+   split exists); fades to transparent toward the image side. */
+.v2-hero-copy {
+  position: relative;
+}
+/* Hero H1 — a touch smaller than the shared .v2-display. On desktop the authored
+   <br> (.v2-hero-br) puts "per week" on line two after "Drop up to 1–2 lbs". On
+   mobile that <br> is hidden so the headline wraps NATURALLY instead of forcing a
+   too-wide single line off the card edge. (The calculator keeps the larger
+   .v2-display size, untouched.) */
+.v2-hero-h1 {
+  font-size: clamp(2.25rem, 9vw, 4.05rem);
+  text-wrap: balance;
+}
+/* The authored line break only applies once there's room for it (≥640px). */
+.v2-hero-br {
+  display: none;
+}
+@media (min-width: 640px) {
+  .v2-hero-br {
+    display: inline;
+  }
+}
+/* The hero scrim (.v2-hero-scrim) handles copy legibility over the animated
+   gradient, so the copy column needs no extra wash. */
+
+/* ---- Hero animated gradient background + legibility scrim ----
+   .v2-gradientbg is the framer-motion crossfade layer (GradientBg) filling the
+   card behind the content. The scrim is a soft cream wash, stronger on the left
+   where the copy lives, so the dark serif headline / body stay legible over the
+   shifting pastels. Scrim sits above the gradient, below the content. */
+.v2-gradientbg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+.v2-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(251, 247, 242, 0.5) 0%,
+    rgba(251, 247, 242, 0.28) 40%,
+    rgba(251, 247, 242, 0.08) 72%,
+    rgba(251, 247, 242, 0) 100%
+  );
+}
+
+/* ---- Hero photo as a background layer (never cropped) ----
+   The subject is NOT a grid column. She's pinned to the bottom-right of the hero
+   card and sized by HEIGHT at her natural aspect ratio (object-contain), so no
+   side or top is ever clipped — only her lower body extends past the card's
+   bottom edge and is clipped by overflow:hidden. Content layers on top. */
+.v2-hero-photo {
+  position: absolute;
+  /* No z-index here: keeping the wrapper out of its own stacking context lets the
+     nested price card (z-index 25) sit ABOVE the trust-bar overlay (z-20). The
+     photo still renders behind the content because it's first in the DOM and the
+     content layers carry their own positive z-index. */
+  /* Stretch the wrapper to the FULL card height (top:0 + bottom:0), not just
+     bottom-anchored. This gives the wrapper a *definite* height so the nested
+     img's `height:100%` actually resolves — otherwise the wrapper height is
+     content-driven (auto) and `height:100%` collapses to the image's
+     width-derived height, leaving her short of the card. */
+  top: 0;
+  bottom: 0;
+  /* Pin her toward the centred content container's right edge. The portrait
+     source has transparent space on her RIGHT, so a small negative offset nudges
+     her visible body out to the container edge instead of leaving a gap. */
+  right: max(0px, calc((100% - var(--v2-maxw)) / 2 + clamp(1.25rem, 4vw, 2.5rem) - clamp(1rem, 3vw, 3rem)));
+  /* Portrait ratio (~0.875 w/h) is much taller per unit width, so the width is
+     smaller than the old landscape image while she still reads large. The img
+     inside is sized by HEIGHT now (object-contain), so width is just an upper
+     bound on the wrapper box. */
+  width: clamp(360px, 38vw, 560px);
+  pointer-events: none;
+}
+.v2-hero-photo__img {
+  display: block;
+  /* The wrapper now has a definite height (top:0 + bottom:0), so fill it: the
+     img is the full wrapper box and `object-fit: contain` scales her by HEIGHT
+     at her natural ratio, uncropped, attached to the bottom edge.
+     `!important` defeats next/image's injected inline `height:auto`/`width:auto`,
+     which would otherwise revert her to width-driven (short) sizing. */
+  width: 100% !important;
+  height: 100% !important;
+  margin-inline: auto;
+  /* contain keeps her whole; bottom-anchor so she's ATTACHED to the card's
+     bottom edge (no gap). The headroom above her head comes from the PNG's own
+     ~5.6% transparent top padding — no lift transform (a translateY here would
+     pull her bottom edge UP off the card and reopen a gap below her). */
+  object-fit: contain;
+  object-position: bottom center;
+}
+/* The content grid: copy on the left, the right side intentionally open so the
+   background photo shows through. Single column; the photo fills the right via
+   its own absolute positioning, not a grid track. */
+.v2-hero-grid {
+  padding-block: clamp(2rem, 4vw, 3rem) 0;
+}
+@media (min-width: 1024px) {
+  .v2-hero-copy {
+    /* Wide enough that "Drop up to 1–2 lbs" stays on one line (2-line headline),
+       while still clearing the subject anchored on the right. */
+    max-width: 38rem;
+    /* lift the rating row up off the absolutely-pinned trust-bar below */
+    padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
+  }
+}
+/* Floating offer card — nested in the photo layer, positioned relative to the
+   subject so it rides on her hand/torso. The photo wrapper is her width and
+   right-anchored; placing the card just left of her centre lands it on her hand. */
+.v2-hero-price {
+  position: absolute;
+  /* Above the trust-bar overlay (z-20) so the offer card always sits in front. */
+  z-index: 25;
+  /* On her body (right of the bottle), kept inside the figure so it never
+     overlaps the copy on the left. The bottom offset is tuned to always clear
+     the trust-bar overlay (pinned at clamp(4rem,5.2vw,5.25rem) + ~72px tall):
+     at the narrow desktop end (1024px) the old 12vw value let the card dip ~34px
+     INTO the bar's third column. Raising the floor + base term keeps the card
+     ~16px above the bar at 1024px and lifts cleanly with width. */
+  bottom: clamp(10.75rem, 6vw + 5.75rem, 13rem);
+  left: clamp(2rem, 5vw, 5rem);
+  width: max-content;
+  /* Wide enough that the "$150 off" badge stays a pill on one line. */
+  max-width: none;
+  pointer-events: auto;
+}
+@media (max-width: 1023px) {
+  /* Stack vertically. The card becomes a flex column; `order` puts the photo
+     AFTER the copy even though it's first in the DOM. The photo is a centered,
+     contained block (uncropped); the price card floats at its lower edge. */
+  .v2-hero-card {
+    display: flex;
+    flex-direction: column;
+  }
+  /* Defensive: flex items default to min-width:auto. Letting them shrink to fit
+     keeps any wide content (a long word, the price card) from stretching the
+     column past the viewport on small phones. */
+  .v2-hero-card > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .v2-hero-grid {
+    order: 1;
+  }
+  .v2-hero-photo {
+    order: 2;
+    position: relative;
+    right: auto;
+    width: 100%;
+    height: auto;
+    margin: 1.5rem auto 0;
+    display: flex;
+    justify-content: center;
+  }
+  .v2-hero-photo__img {
+    /* Size by WIDTH (capped) so the portrait image can NEVER exceed the viewport
+       — sizing by height let her computed width (~0.875×height) overflow on
+       narrow phones and pushed horizontal overflow onto the whole page.
+       `!important` here overrides the desktop rule's `!important` height/width. */
+    width: min(78%, 360px) !important;
+    height: auto !important;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+  .v2-trustbar-wrap {
+    order: 3;
+  }
+  /* The cream legibility scrim only serves the desktop LEFT copy column (which
+     overlays the gradient beside the subject). On mobile the copy is stacked at
+     the top over the bare gradient and the subject is centered BELOW — there the
+     scrim just sits on top of her and mutes the photo. Drop it on small screens
+     so she renders at full saturation/contrast. */
+  .v2-hero-scrim {
+    display: none;
+  }
+  .v2-hero-fineprint {
+    order: 4;
+  }
+  .v2-hero-price {
+    left: 50%;
+    right: auto;
+    bottom: clamp(1.5rem, 6vw, 3rem);
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- Trust-bar wrapper: overlay on desktop, flow on mobile ----
+   On small screens it's a normal block under the stacked content (with top
+   padding to clear the price card). On desktop it becomes an absolute overlay
+   pinned near the bottom of the hero card, overlapping the photo so the frosted
+   glass blurs the subject + gradient behind it. */
+.v2-trustbar-wrap {
+  position: relative;
+  z-index: 20;
+  /* Mobile/tablet: tuck the frosted trust-bar UP so it overlaps the lower edge of
+     the photo (mirroring the desktop overlay treatment) — this removes the gap
+     below her body entirely and reads as intentional layering rather than a void.
+     The negative margin is safe: the price card sits ~24-48px ABOVE the photo
+     bottom, so the bar never collides with it. (Desktop overrides this to an
+     absolute overlay below.) */
+  margin-top: -2rem;
+}
+.v2-hero-fineprint {
+  margin-top: 2rem;
+  /* More room below the "No hidden fees · …" line on mobile so it doesn't sit
+     flush against the hero card's bottom edge / the next section. (Desktop
+     overrides this to an absolute pin below.) */
+  padding-bottom: 4rem;
+  color: var(--v2-ink-soft);
+}
+@media (min-width: 1024px) {
+  .v2-trustbar-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(4rem, 5.2vw, 5.25rem);
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .v2-hero-fineprint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* Sit just under the trust-bar strip. The strip is pinned at
+       clamp(4rem,5.2vw,5.25rem); pinning the fineprint with the SAME 5.2vw term
+       (minus a constant) keeps the gap to the strip constant across desktop
+       widths. Lowered ~0.35rem vs. before for a touch more breathing room
+       between the strip and the "No hidden fees · …" line. */
+    bottom: clamp(1.65rem, calc(5.2vw - 2.25rem), 3.05rem);
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* ---- Hero trust-bar (Coivas-style strip) ----
+   One rounded container spanning the hero, three columns separated by hairline
+   dividers. Flat: a frosted near-white fill + a single hairline border, no drop
+   shadow. Each column = a soft rounded-square icon tile + bold label + muted
+   one-line description. Responsive: 3 columns → 1 column. */
+.v2-trustbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  border-radius: 18px;
+  /* Genuine frost (Intercom-style): a light translucent fill that lets the
+     pink/beige gradient read through, a strong blur, a translucent-WHITE edge
+     and a soft inner top-highlight — no warm/beige border. No drop shadow. */
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+  /* ONE edge only — a single thin white ring. No inset highlight on top of it
+     (that second line read as a doubled border). */
+  border: 1px solid var(--v2-glass-edge);
+  overflow: hidden;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  /* No blur → raise the fill so the panel stays legible as solid glass. */
+  .v2-trustbar {
+    background: rgba(255, 255, 255, 0.78);
+  }
+}
+.v2-trustbar__item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.05rem 1.35rem;
+  position: relative;
+}
+/* Hairline divider on the left edge of every item except the first in its row.
+   The :not(:first-child) rule covers the 4-col layout; row-aware overrides for
+   the stacked layouts live in the media queries below. */
+.v2-trustbar__item + .v2-trustbar__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 1px;
+  background: var(--v2-glass-divider);
+}
+.v2-trustbar__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  /* Borderless soft-white fill — no border, no inset. A bordered chip nested
+     inside the bordered panel read as edges-within-edges; the plain fill alone
+     reads cleaner on the glass. */
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--v2-ink);
+}
+.v2-trustbar__text {
+  min-width: 0;
+}
+.v2-trustbar__label {
+  font-family: var(--v2-fb);
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.25;
+  color: var(--v2-ink);
+  letter-spacing: -0.005em;
+}
+.v2-trustbar__desc {
+  margin-top: 0.15rem;
+  font-family: var(--v2-fb);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: #2c2722; /* darker than --v2-ink-soft for more contrast under the label */
+  text-wrap: pretty;
+}
+/* Small screens: stack to a single column. Swap the vertical column dividers for
+   horizontal hairlines between the stacked rows. */
+@media (max-width: 760px) {
+  .v2-trustbar {
+    grid-template-columns: 1fr;
+  }
+  .v2-trustbar__item + .v2-trustbar__item::before {
+    /* Turn the left-divider into a top hairline between stacked rows. */
+    top: 0;
+    bottom: auto;
+    left: 1.35rem;
+    right: 1.35rem;
+    width: auto;
+    height: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* nothing animated here; declared for parity with the rest of the file */
+}
+
+/* ---- Buttons ---- */
+.v2-btn {
+  /* Default button — 52px tall, the standard CTA size across all sections. The
+     header CTA is pinned back to 40px via .v2-header .v2-btn. On hover the whole
+     button lifts ~2px with a springy ease (YMI-style) and the diagonal arrow
+     swaps; colors stay put. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 52px;
+  padding: 0 1.6rem;
+  font-family: var(--v2-fb);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.48, 1.68, 0.64, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+/* Springy lift on hover (YMI). */
+.v2-btn:hover,
+.v2-btn:focus-visible {
+  transform: translateY(-2px);
+}
+.v2-btn:active {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-btn:hover,
+  .v2-btn:focus-visible,
+  .v2-btn:active {
+    transform: none;
+  }
+}
+/* Large button — hero CTAs. Taller, a touch more padding + size. */
+.v2-btn--lg {
+  height: 52px;
+  padding: 0 1.9rem;
+  font-size: 1.02rem;
+}
+/* Header CTA stays compact at 40px — the only button that isn't the standard
+   52px size. Slightly tighter padding + type to match the smaller height. */
+.v2-header .v2-btn {
+  height: 40px;
+  padding: 0 1.25rem;
+  font-size: 0.9rem;
+}
+/* ---- Diagonal arrow swap (YMI-style) ----
+   Two stacked ↗ arrows clipped to a small box; on hover the visible one (--a)
+   exits up-right and the duplicate (--b), parked down-left, slides into place.
+   Springy ease gives it a little life. */
+.v2-btn__arrowswap {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.v2-btn__ar {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s cubic-bezier(0.48, 1.4, 0.5, 1);
+}
+.v2-btn__ar--b {
+  transform: translate(-110%, 110%);
+}
+.v2-btn:hover .v2-btn__ar--a,
+.v2-btn:focus-visible .v2-btn__ar--a {
+  transform: translate(110%, -110%);
+}
+.v2-btn:hover .v2-btn__ar--b,
+.v2-btn:focus-visible .v2-btn__ar--b {
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-btn__ar {
+    transition: none;
+  }
+}
+.v2-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--v2-cream), 0 0 0 5px var(--v2-ink);
+}
+/* Primary = solid black. Subtle hover: a touch darker + lifted shadow. */
+.v2-btn--primary {
+  background: var(--v2-ink);
+  color: #fff;
+  box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
+}
+.v2-btn--primary:hover,
+.v2-btn--primary:focus-visible {
+  background: #000;
+  box-shadow: 0 10px 26px -14px rgba(26, 23, 20, 0.7);
+}
+/* Ghost/secondary = warm beige fill with ink text. */
+.v2-btn--ghost {
+  background: var(--v2-beige);
+  color: var(--v2-ink);
+  border-color: transparent;
+}
+.v2-btn--ghost:hover,
+.v2-btn--ghost:focus-visible {
+  background: var(--v2-beige-deep);
+}
+.v2-btn--light {
+  background: #fff;
+  color: var(--v2-ink);
+  border-color: var(--v2-line);
+}
+.v2-btn--light:hover {
+  border-color: var(--v2-ink);
+}
+/* On dark (ink) panels — cream/beige button */
+.v2-btn--onink {
+  background: var(--v2-cream);
+  color: var(--v2-ink);
+}
+.v2-btn--onink:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+/* Frosted-glass secondary — a frosted white fill + blur with a WHITE edge (no
+   dark border), matching the hero's glass surfaces (trust-bar, price card).
+   Hover lightens the fill. */
+.v2-btn--glass {
+  background: rgba(255, 255, 255, 0.35);
+  color: var(--v2-ink);
+  border-color: var(--v2-glass-edge);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-btn--glass {
+    background: rgba(255, 255, 255, 0.65);
+  }
+}
+.v2-btn--glass:hover,
+.v2-btn--glass:focus-visible {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---- Floating bottom CTA (Hims-style) ----
+   A glass pill with a soft white glow that slides up from the bottom once the
+   user is past the hero, and slides away when the closing CTA comes into view.
+   Hidden state is translated down + faded + non-interactive so it can't be
+   clicked or tabbed while off-screen. */
+.v2-floatcta {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 45;
+  transform: translate(-50%, 160%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+}
+.v2-floatcta.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Glossy glass pad behind the pill. The white button sits ON this pad: a thick
+   rounded layer of frosted glass — translucent fill + backdrop blur + a soft
+   grounding drop shadow. No outer white GLOW and no hard white 1px border; the
+   edge is just a faint glossy rim so it reads as a glass pad, not a ring. */
+.v2-floatcta__glow {
+  position: absolute;
+  inset: -9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  /* Only a soft neutral drop shadow to ground the pad — no white glow. */
+  box-shadow: 0 10px 28px -12px rgba(60, 40, 30, 0.28);
+  pointer-events: none;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-floatcta__glow {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+/* The floating button itself sits above the glow. No border — the glow defines
+   the edge; a soft lift shadow keeps it grounded. */
+.v2-floatcta__btn {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(60, 40, 30, 0.1);
+}
+.v2-floatcta__btn:hover,
+.v2-floatcta__btn:focus-visible {
+  background: #fff;
+  border-color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-floatcta {
+    transition: opacity 0.3s ease;
+  }
+  .v2-floatcta,
+  .v2-floatcta.is-visible {
+    transform: translate(-50%, 0);
+  }
+  .v2-floatcta:not(.is-visible) {
+    /* still hidden, just no slide */
+    opacity: 0;
+  }
+}
+
+/* ---- Community band (full-bleed, hero-style) ----
+   A rich pink->beige gradient spans edge to edge to bring color mid-scroll;
+   copy + CTA on the left, a real-person cutout on the right (mirrors the hero
+   split). The band breaks out of the page padding for true full width. */
+.v2-community {
+  /* full-bleed: the section itself spans the viewport; no container padding */
+}
+.v2-community__band {
+  position: relative;
+  overflow: hidden;
+  /* deeper, more saturated pink->beige than the hero for extra pop */
+  background: linear-gradient(
+    115deg,
+    #f0b9cb 0%,
+    #f2c6bd 38%,
+    #ecccac 70%,
+    #e6c8a6 100%
+  );
+}
+.v2-community__grid {
+  max-width: var(--v2-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1.5rem;
+}
+@media (min-width: 900px) {
+  .v2-community__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    /* let the figure run to the bottom edge of the band */
+    align-items: stretch;
+  }
+}
+.v2-community__copy {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  position: relative;
+  z-index: 1;
+}
+.v2-community__title {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: var(--v2-ink);
+}
+.v2-community__sub {
+  margin-top: 1.1rem;
+  max-width: 30rem;
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+}
+.v2-community__actions {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+@media (min-width: 560px) {
+  .v2-community__actions {
+    flex-direction: row;
+  }
+}
+/* Figure column — the cutout sits bottom-aligned and runs to the band edge. */
+.v2-community__figure {
+  position: relative;
+  align-self: end;
+  display: flex;
+  justify-content: center;
+}
+.v2-community__photo {
+  width: auto;
+  height: 100%;
+  max-height: clamp(360px, 42vw, 560px);
+  object-fit: contain;
+  object-position: bottom center;
+}
+@media (max-width: 899px) {
+  /* Photo BELOW the copy and attached to the section's bottom edge (mirrors the
+     HowItWorks phone treatment). Remove the copy's bottom padding and the grid
+     gap's trailing space so the figure sits flush on the band's lower edge with
+     no gap beneath her. */
+  .v2-community__grid {
+    gap: 0;
+  }
+  .v2-community__copy {
+    /* keep top breathing room, drop the bottom so the photo can attach below */
+    padding-block: clamp(2.5rem, 7vw, 3.5rem) 0;
+  }
+  .v2-community__figure {
+    /* natural DOM order = after the copy; align her to the band's bottom edge */
+    align-self: end;
+    margin-top: clamp(1.5rem, 5vw, 2.5rem);
+  }
+  .v2-community__photo {
+    max-height: 360px;
+  }
+}
+
+/* ---- Pills / chips ---- */
+.v2-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  white-space: nowrap; /* keep "$150 off" on one line — never wrap into a blob */
+  /* No border — a clean soft-beige pill that sits flat on the matte-white card. */
+  background: var(--v2-blush);
+  color: var(--v2-ink);
+}
+/* Solid chip — borrows the primary-button treatment (solid ink fill, white
+   text, pill, soft button shadow) for a punchy badge like "$150 off". It's a
+   static label, so no hover/arrow — just the button's resting look. */
+.v2-chip--solid {
+  background: var(--v2-ink);
+  color: #fff;
+  padding: 0.45rem 0.95rem;
+  box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
+}
+
+/* ---- Card primitive ---- */
+.v2-card {
+  background: #fff;
+  border: 1px solid var(--v2-line);
+  border-radius: 22px;
+  box-shadow: var(--v2-shadow-soft);
+}
+
+/* Calculator result card — its own class so it can drop the border + shadow
+   without affecting the shared .v2-card (used by Comparison + Reviews). */
+.v2-calc-card {
+  background: #fff;
+  border-radius: 22px;
+}
+
+/* ---- Frosted glass (Coivas-style, subtle) ----
+   Matches Coivas's restraint: a faint white fill (~10%), a thin low-opacity
+   border, an 8px blur, and NO drop shadow. Coivas sits this over a dark photo;
+   our backdrop is a light gradient, so the fill/border are nudged just enough
+   to stay perceptible without becoming a heavy frosted slab. @supports raises
+   the fill slightly where backdrop-filter is unavailable so text stays legible. */
+.v2-glass {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-glass {
+    background: rgba(255, 255, 255, 0.55);
+  }
+}
+/* Matte-white glass — for the floating hero price card. Unlike the see-through
+   .v2-glass (pills/buttons over the gradient), this is a near-opaque frosted
+   white so the price + struck-through text stay fully readable, never showing
+   the photo behind it. Thin white edge, stronger blur, no drop shadow. */
+.v2-glass--matte {
+  background: rgba(255, 255, 255, 0.82);
+  /* ONE edge only — overrides .v2-glass's border, no inset highlight stacked
+     on top (that read as a doubled border). */
+  border: 1px solid var(--v2-glass-edge);
+  box-shadow: none;
+  -webkit-backdrop-filter: saturate(150%) blur(16px);
+  backdrop-filter: saturate(150%) blur(16px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-glass--matte {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+/* Glass pill — for tags/eyebrows */
+.v2-glass-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.95rem;
+  border-radius: 999px;
+  font-family: var(--v2-fb);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v2-ink);
+}
+.v2-glass-pill .v2-glass-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v2-ink);
+}
+
+/* ---- Static announcement bar (Coivas-style) ---- */
+.v2-announce {
+  background: var(--v2-ink);
+  color: var(--v2-cream);
+  text-align: center;
+}
+.v2-announce__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.81rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(251, 247, 242, 0.92);
+  text-decoration: none;
+}
+.v2-announce__link svg {
+  transition: transform 0.22s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.v2-announce__link:hover svg {
+  transform: translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-announce__link svg {
+    transition: none;
+  }
+}
+
+/* ---- Star rating ---- */
+.v2-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--v2-gold);
+}
+
+/* ---- Scroll reveal ---- */
+.v2-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  /* 0.5s (was 0.7s) — long enough to read as an intentional rise, short enough
+     that it finishes before the user scrolls past. Strong ease-out curve. */
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v2-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Closing-CTA entrance — the final section is the emotional peak (peak-end rule),
+   so it earns a distinct reveal: a gentle scale-up + fade instead of the standard
+   rise, marking it as the destination rather than just another section. Applied
+   via .v2-reveal--peak alongside the base .v2-reveal. */
+.v2-reveal--peak {
+  transform: scale(0.985);
+}
+.v2-reveal--peak.is-in {
+  transform: none;
+}
+
+/* ---- Grain / texture overlay ---- */
+.v2-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* ---- Range slider (calculator) re-skin ---- */
+.v2-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  outline: none;
+}
+.v2-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--v2-rose);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(176, 85, 118, 0.45);
+  cursor: grab;
+}
+.v2-range::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+.v2-range::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--v2-rose);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(176, 85, 118, 0.45);
+  cursor: grab;
+}
+
+/* ---- FAQ section ---- */
+.v2-faq {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+/* Very subtle warm wash (derived from section-cream-wash). Near-flat cream with
+   a faint warm glow on the left and a cool lift top-right — much quieter than
+   the closing-CTA gradient, so it adds depth without hurting FAQ legibility. */
+.v2-faq__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 70% at 0% 50%, rgba(247, 232, 214, 0.55) 0%, rgba(247, 232, 214, 0) 70%),
+    radial-gradient(50% 45% at 100% 12%, rgba(238, 245, 246, 0.6) 0%, rgba(238, 245, 246, 0) 65%),
+    linear-gradient(160deg, #fdfaf5 0%, #f4ece1 100%);
+}
+
+/* Compact two-column FAQ grid: category blocks flow into two columns so the
+   whole section stays short and even instead of one tall single-column list. */
+/* Two fixed columns (explicit, not auto-flowed). Each .v2-faq-col is its own
+   stack aligned to the top, so opening a question grows only that column and
+   never reflows content across the gap. */
+.v2-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.v2-faq-group:not(:first-child) {
+  margin-top: 2.5rem;
+}
+.v2-faq-cat {
+  margin-bottom: 0.5rem;
+  font-family: var(--v2-fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* Warm bronze accent — one of three deliberate gold placements that thread the
+     hero's warmth through the mid-scroll. Text-safe shade (clears AA). */
+  color: var(--v2-gold-ink);
+}
+@media (max-width: 768px) {
+  .v2-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* ---- FAQ accordion ---- */
+.v2-faq-item {
+  border-bottom: 1px solid var(--v2-line);
+}
+.v2-faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 1.4rem 0;
+  font-family: var(--v2-fb);
+  font-weight: 600;
+  font-size: 1.08rem;
+  color: var(--v2-ink);
+}
+.v2-faq-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  position: relative;
+  color: var(--v2-rose-deep);
+}
+.v2-faq-a {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.32s ease;
+}
+.v2-faq-a__inner {
+  padding-bottom: 1.4rem;
+  color: var(--v2-ink-soft);
+  max-width: 60ch;
+}
+
+/* ---- "What are you waiting for?" closing CTA ---- */
+.v2-waiting {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--v2-cream);
+}
+/* Soft warm gradient wash: airy cream center, cool lift top-left, warm peach
+   bloom lower-right — an EOS-style golden-hour feel without any imagery. */
+.v2-waiting__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 55% at 12% 8%, rgba(233, 241, 246, 0.85) 0%, rgba(233, 241, 246, 0) 60%),
+    radial-gradient(55% 50% at 92% 78%, rgba(244, 209, 199, 0.55) 0%, rgba(244, 209, 199, 0) 62%),
+    radial-gradient(70% 60% at 80% 18%, rgba(247, 232, 214, 0.7) 0%, rgba(247, 232, 214, 0) 60%),
+    linear-gradient(160deg, #fcf8f2 0%, #f7efe4 55%, #f3e7d8 100%);
+}
+
+
+.v2-waiting__title {
+  margin: 1.6rem auto 0;
+  max-width: 22ch;
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--v2-ink);
+  text-wrap: balance;
+}
+/* Keep the authored two-line break only where there's room for it; on narrow
+   screens it collapses to the trailing space so the headline reflows naturally. */
+@media (max-width: 520px) {
+  .v2-waiting__br {
+    display: none;
+  }
+}
+
+.v2-waiting__sub {
+  margin: 1.4rem auto 0;
+  max-width: 52ch;
+  font-family: var(--v2-fb);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---- Trust ticker (between the closing CTA and the footer) ----
+   A seamless horizontal marquee: the item group is rendered twice and the track
+   animates to -50%, so it loops without a seam. White band, hairline rules. */
+.v2-ticker {
+  overflow: hidden;
+  background: #fff;
+}
+.v2-ticker__track {
+  display: flex;
+  width: max-content;
+  animation: v2-ticker-scroll 38s linear infinite;
+}
+.v2-ticker:hover .v2-ticker__track {
+  animation-play-state: paused;
+}
+.v2-ticker__group {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+.v2-ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-block: 1.05rem;
+  font-family: var(--v2-fb);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v2-ink-soft);
+  white-space: nowrap;
+}
+.v2-ticker__item svg {
+  color: var(--v2-ink-mute);
+  flex: none;
+}
+.v2-ticker__dot {
+  width: 3px;
+  height: 3px;
+  margin-inline: 1.6rem;
+  border-radius: 999px;
+  background: var(--v2-line-strong);
+}
+@keyframes v2-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- Light editorial footer (/glp2-v2 only) ---- */
+.v2-foot {
+  background: var(--v2-cream);
+  font-family: var(--v2-fb);
+  color: var(--v2-ink-soft);
+}
+.v2-foot__top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+@media (max-width: 1080px) {
+  .v2-foot__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 2rem;
+  }
+  .v2-foot__brand,
+  .v2-foot__rail {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .v2-foot__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Brand column */
+.v2-foot__tagline {
+  margin-top: 1.25rem;
+  max-width: 32ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--v2-ink-soft);
+}
+.v2-foot__contact {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* don't stretch the links to full column width */
+  gap: 0.1rem; /* tightened — the per-link vertical padding now carries the spacing */
+}
+.v2-foot__contact a {
+  font-size: 0.92rem;
+  color: var(--v2-ink);
+  /* hug the text so the underline matches the text width, not the column */
+  width: fit-content;
+  /* Tap target: pad the link to ≥44px tall without changing the text size. The
+     underline ::after is repositioned below to stay on the text baseline rather
+     than dropping to the padded box edge. (~0.85rem×2 + ~17px text ≈ 44px.) */
+  padding-block: 0.85rem;
+}
+
+/* Link columns — hairline divider on the left edge of each (mirrors Coivas) */
+.v2-foot__col {
+  position: relative;
+}
+@media (min-width: 1081px) {
+  .v2-foot__col {
+    padding-left: clamp(1.5rem, 2.5vw, 2.5rem);
+  }
+  .v2-foot__col::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    width: 1px;
+    background: var(--v2-line);
+  }
+}
+.v2-foot__heading {
+  font-family: var(--v2-fb);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--v2-ink);
+  margin-bottom: 1rem;
+}
+.v2-foot__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem; /* tightened — per-link vertical padding now carries the spacing */
+}
+.v2-foot__link {
+  font-size: 0.82rem;
+  color: var(--v2-ink-soft);
+  white-space: nowrap;
+  /* Tap target: pad to ≥44px tall (text size unchanged). Links hug their text
+     via inline-block (.v2-ulink) so the hit area is text-width × padded-height.
+     (~0.92rem×2 + ~13px text ≈ 44px.) */
+  padding-block: 0.92rem;
+}
+.v2-foot__link:hover,
+.v2-foot__link:focus-visible {
+  color: var(--v2-ink);
+}
+
+/* Secure rail — pill reuses the hero's .v2-glass .v2-glass-pill treatment.
+   The footer sits on flat cream (not a gradient), so the translucent glass fill
+   would read as near-invisible; nudge the backing up just enough to stay
+   perceptible while keeping the frosted look. Only the icon tint is footer-only. */
+.v2-foot__pill {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+}
+.v2-foot__pill svg {
+  color: var(--v2-gold);
+}
+.v2-foot__reassure {
+  margin-top: 1rem;
+  max-width: 30ch;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--v2-ink-mute);
+}
+.v2-foot__seals {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Bottom bar */
+.v2-foot__bottom {
+  border-top: 1px solid var(--v2-line);
+  padding-block: 1.4rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.v2-foot__copy,
+.v2-foot__legal {
+  font-size: 0.82rem;
+  color: var(--v2-ink-mute);
+}
+
+/* ---- "Get your meds in 1–2 days" timeline ----
+   Each row stacks the tag (the "when") above its step copy, separated by a
+   hairline. Stacked rather than side-by-side so the longer "when" labels don't
+   wrap awkwardly in a narrow column. No connector arrows. */
+.v2-timeline {
+  display: flex;
+  flex-direction: column;
+}
+.v2-timeline__row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding-block: 1.15rem;
+}
+/* Tag + a hairline that extends straight from its right edge across the rest of
+   the column width, so the divider reads as emanating from each tag. */
+.v2-timeline__head {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+.v2-timeline__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--v2-line);
+}
+/* Tag reuses the hero's .v2-glass .v2-glass-pill treatment (frosted pill, no
+   dot). The section is white, where the translucent glass fill would be near
+   invisible, so nudge the backing up just enough to stay perceptible — same fix
+   as the footer "Secure & Encrypted" pill. */
+.v2-timeline__tag {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+  line-height: 1.25;
+}
+.v2-timeline__text {
+  font-family: var(--v2-fb);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--v2-ink);
+  /* Indent to match the tag's inner text (the glass pill's 0.95rem left
+     padding), so the paragraph starts on the same vertical line as the label. */
+  padding-left: 0.95rem;
+}
+
+/* ---- Trust row (icon credibility points + Trustpilot-style rating) ----
+   Appended to the Results + Medications sections. Editorial re-skin of the
+   original /glp2 trust badges + rating. */
+.v2-trust {
+  margin-top: 2.5rem;
+}
+/* The four credibility points lifted into one soft editorial panel (echoes the
+   hero trust-bar's structure — icon tiles + hairline dividers — without the
+   frosted-glass-over-photo treatment, since there's no photo behind it here). */
+.v2-trust__panel {
+  border-radius: 18px;
+  /* Pure white, no border — lifts off the cream page on contrast alone, with a
+     soft warm shadow (matching the card convention) so it doesn't read flat. */
+  background: #fff;
+  box-shadow: 0 8px 22px -18px rgba(60, 40, 30, 0.35);
+  padding: 0.35rem 0.5rem;
+}
+.v2-trust__row {
+  /* Centered flowing strip (not a rigid grid): the four icon+label pairs sit on
+     one line on wide screens, centered, and wrap together as needed on smaller
+     ones. Thin dividers between them give rhythm without boxing each cell. */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem 2.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.85rem 1rem;
+}
+.v2-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.82rem;
+  /* Medium (not semibold) — these are quiet credibility points, not headlines;
+     500 keeps them legible without competing with the section titles. */
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--v2-ink);
+  /* Each pair stays intact — icon + label never split across a wrap. */
+  white-space: nowrap;
+}
+.v2-trust__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  /* Borderless cream tile — the dark icon glyph carries the contrast on its own;
+     the hairline ring read as an extra edge and felt less premium. */
+  background: var(--v2-cream);
+  color: var(--v2-ink);
+}
+/* The seamless-loop duplicate row only exists for the mobile marquee; hide it on
+   desktop, where the single centered strip is the whole panel. */
+.v2-trust__row--dupe {
+  display: none;
+}
+
+/* Mobile (≤600px): a stacked 4-row list dragged too much attention for a
+   secondary trust signal. Instead, turn the four points into a quiet horizontal
+   marquee (same mechanic as the page's .v2-ticker) so they read as ambient
+   credibility in a single low row. Icons keep their desktop cream-tile / ink-glyph
+   styling — no pop. .v2-trust is the clip window; .v2-trust__panel is the moving
+   track holding the row + its aria-hidden duplicate, animating -50% to loop. */
+@media (max-width: 600px) {
+  .v2-trust {
+    overflow: hidden;
+  }
+  .v2-trust__panel {
+    /* track, not card: flatten the card chrome and lay the two rows in a line */
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: v2-trust-marquee 28s linear infinite;
+  }
+  .v2-trust__panel:hover {
+    animation-play-state: paused;
+  }
+  /* Both rows must be IDENTICAL width for the -50% loop to seam cleanly. Same
+     display, gap, and padding on each. The right padding provides the gap to the
+     next group's first item so the seam spacing matches the in-row gap. */
+  .v2-trust__row,
+  .v2-trust__row--dupe {
+    display: flex;
+    flex-wrap: nowrap;
+    flex: none;
+    width: max-content;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0 2rem;
+    margin: 0;
+    padding: 0.35rem 2rem 0.35rem 0;
+  }
+  .v2-trust__item {
+    white-space: nowrap; /* keep each point on one line in the marquee */
+    font-size: 0.84rem;
+  }
+  /* Keep the desktop cream icon tile, but a step deeper (cream-2) so it stays
+     visible without the white card behind it. Same chip style, just legible on
+     the bare cream page. */
+  .v2-trust__icon {
+    background: var(--v2-cream-2);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+  .v2-trust__icon svg {
+    width: 19px;
+    height: 19px;
+  }
+  @keyframes v2-trust-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  /* No motion: drop the duplicate, let the single row sit static and scroll if
+     it must, rather than animating. */
+  .v2-trust__panel {
+    animation: none;
+  }
+  .v2-trust__row--dupe {
+    display: none;
+  }
+}
+.v2-trust__rating {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.875rem;
+}
+/* Mobile: left-align the rating (mirrors the hero's "Excellent 4.7 · …" row) and
+   pull it closer to the now-short marquee. After the base rule so it wins. */
+@media (max-width: 600px) {
+  .v2-trust__rating {
+    margin-top: 1rem;
+    justify-content: flex-start;
+  }
+}
+.v2-trust__score {
+  font-weight: 700;
+  color: var(--v2-ink);
+}
+.v2-trust__count {
+  color: var(--v2-ink-soft);
+}
+.v2-trust__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+/* Each star fills left-to-right by --fill (the last one is 70% for the 4.7). */
+.v2-trust-star {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: var(--v2-line-strong);
+}
+.v2-trust-star svg {
+  display: block;
+  fill: currentColor;
+}
+.v2-trust-star::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 100%);
+  overflow: hidden;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") left center / 16px 16px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") left center / 16px 16px no-repeat;
+  background: var(--v2-gold);
+}
+
+/* ---- CTA reassurance line (icon + label points) ----
+   "No hidden fees · No monthly membership · Cancel anytime" with small icons,
+   shown under CTAs in the Hero, Calculator, and Medications sections. */
+.v2-reassure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.25rem;
+  font-family: var(--v2-fb);
+  font-size: 0.85rem;
+  color: var(--v2-ink-soft);
+}
+.v2-reassure__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.v2-reassure__item svg {
+  flex: none;
+  color: var(--v2-ink-soft);
+}
+/* Mobile: keep all three reassurance points on a single line instead of
+   wrapping (the 3rd item — "Cancel anytime" — was dropping to its own row on
+   narrow phones). No wrap + a smaller font/gap, scaled by viewport so the line
+   stays balanced down to ~320px. */
+@media (max-width: 600px) {
+  .v2-reassure {
+    flex-wrap: nowrap;
+    gap: clamp(0.3rem, 2vw, 0.95rem);
+    font-size: clamp(0.54rem, 2.55vw, 0.8rem);
+    white-space: nowrap;
+  }
+  .v2-reassure__item {
+    gap: 0.25rem;
+  }
+  /* Shrink the icons in step with the text so the row stays balanced and never
+     forces an overflow on the narrowest phones (~320px). */
+  .v2-reassure__item svg {
+    width: clamp(11px, 3.4vw, 15px);
+    height: clamp(11px, 3.4vw, 15px);
+  }
+}
+
+/* ---- Stacked testimonial carousel ----
+   Centre card highlighted (ink on cream → inverted), flanking cards fan out
+   behind it, muted and rotated. Click a side card (or the arrows) to advance.
+   Editorial re-skin of a community "stagger" pattern — our tokens, our fonts. */
+.v2-stagger {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.v2-stagger__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: clamp(1.5rem, 2.4vw, 2.1rem);
+  border-radius: 10px;
+  background: #fff;
+  /* No border — depth comes from the soft shadow alone. */
+  box-shadow: var(--v2-shadow-soft);
+  cursor: pointer;
+  transition:
+    transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background-color 0.4s ease,
+    box-shadow 0.4s ease,
+    opacity 0.4s ease;
+  opacity: 0.85;
+}
+.v2-stagger__card[data-center] {
+  z-index: 10;
+  opacity: 1;
+  cursor: default;
+  background: var(--v2-ink);
+  box-shadow: var(--v2-shadow-card);
+}
+.v2-stagger__stars {
+  color: var(--v2-gold);
+  margin-bottom: 1rem;
+}
+.v2-stagger__card[data-center] .v2-stagger__stars {
+  color: #f0c98b;
+}
+.v2-stagger__quote {
+  flex: 1;
+  font-family: var(--v2-fh);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  line-height: 1.38;
+  letter-spacing: -0.01em;
+  color: var(--v2-ink);
+  overflow: hidden;
+}
+.v2-stagger__card[data-center] .v2-stagger__quote {
+  color: var(--v2-cream);
+}
+.v2-stagger__by {
+  margin-top: 1.1rem;
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+}
+.v2-stagger__name {
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-stagger__tag {
+  color: var(--v2-ink-soft);
+}
+.v2-stagger__card[data-center] .v2-stagger__name {
+  color: #fff;
+}
+.v2-stagger__card[data-center] .v2-stagger__tag {
+  color: rgba(251, 247, 242, 0.7);
+}
+.v2-stagger__nav {
+  position: absolute;
+  /* Lifted off the container's bottom edge so the buttons (and their shadow)
+     aren't clipped by .v2-stagger's overflow:hidden. */
+  bottom: clamp(0.5rem, 2vw, 1.25rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 20;
+}
+/* Arrow nav buttons use the full primary-button treatment: solid ink, white
+   icon, the primary shadow, and a springy ~2px lift on hover that deepens the
+   shadow. Only the chevron icon stays static (no arrow-slide animation). */
+.v2-stagger__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--v2-ink);
+  color: #fff;
+  box-shadow: 0 6px 18px -12px rgba(26, 23, 20, 0.55);
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.48, 1.68, 0.64, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.v2-stagger__btn:hover,
+.v2-stagger__btn:focus-visible {
+  background: #000;
+  box-shadow: 0 10px 26px -14px rgba(26, 23, 20, 0.7);
+  transform: translateY(-2px);
+}
+.v2-stagger__btn:active {
+  transform: translateY(0);
+}
+.v2-stagger__btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--v2-cream),
+    0 0 0 5px var(--v2-ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-stagger__btn:hover,
+  .v2-stagger__btn:focus-visible,
+  .v2-stagger__btn:active {
+    transform: none;
+  }
+}
+
+/* ---- Floating decorative bottles (How-it-works background) ----
+   Bottles scattered behind the section: varied size/rotation, some blurred for
+   depth. --py is set by scroll-parallax JS; a slow CSS float adds life. Both are
+   purely decorative and disabled under reduced motion. */
+.v2-bottles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.v2-bottles__item {
+  position: absolute;
+  display: block;
+  transform: translateY(var(--py, 0px));
+  will-change: transform;
+}
+.v2-bottles__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(var(--rot, 0deg));
+  animation: v2-bottle-float var(--float-dur, 6s) ease-in-out var(--float-delay, 0s) infinite;
+}
+@keyframes v2-bottle-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+/* ---- "Kill the cravings" mechanism section (centered + bottles + videos) ---- */
+.v2-mech {
+  position: relative;
+  overflow: hidden;
+}
+.v2-mech-videos {
+  margin-top: 3.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  max-width: 1040px;
+  margin-inline: auto;
+}
+/* Card wrapper: rounded frame that lifts on hover (21st-style) and fades/slides
+   in on scroll, staggered per index via --i. */
+.v2-mech-vcard {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  /* Glass edge, never a dark border. The edge is drawn as an INSET white ring
+     (layered over the clipped video) so it stays lit-white regardless of how
+     dark the video is. The drop shadow is warm + soft, not a hard dark line.
+     No black background, so nothing dark can peek at the rounded corners. */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.14),
+    var(--v2-shadow-card);
+  transform: translateY(18px);
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
+    opacity 0.6s ease,
+    box-shadow 0.35s ease;
+  transition-delay: calc(var(--i, 0) * 0.12s);
+}
+.v2-mech-vcard.is-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+/* Lift only on real pointers. On touch devices a tap fires :hover, which made the
+   card jump up — and inside the mobile slider the lifted card got clipped. Gating
+   behind hover:hover/pointer:fine removes the jump on phones entirely. */
+@media (hover: hover) and (pointer: fine) {
+  .v2-mech-vcard:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.18),
+      0 18px 40px -18px rgba(60, 40, 30, 0.4);
+  }
+}
+.v2-mech-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Poster overlay: a full-card button with a centered glass play control, a soft
+   bottom scrim, and the name + result caption. Replaces the native HTML5 player
+   chrome until the viewer hits play (then native controls take over). */
+.v2-mech-vplay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+}
+.v2-mech-vplay__scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 78%;
+  /* Two layers: a warm pink→peach brand wash (our --v2-gradient hues) for the
+     on-brand tint, over a deep ink base that keeps the white caption legible at
+     the very bottom. */
+  background:
+    linear-gradient(to top, rgba(189, 90, 142, 0.45) 0%, rgba(243, 210, 196, 0.26) 45%, transparent 100%),
+    linear-gradient(to top, rgba(20, 14, 12, 0.92) 0%, rgba(20, 14, 12, 0.45) 38%, transparent 92%);
+  pointer-events: none;
+}
+/* Enlarged caption block, anchored to the lower portion of the card. */
+.v2-mech-vplay__cap {
+  position: absolute;
+  left: 1.4rem;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  display: flex;
+  flex-direction: column;
+}
+.v2-mech-vplay__mark {
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.5rem;
+}
+.v2-mech-vplay__name {
+  font-family: var(--v2-fb);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.v2-mech-vplay__result {
+  margin-top: 0.15rem;
+  font-family: var(--v2-fb);
+  font-size: 1rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* Play CTA pinned at the bottom of the caption. */
+.v2-mech-vplay__cta {
+  margin-top: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.v2-mech-vplay__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--v2-ink);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.55);
+  padding-left: 2px; /* optically centre the play glyph */
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.v2-mech-vplay:hover .v2-mech-vplay__btn {
+  transform: scale(1.1);
+}
+.v2-mech-vplay__cta-label {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+/* Once playing, the poster <video> shows native controls; nothing else needed. */
+.v2-mech-video--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--v2-cream-2);
+  color: var(--v2-ink-mute);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem;
+}
+@media (min-width: 561px) and (max-width: 720px) {
+  .v2-mech-videos {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 480px;
+  }
+}
+/* Mobile (≤560px): a horizontal scroll-snap swipe slider instead of a stacked
+   grid. Each card is ~78% of the viewport so the next one peeks (affording the
+   swipe), and snaps centre. The decorative bottles drift BEHIND this region
+   (positioned low by FloatingBottles' mobile set), never behind the copy above.
+   The track reveals override: the cards must be visible by default (the grid
+   reveal's translateY/opacity would otherwise hide them inside a scroller). */
+@media (max-width: 560px) {
+  .v2-mech-videos {
+    display: flex;
+    grid-template-columns: none;
+    max-width: none;
+    margin-inline: 0;
+    gap: 1rem;
+    /* overflow-x:auto forces overflow-y to auto (per spec), so the scroller clips
+       vertically. Add block padding so each card's soft shadow + rounded edge get
+       breathing room and aren't shaved at the top/bottom of the track. */
+    padding: 0.75rem clamp(1.25rem, 6vw, 2rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .v2-mech-videos::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+  .v2-mech-vcard {
+    flex: 0 0 78%;
+    scroll-snap-align: center;
+    /* Cards to the right start off-screen in the scroller, so their reveal
+       IntersectionObserver never fires (they don't vertically intersect) and they
+       would ship blank (opacity:0). Inside the slider the cards must be visible by
+       default — the swipe IS the reveal. Force the in-state regardless of .is-in. */
+    transform: none;
+    opacity: 1;
+    transition: box-shadow 0.35s ease;
+  }
+}
+
+/* ---- "Get your meds in 1–2 days" — phone attached to the section bottom ---- */
+.v2-hiw {
+  /* drop the section's bottom padding so the phone reads as anchored to the
+     section's lower edge; the copy column keeps its own bottom breathing room. */
+  padding-bottom: 0;
+  overflow: hidden;
+}
+/* Grid: single column on phones / narrow tablets, two columns (timeline left,
+   phone right) from 820px up — earlier than the old 1024 breakpoint so the
+   common tablet-portrait widths (iPad Air 820, iPad 810) get the side-by-side
+   layout instead of the stacked "dead gap" between the timeline and the phone. */
+.v2-hiw__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: end;
+  gap: 2rem;
+}
+@media (min-width: 820px) {
+  .v2-hiw__grid {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 4rem;
+  }
+}
+.v2-hiw__copy {
+  /* give the text column the bottom space the section no longer provides —
+     trimmed to 75% of the section pad so the timeline sits a touch tighter. */
+  padding-bottom: calc(var(--v2-pad-y) * 0.75);
+}
+/* Stacked (≤819px): the copy column's big bottom padding + the grid gap left a
+   void between the timeline and the centered phone. Drop both here so the phone
+   sits directly under the timeline; the 2-col layout restores the padding. */
+@media (max-width: 819px) {
+  .v2-hiw__copy {
+    padding-bottom: 0;
+  }
+  .v2-hiw__grid {
+    gap: 1.5rem;
+  }
+}
+.v2-hiw__media {
+  display: flex;
+  justify-content: center;
+  align-self: end;
+}
+@media (min-width: 820px) {
+  .v2-hiw__media {
+    justify-content: flex-end;
+  }
+}
+.v2-hiw__phone {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  object-fit: contain;
+}
+@media (min-width: 820px) {
+  .v2-hiw__phone {
+    max-width: 480px;
+  }
+}
+
+/* ---- Vertical stepper ("Get your meds in 1–2 days") ----
+   A connecting rail runs through a node per step; the glass tag + text sit to
+   the right of each node. The rail is drawn on the row via a ::before that spans
+   from node to node; the first row trims the top, the last trims the bottom. */
+.v2-step {
+  display: flex;
+  flex-direction: column;
+}
+.v2-step__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 1rem;
+  padding-bottom: 1.6rem;
+  /* Node centre y inside each row — the dot sits on the vertical midline of the
+     timing label (a 0.68rem/1.25 caption ≈ 0.85rem tall, centre ≈ 0.43rem).
+     Drives both the node offset and the rail ends so they stay in sync. */
+  --v2-step-node-y: 0.43rem;
+}
+/* The offer row leads with a taller padded badge, so its node sits lower to stay
+   centred on it. */
+.v2-step__row:first-child {
+  --v2-step-node-y: 0.78rem;
+}
+.v2-step__row:last-child {
+  padding-bottom: 0;
+}
+/* the connecting rail: a vertical line centered on the node column, drawn behind
+   the node so the node sits on top of it. Runs from this node's centre down to
+   the next node's centre. */
+.v2-step__row::before {
+  content: "";
+  position: absolute;
+  /* centre of the 22px node column (11px) minus half the 2px rail = 10px */
+  left: 10px;
+  top: var(--v2-step-node-y);
+  /* reach the next row's node centre: the 1.6rem gap below + the next node's
+     own offset. Every following row uses the base 0.43rem, so this is constant
+     regardless of the current row's (possibly taller) lead element. */
+  bottom: calc(-1.6rem - 0.43rem);
+  width: 2px;
+  /* Soft fade down each segment so the rail recedes toward the next node and
+     the eye travels downward through the steps. */
+  background: linear-gradient(
+    to bottom,
+    var(--v2-line-strong) 0%,
+    var(--v2-line) 100%
+  );
+}
+/* The final segment (into the open "ongoing" node) dissolves to nothing —
+   reinforces that care continues past the timeline rather than stopping dead. */
+.v2-step__row--ongoing::before,
+.v2-step__row:has(+ .v2-step__row--ongoing)::before {
+  background: linear-gradient(
+    to bottom,
+    var(--v2-line) 0%,
+    rgba(231, 221, 210, 0) 100%
+  );
+}
+.v2-step__row:last-child::before {
+  display: none;
+}
+.v2-step__node {
+  position: relative;
+  z-index: 1;
+  /* centre the node in its 22px column so its centre lands on the rail (11px) */
+  justify-self: center;
+  width: 13px;
+  height: 13px;
+  /* pull the node's own centre onto the pill midline */
+  margin-top: calc(var(--v2-step-node-y) - 6.5px);
+  border-radius: 50%;
+  /* solid ink dot with a white inner ring + cream halo, so it reads as a
+     deliberate step marker sitting on the rail. */
+  background: var(--v2-ink);
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    0 0 0 4px var(--v2-cream);
+}
+/* Final "ongoing care" marker: a hollow ink ring instead of a filled dot, so it
+   reads as "this one continues" rather than a completed step. */
+.v2-step__node--open {
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 2px var(--v2-ink),
+    0 0 0 4px var(--v2-cream);
+}
+.v2-step__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+/* Timing labels are markers, not the message — render them quiet (no pill
+   chrome, muted ink, tighter tracking) so the step sentence carries the weight.
+   The pill backing/shadow are dropped; just a small uppercase caption. */
+.v2-step__tag {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.25;
+  color: var(--v2-ink-mute);
+}
+/* The discount is an offer, not a stage — give it a warm gold badge so it pops
+   as a perk while the four real steps stay quiet captions. */
+.v2-step__tag--offer {
+  padding: 0.34rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(176, 138, 79, 0.12);
+  /* Text-safe deeper gold (clears WCAG AA ~5:1 on this tint); the decorative
+     --v2-gold is only 2.83:1 here and failed contrast. */
+  color: var(--v2-gold-ink);
+  letter-spacing: 0.12em;
+}
+.v2-step__text {
+  font-family: var(--v2-fb);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--v2-ink);
+  /* Labels are now flush captions (no pill padding), so the sentence lines up
+     at the same left edge as the timing label above it. */
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .v2-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .v2-btn,
+  .v2-faq-a {
+    transition: none;
+  }
+  .v2-ticker__track {
+    animation: none;
+  }
+  .v2-stagger__card {
+    transition: none;
+  }
+  .v2-bottles__item {
+    transform: none;
+  }
+  .v2-bottles__img {
+    animation: none;
+  }
+}
+
+
+
+
+/* ---- Medications spec-sheet diptych ----
+   Two product cards, one per peptide. The vial is the hero (on a soft radial
+   glow stage), then identity + spec rows separated by hairlines, and an in-stock
+   status. Flat: white card + a single hairline border, a subtle hover lift
+   (transform only, no heavy shadow). On-brand lilac section behind. */
+.v2-medgrid {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+@media (max-width: 720px) {
+  .v2-medgrid {
+    grid-template-columns: 1fr;
+  }
+}
+.v2-medcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: 16px;
+  /* Glass card (matches the hero's frosted surfaces): a near-opaque white fill so
+     the product + text stay crisp, a translucent-WHITE edge (no brown/grey
+     border), and a blur so the lilac section reads softly through the rim. */
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--v2-glass-edge);
+  -webkit-backdrop-filter: saturate(150%) blur(16px);
+  backdrop-filter: saturate(150%) blur(16px);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v2-medcard {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+.v2-medcard:hover {
+  transform: translateY(-4px);
+  /* Brighter glass edge on hover (white, never brown). */
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.86);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-medcard {
+    transition: none;
+  }
+  .v2-medcard:hover {
+    transform: none;
+  }
+}
+/* In-stock label — uses the shared .v2-chip tag style; this only positions it in
+   the card's top-right corner and keeps the leading green status dot. */
+.v2-medcard__status {
+  position: absolute;
+  top: clamp(1rem, 2vw, 1.4rem);
+  right: clamp(1rem, 2vw, 1.4rem);
+  /* Glass pill on the matte-white card: nudge the translucent fill up so the
+     frosted edge stays visible on white (same fix as the footer pill). */
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.06), inset 0 0 0 1px var(--v2-line);
+}
+.v2-medcard__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a9d6e; /* a real green — the one place a status color earns it */
+  box-shadow: 0 0 0 3px rgba(58, 157, 110, 0.18);
+}
+/* Vial stage — soft radial glow lifts the product without a hard frame */
+.v2-medcard__stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: clamp(190px, 26vw, 260px);
+  margin-bottom: 1.5rem;
+}
+.v2-medcard__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    58% 52% at 50% 64%,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(247, 240, 248, 0.6) 45%,
+    rgba(247, 240, 248, 0) 72%
+  );
+}
+.v2-medcard__vial {
+  position: relative;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  /* a soft grounded shadow under the product only — defined, ≤8px blur */
+  filter: drop-shadow(0 6px 8px rgba(60, 40, 30, 0.12));
+}
+/* Identity — the type uses the shared .v2-eyebrow; the name + optional inline
+   flag sit on one baseline-aligned row. */
+.v2-medcard__namerow {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.v2-medcard__name {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.4vw, 1.95rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--v2-ink);
+}
+/* Small "Most comprehensive" flag next to the name — a small micro-label on the
+   signature hero pink/beige gradient, so it reads as a colorful premium accent
+   (the one spot of brand color here). Dark ink text stays legible on the light
+   gradient. */
+.v2-medcard__flag {
+  display: inline-flex;
+  margin-left: auto;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--v2-gradient);
+  font-family: var(--v2-fb);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--v2-ink);
+  white-space: nowrap;
+  transform: translateY(-0.12em);
+}
+.v2-medcard__tagline {
+  margin-top: 0.6rem;
+  font-family: var(--v2-fb);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--v2-ink-soft);
+  text-wrap: pretty;
+}
+/* Spec rows — separated by faint neutral hairlines (a translucent dark line, not
+   a brown/grey border). The TOP rule opens the spec block; each row gets a bottom
+   hairline EXCEPT the last ("Best for"), so the block doesn't close with a stray
+   line. */
+.v2-medcard__specs {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-medcard__spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(26, 23, 20, 0.08);
+}
+.v2-medcard__spec:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.v2-medcard__spec dt {
+  flex: none;
+  font-family: var(--v2-fb);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--v2-ink-mute);
+}
+.v2-medcard__spec dd {
+  text-align: right;
+  font-family: var(--v2-fb);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-medcard__spec dd.is-emph {
+  font-family: var(--v2-fh);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+/* Per-card CTA — left-aligned (not full-width), pushed to the bottom so both
+   cards' buttons line up even when the spec copy differs in height. The
+   margin-top:auto eats the slack above; padding-top guarantees a min gap. */
+.v2-medcard__cta {
+  /* Gap above the CTA must be MARGIN, not padding — padding-top would inflate
+     the pill's own (black) box upward into the spec row above it. margin-top:auto
+     still pushes it to the card bottom; the rem value sets the breathing room. */
+  align-self: flex-start;
+  margin-top: 1.5rem;
+}
+
+/* Rating line below the diptych */
+.v2-medcta {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+.v2-medcta__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--v2-fb);
+  font-size: 0.88rem;
+  color: var(--v2-ink-soft);
+}
+.v2-medcta__note svg {
+  color: #3a9d6e;
+  flex: none;
+}
+/* Trustpilot-style rating directly under the CTA note — matches the hero's
+   social-proof line (bold ink score, gold stars, muted count). No divider. */
+.v2-medcta__rating {
+  margin-top: 0.35rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem 0.65rem;
+}
+.v2-medcta__score {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--v2-ink);
+}
+.v2-medcta__count {
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  color: var(--v2-ink-mute);
+}
+
+/* ---- Plan comparison (InstaRx vs. other providers) ----
+   Light editorial 3-column comparison (yourEra-style): feature rail (left),
+   an InstaRx accent card spanning all rows (centre) where every row reads
+   "Included", and a recessed muted competitors column (right). The centre
+   column gets a continuous tinted card via a pseudo-element so the per-row
+   grid still aligns the three cells on one baseline. */
+.v2-compare {
+  position: relative;
+  max-width: 66rem;
+  margin-inline: auto;
+}
+.v2-compare__head,
+.v2-compare__row {
+  display: grid;
+  grid-template-columns: 1.1fr 0.85fr 1.1fr;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+}
+.v2-compare__head {
+  padding: 0 clamp(1rem, 2vw, 1.75rem) 0.85rem;
+}
+.v2-compare__brand {
+  display: inline-flex;
+  justify-content: center;
+}
+.v2-compare__vs {
+  /* Match the left-aligned, indented competitor cells below. */
+  text-align: left;
+  padding-left: clamp(0.75rem, 2.5vw, 2rem);
+  font-family: var(--v2-fb);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--v2-ink-mute);
+}
+.v2-compare__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* The continuous InstaRx card behind the centre column. */
+  position: relative;
+}
+.v2-compare__rows::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* Aligns to the centre grid track (0.85fr of 1.1+0.85+1.1 = 3.05 → 36.1%–64%,
+     centred at 50%), sitting a hair wider than the centre-aligned cells. */
+  /* CAUTION: left/width are hand-tuned to the 1.1fr 0.85fr 1.1fr column ratio
+     and must be re-derived if that ratio or the row padding changes. */
+  left: 35%;
+  width: 30%;
+  border-radius: 16px;
+  /* White card (matches the page's card style) with a soft warm shadow instead
+     of a beige fill + border. */
+  background: #fff;
+  box-shadow: 0 8px 22px -18px rgba(60, 40, 30, 0.35);
+}
+.v2-compare__row {
+  position: relative;
+  padding: clamp(0.9rem, 1.8vw, 1.25rem) clamp(1rem, 2vw, 1.75rem);
+}
+.v2-compare__row + .v2-compare__row::before {
+  content: "";
+  position: absolute;
+  left: clamp(1rem, 2vw, 1.75rem);
+  right: clamp(1rem, 2vw, 1.75rem);
+  top: 0;
+  height: 1px;
+  background: var(--v2-line);
+}
+.v2-compare__feature {
+  font-family: var(--v2-fb);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--v2-ink);
+}
+.v2-compare__cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--v2-fb);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+.v2-compare__cell--us {
+  justify-content: center;
+  font-weight: 700;
+  color: var(--v2-ink);
+}
+.v2-compare__cell--them {
+  color: var(--v2-ink-mute);
+  /* Keep each competitor point on a single line (copy trimmed to fit). */
+  white-space: nowrap;
+  /* Nudge the ✗ + copy right so it doesn't crowd the centre card — gives the
+     "Other providers" column some breathing room from InstaRx's. */
+  padding-left: clamp(0.75rem, 2.5vw, 2rem);
+}
+.v2-compare__check,
+.v2-compare__x {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+}
+.v2-compare__check {
+  background: var(--v2-ink);
+  color: var(--v2-cream);
+}
+.v2-compare__x {
+  /* Filled muted tint + darker glyph so the ✗ reads as a deliberate "they
+     don't" — still clearly recessed vs. the solid-ink InstaRx checks. */
+  background: var(--v2-beige);
+  color: var(--v2-ink-soft);
+}
+.v2-compare__cta {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+.v2-compare__join {
+  font-family: var(--v2-fh);
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  line-height: 1.2;
+  color: var(--v2-ink);
+}
+/* "Others:" label only renders on mobile (where it restores the comparison the
+   column headers carry on desktop). Hidden in the desktop column layout. */
+.v2-compare__them-label {
+  display: none;
+}
+
+/* Mobile: drop the 3-col table + centre card. Each row reads as a clean contrast:
+   an ink check + the feature on top (the "what you get" line — no redundant
+   "Included" word repeated five times), then a muted "✗ Others: [downside]" line
+   beneath. The "Others:" label restores the InstaRx-vs-competitors framing. */
+@media (max-width: 760px) {
+  .v2-compare__head {
+    display: none;
+  }
+  .v2-compare__rows::before {
+    display: none;
+  }
+  .v2-compare__row {
+    display: grid;
+    /* check column + content column; the feature and the competitor line both
+       sit in the content column, the check spans only the top row. */
+    grid-template-columns: auto 1fr;
+    column-gap: 0.7rem;
+    row-gap: 0.4rem;
+    align-items: start;
+    padding: 1.15rem clamp(0.75rem, 4vw, 1.25rem);
+  }
+  /* The InstaRx check leads the row, next to the feature. */
+  .v2-compare__cell--us {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin-top: 0.1rem;
+  }
+  /* Hide the repeated "Included" word — the check + feature carry the meaning. */
+  .v2-compare__incl {
+    display: none;
+  }
+  /* Feature sits to the right of the check, top row. */
+  .v2-compare__feature {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  /* Competitor line spans the content column under the feature, indented to align
+     with it (not under the check). */
+  .v2-compare__cell--them {
+    grid-column: 2;
+    grid-row: 2;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 0;
+    white-space: normal; /* allow the downside to wrap if needed */
+    font-size: 0.9rem;
+  }
+  .v2-compare__them-label {
+    display: inline;
+    font-weight: 600;
+    color: var(--v2-ink-soft); /* a touch stronger than the downside copy */
+  }
+}

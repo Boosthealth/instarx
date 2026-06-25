@@ -9,6 +9,7 @@ const HOMEPAGE_LANDER_PATHS = new Set([
   "/glp2-b",
   "/glp2-da",
   "/glp2-c2",
+  "/glp2-v2",
 ]);
 const INTAKE_HREF_PREFIX = "https://go.instarx.com/intake";
 const GOAL_KEY = "homepage-cta-click";
@@ -17,8 +18,9 @@ const TRACK_ENDPOINT = "/api/convert-track";
 /**
  * Client-side click goal: fires `homepage-cta-click` to the Convert FullStack
  * project when a visitor clicks an `/intake` CTA on a homepage-lander-split
- * variation (`/start-glp1` blue, `/glp2` pink, and the `/glp2-a` / `/glp2-b` /
- * `/glp2-da` / `/glp2-c2` hero A/B variants of the pink lander).
+ * variation (`/start-glp1` blue, `/glp2` pink, the `/glp2-a` / `/glp2-b` /
+ * `/glp2-da` / `/glp2-c2` hero A/B variants of the pink lander, and `/glp2-v2`
+ * the premium editorial redesign).
  *
  * Tying the goal to a real DOM click avoids the false fires we'd get from
  * server-side firing on every /intake hit (bots, prefetches, back-button,

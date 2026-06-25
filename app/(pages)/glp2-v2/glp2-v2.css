@@ -514,30 +514,33 @@
      nested price card (z-index 25) sit ABOVE the trust-bar overlay (z-20). The
      photo still renders behind the content because it's first in the DOM and the
      content layers carry their own positive z-index. */
-  /* Bottom-anchored (not top:0) so she stands in the bottom-right corner. Width
-     drives her size; her height follows the image ratio. Sized LARGER so she
-     reads as the dominant element on the right. */
+  /* Stretch the wrapper to the FULL card height (top:0 + bottom:0), not just
+     bottom-anchored. This gives the wrapper a *definite* height so the nested
+     img's `height:100%` actually resolves — otherwise the wrapper height is
+     content-driven (auto) and `height:100%` collapses to the image's
+     width-derived height, leaving her short of the card. */
+  top: 0;
   bottom: 0;
   /* Pin her toward the centred content container's right edge. The portrait
      source has transparent space on her RIGHT, so a small negative offset nudges
      her visible body out to the container edge instead of leaving a gap. */
   right: max(0px, calc((100% - var(--v2-maxw)) / 2 + clamp(1.25rem, 4vw, 2.5rem) - clamp(1rem, 3vw, 3rem)));
   /* Portrait ratio (~0.875 w/h) is much taller per unit width, so the width is
-     smaller than the old landscape image while she still reads large. */
+     smaller than the old landscape image while she still reads large. The img
+     inside is sized by HEIGHT now (object-contain), so width is just an upper
+     bound on the wrapper box. */
   width: clamp(360px, 38vw, 560px);
-  /* Fill the card height; she's bottom-anchored so any excess height clips at
-     the top (overflow:hidden), never cropping her body — headroom above her head
-     comes from the PNG's transparent top padding. */
-  max-height: 100%;
   pointer-events: none;
 }
 .v2-hero-photo__img {
   display: block;
-  /* width:auto + height:100% so the max-height cap on the wrapper actually
-     constrains the rendered image (object-fit keeps her uncropped, bottom-aligned). */
-  width: auto;
-  height: 100%;
-  max-width: 100%;
+  /* The wrapper now has a definite height (top:0 + bottom:0), so fill it: the
+     img is the full wrapper box and `object-fit: contain` scales her by HEIGHT
+     at her natural ratio, uncropped, attached to the bottom edge.
+     `!important` defeats next/image's injected inline `height:auto`/`width:auto`,
+     which would otherwise revert her to width-driven (short) sizing. */
+  width: 100% !important;
+  height: 100% !important;
   margin-inline: auto;
   /* contain keeps her whole; bottom-anchor so she's ATTACHED to the card's
      bottom edge (no gap). The headroom above her head comes from the PNG's own
@@ -612,9 +615,10 @@
   .v2-hero-photo__img {
     /* Size by WIDTH (capped) so the portrait image can NEVER exceed the viewport
        — sizing by height let her computed width (~0.875×height) overflow on
-       narrow phones and pushed horizontal overflow onto the whole page. */
-    width: min(78%, 360px);
-    height: auto;
+       narrow phones and pushed horizontal overflow onto the whole page.
+       `!important` here overrides the desktop rule's `!important` height/width. */
+    width: min(78%, 360px) !important;
+    height: auto !important;
     object-fit: contain;
     object-position: bottom center;
   }

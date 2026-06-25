@@ -9,7 +9,7 @@ import { INTAKE_HREF } from "./content";
  * a GLP-1 vial) filling the right. Mirrors the hero's split layout. This band
  * owns the retention/stickiness angle — members keep going past month one —
  * which no other section on the page claims, so it doesn't restate the hero. */
-const COMMUNITY_IMG = "/images/2 hero.png";
+const COMMUNITY_IMG = "/images/community-2.webp";
 
 export function Community() {
   return (

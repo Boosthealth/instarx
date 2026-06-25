@@ -12,7 +12,7 @@ import { heroChecks, INTAKE_HREF } from "./content";
 
 // Transparent-background cutout (portrait): the subject stands on the gradient
 // and bleeds off the bottom of the hero card.
-const HERO_IMG = "/images/hero-4.png";
+const HERO_IMG = "/images/hero-4.webp";
 
 // Maps the lucide icon name in content.ts to the imported component.
 const TRUST_ICONS: Record<string, LucideIcon> = {
@@ -48,6 +48,7 @@ export function Hero() {
             className="v2-hero-photo__img"
             style={{ filter: "saturate(1.04) contrast(1.02)" }}
             priority
+            fetchPriority="high"
           />
 
           {/* Floating matte-white glass price card — nested in the photo layer so

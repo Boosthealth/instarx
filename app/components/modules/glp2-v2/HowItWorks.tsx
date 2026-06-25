@@ -60,7 +60,7 @@ export function HowItWorks() {
 
           <Reveal delay={120} className="v2-hiw__media">
             <Image
-              src="/images/phone.png"
+              src="/images/phone.webp"
               alt="The InstaRx app showing the weight-loss intake flow"
               width={1600}
               height={2070}

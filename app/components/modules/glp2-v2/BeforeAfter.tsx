@@ -50,7 +50,7 @@ export function BeforeAfter() {
       style={{ boxShadow: "var(--v2-shadow-card)", border: "1px solid var(--v2-line)" }}
     >
       <Image
-        src="/images/before.png"
+        src="/images/before.webp"
         alt="Before weight loss"
         fill
         className="object-cover object-center"
@@ -62,7 +62,7 @@ export function BeforeAfter() {
         style={{ clipPath: `inset(0 0 0 ${position}%)` }}
       >
         <Image
-          src="/images/after.png"
+          src="/images/after.webp"
           alt="After weight loss"
           fill
           className="object-cover object-center"

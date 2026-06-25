@@ -71,11 +71,11 @@ export function Hero() {
                     color: "var(--v2-ink-mute)",
                   }}
                 >
-                  $298
+                  $248
                 </span>
               </p>
             </div>
-            <span className="v2-chip v2-chip--solid">$150 off</span>
+            <span className="v2-chip v2-chip--solid">$100 off</span>
           </div>
         </div>
 

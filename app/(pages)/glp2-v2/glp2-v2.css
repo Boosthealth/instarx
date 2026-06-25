@@ -2463,7 +2463,9 @@
   padding: 0.34rem 0.72rem;
   border-radius: 999px;
   background: rgba(176, 138, 79, 0.12);
-  color: var(--v2-gold);
+  /* Text-safe deeper gold (clears WCAG AA ~5:1 on this tint); the decorative
+     --v2-gold is only 2.83:1 here and failed contrast. */
+  color: var(--v2-gold-ink);
   letter-spacing: 0.12em;
 }
 .v2-step__text {

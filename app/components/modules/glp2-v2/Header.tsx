@@ -47,9 +47,13 @@ export function Header() {
             />
           </a>
 
-          {/* Center: nav with animated underline */}
+          {/* Center: nav with animated underline. Shown at lg+ (≥1024px) only —
+              below that the four links + logo + CTA crowd the single row, so we
+              keep just logo + CTA (the floating CTA covers conversion on scroll).
+              This page is a single-scroll lander, so the nav links are anchor
+              aids, not required navigation; a hamburger would be overkill. */}
           <nav
-            className="hidden items-center gap-9 justify-self-center md:flex"
+            className="hidden items-center gap-9 justify-self-center lg:flex"
             aria-label="Primary"
           >
             {navLinks.map((link) => (

@@ -142,6 +142,11 @@ export function Mechanism() {
 
       <div className="v2-container relative" style={{ zIndex: 1 }}>
         <Reveal className="mx-auto max-w-3xl text-center">
+          {/* Eyebrow as a frosted-glass pill (same treatment as the closing CTA's
+              "What are you waiting for?" tag). "The science" — distinct from the
+              HowItWorks "process" framing so the two sections don't echo. */}
+          <span className="v2-glass v2-glass-pill mb-5">The science</span>
+
           <h2 className="v2-h2 mb-6">
             Kill the cravings, feel full faster, and switch on fat-burning mode —
             with <span className="v2-accent">GLP-1/GIP</span>.

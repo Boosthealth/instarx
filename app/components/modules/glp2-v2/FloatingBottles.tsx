@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 /* Decorative GLP-1 bottles scattered behind a section. Each bottle has its own
@@ -26,7 +26,8 @@ type Bottle = {
 };
 
 /* Bottles flank the centered copy — clustered on the far left and far right
- * edges so they never sit behind the text. Some blurred for depth. */
+ * edges so they never sit behind the text. Some blurred for depth. (Desktop /
+ * wide layout.) */
 const BOTTLES: Bottle[] = [
   // left cluster
   { src: "/images/sem-glp1.png", top: "14%", left: "0%", width: 190, rotate: -14, blur: 0, speed: -70, floatDur: 5, floatDelay: 0, opacity: 1 },
@@ -38,8 +39,30 @@ const BOTTLES: Bottle[] = [
   { src: "/images/tirz-glp1.png", top: "21%", right: "14%", width: 84, rotate: -24, blur: 12, speed: 40, floatDur: 7.5, floatDelay: 1.1, opacity: 0.55 },
 ];
 
+/* Mobile set: the narrow column means any bottle near the centre lands ON the
+ * copy. So on mobile the bottles live LOW — down in the video-slider region
+ * (top ≳ 60%) and pulled to the very edges — so they drift behind the video
+ * thumbnails, never behind the heading/body copy above. Fewer + smaller. */
+const BOTTLES_MOBILE: Bottle[] = [
+  { src: "/images/sem-glp1.png", top: "62%", left: "-8%", width: 150, rotate: -14, blur: 0, speed: -40, floatDur: 5.5, floatDelay: 0, opacity: 0.85 },
+  { src: "/images/tirz-glp1.png", top: "78%", left: "-4%", width: 96, rotate: 12, blur: 4, speed: 45, floatDur: 6.5, floatDelay: 0.5, opacity: 0.6 },
+  { src: "/images/tirz-glp1.png", top: "60%", right: "-9%", width: 160, rotate: 14, blur: 0, speed: -45, floatDur: 6, floatDelay: 0.3, opacity: 0.85 },
+  { src: "/images/sem-glp1.png", top: "80%", right: "-3%", width: 92, rotate: -12, blur: 5, speed: 50, floatDur: 7, floatDelay: 0.8, opacity: 0.6 },
+];
+
 export function FloatingBottles() {
   const ref = useRef<HTMLDivElement>(null);
+  // Default to the desktop set for SSR; swap to the mobile (low, edge-hugging)
+  // set after mount on narrow viewports so the bottles never sit behind the copy.
+  const [bottles, setBottles] = useState<Bottle[]>(BOTTLES);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 720px)");
+    const apply = () => setBottles(mq.matches ? BOTTLES_MOBILE : BOTTLES);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     const root = ref.current;
@@ -75,11 +98,13 @@ export function FloatingBottles() {
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+    // re-bind when the bottle set swaps (desktop ↔ mobile) so parallax tracks the
+    // new DOM nodes.
+  }, [bottles]);
 
   return (
     <div ref={ref} className="v2-bottles" aria-hidden="true">
-      {BOTTLES.map((b, i) => (
+      {bottles.map((b, i) => (
         <span
           key={i}
           data-speed={b.speed}

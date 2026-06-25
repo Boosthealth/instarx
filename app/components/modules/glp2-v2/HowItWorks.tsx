@@ -10,7 +10,7 @@ export function HowItWorks() {
             bottom on the right. White background so the app screenshot's white
             edges blend; the section's bottom padding is removed (.v2-hiw) so the
             phone reads as anchored to the section's lower edge. */}
-        <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+        <div className="v2-hiw__grid">
           <Reveal className="v2-hiw__copy">
             <p className="v2-eyebrow v2-kicker-rule mb-5 inline-flex">
               The process

@@ -61,30 +61,46 @@ function Star({ fill }: { fill: number }) {
 /* `showRating` (default true) appends the Trustpilot-style rating after the
    badge strip. TrustRow is currently rendered only in Results (with the
    default showRating={true}). The prop is kept for future reuse. */
+function Badges() {
+  return (
+    <>
+      {BADGES.map((badge) => (
+        <li key={badge.label} className="v2-trust__item">
+          <span className="v2-trust__icon" aria-hidden="true">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {badge.icon}
+            </svg>
+          </span>
+          <span>{badge.label}</span>
+        </li>
+      ))}
+    </>
+  );
+}
+
 export function TrustRow({ showRating = true }: { showRating?: boolean }) {
   return (
     <div className="v2-trust">
+      {/* Desktop: a centered single-row panel. Mobile: the panel becomes a quiet
+          horizontal marquee (.v2-trust__row gets the ticker treatment via CSS),
+          so the four points read as ambient credibility without taking four rows
+          of height. The second <ul> is an aria-hidden duplicate that makes the
+          marquee loop seamlessly; it's display:none on desktop. */}
       <div className="v2-trust__panel">
         <ul className="v2-trust__row">
-          {BADGES.map((badge) => (
-            <li key={badge.label} className="v2-trust__item">
-              <span className="v2-trust__icon" aria-hidden="true">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  {badge.icon}
-                </svg>
-              </span>
-              <span>{badge.label}</span>
-            </li>
-          ))}
+          <Badges />
+        </ul>
+        <ul className="v2-trust__row v2-trust__row--dupe" aria-hidden="true">
+          <Badges />
         </ul>
       </div>
 
@@ -98,7 +114,9 @@ export function TrustRow({ showRating = true }: { showRating?: boolean }) {
             <Star fill={1} />
             <Star fill={0.7} />
           </span>
-          <span className="v2-trust__count">10,000+ happy customers</span>
+          <span className="v2-trust__count">
+            10,000+ happy customers · No insurance needed
+          </span>
         </div>
       )}
     </div>

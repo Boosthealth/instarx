@@ -243,16 +243,24 @@
 .v2-header.is-scrolled .v2-header__glass {
   opacity: 1;
 }
-/* 3-column grid: logo left, nav centered, CTA right. */
+/* Header grid. Below lg the centre nav is hidden (display:none), so the row is
+   a 2-column grid — logo left, CTA right. A 3-col template here would leave the
+   CTA auto-flowing into the empty middle slot and reading as centred. At lg+ the
+   nav appears and the row becomes 3 columns: logo / nav / CTA. */
 .v2-header__row {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 1.5rem;
   min-height: 54px;
   padding-inline: clamp(0.25rem, 1.5vw, 1rem);
+}
+@media (min-width: 1024px) {
+  .v2-header__row {
+    grid-template-columns: 1fr auto 1fr;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .v2-header__inner,
@@ -292,6 +300,15 @@
 .v2-ulink:focus-visible::after {
   transform: scaleX(1);
 }
+/* Tap-padded links (footer columns, contact): the link box is padded vertically
+   to reach a ~44px touch target, which would drop the underline to the padded
+   box bottom. Pull the underline back up so it stays on the text baseline. */
+.v2-foot__link::after {
+  bottom: calc(0.92rem - 1px);
+}
+.v2-foot__contact a::after {
+  bottom: calc(0.85rem - 1px);
+}
 .v2-ulink:focus-visible {
   outline: none;
 }
@@ -301,12 +318,19 @@
   }
 }
 
-/* Header nav links — inherit the shared underline, add their own size/color. */
+/* Header nav links — inherit the shared underline, add their own size/color.
+   Padded vertically so the tap target fills more of the 54px header row (the
+   text was only ~17px tall); the underline ::after is pulled back to the text
+   baseline below. */
 .v2-navlink {
   font-family: var(--v2-fb);
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--v2-ink-soft);
+  padding-block: 0.85rem;
+}
+.v2-navlink::after {
+  bottom: calc(0.85rem - 1px);
 }
 .v2-navlink:hover,
 .v2-navlink:focus-visible {
@@ -1068,11 +1092,24 @@
   object-position: bottom center;
 }
 @media (max-width: 899px) {
+  /* Photo BELOW the copy and attached to the section's bottom edge (mirrors the
+     HowItWorks phone treatment). Remove the copy's bottom padding and the grid
+     gap's trailing space so the figure sits flush on the band's lower edge with
+     no gap beneath her. */
+  .v2-community__grid {
+    gap: 0;
+  }
+  .v2-community__copy {
+    /* keep top breathing room, drop the bottom so the photo can attach below */
+    padding-block: clamp(2.5rem, 7vw, 3.5rem) 0;
+  }
   .v2-community__figure {
-    order: -1; /* photo above copy on mobile */
+    /* natural DOM order = after the copy; align her to the band's bottom edge */
+    align-self: end;
+    margin-top: clamp(1.5rem, 5vw, 2.5rem);
   }
   .v2-community__photo {
-    max-height: 340px;
+    max-height: 360px;
   }
 }
 
@@ -1515,13 +1552,17 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* don't stretch the links to full column width */
-  gap: 0.35rem;
+  gap: 0.1rem; /* tightened — the per-link vertical padding now carries the spacing */
 }
 .v2-foot__contact a {
   font-size: 0.92rem;
   color: var(--v2-ink);
   /* hug the text so the underline matches the text width, not the column */
   width: fit-content;
+  /* Tap target: pad the link to ≥44px tall without changing the text size. The
+     underline ::after is repositioned below to stay on the text baseline rather
+     than dropping to the padded box edge. (~0.85rem×2 + ~17px text ≈ 44px.) */
+  padding-block: 0.85rem;
 }
 
 /* Link columns — hairline divider on the left edge of each (mirrors Coivas) */
@@ -1552,12 +1593,16 @@
 .v2-foot__links {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.15rem; /* tightened — per-link vertical padding now carries the spacing */
 }
 .v2-foot__link {
   font-size: 0.82rem;
   color: var(--v2-ink-soft);
   white-space: nowrap;
+  /* Tap target: pad to ≥44px tall (text size unchanged). Links hug their text
+     via inline-block (.v2-ulink) so the hit area is text-width × padded-height.
+     (~0.92rem×2 + ~13px text ≈ 44px.) */
+  padding-block: 0.92rem;
 }
 .v2-foot__link:hover,
 .v2-foot__link:focus-visible {
@@ -1713,11 +1758,81 @@
   background: var(--v2-cream);
   color: var(--v2-ink);
 }
-/* The flex strip wraps on its own; on phones the items stack one-per-line, so
-   tighten the vertical gap. */
+/* The seamless-loop duplicate row only exists for the mobile marquee; hide it on
+   desktop, where the single centered strip is the whole panel. */
+.v2-trust__row--dupe {
+  display: none;
+}
+
+/* Mobile (≤600px): a stacked 4-row list dragged too much attention for a
+   secondary trust signal. Instead, turn the four points into a quiet horizontal
+   marquee (same mechanic as the page's .v2-ticker) so they read as ambient
+   credibility in a single low row. Icons keep their desktop cream-tile / ink-glyph
+   styling — no pop. .v2-trust is the clip window; .v2-trust__panel is the moving
+   track holding the row + its aria-hidden duplicate, animating -50% to loop. */
 @media (max-width: 600px) {
-  .v2-trust__row {
-    gap: 0.85rem 1.25rem;
+  .v2-trust {
+    overflow: hidden;
+  }
+  .v2-trust__panel {
+    /* track, not card: flatten the card chrome and lay the two rows in a line */
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: v2-trust-marquee 28s linear infinite;
+  }
+  .v2-trust__panel:hover {
+    animation-play-state: paused;
+  }
+  /* Both rows must be IDENTICAL width for the -50% loop to seam cleanly. Same
+     display, gap, and padding on each. The right padding provides the gap to the
+     next group's first item so the seam spacing matches the in-row gap. */
+  .v2-trust__row,
+  .v2-trust__row--dupe {
+    display: flex;
+    flex-wrap: nowrap;
+    flex: none;
+    width: max-content;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0 2rem;
+    margin: 0;
+    padding: 0.35rem 2rem 0.35rem 0;
+  }
+  .v2-trust__item {
+    white-space: nowrap; /* keep each point on one line in the marquee */
+    font-size: 0.84rem;
+  }
+  /* Keep the desktop cream icon tile, but a step deeper (cream-2) so it stays
+     visible without the white card behind it. Same chip style, just legible on
+     the bare cream page. */
+  .v2-trust__icon {
+    background: var(--v2-cream-2);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+  .v2-trust__icon svg {
+    width: 19px;
+    height: 19px;
+  }
+  @keyframes v2-trust-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  /* No motion: drop the duplicate, let the single row sit static and scroll if
+     it must, rather than animating. */
+  .v2-trust__panel {
+    animation: none;
+  }
+  .v2-trust__row--dupe {
+    display: none;
   }
 }
 .v2-trust__rating {
@@ -1729,6 +1844,14 @@
   gap: 0.5rem 0.6rem;
   font-family: var(--v2-fb);
   font-size: 0.875rem;
+}
+/* Mobile: left-align the rating (mirrors the hero's "Excellent 4.7 · …" row) and
+   pull it closer to the now-short marquee. After the base rule so it wins. */
+@media (max-width: 600px) {
+  .v2-trust__rating {
+    margin-top: 1rem;
+    justify-content: flex-start;
+  }
 }
 .v2-trust__score {
   font-weight: 700;
@@ -2002,12 +2125,17 @@
   transform: translateY(0);
   opacity: 1;
 }
-.v2-mech-vcard:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
-    0 18px 40px -18px rgba(60, 40, 30, 0.4);
+/* Lift only on real pointers. On touch devices a tap fires :hover, which made the
+   card jump up — and inside the mobile slider the lifted card got clipped. Gating
+   behind hover:hover/pointer:fine removes the jump on phones entirely. */
+@media (hover: hover) and (pointer: fine) {
+  .v2-mech-vcard:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.18),
+      0 18px 40px -18px rgba(60, 40, 30, 0.4);
+  }
 }
 .v2-mech-video {
   display: block;
@@ -2111,17 +2239,48 @@
   text-align: center;
   padding: 1rem;
 }
-@media (max-width: 720px) {
+@media (min-width: 561px) and (max-width: 720px) {
   .v2-mech-videos {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     max-width: 480px;
   }
 }
-@media (max-width: 420px) {
+/* Mobile (≤560px): a horizontal scroll-snap swipe slider instead of a stacked
+   grid. Each card is ~78% of the viewport so the next one peeks (affording the
+   swipe), and snaps centre. The decorative bottles drift BEHIND this region
+   (positioned low by FloatingBottles' mobile set), never behind the copy above.
+   The track reveals override: the cards must be visible by default (the grid
+   reveal's translateY/opacity would otherwise hide them inside a scroller). */
+@media (max-width: 560px) {
   .v2-mech-videos {
-    grid-template-columns: 1fr;
-    max-width: 280px;
+    display: flex;
+    grid-template-columns: none;
+    max-width: none;
+    margin-inline: 0;
+    gap: 1rem;
+    /* overflow-x:auto forces overflow-y to auto (per spec), so the scroller clips
+       vertically. Add block padding so each card's soft shadow + rounded edge get
+       breathing room and aren't shaved at the top/bottom of the track. */
+    padding: 0.75rem clamp(1.25rem, 6vw, 2rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .v2-mech-videos::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+  .v2-mech-vcard {
+    flex: 0 0 78%;
+    scroll-snap-align: center;
+    /* Cards to the right start off-screen in the scroller, so their reveal
+       IntersectionObserver never fires (they don't vertically intersect) and they
+       would ship blank (opacity:0). Inside the slider the cards must be visible by
+       default — the swipe IS the reveal. Force the in-state regardless of .is-in. */
+    transform: none;
+    opacity: 1;
+    transition: box-shadow 0.35s ease;
   }
 }
 
@@ -2132,17 +2291,44 @@
   padding-bottom: 0;
   overflow: hidden;
 }
+/* Grid: single column on phones / narrow tablets, two columns (timeline left,
+   phone right) from 820px up — earlier than the old 1024 breakpoint so the
+   common tablet-portrait widths (iPad Air 820, iPad 810) get the side-by-side
+   layout instead of the stacked "dead gap" between the timeline and the phone. */
+.v2-hiw__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: end;
+  gap: 2rem;
+}
+@media (min-width: 820px) {
+  .v2-hiw__grid {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 4rem;
+  }
+}
 .v2-hiw__copy {
   /* give the text column the bottom space the section no longer provides —
      trimmed to 75% of the section pad so the timeline sits a touch tighter. */
   padding-bottom: calc(var(--v2-pad-y) * 0.75);
+}
+/* Stacked (≤819px): the copy column's big bottom padding + the grid gap left a
+   void between the timeline and the centered phone. Drop both here so the phone
+   sits directly under the timeline; the 2-col layout restores the padding. */
+@media (max-width: 819px) {
+  .v2-hiw__copy {
+    padding-bottom: 0;
+  }
+  .v2-hiw__grid {
+    gap: 1.5rem;
+  }
 }
 .v2-hiw__media {
   display: flex;
   justify-content: center;
   align-self: end;
 }
-@media (min-width: 1024px) {
+@media (min-width: 820px) {
   .v2-hiw__media {
     justify-content: flex-end;
   }
@@ -2154,7 +2340,7 @@
   height: auto;
   object-fit: contain;
 }
-@media (min-width: 1024px) {
+@media (min-width: 820px) {
   .v2-hiw__phone {
     max-width: 480px;
   }
@@ -2684,8 +2870,16 @@
   line-height: 1.2;
   color: var(--v2-ink);
 }
-/* Mobile: drop the 3-col table + centre card. Each row stacks: feature, then a
-   "✓ InstaRx Included" line and a "✗ competitor" line beneath it. */
+/* "Others:" label only renders on mobile (where it restores the comparison the
+   column headers carry on desktop). Hidden in the desktop column layout. */
+.v2-compare__them-label {
+  display: none;
+}
+
+/* Mobile: drop the 3-col table + centre card. Each row reads as a clean contrast:
+   an ink check + the feature on top (the "what you get" line — no redundant
+   "Included" word repeated five times), then a muted "✗ Others: [downside]" line
+   beneath. The "Others:" label restores the InstaRx-vs-competitors framing. */
 @media (max-width: 760px) {
   .v2-compare__head {
     display: none;
@@ -2694,19 +2888,48 @@
     display: none;
   }
   .v2-compare__row {
-    grid-template-columns: 1fr;
-    gap: 0.55rem;
+    display: grid;
+    /* check column + content column; the feature and the competitor line both
+       sit in the content column, the check spans only the top row. */
+    grid-template-columns: auto 1fr;
+    column-gap: 0.7rem;
+    row-gap: 0.4rem;
+    align-items: start;
     padding: 1.15rem clamp(0.75rem, 4vw, 1.25rem);
   }
+  /* The InstaRx check leads the row, next to the feature. */
+  .v2-compare__cell--us {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin-top: 0.1rem;
+  }
+  /* Hide the repeated "Included" word — the check + feature carry the meaning. */
+  .v2-compare__incl {
+    display: none;
+  }
+  /* Feature sits to the right of the check, top row. */
   .v2-compare__feature {
+    grid-column: 2;
+    grid-row: 1;
     font-size: 1rem;
     font-weight: 600;
+    line-height: 1.35;
   }
-  .v2-compare__cell {
+  /* Competitor line spans the content column under the feature, indented to align
+     with it (not under the check). */
+  .v2-compare__cell--them {
+    grid-column: 2;
+    grid-row: 2;
     justify-content: flex-start;
+    align-items: center;
+    padding-left: 0;
+    white-space: normal; /* allow the downside to wrap if needed */
+    font-size: 0.9rem;
   }
-  .v2-compare__cell--us {
-    /* Align the check to the row top (no centre card on mobile). */
-    align-self: start;
+  .v2-compare__them-label {
+    display: inline;
+    font-weight: 600;
+    color: var(--v2-ink-soft); /* a touch stronger than the downside copy */
   }
 }

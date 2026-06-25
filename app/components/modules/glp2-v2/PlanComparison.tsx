@@ -73,13 +73,20 @@ export function PlanComparison() {
                     <Check size={14} strokeWidth={2.5} />
                   </span>
                   <span className="sr-only">InstaRx: </span>
-                  Included
+                  {/* "Included" is the desktop column label; hidden on mobile,
+                      where the check sits beside the feature instead. */}
+                  <span className="v2-compare__incl">Included</span>
                 </span>
                 <span className="v2-compare__cell v2-compare__cell--them">
                   <span className="v2-compare__x" aria-hidden="true">
                     <X size={14} strokeWidth={2.5} />
                   </span>
                   <span className="sr-only">Other providers: </span>
+                  {/* "Others:" prefix shown on mobile (CSS) to restore the
+                      comparison framing the column headers carry on desktop. */}
+                  <span className="v2-compare__them-label" aria-hidden="true">
+                    Others:{" "}
+                  </span>
                   {row.competitor}
                 </span>
               </li>

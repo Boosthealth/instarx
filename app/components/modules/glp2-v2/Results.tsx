@@ -18,8 +18,7 @@ export function Results() {
               constant <span className="v2-accent">exhaustion</span>.
             </h2>
             <p className="v2-lede mb-6 max-w-lg">
-              A real InstaRx member, six months into a prescription GLP-1
-              protocol. Drag the slider to see the difference for yourself.
+              What does six months on GLP-1 actually look like? Drag to see!
             </p>
             <p className="text-sm" style={{ color: "var(--v2-ink-mute)" }}>
               *Individual results vary. Average loss up to 17% of body weight.

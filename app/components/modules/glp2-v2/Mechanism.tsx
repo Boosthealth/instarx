@@ -11,14 +11,12 @@ import { FloatingBottles } from "./FloatingBottles";
  * videos below. Mirrors the original /glp2 "Kill the Cravings" section, re-skinned
  * to the v2 palette. */
 
-/* TODO(videos): `name` and `result` are PLACEHOLDERS — replace with the real
- * name + success result of each person in the video before launch (the user is
- * providing these from the actual testimonials). They are shown as the caption
- * on each thumbnail, so they must reflect the real customer. */
+/* Real member testimonials — name + result shown as the caption on each
+ * thumbnail. Order matches the left-to-right render order. */
 const VIDEOS = [
-  { src: "/video/1000019567.mp4", name: "Member name", result: "Replace · e.g. lost 31 lbs" },
-  { src: "/video/1000103649.mp4", name: "Member name", result: "Replace · e.g. lost 24 lbs" },
-  { src: "/video/IMG_2142.mp4", name: "Member name", result: "Replace · e.g. lost 28 lbs" },
+  { src: "/video/1000019567.mp4", name: "Blace", result: "Lost 40 lbs in 3 months" },
+  { src: "/video/1000103649.mp4", name: "Rhina", result: "Down 26 lbs in 2 months" },
+  { src: "/video/IMG_2142.mp4", name: "Emery", result: "Lost 42 lbs in 6 months" },
 ];
 
 function VideoCard({

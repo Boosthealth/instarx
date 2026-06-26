@@ -28,9 +28,18 @@ const US_STATES = [
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+// Format raw keystrokes into "MM/DD/YYYY" as the user types: keep only digits,
+// cap at 8 (MMDDYYYY), and re-insert the slashes.
+function formatBirthdayInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)];
+  return parts.filter(Boolean).join("/");
+}
+
 export default function OptinForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [birthday, setBirthday] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,6 +59,7 @@ export default function OptinForm() {
     // The form is noValidate (so we own messaging), so re-check key fields here.
     const name = String(data.get("name") || "").trim();
     const email = String(data.get("email") || "").trim();
+    const birthdayValue = String(data.get("birthday") || "").trim();
     const address = String(data.get("address") || "").trim();
     const city = String(data.get("city") || "").trim();
     const state = String(data.get("state") || "");
@@ -62,6 +72,10 @@ export default function OptinForm() {
     }
     if (phone.replace(/\D/g, "").length < 10) {
       setError("Please enter a valid phone number with at least 10 digits.");
+      return;
+    }
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(birthdayValue)) {
+      setError("Please enter your birthday as MM/DD/YYYY.");
       return;
     }
     if (!state) {
@@ -88,6 +102,7 @@ export default function OptinForm() {
       name,
       phone,
       email,
+      birthday: birthdayValue,
       address,
       city,
       state,
@@ -199,6 +214,26 @@ export default function OptinForm() {
                 type="email"
                 placeholder="jane@email.com"
                 autoComplete="email"
+                required
+              />
+            </div>
+
+            <div className="optin-field">
+              <label htmlFor="birthday">
+                Birthday <span className="optin-req">*</span>
+              </label>
+              <input
+                id="birthday"
+                name="birthday"
+                type="text"
+                inputMode="numeric"
+                placeholder="MM/DD/YYYY"
+                autoComplete="bday"
+                value={birthday}
+                onChange={(e) => setBirthday(formatBirthdayInput(e.target.value))}
+                maxLength={10}
+                pattern="\d{2}/\d{2}/\d{4}"
+                title="Enter your birthday as MM/DD/YYYY."
                 required
               />
             </div>

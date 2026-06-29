@@ -49,9 +49,9 @@ export default function OptinForm() {
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    // TCPA consent (c3) is the legally required gate; the carrier-message
-    // checkboxes record preference but at least one channel + TCPA consent
-    // must be affirmed before we can text anyone.
+    // TCPA consent is the only legally required consent gate (call/voice +
+    // 18+). The account-texts and marketing-texts checkboxes record separate
+    // text-message consent and are optional — they must not block submission.
     const tcpa = data.get("tcpa_consent") === "on";
     const accountTexts = data.get("account_texts") === "on";
     const marketingTexts = data.get("marketing_texts") === "on";
@@ -88,11 +88,7 @@ export default function OptinForm() {
     }
 
     if (!tcpa) {
-      setError("Please confirm the TCPA consent checkbox so we can text you.");
-      return;
-    }
-    if (!accountTexts && !marketingTexts) {
-      setError("Please opt in to at least one type of text message.");
+      setError("Please confirm the TCPA consent checkbox so we can contact you.");
       return;
     }
 
@@ -323,20 +319,24 @@ export default function OptinForm() {
               </div>
 
               <div className="optin-check">
-                <input type="checkbox" id="account_texts" name="account_texts" defaultChecked />
+                <input type="checkbox" id="account_texts" name="account_texts" />
                 <label htmlFor="account_texts">
-                  <b>Account &amp; care texts (recommended).</b> Yes, send me transactional SMS about
-                  my orders, shipping, and prescription — such as delivery tracking and dose
-                  reminders.
+                  <b>Account &amp; care texts (recommended).</b> Express consent to receive recurring
+                  automated service updates and account notification texts from InstaRx. Message and
+                  data rates may apply. Frequency varies up to ~6 msgs/mo. Reply <b>STOP</b> to opt
+                  out or <b>HELP</b> for more info. Consent is <b>not</b> required for purchasing
+                  products or services. The number will not be shared with third parties or
+                  affiliates. See our <a href="/policies/terms-and-conditions">Terms of Service</a>,{" "}
+                  <a href="/policies/privacy-policy">Privacy Policy</a>, and{" "}
+                  <a href="/policies/terms-and-conditions">SMS Terms</a>.
                 </label>
               </div>
 
               <div className="optin-check">
                 <input type="checkbox" id="marketing_texts" name="marketing_texts" />
                 <label htmlFor="marketing_texts">
-                  <b>Marketing &amp; offers texts.</b> Yes, send me recurring promotional SMS about
-                  new treatments, refill savings, and special offers. Consent is <b>not</b> a
-                  condition of purchase.
+                  <b>Marketing &amp; offers texts.</b> Consent to receive marketing communications and
+                  promotions to the phone number provided.
                 </label>
               </div>
 
@@ -345,18 +345,9 @@ export default function OptinForm() {
                 <label htmlFor="tcpa_consent">
                   <b>TCPA consent.</b> By checking this box, I agree that InstaRx and its care
                   partners may contact me at the number provided using an automatic telephone dialing
-                  system or prerecorded/AI voice and text messages. I confirm this is my number and I
-                  am 18+. I have read the <a href="/policies/privacy-policy">Privacy Policy</a> and{" "}
-                  <a href="/policies/terms-and-conditions">SMS Terms</a>.
+                  system or prerecorded/AI voice. I confirm this is my number and I am 18+. I have
+                  read the <a href="/policies/privacy-policy">Privacy Policy</a>.
                 </label>
-              </div>
-
-              <div className="optin-finelegal">
-                <b>Msg frequency varies (up to ~6 msgs/mo). Msg &amp; data rates may apply.</b> Reply{" "}
-                <b>STOP</b> to cancel or <b>HELP</b> for help at any time. Carriers are not liable for
-                delayed or undelivered messages. See{" "}
-                <a href="/policies/privacy-policy">Privacy Policy</a> &amp;{" "}
-                <a href="/policies/terms-and-conditions">Terms</a>.
               </div>
             </div>
 

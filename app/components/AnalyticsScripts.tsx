@@ -18,6 +18,7 @@ const EMBEDDABLES_ROUTES = new Set([
   "/intake",
   "/intake01",
   "/nad_plus_intake",
+  "/nad-quiz",
   "/glp1-weight-loss",
 ]);
 

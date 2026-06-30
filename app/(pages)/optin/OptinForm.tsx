@@ -50,11 +50,10 @@ export default function OptinForm() {
     const data = new FormData(form);
 
     // TCPA consent is the only legally required consent gate (call/voice +
-    // 18+). The account-texts and marketing-texts checkboxes record separate
-    // text-message consent and are optional — they must not block submission.
+    // 18+). The account-texts checkbox records separate text-message consent
+    // and is optional — it must not block submission.
     const tcpa = data.get("tcpa_consent") === "on";
     const accountTexts = data.get("account_texts") === "on";
-    const marketingTexts = data.get("marketing_texts") === "on";
 
     // The form is noValidate (so we own messaging), so re-check key fields here.
     const name = String(data.get("name") || "").trim();
@@ -104,7 +103,6 @@ export default function OptinForm() {
       state,
       zip,
       accountTexts,
-      marketingTexts,
       tcpaConsent: tcpa,
     };
 
@@ -329,14 +327,6 @@ export default function OptinForm() {
                   affiliates. See our <a href="/policies/terms-and-conditions">Terms of Service</a>,{" "}
                   <a href="/policies/privacy-policy">Privacy Policy</a>, and{" "}
                   <a href="/policies/terms-and-conditions">SMS Terms</a>.
-                </label>
-              </div>
-
-              <div className="optin-check">
-                <input type="checkbox" id="marketing_texts" name="marketing_texts" />
-                <label htmlFor="marketing_texts">
-                  <b>Marketing &amp; offers texts.</b> Consent to receive marketing communications and
-                  promotions to the phone number provided.
                 </label>
               </div>
 

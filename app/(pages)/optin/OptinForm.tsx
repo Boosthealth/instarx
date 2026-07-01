@@ -124,7 +124,7 @@ export default function OptinForm() {
       return;
     }
     if (age < MIN_AGE) {
-      setError("You must be 18 or older to sign up.");
+      setError("You must be 18 years old to continue.");
       return;
     }
     if (!state) {

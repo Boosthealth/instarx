@@ -31,7 +31,7 @@ Reintroduce the previously-reviewed, verified date helpers (they were removed in
 
 1. Format check (existing): `^\d{2}/\d{2}/\d{4}$` → "Please enter your birthday as MM/DD/YYYY."
 2. Real-date + plausibility: `parseBirthday` returns null, OR age < 0 (future date), OR age > 120 → **"Please enter a valid birthday."**
-3. Age gate: age < 18 → **"You must be 18 or older to sign up."**
+3. Age gate: age < 18 → **"You must be 18 years old to continue."**
 
 ### Boundary behavior (best practices)
 
@@ -45,7 +45,7 @@ Reintroduce the previously-reviewed, verified date helpers (they were removed in
 |------|---------|
 | Malformed | Please enter your birthday as MM/DD/YYYY. |
 | Impossible / future / absurd | Please enter a valid birthday. |
-| Under 18 | You must be 18 or older to sign up. |
+| Under 18 | You must be 18 years old to continue. |
 
 Rationale: the under-18 message is direct and matches the site's plain, reassuring tone; it states the requirement without judgment and mirrors the existing "I am 18+" affirmation.
 

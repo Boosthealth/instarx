@@ -36,6 +36,44 @@ function formatBirthdayInput(value: string): string {
   return parts.filter(Boolean).join("/");
 }
 
+// Minimum age required to submit the /optin form. InstaRx sells prescription
+// products, so submissions are limited to adults.
+const MIN_AGE = 18;
+
+// Parse an "MM/DD/YYYY" string into a real Date, returning null if the string
+// isn't a valid calendar date (e.g. 02/30/2000 or 13/01/2000). We build the
+// Date from explicit local-time parts and read them back, so JS date roll-over
+// (which would silently turn Feb 30 into Mar 2) is caught instead of accepted.
+function parseBirthday(value: string): Date | null {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+  if (!match) return null;
+  const month = Number(match[1]);
+  const day = Number(match[2]);
+  const year = Number(match[3]);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+  return date;
+}
+
+// Whole years between `birth` and `now`, accounting for whether this year's
+// birthday has already passed. Both dates are local-time so there's no UTC
+// off-by-one. Someone on their 18th birthday returns exactly 18.
+function ageInYears(birth: Date, now: Date): number {
+  let age = now.getFullYear() - birth.getFullYear();
+  const monthDiff = now.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < birth.getDate())) {
+    age -= 1;
+  }
+  return age;
+}
+
 export default function OptinForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -75,6 +113,18 @@ export default function OptinForm() {
     }
     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(birthdayValue)) {
       setError("Please enter your birthday as MM/DD/YYYY.");
+      return;
+    }
+    const birthDate = parseBirthday(birthdayValue);
+    const age = birthDate ? ageInYears(birthDate, new Date()) : null;
+    // A null parse, a future date (age < 0), or an implausible age means the
+    // entry is invalid — surface that rather than an inaccurate "under 18".
+    if (age === null || age < 0 || age > 120) {
+      setError("Please enter a valid birthday.");
+      return;
+    }
+    if (age < MIN_AGE) {
+      setError("You must be 18 or older to sign up.");
       return;
     }
     if (!state) {

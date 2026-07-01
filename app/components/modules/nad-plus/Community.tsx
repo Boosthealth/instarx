@@ -9,7 +9,7 @@ import { INTAKE_HREF, supportPills } from "./content";
  * frosted-glass "check" benefit pills on the left (Shed-style), and a real-person
  * cutout filling the right. The pills reuse the hero's glass treatment (no dot)
  * and sit in the copy column, aligned left with the rest of the content. */
-const COMMUNITY_IMG = "/images/community-2.webp";
+const COMMUNITY_IMG = "/images/nad-plus/hero-2.webp";
 
 export function Community() {
   return (
@@ -60,8 +60,8 @@ export function Community() {
             <Image
               src={COMMUNITY_IMG}
               alt="An InstaRx member holding their prescription NAD+ vial"
-              width={1696}
-              height={2200}
+              width={1400}
+              height={1863}
               sizes="(max-width: 900px) 80vw, 640px"
               className="v2-community__photo"
             />

@@ -10,9 +10,9 @@ import { GradientBg } from "./GradientBg";
 import { ReassuranceLine } from "./ReassuranceLine";
 import { heroChecks, INTAKE_HREF, type HeroIconName } from "./content";
 
-// Transparent-background cutout (portrait): the subject stands on the gradient
-// and bleeds off the bottom of the hero card.
-const HERO_IMG = "/images/hero-4.webp";
+// Portrait of a member holding a NAD+ vial. Sits in the hero photo layer and
+// bleeds off the bottom of the hero card.
+const HERO_IMG = "/images/nad-plus/hero-1.webp";
 
 // Maps the lucide icon name in content.ts to the imported component. Keyed by
 // the closed HeroIconName union, so every name in heroChecks resolves to a real
@@ -43,9 +43,9 @@ export function Hero() {
         <div className="v2-hero-photo">
           <Image
             src={HERO_IMG}
-            alt="A happy person holding their InstaRx NAD+ medication"
-            width={1696}
-            height={2200}
+            alt="A happy member holding their InstaRx NAD+ vial"
+            width={1400}
+            height={1863}
             sizes="(max-width: 1023px) 70vw, 620px"
             className="v2-hero-photo__img"
             style={{ filter: "saturate(1.04) contrast(1.02)" }}

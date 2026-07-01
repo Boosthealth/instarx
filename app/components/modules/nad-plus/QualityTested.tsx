@@ -7,12 +7,8 @@ import { qualityTests } from "./content";
  * with the headline + intro, and a right stack of hairline-separated rows, each
  * pairing a test name + a green PASSED badge with its description. A small
  * cluster of lab photos sits top-right. Styling lives in nad-plus.css under
- * `.nad-quality*`; the PASSED green reuses the in-stock status green.
- *
- * IMAGE: community-2.webp is a lifestyle cutout reused as a placeholder — it is
- * NOT a lab photo. Replace with a real compounding-lab photo before launch and
- * update the alt text to describe the lab. */
-const LAB_IMG = "/images/community-2.webp";
+ * `.nad-quality*`; the PASSED green reuses the in-stock status green. */
+const LAB_IMG = "/images/nad-plus/quality.webp";
 
 export function QualityTested() {
   return (
@@ -40,9 +36,9 @@ export function QualityTested() {
             <div className="nad-quality__figure">
               <Image
                 src={LAB_IMG}
-                alt=""
-                width={1200}
-                height={760}
+                alt="A technician testing NAD+ vials in a U.S. compounding pharmacy lab"
+                width={1000}
+                height={655}
                 sizes="(max-width: 960px) 90vw, 440px"
                 className="nad-quality__img"
               />

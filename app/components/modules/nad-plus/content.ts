@@ -55,27 +55,29 @@ export const heroChecks: Array<{
 
 /* Benefits — the four strongest NAD+ benefits, rendered as a vertical row stack
  * beside a left header rail (Reference 3 layout): each row has its own thumbnail
- * `img` + title + body. The `img` paths are PLACEHOLDERS reusing existing assets
- * (two are GLP-1 product shots, NOT neutral images) — replace with real
- * per-benefit photos before launch. */
+ * (`img` + `alt`) + title + body. */
 export const benefits = [
   {
-    img: "/images/hero-4.webp",
+    img: "/images/nad-plus/benefit-1.webp",
+    alt: "An active person mid-workout, energized",
     title: "Increase energy & reduce fatigue",
     body: "Recharge at the cellular level for steady, all-day energy — without jitters, crashes, or extra caffeine.",
   },
   {
-    img: "/images/community-2.webp",
+    img: "/images/nad-plus/benefit-2.webp",
+    alt: "A clear-eyed, focused portrait in warm light",
     title: "Improve memory & focus",
     body: "Boost clarity, concentration, and recall so you can think faster, stay on task, and perform at your best.",
   },
   {
-    img: "/images/tirz-glp1.png",
+    img: "/images/nad-plus/benefit-3.webp",
+    alt: "An abstract close-up of a cellular DNA strand",
     title: "Revitalize cellular DNA",
     body: "Protect and repair DNA to strengthen cellular health, enhance resilience, and support long-term longevity.",
   },
   {
-    img: "/images/sem-glp1.png",
+    img: "/images/nad-plus/benefit-4.webp",
+    alt: "A close-up of healthy, radiant, mature skin",
     title: "Rejuvenate youthful skin",
     body: "Encourage collagen and cellular repair for smoother texture, improved elasticity, and a healthy, youthful glow.",
   },

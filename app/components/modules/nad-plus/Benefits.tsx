@@ -6,11 +6,7 @@ import { benefits, INTAKE_HREF } from "./content";
 /* NAD+ benefits — a magazine-style two-column split (Reference 3 layout): a left
  * header rail (oversized headline + sub-line + CTA) and a right vertical stack
  * of rows, each with its own rounded thumbnail image + title + body, separated
- * by hairlines. Styling lives in nad-plus.css under `.nad-benefits*`.
- *
- * IMAGES: benefit thumbnails are placeholders reusing existing assets (two are
- * GLP-1 product shots, not neutral) — replace with real per-benefit photos. Swap to
- * real per-benefit photos (drop into /images/benefits/) when generated. */
+ * by hairlines. Styling lives in nad-plus.css under `.nad-benefits*`. */
 export function Benefits() {
   return (
     <section id="benefits" className="v2-section v2-bg-lilac">
@@ -50,9 +46,9 @@ export function Benefits() {
                 <div className="nad-benefit__thumb">
                   <Image
                     src={benefit.img}
-                    alt=""
-                    width={520}
-                    height={400}
+                    alt={benefit.alt}
+                    width={640}
+                    height={442}
                     sizes="(max-width: 720px) 40vw, 220px"
                     className="nad-benefit__img"
                   />

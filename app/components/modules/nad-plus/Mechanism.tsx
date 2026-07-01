@@ -11,12 +11,8 @@ import { scienceClaims, INTAKE_HREF } from "./content";
  * scannable NAD+ claims (each row a `+` expander) on the right, capped with the
  * "Not all NAD+ is the same" line + a CTA. Sits on the existing pink/lilac wash.
  * Styling lives in nad-plus.css under `.nad-science*`; the accordion reuses the
- * FAQ height-measuring pattern.
- *
- * IMAGE: tirz-glp1.png is the GLP-1 (tirzepatide) product vial — a WRONG-PRODUCT
- * placeholder, not a neutral one. Must be replaced with a real NAD+ vial shot
- * before launch. */
-const SCIENCE_IMG = "/images/tirz-glp1.png";
+ * FAQ height-measuring pattern. */
+const SCIENCE_IMG = "/images/nad-plus/science.webp";
 
 export function Mechanism() {
   // One row open at a time; the first opens by default.
@@ -42,7 +38,7 @@ export function Mechanism() {
               <Image
                 src={SCIENCE_IMG}
                 alt="A doctor-prescribed NAD+ injection vial"
-                width={1200}
+                width={800}
                 height={1200}
                 sizes="(max-width: 960px) 70vw, 420px"
                 className="nad-science__img"

@@ -5,8 +5,10 @@ import {
 } from "@/app/lib/attribution";
 import { getVariationKey } from "@/app/lib/convert";
 import {
+  AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
   GLP_FUNNEL_SPLIT_EXPERIENCE,
   HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
+  affiliateFunnelSplitDestination,
   funnelSplitDestination,
   homepageLanderDestination,
 } from "@/app/lib/experiments";
@@ -168,6 +170,31 @@ async function routeResponse(
     }
   }
 
+  // /quiz — Affiliate funnel split (split-URL test). Publishers send their
+  // traffic to this one URL; each visitor is bucketed and 302-redirected to one
+  // of the three affiliate intake funnels (begin./get./join.instarx.com).
+  // Unlike /intake there is NO page at this path — every request must leave
+  // with a redirect. So misses don't fall through: `control`, an SDK miss, an
+  // unknown key, and non-human traffic all 302 to the fallback funnel instead
+  // (bots still skip getVariationKey so they don't burn allocations).
+  if (request.nextUrl.pathname === "/quiz") {
+    const variationKey = isNonHumanRequest(request)
+      ? null
+      : await getVariationKey(AFFILIATE_FUNNEL_SPLIT_EXPERIENCE, visitorId);
+    const target = new URL(affiliateFunnelSplitDestination(variationKey));
+    // The publisher's params (transaction_id, utm_*, sub-ids) arrive on THIS
+    // request — copy them onto the funnel URL, where Embeddables captures them
+    // via originUrl. The attribution cookie only fills gaps, e.g. a revisit
+    // whose link params were stripped.
+    carryForwardParams(target, request.nextUrl.searchParams);
+    const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
+    if (storedAttribution) {
+      carryForwardParams(target, new URLSearchParams(storedAttribution));
+    }
+    target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+    return NextResponse.redirect(target, 302);
+  }
+
   // Everything else we run on — the /weight-loss content test, plus /intake
   // control / misses / bots that stay put — forwards the visitor id so the
   // render path can bucket. That decision is made in the Server Component, not
@@ -218,5 +245,5 @@ function isNonHumanRequest(request: NextRequest): boolean {
 // Only run on A/B-tested routes. Add paths here as more server-side
 // experiments are introduced.
 export const config = {
-  matcher: ["/", "/weight-loss", "/intake"],
+  matcher: ["/", "/weight-loss", "/intake", "/quiz"],
 };

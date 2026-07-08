@@ -109,3 +109,55 @@ export function homepageLanderDestination(
   if (!variationKey) return null;
   return HOMEPAGE_LANDER_SPLIT_DESTINATIONS[variationKey] ?? null;
 }
+
+/**
+ * Convert experience key for the affiliate funnel split. A split-URL / redirect
+ * test: publishers send their traffic to ONE url (go.instarx.com/quiz) and the
+ * proxy buckets each visitor and 302-redirects them to one of the three
+ * affiliate intake funnels. Bucketing therefore lives in proxy.ts, not the
+ * render path.
+ *
+ * Created FRESH in the Convert dashboard (never cloned), so the keys below are
+ * clean. If this experiment ever needs a structural change, create another
+ * fresh experience rather than cloning — clones mangle every key (see
+ * docs/ab-testing-convert.md).
+ */
+export const AFFILIATE_FUNNEL_SPLIT_EXPERIENCE = "affiliate_funnel_split";
+
+/**
+ * Variation key → redirect destination for {@link AFFILIATE_FUNNEL_SPLIT_EXPERIENCE}.
+ *
+ * `control` is intentionally absent: it's allocated 0% in the Convert
+ * dashboard, and unlike /intake this route has no page of its own — anything
+ * that doesn't map to an arm goes to {@link AFFILIATE_FUNNEL_SPLIT_FALLBACK}.
+ * The keys here MUST match the variation keys configured in Convert exactly.
+ */
+export const AFFILIATE_FUNNEL_SPLIT_DESTINATIONS: Record<string, string> = {
+  variation_1: "https://begin.instarx.com/", // Intake01 v2 - Affiliates (33%)
+  variation_2: "https://get.instarx.com/", // Intake v2 - Affiliates (33%)
+  variation_3: "https://join.instarx.com/", // Intake v3 - Affiliates (34%)
+};
+
+/**
+ * Where /quiz traffic goes when bucketing can't produce an arm: `control`, a
+ * bucketing miss (SDK unreachable, experience paused, key mismatch), an
+ * unrecognised key, or non-human traffic. There is no page at /quiz, so a
+ * visitor must NEVER be left there — worst case everyone lands on this funnel
+ * and the publisher's traffic still converts, just unsplit.
+ */
+export const AFFILIATE_FUNNEL_SPLIT_FALLBACK = "https://begin.instarx.com/";
+
+/**
+ * Resolve a bucketed variation key to its redirect destination. Unlike the
+ * other splits this never returns null — a miss resolves to the fallback
+ * funnel, because /quiz has no page to fall through to.
+ */
+export function affiliateFunnelSplitDestination(
+  variationKey: string | null | undefined,
+): string {
+  if (!variationKey) return AFFILIATE_FUNNEL_SPLIT_FALLBACK;
+  return (
+    AFFILIATE_FUNNEL_SPLIT_DESTINATIONS[variationKey] ??
+    AFFILIATE_FUNNEL_SPLIT_FALLBACK
+  );
+}

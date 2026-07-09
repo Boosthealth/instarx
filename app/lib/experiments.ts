@@ -30,8 +30,17 @@ export function normalizeHeroVariant(
  * test (a content variation), this is a split-URL / redirect test: the proxy
  * buckets the visitor and 302-redirects each variation to a different intake
  * funnel. Bucketing therefore lives in proxy.ts, not the render path.
+ *
+ * v2 (2026-07-09): the original `glp_funnel_split` had collected >1k visitors,
+ * so Convert had locked its allocation (only a fresh Draft has editable %).
+ * Rather than clone (which re-mangles every key — see docs/ab-testing-convert.md),
+ * we created a FRESH experience `glp_funnel_split_v2` and hand-keyed the SAME
+ * clean variation keys, so this file's only change was this constant — the
+ * destinations map below is byte-identical to v1. The v2 allocation drops the
+ * `start.instarx.com` arm to 0% (worst funnel on CVR, AOV, and revenue/visitor
+ * over 3 weeks) and runs quiz/intake 50/50.
  */
-export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split";
+export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split_v2";
 
 /**
  * Variation key → redirect destination for {@link GLP_FUNNEL_SPLIT_EXPERIENCE}.
@@ -39,11 +48,15 @@ export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split";
  * `control` is intentionally absent: it has no redirect (the visitor stays on
  * /intake) and is allocated 0% in the Convert dashboard. The keys here MUST
  * match the variation keys configured in Convert exactly.
+ *
+ * `variation_1` (start.instarx.com) is retained at 0% allocation in v2 (start
+ * retired for underperformance) — kept in the map so the keys stay stable and
+ * a re-add is a Convert-only allocation change. Convert never returns it at 0%.
  */
 export const GLP_FUNNEL_SPLIT_DESTINATIONS: Record<string, string> = {
-  variation_1: "https://start.instarx.com/",
-  variation_2: "https://quiz.instarx.com/",
-  variation_3: "https://intake.instarx.com/",
+  variation_1: "https://start.instarx.com/", // start (Intake v3) — 0% in v2 (retired)
+  variation_2: "https://quiz.instarx.com/", // quiz (Intake v2) — 50%
+  variation_3: "https://intake.instarx.com/", // intake (Intake01 v2) — 50%
 };
 
 /**

@@ -8,7 +8,8 @@ export const INTAKE_HREF = "https://go.instarx.com/intake";
 
 export const hero = {
   eyebrow: "How it works",
-  title: "Your GLP-1 journey, step by step",
+  // Non-breaking hyphen (U+2011) keeps "GLP-1" from splitting across lines.
+  title: "Your GLP‑1 journey, step by step",
   subtitle:
     "From your first assessment to medication at your door, here's exactly how InstaRx works — plus answers to the questions patients ask most.",
   ctaLabel: "Start your assessment",

@@ -20,7 +20,7 @@ export default function Steps() {
             style={{ top: "calc(var(--header-height) + 1rem)" }}
           >
             <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-gray-200 shadow-list-item">
-              <div className="grid grid-cols-1 items-center gap-8 p-8 sm:p-12 lg:grid-cols-2 lg:gap-14">
+              <div className="grid grid-cols-1 items-center gap-8 p-8 sm:p-12 md:grid-cols-2 md:gap-12 lg:gap-16">
                 {/* Text */}
                 <div data-reveal="slide-left">
                   <div className="flex items-center gap-4">
@@ -57,15 +57,16 @@ export default function Steps() {
                 </div>
 
                 {/* Image */}
-                <div data-reveal="slide-right" className="order-first lg:order-last">
-                  <Image
-                    src={step.image}
-                    alt={step.imageAlt}
-                    width={900}
-                    height={900}
-                    sizes="(max-width: 1024px) 90vw, 45vw"
-                    className="aspect-square w-full rounded-[20px] object-cover"
-                  />
+                <div data-reveal="slide-right" className="order-first md:order-last">
+                  <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[20px] bg-[#eef3f8]">
+                    <Image
+                      src={step.image}
+                      alt={step.imageAlt}
+                      fill
+                      sizes="(max-width: 768px) 90vw, 45vw"
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

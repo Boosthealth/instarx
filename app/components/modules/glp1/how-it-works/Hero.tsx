@@ -8,33 +8,45 @@ export default function Hero() {
       style={{ paddingTop: "calc(var(--header-height) + 1.5rem)" }}
     >
       <div
-        className="max-w-7xl mx-auto rounded-3xl px-8 sm:px-14 py-16 sm:py-24 text-center"
+        className="relative overflow-hidden max-w-7xl mx-auto rounded-3xl px-8 sm:px-14 py-16 sm:py-24 text-center"
         style={{ background: "var(--glp1-hero-gradient)" }}
       >
-        <p
-          className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90"
-          style={{ animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both" }}
-        >
-          {hero.eyebrow}
-        </p>
-        <h1
-          className="heading-display mt-5 text-white font-[family-name:var(--font-inter)]"
+        {/* Legibility scrim: darkest at the center where the radial gradient is
+            lightest and the text sits, fading out at the edges so the brand blue
+            stays vivid. Lifts white text over WCAG contrast without a new color. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
           style={{
-            animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
-            animationDelay: "110ms",
+            background:
+              "radial-gradient(60% 60% at 50% 45%, rgba(20,45,75,0.34) 0%, rgba(20,45,75,0.12) 60%, rgba(20,45,75,0) 100%)",
           }}
-        >
-          {hero.title}
-        </h1>
-        <p
-          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/90"
-          style={{
-            animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
-            animationDelay: "220ms",
-          }}
-        >
-          {hero.subtitle}
-        </p>
+        />
+        <div className="relative">
+          <p
+            className="text-sm font-semibold uppercase tracking-[0.18em] text-white"
+            style={{ animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+          >
+            {hero.eyebrow}
+          </p>
+          <h1
+            className="heading-display mt-5 text-white text-balance font-[family-name:var(--font-inter)]"
+            style={{
+              animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
+              animationDelay: "110ms",
+            }}
+          >
+            {hero.title}
+          </h1>
+          <p
+            className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-white"
+            style={{
+              animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
+              animationDelay: "220ms",
+            }}
+          >
+            {hero.subtitle}
+          </p>
         <div
           style={{
             animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
@@ -48,6 +60,7 @@ export default function Hero() {
           >
             {hero.ctaLabel} →
           </Link>
+          </div>
         </div>
       </div>
     </section>

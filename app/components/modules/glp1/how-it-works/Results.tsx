@@ -27,7 +27,7 @@ export default function Results() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:mx-auto sm:max-w-md sm:gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {results.map((card, i) => {
             const Icon = iconFor[card.icon];
             return (

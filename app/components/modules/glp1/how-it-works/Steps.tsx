@@ -29,7 +29,7 @@ export default function Steps() {
                   >
                     {step.number}
                   </span>
-                  <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f8dba]">
+                  <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#3f6ea3]">
                     {step.label}
                   </span>
                 </div>

@@ -48,6 +48,7 @@ export default function Hero() {
             {hero.subtitle}
           </p>
         <div
+          className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
           style={{
             animation: "glp1FadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both",
             animationDelay: "330ms",
@@ -56,10 +57,16 @@ export default function Hero() {
           <Link
             href={INTAKE_HREF}
             prefetch={false}
-            className="mt-9 inline-flex items-center gap-2 rounded-full bg-gray-900 px-8 py-3 text-lg font-semibold text-white transition-colors duration-200 hover:bg-gray-800"
+            className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-8 py-3 text-lg font-semibold text-white transition-colors duration-200 hover:bg-gray-800"
           >
             {hero.ctaLabel} →
           </Link>
+          <a
+            href="#faq"
+            className="inline-flex items-center gap-1.5 rounded-full px-5 py-3 text-lg font-medium text-white underline decoration-white/40 underline-offset-4 transition-colors duration-200 hover:decoration-white"
+          >
+            {hero.secondaryLabel}
+          </a>
           </div>
         </div>
       </div>

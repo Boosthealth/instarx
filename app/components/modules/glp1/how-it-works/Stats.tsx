@@ -17,6 +17,7 @@ export default function Stats() {
             >
               <p className="text-4xl font-semibold text-gray-900 sm:text-5xl font-[family-name:var(--font-inter)]">
                 {stat.value}
+                {stat.note && <sup className="align-super text-xl text-gray-500">*</sup>}
               </p>
               <p className="mx-auto mt-3 max-w-[16rem] text-gray-800 leading-relaxed">
                 {stat.label}
@@ -24,7 +25,7 @@ export default function Stats() {
             </div>
           ))}
         </div>
-        <p className="mt-10 text-center text-xs text-gray-500">{statsFootnote}</p>
+        <p className="mt-10 text-center text-sm text-gray-600">{statsFootnote}</p>
       </div>
     </section>
   );

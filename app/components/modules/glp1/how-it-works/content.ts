@@ -8,10 +8,18 @@ export const INTAKE_HREF = "https://go.instarx.com/intake";
 
 export const hero = {
   eyebrow: "How it works",
-  // Non-breaking hyphen (U+2011) keeps "GLP-1" from splitting across lines.
-  title: "Your GLP‑1 journey, step by step",
+  // Non-breaking hyphen (U+2011) keeps "GLP-1" intact, and a non-breaking space
+  // (U+00A0) binds "GLP-1 journey" so the pair wraps together with a visible
+  // gap — avoids the "GLP-1journey" collapse seen at narrow widths.
+  title: "Your GLP‑1 journey, step by step",
   subtitle:
     "From your first assessment to medication at your door, here's exactly how InstaRx works — plus answers to the questions patients ask most.",
+  ctaLabel: "Start your assessment",
+  secondaryLabel: "Jump to answers",
+};
+
+export const cta = {
+  heading: "Ready when you are",
   ctaLabel: "Start your assessment",
 };
 
@@ -101,13 +109,15 @@ export const steps: Step[] = [
 export type Stat = {
   value: string;
   label: string;
+  note?: boolean;
 };
 
 export const stats: Stat[] = [
-  { value: "9 lbs", label: "Average weight loss in the first month" },
+  { value: "9 lbs", label: "Average weight loss in the first month", note: true },
   {
     value: "up to 17%",
     label: "Average body-weight reduction with prescription GLP-1",
+    note: true,
   },
   { value: "1–2 days", label: "Typical delivery once you're prescribed" },
 ];
@@ -189,6 +199,16 @@ export type Faq = {
 };
 
 export const faqs: Faq[] = [
+  {
+    question: "Is compounded GLP-1 treatment safe?",
+    answer:
+      "Your treatment is prescribed by a licensed U.S. provider and prepared by state-regulated compounding pharmacies that follow strict Board of Pharmacy standards. Compounded medications are not FDA-approved, which means they have not undergone FDA premarket review; your provider weighs the benefits and risks for your situation before prescribing. See our safety information for full details.",
+  },
+  {
+    question: "What side effects should I know about?",
+    answer:
+      "GLP-1 medications can cause side effects — most commonly nausea, digestive changes, or reduced appetite, especially as your dose increases. Your care team reviews your history first and stays available to adjust your plan if side effects come up. Always discuss risks and benefits with your provider.",
+  },
   {
     question: "What are compounded GLP-1 medications?",
     answer:

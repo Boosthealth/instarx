@@ -20,7 +20,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="px-6 py-10 sm:py-16">
+    <section id="faq" className="px-6 py-10 sm:py-16">
       <div
         className="max-w-7xl mx-auto rounded-3xl sm:rounded-[48px] px-8 sm:px-14 py-14 sm:py-16"
         style={{ background: "var(--glp1-faq-gradient)" }}

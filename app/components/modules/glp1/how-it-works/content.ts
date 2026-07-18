@@ -115,6 +115,63 @@ export const stats: Stat[] = [
 export const statsFootnote =
   "*Individual results vary. Claims reflect self-reported data from InstaRx customers.";
 
+export type Feature = {
+  image: string;
+  imageAlt: string;
+  title: string;
+  description: string;
+};
+
+export const features: Feature[] = [
+  {
+    image: "/glp1/Image-1.webp",
+    imageAlt: "Compounded semaglutide vial from a licensed InstaRx pharmacy",
+    title: "Compounded GLP-1 medications",
+    description:
+      "Start your InstaRx weight loss journey with peace of mind, knowing that all compounded GLP-1 medications are sourced from rigorously regulated and licensed pharmacies. Maximizing patient outcomes is our primary goal.",
+  },
+  {
+    image: "/glp1/image_2.webp",
+    imageAlt: "Licensed InstaRx provider on a telehealth visit",
+    title: "Setting the gold standard for care and fast shipping",
+    description:
+      "At InstaRx, your well-being and safety is our top priority, which is why we partner with state-regulated compounding pharmacies. These pharmacies adhere to strict regulatory board standards to ensure the safety and quality of every compounded GLP-1 prescription.",
+  },
+];
+
+export const resultsIntro = {
+  heading: "Care that stays with you",
+  body: "Your provider and care team stay connected through every stage of your treatment.",
+};
+
+export type Result = {
+  image: string;
+  imageAlt: string;
+  title: string;
+  caption: string;
+};
+
+export const results: Result[] = [
+  {
+    image: "/glp1/hero.webp",
+    imageAlt: "Patient messaging their InstaRx provider from a phone",
+    title: "Message your provider",
+    caption: "A direct line to the care team that knows your case.",
+  },
+  {
+    image: "/glp1/Image-1.webp",
+    imageAlt: "Compounded GLP-1 medication vial",
+    title: "Dose adjustments when you need them",
+    caption: "No waiting rooms, no delays in your care.",
+  },
+  {
+    image: "/glp1/happy-person.webp",
+    imageAlt: "InstaRx patient tracking their progress",
+    title: "Ongoing check-ins",
+    caption: "Regular touchpoints to track progress and refine your plan.",
+  },
+];
+
 export const faqIntro = {
   heading: "Questions & answers",
   body: "Learn more about how compounded GLP-1 treatment through InstaRx works.",

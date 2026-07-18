@@ -8,6 +8,8 @@ import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
 import Hero from "@/app/components/modules/glp1/how-it-works/Hero";
 import Steps from "@/app/components/modules/glp1/how-it-works/Steps";
 import Stats from "@/app/components/modules/glp1/how-it-works/Stats";
+import Features from "@/app/components/modules/glp1/how-it-works/Features";
+import Results from "@/app/components/modules/glp1/how-it-works/Results";
 import FaqSection from "@/app/components/modules/glp1/how-it-works/FaqSection";
 
 export const metadata: Metadata = {
@@ -34,6 +36,8 @@ export default function Glp1HowItWorks() {
         <Hero />
         <Steps />
         <Stats />
+        <Features />
+        <Results />
         <FaqSection />
         <CTA />
         <Disclaimer />

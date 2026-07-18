@@ -1,0 +1,59 @@
+import Image from "next/image";
+import { results, resultsIntro } from "./content";
+
+/**
+ * Three text-over-image cards, adapted from freyameds.com's "What Patients
+ * Achieve" section into the InstaRx palette. A blue-toned bottom scrim keeps
+ * the white heading + caption legible over the photography (WCAG-safe), rather
+ * than Freya's warm/serif treatment.
+ */
+export default function Results() {
+  return (
+    <section className="px-6 py-10 sm:py-16">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
+            {resultsIntro.heading}
+          </h2>
+          <p className="mt-4 text-lg leading-relaxed text-gray-700">
+            {resultsIntro.body}
+          </p>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {results.map((card, i) => (
+            <article
+              key={card.title}
+              data-reveal="up"
+              style={{ transitionDelay: `${i * 90}ms` }}
+              className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#eef3f8]"
+            >
+              <Image
+                src={card.image}
+                alt={card.imageAlt}
+                fill
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
+                className="object-cover"
+              />
+              {/* Bottom-weighted scrim for text legibility */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(20,45,75,0) 30%, rgba(20,45,75,0.32) 58%, rgba(20,45,75,0.82) 100%)",
+                }}
+              />
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7">
+                <h3 className="text-xl font-semibold leading-snug text-white font-[family-name:var(--font-inter)]">
+                  {card.title}
+                </h3>
+                <p className="mt-2 leading-relaxed text-white/90">{card.caption}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

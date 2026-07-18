@@ -13,7 +13,7 @@ export default function Features() {
         {features.map(({ image, imageAlt, title, description }, i) => (
           <div
             key={title}
-            className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-20"
+            className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-20"
           >
             {/* Image */}
             <div

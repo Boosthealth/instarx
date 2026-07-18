@@ -144,9 +144,12 @@ export const resultsIntro = {
   body: "Your provider and care team stay connected through every stage of your treatment.",
 };
 
+export type ResultIcon = "message" | "dose" | "calendar";
+
 export type Result = {
   image: string;
   imageAlt: string;
+  icon: ResultIcon;
   title: string;
   caption: string;
 };
@@ -155,18 +158,21 @@ export const results: Result[] = [
   {
     image: "/glp1/hero.webp",
     imageAlt: "Patient messaging their InstaRx provider from a phone",
+    icon: "message",
     title: "Message your provider",
     caption: "A direct line to the care team that knows your case.",
   },
   {
     image: "/glp1/Image-1.webp",
     imageAlt: "Compounded GLP-1 medication vial",
+    icon: "dose",
     title: "Dose adjustments when you need them",
     caption: "No waiting rooms, no delays in your care.",
   },
   {
     image: "/glp1/happy-person.webp",
     imageAlt: "InstaRx patient tracking their progress",
+    icon: "calendar",
     title: "Ongoing check-ins",
     caption: "Regular touchpoints to track progress and refine your plan.",
   },

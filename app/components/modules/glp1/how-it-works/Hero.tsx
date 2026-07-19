@@ -19,7 +19,7 @@ export default function Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(60% 60% at 50% 45%, rgba(20,45,75,0.34) 0%, rgba(20,45,75,0.12) 60%, rgba(20,45,75,0) 100%)",
+              "radial-gradient(72% 72% at 50% 45%, rgba(20,45,75,0.50) 0%, rgba(20,45,75,0.34) 62%, rgba(20,45,75,0.10) 100%)",
           }}
         />
         <div className="relative">

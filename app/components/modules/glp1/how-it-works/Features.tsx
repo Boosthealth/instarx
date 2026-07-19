@@ -1,47 +1,53 @@
 import Image from "next/image";
-import { features } from "./content";
+import { features, featuresIntro } from "./content";
 
 /**
- * Two alternating explanatory blocks (image + copy). Clean version for the
- * how-it-works page: cream section background matching the homepage (#f5f0eb),
- * no decorative floating blobs, and readable body text.
+ * Two-up explanatory cards (image over copy) on the system's warm neutral band
+ * (--glp1-feature-bg). The two-column shape is deliberate: it distinguishes this
+ * section from the Steps sequence's full-width alternating rows.
  */
 export default function Features() {
   return (
     <section className="bg-[var(--glp1-feature-bg)]">
       <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-10 sm:py-16">
-        {features.map(({ image, imageAlt, title, description }, i) => (
-          <div
-            key={title}
-            className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-20"
-          >
-            {/* Image */}
-            <div
-              data-reveal={i % 2 === 0 ? "slide-left" : "slide-right"}
-              className={`relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-white ${
-                i % 2 === 1 ? "md:order-last" : ""
-              }`}
-            >
-              <Image
-                src={image}
-                alt={imageAlt}
-                fill
-                sizes="(max-width: 768px) 90vw, 45vw"
-                className="object-cover"
-              />
-            </div>
+        <div className="max-w-2xl" data-reveal="up">
+          <h2 className="text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
+            {featuresIntro.heading}
+          </h2>
+          <p className="mt-4 text-lg leading-relaxed text-gray-700">
+            {featuresIntro.body}
+          </p>
+        </div>
 
-            {/* Text */}
-            <div data-reveal={i % 2 === 0 ? "slide-right" : "slide-left"}>
-              <h3 className="text-2xl font-medium leading-snug text-gray-900 sm:text-3xl font-[family-name:var(--font-inter)]">
+        {/* Two-up columns — deliberately a different shape from the Steps
+            section's full-width alternating rows, so this reads as its own
+            section rather than a continuation of the numbered sequence. */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
+          {features.map(({ image, imageAlt, title, description }, i) => (
+            <article
+              key={title}
+              data-reveal="up"
+              style={{ transitionDelay: `${i * 90}ms` }}
+              className="flex flex-col"
+            >
+              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-[#eef3f8]">
+                <Image
+                  src={image}
+                  alt={imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 90vw, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="mt-6 text-2xl font-medium leading-snug text-gray-900 font-[family-name:var(--font-inter)]">
                 {title}
               </h3>
-              <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              <p className="mt-3 text-lg leading-relaxed text-gray-700">
                 {description}
               </p>
-            </div>
-          </div>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

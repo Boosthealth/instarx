@@ -16,9 +16,10 @@ export default function CTA() {
       >
         {/* Mobile: stacked */}
         <div className="flex flex-col items-center px-6 pt-10 text-center md:hidden">
-          <h2 className="mb-5 text-3xl font-medium leading-tight text-gray-900 font-[family-name:var(--font-inter)]">
+          <h2 className="mb-4 text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
             {cta.heading}
           </h2>
+          <p className="mb-6 max-w-sm text-gray-800 leading-relaxed">{cta.subcopy}</p>
           <Link
             href={INTAKE_HREF}
             prefetch={false}
@@ -39,9 +40,10 @@ export default function CTA() {
         {/* Desktop: text left, image right */}
         <div className="hidden min-h-[480px] items-center md:flex">
           <div className="relative z-10 flex max-w-2xl flex-col gap-6 px-16 py-12">
-            <h2 className="text-4xl font-medium leading-tight text-gray-900 font-[family-name:var(--font-inter)]">
+            <h2 className="text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
               {cta.heading}
             </h2>
+            <p className="max-w-md text-lg text-gray-800 leading-relaxed">{cta.subcopy}</p>
             <Link
               href={INTAKE_HREF}
               prefetch={false}

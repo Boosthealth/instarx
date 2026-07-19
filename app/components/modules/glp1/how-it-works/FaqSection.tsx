@@ -28,7 +28,7 @@ export default function FaqSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
           {/* Left */}
           <div data-reveal="slide-left" className="lg:col-span-1">
-            <h2 className="text-2xl sm:text-3xl font-medium text-gray-900 leading-tight mb-4 font-[family-name:var(--font-inter)]">
+            <h2 className="text-3xl sm:text-4xl font-medium text-gray-900 leading-tight mb-4 font-[family-name:var(--font-inter)]">
               {faqIntro.heading}
             </h2>
             <p className="text-gray-800 leading-relaxed pr-2">{faqIntro.body}</p>

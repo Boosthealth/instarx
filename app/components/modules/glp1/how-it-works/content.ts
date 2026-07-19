@@ -20,6 +20,8 @@ export const hero = {
 
 export const cta = {
   heading: "Ready when you are",
+  subcopy:
+    "A licensed U.S. provider reviews every assessment. No commitment to start.",
   ctaLabel: "Start your assessment",
 };
 
@@ -87,8 +89,8 @@ export const steps: Step[] = [
       "Dose adjustments when appropriate",
       "Progress you can track",
     ],
-    image: "/glp1/weight.webp",
-    imageAlt: "Patient tracking weight-loss progress over time",
+    image: "/glp1/image_2.webp",
+    imageAlt: "InstaRx provider checking in with a patient on a telehealth visit",
   },
   {
     number: "05",
@@ -130,6 +132,11 @@ export type Feature = {
   imageAlt: string;
   title: string;
   description: string;
+};
+
+export const featuresIntro = {
+  heading: "Why patients choose InstaRx",
+  body: "Regulated pharmacies, licensed providers, and support that stays with you.",
 };
 
 export const features: Feature[] = [

@@ -12,9 +12,11 @@ export default function Stats() {
               style={{ transitionDelay: `${i * 100}ms` }}
               className="text-center"
             >
-              <p className="text-4xl font-semibold text-gray-900 sm:text-5xl font-[family-name:var(--font-inter)]">
+              <p className="whitespace-nowrap text-4xl font-semibold text-gray-900 sm:text-5xl font-[family-name:var(--font-inter)]">
                 {stat.value}
-                {stat.note && <sup className="align-super text-xl text-gray-500">*</sup>}
+                {stat.note && (
+                  <sup className="align-top text-sm font-normal text-gray-500">*</sup>
+                )}
               </p>
               <p className="mx-auto mt-3 max-w-[16rem] text-gray-800 leading-relaxed">
                 {stat.label}

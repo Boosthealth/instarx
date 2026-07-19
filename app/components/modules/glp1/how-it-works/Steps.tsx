@@ -3,8 +3,8 @@ import { Check } from "lucide-react";
 import { steps } from "./content";
 
 /**
- * The five steps as alternating image/copy blocks on a soft-blue field that
- * sets the section apart from the cream Features band. Content is top-aligned so
+ * The five steps as alternating image/copy blocks on the warm neutral band.
+ * Content is top-aligned so
  * the heading sits on a shared baseline with the image rather than floating in
  * the middle of a taller photo. Each block keeps its step cues (01–05 badge,
  * category label), heading, paragraph, and checkmark bullets.
@@ -23,7 +23,7 @@ export default function Steps() {
               {/* Text */}
               <div data-reveal={imageRight ? "slide-left" : "slide-right"}>
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5f8dba] text-base font-semibold text-white">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#3f6ea3] text-base font-semibold text-white">
                     {step.number}
                   </span>
                   <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#3f6ea3]">
@@ -41,7 +41,7 @@ export default function Steps() {
                     <li key={bullet} className="flex items-center gap-3 text-gray-800">
                       <span
                         aria-hidden="true"
-                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#5f8dba] text-white"
+                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#3f6ea3] text-white"
                       >
                         <Check size={14} strokeWidth={3} />
                       </span>
@@ -54,7 +54,7 @@ export default function Steps() {
               {/* Image */}
               <div
                 data-reveal={imageRight ? "slide-right" : "slide-left"}
-                className={`relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-white shadow-sm ${
+                className={`relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-[#eef3f8] ${
                   imageRight ? "order-first md:order-last" : "order-first"
                 }`}
               >

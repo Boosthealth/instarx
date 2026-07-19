@@ -9,10 +9,8 @@ const iconFor: Record<ResultIcon, typeof MessageCircle> = {
 };
 
 /**
- * Three text-over-image cards, adapted from freyameds.com's "What Patients
- * Achieve" section into the InstaRx palette. A blue-toned bottom scrim keeps
- * the white heading + caption legible over the photography (WCAG-safe), rather
- * than Freya's warm/serif treatment.
+ * Three text-over-image care cards. A blue-toned bottom scrim keeps the white
+ * heading and caption legible over the photography at WCAG contrast.
  */
 export default function Results() {
   return (
@@ -50,12 +48,12 @@ export default function Results() {
                   className="absolute inset-0"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(20,45,75,0) 30%, rgba(20,45,75,0.32) 58%, rgba(20,45,75,0.82) 100%)",
+                      "linear-gradient(180deg, rgba(20,45,75,0) 26%, rgba(20,45,75,0.55) 58%, rgba(20,45,75,0.88) 100%)",
                   }}
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute left-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5f8dba] text-white shadow-md sm:left-7 sm:top-7"
+                  className="absolute left-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#3f6ea3] text-white shadow-md sm:left-7 sm:top-7"
                 >
                   <Icon size={20} strokeWidth={2} />
                 </span>
@@ -63,7 +61,7 @@ export default function Results() {
                   <h3 className="text-xl font-semibold leading-snug text-white font-[family-name:var(--font-inter)]">
                     {card.title}
                   </h3>
-                  <p className="mt-2 leading-relaxed text-white/90">{card.caption}</p>
+                  <p className="mt-2 leading-relaxed text-white">{card.caption}</p>
                 </div>
               </article>
             );

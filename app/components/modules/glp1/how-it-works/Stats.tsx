@@ -2,11 +2,8 @@ import { stats, statsFootnote } from "./content";
 
 export default function Stats() {
   return (
-    <section className="px-6 py-10 sm:py-16">
-      <div
-        className="mx-auto max-w-7xl rounded-3xl px-8 py-14 sm:px-14 sm:py-16"
-        style={{ background: "var(--glp1-feature-bg)" }}
-      >
+    <section className="max-w-7xl mx-auto px-6 py-10 sm:py-16">
+      <div>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8">
           {stats.map((stat, i) => (
             <div

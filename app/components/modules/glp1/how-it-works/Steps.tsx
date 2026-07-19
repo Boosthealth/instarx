@@ -11,8 +11,8 @@ import { steps } from "./content";
  */
 export default function Steps() {
   return (
-    <section className="bg-[var(--glp1-steps-bg)] px-6 py-14 sm:py-20">
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 sm:gap-24">
+    <section className="bg-[var(--glp1-feature-bg)]">
+      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-10 sm:gap-24 sm:py-16">
         {steps.map((step, i) => {
           const imageRight = i % 2 === 0;
           return (
@@ -23,10 +23,7 @@ export default function Steps() {
               {/* Text */}
               <div data-reveal={imageRight ? "slide-left" : "slide-right"}>
                 <div className="flex items-center gap-4">
-                  <span
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full text-base font-semibold text-white"
-                    style={{ background: "var(--glp1-hero-gradient)" }}
-                  >
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5f8dba] text-base font-semibold text-white">
                     {step.number}
                   </span>
                   <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#3f6ea3]">
@@ -44,8 +41,7 @@ export default function Steps() {
                     <li key={bullet} className="flex items-center gap-3 text-gray-800">
                       <span
                         aria-hidden="true"
-                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white"
-                        style={{ background: "var(--glp1-hero-gradient)" }}
+                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#5f8dba] text-white"
                       >
                         <Check size={14} strokeWidth={3} />
                       </span>

@@ -55,8 +55,7 @@ export default function Results() {
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute left-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md sm:left-7 sm:top-7"
-                  style={{ background: "var(--glp1-hero-gradient)" }}
+                  className="absolute left-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5f8dba] text-white shadow-md sm:left-7 sm:top-7"
                 >
                   <Icon size={20} strokeWidth={2} />
                 </span>

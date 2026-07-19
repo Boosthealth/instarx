@@ -8,8 +8,8 @@ import { features } from "./content";
  */
 export default function Features() {
   return (
-    <section className="bg-[var(--glp1-cream-bg)]">
-      <div className="mx-auto flex max-w-7xl flex-col gap-14 px-6 py-14 sm:gap-20 sm:py-20">
+    <section className="bg-[var(--glp1-feature-bg)]">
+      <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-10 sm:py-16">
         {features.map(({ image, imageAlt, title, description }, i) => (
           <div
             key={title}

@@ -47,8 +47,8 @@ export const steps: Step[] = [
       "Questions about your health and goals",
       "No commitment to start",
     ],
-    image: "/glp1/hero.webp",
-    imageAlt: "Person starting the InstaRx GLP-1 online assessment on a phone",
+    image: "/glp1/how-it-works/hiw-learn.webp",
+    imageAlt: "Man at home taking the InstaRx GLP-1 assessment on his phone",
   },
   {
     number: "02",
@@ -61,8 +61,8 @@ export const steps: Step[] = [
       "Personalized treatment plan",
       "Clear guidance on what's next",
     ],
-    image: "/glp1/Image-1.webp",
-    imageAlt: "Licensed provider reviewing a patient's GLP-1 intake",
+    image: "/glp1/how-it-works/hiw-assess.webp",
+    imageAlt: "Licensed provider in a white coat reviewing a patient's GLP-1 intake",
   },
   {
     number: "03",
@@ -75,8 +75,8 @@ export const steps: Step[] = [
       "Step-by-step dosing guidance",
       "Support when you need it",
     ],
-    image: "/glp1/image_2.webp",
-    imageAlt: "Discreet GLP-1 medication package delivered to a patient's door",
+    image: "/glp1/how-it-works/hiw-begin.webp",
+    imageAlt: "Hand receiving a discreet GLP-1 medication package at home",
   },
   {
     number: "04",
@@ -89,8 +89,8 @@ export const steps: Step[] = [
       "Dose adjustments when appropriate",
       "Progress you can track",
     ],
-    image: "/glp1/image_2.webp",
-    imageAlt: "InstaRx provider checking in with a patient on a telehealth visit",
+    image: "/glp1/how-it-works/hiw-maintain.webp",
+    imageAlt: "InstaRx provider waving during a telehealth check-in",
   },
   {
     number: "05",
@@ -103,8 +103,8 @@ export const steps: Step[] = [
       "More energy and confidence",
       "A plan built to last",
     ],
-    image: "/glp1/happy-person.webp",
-    imageAlt: "Happy InstaRx patient who reached their weight-loss goals",
+    image: "/glp1/how-it-works/hiw-success.webp",
+    imageAlt: "Fit, confident InstaRx patient outdoors after reaching their goals",
   },
 ];
 
@@ -141,15 +141,15 @@ export const featuresIntro = {
 
 export const features: Feature[] = [
   {
-    image: "/glp1/Image-1.webp",
-    imageAlt: "Compounded semaglutide vial from a licensed InstaRx pharmacy",
+    image: "/glp1/how-it-works/hiw-why-1.webp",
+    imageAlt: "InstaRx compounded semaglutide vial",
     title: "Compounded GLP-1 medications",
     description:
       "Start your InstaRx weight loss journey with peace of mind, knowing that all compounded GLP-1 medications are sourced from rigorously regulated and licensed pharmacies. Maximizing patient outcomes is our primary goal.",
   },
   {
-    image: "/glp1/image_2.webp",
-    imageAlt: "Licensed InstaRx provider on a telehealth visit",
+    image: "/glp1/how-it-works/hiw-why-2.webp",
+    imageAlt: "Pharmacist in gloves inspecting a compounded GLP-1 vial",
     title: "Setting the gold standard for care and fast shipping",
     description:
       "At InstaRx, your well-being and safety is our top priority, which is why we partner with state-regulated compounding pharmacies. These pharmacies adhere to strict regulatory board standards to ensure the safety and quality of every compounded GLP-1 prescription.",
@@ -173,22 +173,22 @@ export type Result = {
 
 export const results: Result[] = [
   {
-    image: "/glp1/hero.webp",
-    imageAlt: "Patient messaging their InstaRx provider from a phone",
+    image: "/glp1/how-it-works/hiw-care-1.webp",
+    imageAlt: "Patient messaging their InstaRx care team from a phone",
     icon: "message",
     title: "Message your provider",
     caption: "A direct line to the care team that knows your case.",
   },
   {
-    image: "/glp1/Image-1.webp",
-    imageAlt: "Compounded GLP-1 medication vial",
+    image: "/glp1/how-it-works/hiw-care-2.webp",
+    imageAlt: "Pharmacist dosing compounded GLP-1 vials in a lab",
     icon: "dose",
     title: "Dose adjustments when you need them",
     caption: "No waiting rooms, no delays in your care.",
   },
   {
-    image: "/glp1/happy-person.webp",
-    imageAlt: "InstaRx patient tracking their progress",
+    image: "/glp1/how-it-works/hiw-care-3.webp",
+    imageAlt: "InstaRx patient checking in on their phone at home",
     icon: "calendar",
     title: "Ongoing check-ins",
     caption: "Regular touchpoints to track progress and refine your plan.",

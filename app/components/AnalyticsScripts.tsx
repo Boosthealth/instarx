@@ -30,10 +30,14 @@ export default function AnalyticsScripts() {
   const skipPostHog = pathname !== null && EMBEDDABLES_ROUTES.has(pathname);
 
   // Defer analytics to page-idle on the heavy editorial landers (glp2-v2,
-  // nad-plus) ONLY, so the ~900KB of marketing/analytics JS doesn't compete with
-  // their hero LCP + interactivity. Every other route keeps the original
-  // `afterInteractive` timing untouched.
-  const LAZY_ANALYTICS_ROUTES = new Set(["/glp2-v2", "/nad-plus"]);
+  // nad-plus, glp1/how-it-works) ONLY, so the ~900KB of marketing/analytics JS
+  // doesn't compete with their hero LCP + interactivity. Every other route keeps
+  // the original `afterInteractive` timing untouched.
+  const LAZY_ANALYTICS_ROUTES = new Set([
+    "/glp2-v2",
+    "/nad-plus",
+    "/glp1/how-it-works",
+  ]);
   const analyticsStrategy =
     pathname !== null && LAZY_ANALYTICS_ROUTES.has(pathname)
       ? "lazyOnload"

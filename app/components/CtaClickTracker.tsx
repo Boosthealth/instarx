@@ -10,6 +10,7 @@ const HOMEPAGE_LANDER_PATHS = new Set([
   "/glp2-da",
   "/glp2-c2",
   "/glp2-v2",
+  "/glp1/how-it-works",
 ]);
 const INTAKE_HREF_PREFIX = "https://go.instarx.com/intake";
 const GOAL_KEY = "homepage-cta-click";

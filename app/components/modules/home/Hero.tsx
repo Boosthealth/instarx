@@ -69,9 +69,11 @@ const checkItems = [
 export default function Hero({
   variant = "control",
   layout = "default",
+  ctaHref = "https://go.instarx.com/intake",
 }: {
   variant?: WeightLossHeroVariant;
   layout?: "default" | "a" | "b" | "d" | "c2";
+  ctaHref?: string;
 }) {
   const content = HERO_CONTENT[variant];
   const isVariant = layout !== "default";
@@ -100,7 +102,7 @@ export default function Hero({
   const mobileCta = (
     <div className="mb-6 sm:hidden">
       <Button
-        href="https://go.instarx.com/intake"
+        href={ctaHref}
         text="Find your treatment →"
         className="w-full"
       />
@@ -174,8 +176,8 @@ export default function Hero({
                   isVariant ? " hidden sm:flex" : ""
                 }`}
               >
-                <Button href="https://go.instarx.com/intake" text={content.primaryCta} className="w-full sm:w-auto" />
-                <Button href="https://go.instarx.com/intake" text="See pricing" color="light" className="w-full sm:w-auto" />
+                <Button href={ctaHref} text={content.primaryCta} className="w-full sm:w-auto" />
+                <Button href={ctaHref} text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
               <p
                 className={`text-center text-sm text-gray-700 sm:text-left${

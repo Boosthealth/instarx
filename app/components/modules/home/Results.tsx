@@ -5,7 +5,11 @@ import { CTA } from "./CTA";
 
 
 
-export default function Results() {
+export default function Results({
+  ctaHref = "https://go.instarx.com/intake",
+}: {
+  ctaHref?: string;
+}) {
   return (
     <section className="px-4 py-12 bg-gray-100" id="about">
       <div className="max-w-7xl mx-auto">
@@ -27,7 +31,7 @@ export default function Results() {
           <TrustBadgesCarousel />
         </div>
 
-        <CTA href="https://go.instarx.com/intake" />
+        <CTA href={ctaHref} />
       </div>
     </section>
   );

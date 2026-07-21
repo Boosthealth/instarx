@@ -53,7 +53,11 @@ function VideoSlide({ src, index }: { src: string; index: number }) {
   );
 }
 
-export function VideoTestimonials() {
+export function VideoTestimonials({
+  ctaHref = "https://go.instarx.com/intake",
+}: {
+  ctaHref?: string;
+} = {}) {
   const [emblaRef] = useEmblaCarousel({
     loop: false,
     align: "start",
@@ -154,7 +158,7 @@ export function VideoTestimonials() {
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 mb-8 text-center leading-tight">
               Are you ready to shed 15% of your body weight?
             </h2>
-            <CTA href="https://go.instarx.com/intake" className="text-center" btnText="Let's Go!" price />
+            <CTA href={ctaHref} className="text-center" btnText="Let's Go!" price />
           </div>
         </div>
       </div>

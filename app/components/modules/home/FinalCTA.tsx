@@ -1,6 +1,10 @@
 import { Button } from "./Button";
 
-export function FinalCTA() {
+export function FinalCTA({
+  ctaHref = "https://go.instarx.com/intake",
+}: {
+  ctaHref?: string;
+} = {}) {
   return (
     <section className="sm:p-4" id="pricing">
       <div className="bg-linear-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-t-3xl sm:rounded-[48px] overflow-hidden py-14 sm:py-20 px-6 sm:px-10 text-center">
@@ -15,7 +19,7 @@ export function FinalCTA() {
           This isn&apos;t a fad. It&apos;s medicine backed by science. Over 10,000 members are already
           losing up to 15% of their body weight safely and effectively from the comfort of home.
         </p>
-        <Button href="https://go.instarx.com/intake" text="Get started" />
+        <Button href={ctaHref} text="Get started" />
       </div>
     </section>
   );

@@ -13,11 +13,10 @@ const marqueeItems = [
   "100% U.S. Licensed Providers and Pharmacies",
 ];
 
-const navLinks = [
+const anchorLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Customer Reviews", href: "#reviews" },
   { label: "FAQs", href: "#faqs" },
-  { label: "Plans & Pricing", href: "https://go.instarx.com/intake" },
 ];
 
 function CheckIcon() {
@@ -44,8 +43,13 @@ function CloseIcon() {
   );
 }
 
-export default function Header() {
+export default function Header({
+  ctaHref = "https://go.instarx.com/intake",
+}: {
+  ctaHref?: string;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navLinks = [...anchorLinks, { label: "Plans & Pricing", href: ctaHref }];
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -112,7 +116,7 @@ export default function Header() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
-              href="https://go.instarx.com/intake"
+              href={ctaHref}
               prefetch={false}
               className="hidden md:inline-flex items-center px-5 py-2 bg-black text-white text-sm font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             >
@@ -163,7 +167,7 @@ export default function Header() {
             ))}
           </nav>
           <Link
-            href="https://go.instarx.com/intake"
+            href={ctaHref}
             prefetch={false}
             className="block text-center px-6 py-4 bg-black text-white text-base font-semibold rounded-full hover:bg-blue-500 transition-colors duration-200"
             onClick={() => setMenuOpen(false)}

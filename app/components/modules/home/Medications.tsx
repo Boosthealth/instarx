@@ -2,7 +2,11 @@ import Image from "next/image";
 import { TrustBadgesCarousel } from "./TrustBadgesCarousel";
 import { CTA } from "./CTA";
 
-export function Medications() {
+export function Medications({
+  ctaHref = "https://go.instarx.com/intake",
+}: {
+  ctaHref?: string;
+} = {}) {
   return (
     <section className="bg-[#f5f0eb] py-16 px-6 rounded-b-[48px]">
       <div className="max-w-4xl mx-auto text-center">
@@ -48,7 +52,7 @@ export function Medications() {
         </div>
 
         {/* CTA */}
-        <CTA href="https://go.instarx.com/intake" btnText="Get started" price className="text-center" />
+        <CTA href={ctaHref} btnText="Get started" price className="text-center" />
       </div>
     </section>
   );

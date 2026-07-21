@@ -17,7 +17,7 @@ export const CTA = ({ href, btnText, className, price = false }: { href: string;
     <div className={`flex flex-col items-center gap-4 ${className}`}>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
         <Button href={href} text={btnText || "Start Quiz →"} className={`${price ? "min-w-48" : "min-w-60"} w-full sm:w-auto`} />
-        {price && <Button href="https://go.instarx.com/intake" text="See Pricing" color="light" className="min-w-48 w-full sm:w-auto" />}
+        {price && <Button href={href} text="See Pricing" color="light" className="min-w-48 w-full sm:w-auto" />}
       </div>
       <p className="text-center text-sm text-gray-700">
         No Hidden Fees &nbsp;·&nbsp; No Monthly Membership &nbsp;·&nbsp; Cancel Anytime

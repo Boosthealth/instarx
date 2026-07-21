@@ -38,7 +38,7 @@ const dmSans = DM_Sans({
 });
 
 const title =
-  "InstaRx - Start Aging Backwards With NAD+ - Starting at Just $89";
+  "InstaRx - Start Aging Backwards With NAD+ - Starting at Just $99";
 const description =
   "InstaRx delivers doctor-prescribed NAD+ injections to your door. Boost energy, sharpen memory, and support healthy aging with personalized, medically supervised treatment — 100% online, no insurance required.";
 

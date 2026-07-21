@@ -3,13 +3,12 @@
  * /glp2-v2 module: the client can tweak words here without touching layout, and
  * each section component stays focused on presentation. Copy is adapted from the
  * client's NAD.docx; all factual claims, prices, and dosages are preserved
- * verbatim (Starting at $89, 500–1000mg, $99/mo, 250k+ customers, free 1–2 day
+ * verbatim (Starting at $99, 500–1000mg, $99/mo, 250k+ customers, free 1–2 day
  * shipping, FDA-registered 503A compounding).
  */
 
-// All CTAs point at the NAD+ anti-aging quiz flow (Savvy embeddable lives on
-// /nad-quiz). Swap here if a dedicated NAD+ intake page is added later.
-export const INTAKE_HREF = "https://go.instarx.com/nad-quiz";
+// All CTAs point at the dedicated NAD+ intake site.
+export const INTAKE_HREF = "https://nad.instarx.com/";
 
 // Static announcement bar (Coivas-style): one concise, generic line + arrow.
 export const announcement = "NAD+ in stock — doctor-prescribed, delivered in 1–2 days.";
@@ -146,10 +145,7 @@ export const supportPills = [
 export const timeline = [
   {
     when: "Today",
-    text: "Get $100 off — applied at checkout.",
-    // The discount is an offer, not a process stage — flagged so it renders as
-    // an accent badge that sets it apart from the genuine steps below.
-    offer: true,
+    text: "Complete the intake form",
   },
   {
     when: "In 1 day",
@@ -356,7 +352,7 @@ export const faqGroups = [
     items: [
       {
         q: "How does the pricing work?",
-        a: "NAD+ starts at $89, with monthly treatment starting at $99/mo. You pay the same flat price every dose — no hidden fees and no surprises.",
+        a: "NAD+ starts at $99, with monthly treatment starting at $99/mo. You pay the same flat price every dose — no hidden fees and no surprises.",
       },
       {
         q: "What if I need to cancel?",

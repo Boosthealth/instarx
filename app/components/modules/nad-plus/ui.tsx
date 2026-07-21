@@ -27,7 +27,7 @@ export function V2Button({
   tabIndex?: number;
 }) {
   // prefetch={false}: matches the shared Button — every CTA points at the
-  // external NAD+ quiz (go.instarx.com/nad-quiz), so viewport prefetch buys
+  // external NAD+ intake site (nad.instarx.com), so viewport prefetch buys
   // nothing and would just warm an off-route URL.
   return (
     <Link

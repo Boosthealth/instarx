@@ -65,7 +65,7 @@ export function Hero() {
                 Starting at
               </p>
               <p className="v2-h3" style={{ fontStyle: "normal" }}>
-                $89{" "}
+                $99{" "}
                 <span
                   className="align-middle text-sm font-normal line-through"
                   style={{
@@ -73,7 +73,7 @@ export function Hero() {
                     color: "var(--v2-ink-mute)",
                   }}
                 >
-                  $189
+                  $199
                 </span>
               </p>
             </div>
@@ -102,7 +102,7 @@ export function Hero() {
             </h1>
 
             {/* Benefit sub-line — the price lives in the offer card (right), so
-                the lede stays a clean benefit statement and doesn't repeat $89. */}
+                the lede stays a clean benefit statement and doesn't repeat $99. */}
             <p className="v2-lede mb-6 max-w-lg">
               Boost energy, look younger, and improve memory with the{" "}
               <span style={{ color: "var(--v2-ink)", fontWeight: 600 }}>

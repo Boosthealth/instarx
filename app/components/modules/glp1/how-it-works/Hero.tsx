@@ -27,11 +27,6 @@ export default function Hero() {
         className="relative mx-auto max-w-none overflow-hidden rounded-3xl"
         style={{ background: "var(--glp1-hero-gradient)" }}
       >
-        {/* Legibility scrim: darkest at the center where the radial gradient is
-            lightest and the text sits, fading out at the edges so the brand blue
-            stays vivid. Lifts white text over WCAG contrast without a new color. */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0"/>
-
         {/* Content column — aligned with every other section's max-w-7xl/px-6
             column instead of stretching edge to edge. */}
         <div className="relative mx-auto max-w-7xl px-6">

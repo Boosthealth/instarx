@@ -195,11 +195,6 @@ export const results: Result[] = [
   },
 ];
 
-export const reviewsIntro = {
-  heading: "Real people, real results",
-  body: "10,000+ patients have started their GLP-1 journey with InstaRx. Here's what they have to say.",
-};
-
 export type Review = {
   title: string;
   text: string;

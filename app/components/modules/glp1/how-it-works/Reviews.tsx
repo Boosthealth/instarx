@@ -66,7 +66,7 @@ function Card({
           rotate(${isCenter ? 0 : position % 2 ? 2 : -2}deg)`,
       }}
     >
-      <Stars className={`mb-4 ${isCenter ? "text-[#f0c98b]" : "text-amber-600"}`} />
+      <Stars className={`mb-4 ${isCenter ? "text-white" : "text-[#3f6ea3]"}`} />
       <blockquote
         className={`flex-1 overflow-hidden text-[clamp(1.15rem,1.7vw,1.5rem)] leading-[1.38] tracking-[-0.01em] ${
           isCenter ? "text-[#fbf7f2]" : "text-gray-900"
@@ -132,7 +132,7 @@ export default function Reviews() {
         </p>
         <div className="mt-5 flex items-center justify-center gap-2">
           <span className="text-sm font-semibold text-gray-900">Excellent 4.7</span>
-          <Stars className="text-amber-600" />
+          <Stars className="text-[#3f6ea3]" />
           <span className="text-sm text-gray-600">· 10,000+ happy customers</span>
         </div>
         </div>

@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
-import { Star } from "lucide-react";
-import { reviews } from "./content";
+import Link from "next/link";
+import { ArrowUpRight, Star } from "lucide-react";
+import { hero, INTAKE_HREF, reviews } from "./content";
 
 function Stars() {
   return (
@@ -14,7 +15,7 @@ function Stars() {
 
 function TrustBadge() {
   return (
-    <div className="flex items-center gap-2 text-base text-gray-700">
+    <div className="flex flex-wrap items-center justify-center gap-2 text-base text-gray-700 sm:flex-nowrap">
       <span className="flex items-center gap-0.5" role="img" aria-label="4.7 out of 5 stars">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} size={14} fill="#00b67a" stroke="#00b67a" aria-hidden="true" />
@@ -23,7 +24,7 @@ function TrustBadge() {
       <span className="font-semibold text-gray-900">Excellent</span>
       <span>4.7</span>
       <span aria-hidden="true">·</span>
-      <span>10,000+ happy customers</span>
+      <span className="basis-full text-center sm:basis-auto">10,000+ happy customers</span>
     </div>
   );
 }
@@ -67,15 +68,39 @@ export default function Reviews() {
 
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
+      <div className="absolute top-0 left-0 w-full h-full bg-[var(--glp1-feature-bg)] opacity-70"></div>
       <div className="z-10 pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
-        <h2 className="max-w-xl text-center font-[family-name:var(--font-inter)] font-medium text-6xl italic leading-relaxed text-gray-900 sm:text-7xl lg:text-8xl">
+        <h2 className="max-w-xl text-center font-[family-name:var(--font-inter)] font-semibold text-5xl italic leading-relaxed text-gray-900 sm:text-6xl lg:text-7xl">
           Results That Speak For Themselves
         </h2>
+        <Link
+          href={INTAKE_HREF}
+          prefetch={false}
+          className="group pointer-events-auto my-2 inline-flex h-[52px] items-center gap-2 rounded-full bg-[#1a1714] px-8 text-[1.02rem] font-medium text-white shadow-[0_6px_18px_-12px_rgba(26,23,20,0.55)] transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-black hover:shadow-[0_10px_26px_-14px_rgba(26,23,20,0.7)]"
+        >
+          <span>{hero.ctaLabel}</span>
+          {/* Diagonal arrow swap (YMI-style, matches .v2-btn__arrowswap in
+              glp2-v2.css): two ↗ arrows in a clipped box; on hover the
+              visible one exits top-right and the duplicate slides in
+              from bottom-left. */}
+          <span className="relative inline-block h-[18px] w-[18px] shrink-0 overflow-hidden" aria-hidden="true">
+            <ArrowUpRight
+              size={18}
+              strokeWidth={2}
+              className="absolute inset-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.48,1.4,0.5,1)] group-hover:translate-x-[110%] group-hover:-translate-y-[110%]"
+            />
+            <ArrowUpRight
+              size={18}
+              strokeWidth={2}
+              className="absolute inset-0 -translate-x-[110%] translate-y-[110%] transition-transform duration-[400ms] ease-[cubic-bezier(0.48,1.4,0.5,1)] group-hover:translate-x-0 group-hover:translate-y-0"
+            />
+          </span>
+        </Link>
         <TrustBadge />
       </div>
 
       <div
-        className="relative flex flex-col gap-10 sm:gap-14"
+        className="relative -z-10 flex flex-col gap-10 sm:gap-14"
         style={{ "--marquee-duration": "40s" } as CSSProperties}
       >
         <div className="marquee-track flex gap-28 md:gap-40 xl:gap-72" style={{ width: "max-content" }}>

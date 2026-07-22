@@ -38,8 +38,8 @@ export default function Glp1HowItWorks() {
         <Steps />
         <Stats />
         <Reviews />
-        <Features />
         <Results />
+        <Features />
         <FaqSection />
         <CTA />
         <Disclaimer />

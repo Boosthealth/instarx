@@ -2,20 +2,6 @@ import Image from "next/image";
 import { Check } from "lucide-react";
 import { steps } from "./content";
 
-// Same radial-gradient pairs as `.v2-bg-pink--soft` / `.v2-bg-lilac` in the
-// glp2-v2/nad-plus/partner stylesheets, inlined rather than imported — those
-// CSS files are bundled per-page and aren't loaded on /glp1/how-it-works, and
-// `var(--v2-cream)` (their base) isn't defined here either, so the literal
-// hex stands in for it.
-const STEP_BACKGROUNDS = [
-  `radial-gradient(66% 72% at 10% 14%, rgba(244, 204, 218, 0.32) 0%, rgba(244, 204, 218, 0) 72%),
-   radial-gradient(58% 64% at 94% 86%, rgba(240, 222, 198, 0.3) 0%, rgba(240, 222, 198, 0) 72%),
-   #fbf7f2`,
-  `radial-gradient(70% 76% at 90% 10%, rgba(220, 209, 236, 0.52) 0%, rgba(220, 209, 236, 0) 72%),
-   radial-gradient(62% 68% at 6% 90%, rgba(242, 218, 204, 0.42) 0%, rgba(242, 218, 204, 0) 72%),
-   #fbf7f2`,
-];
-
 /**
  * Scroll-stacked steps: each step sticks to the top of the viewport as the
  * page scrolls, and the next step slides up to cover it — like a deck of
@@ -40,8 +26,7 @@ export default function Steps() {
         return (
           <div
             key={step.number}
-            style={{ zIndex: i + 1, background: STEP_BACKGROUNDS[i % 2] }}
-            className="sticky top-28 border-t border-white"
+            className="sticky top-28 border-t border-white bg-[var(--glp1-feature-bg)]"
           >
             <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-6 py-6 sm:gap-8 sm:py-10 md:grid-cols-2 md:gap-12 md:py-16 lg:gap-20">
               {/* Text */}

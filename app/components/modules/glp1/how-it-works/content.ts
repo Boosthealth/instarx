@@ -201,9 +201,9 @@ export type Review = {
   author: string;
 };
 
-// Same customer quotes as modules/home/Reviews.tsx, ported here for the
-// how-it-works page's card layout (no video, unlike the freyameds.com
-// reference this section's look is modeled on).
+// First 4 are the same customer quotes as modules/home/Reviews.tsx; the rest
+// are ported from modules/glp2-v2/content.ts (reviews) so the stacked
+// carousel in Reviews.tsx has enough cards to fan out, matching glp2-v2's count.
 export const reviews: Review[] = [
   {
     title: "What a great company!",
@@ -224,6 +224,26 @@ export const reviews: Review[] = [
     title: "Life-Changing!",
     text: "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
     author: "Darlene N.",
+  },
+  {
+    title: "Down 19 lbs in 3 months",
+    text: "The whole thing was easier than I expected — the quiz took a few minutes and my kit arrived two days later.",
+    author: "Megan R.",
+  },
+  {
+    title: "Felt supported the whole way",
+    text: "Having a real provider answer my questions made me feel comfortable starting. I never felt rushed.",
+    author: "Priya S.",
+  },
+  {
+    title: "No hidden costs",
+    text: "Flat pricing with no surprise fees is exactly why I stuck with it. Simple and predictable every month.",
+    author: "Jordan T.",
+  },
+  {
+    title: "Cravings finally gone",
+    text: "A few months in and my appetite is steadier, the cravings are gone, and the routine just fits my life.",
+    author: "Lauren M.",
   },
 ];
 

@@ -195,6 +195,58 @@ export const results: Result[] = [
   },
 ];
 
+export type Review = {
+  title: string;
+  text: string;
+  author: string;
+};
+
+// First 4 are the same customer quotes as modules/home/Reviews.tsx; the rest
+// are ported from modules/glp2-v2/content.ts (reviews) so the stacked
+// carousel in Reviews.tsx has enough cards to fan out, matching glp2-v2's count.
+export const reviews: Review[] = [
+  {
+    title: "What a great company!",
+    text: "The customer service is spot on (Concierge Style) individualized personal attention, quick response time and a great product. I am 100% happy and will continue with Insta Rx.",
+    author: "Alex B.",
+  },
+  {
+    title: "I feel 10 years younger and my energy is...",
+    text: "I have lost 28 lbs and all my cravings. No side effects and the results are amazing! Thank you Insta!",
+    author: "Sara P.",
+  },
+  {
+    title: "WOW!",
+    text: "I've lost 10 lbs in my first month!! So excited about life again.",
+    author: "Amy J.",
+  },
+  {
+    title: "Life-Changing!",
+    text: "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
+    author: "Darlene N.",
+  },
+  {
+    title: "Down 19 lbs in 3 months",
+    text: "The whole thing was easier than I expected — the quiz took a few minutes and my kit arrived two days later.",
+    author: "Megan R.",
+  },
+  {
+    title: "Felt supported the whole way",
+    text: "Having a real provider answer my questions made me feel comfortable starting. I never felt rushed.",
+    author: "Priya S.",
+  },
+  {
+    title: "No hidden costs",
+    text: "Flat pricing with no surprise fees is exactly why I stuck with it. Simple and predictable every month.",
+    author: "Jordan T.",
+  },
+  {
+    title: "Cravings finally gone",
+    text: "A few months in and my appetite is steadier, the cravings are gone, and the routine just fits my life.",
+    author: "Lauren M.",
+  },
+];
+
 export const faqIntro = {
   heading: "Questions & answers",
   body: "Learn more about how compounded GLP-1 treatment through InstaRx works.",

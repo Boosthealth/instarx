@@ -194,11 +194,16 @@ body {
 }
 
 .marquee-track {
-  animation: marquee 60s linear infinite;
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+
+.marquee-track-reverse {
+  animation: marquee var(--marquee-duration, 60s) linear infinite reverse;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
+  .marquee-track,
+  .marquee-track-reverse {
     animation: none;
   }
 }

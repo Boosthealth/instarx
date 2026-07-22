@@ -3,34 +3,43 @@ import { Check } from "lucide-react";
 import { steps } from "./content";
 
 /**
- * The five steps as alternating image/copy blocks on the warm neutral band.
- * Content is top-aligned so
- * the heading sits on a shared baseline with the image rather than floating in
- * the middle of a taller photo. Each block keeps its step cues (01–05 badge,
- * category label), heading, paragraph, and checkmark bullets.
+ * Scroll-stacked steps: each step sticks to the top of the viewport as the
+ * page scrolls, and the next step slides up to cover it — like a deck of
+ * cards. After the last step, its sticky box ends and the page scrolls on
+ * normally.
+ *
+ * Pure CSS `position: sticky`, no scroll-jacking JS: every step is a direct
+ * sibling reserving its own (content-sized, not viewport-stretched) height
+ * in normal flow, so it stays pinned just below the page's own sticky
+ * header for exactly that scroll distance before the next (higher z-index,
+ * later in DOM) step's box reaches that point and paints over it.
+ *
+ * `top-[112px]` (not `top-0`) — this page's Header.tsx is its own sticky bar
+ * (marquee strip + nav row, ~108–111px depending on scroll state), so
+ * sticking to the very top would tuck each step's top edge behind it.
  */
 export default function Steps() {
   return (
     <section className="bg-[var(--glp1-feature-bg)]">
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-10 sm:gap-24 sm:py-16">
-        {steps.map((step, i) => {
-          const imageRight = i % 2 === 0;
-          return (
-            <div
-              key={step.number}
-              className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-20"
-            >
+      {steps.map((step, i) => {
+        const imageRight = i % 2 === 0;
+        return (
+          <div
+            key={step.number}
+            className="sticky top-28 border-t border-white bg-[var(--glp1-feature-bg)]"
+          >
+            <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-6 py-6 sm:gap-8 sm:py-10 md:grid-cols-2 md:gap-12 md:py-16 lg:gap-20">
               {/* Text */}
               <div data-reveal={imageRight ? "slide-left" : "slide-right"}>
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#3f6ea3] text-base font-semibold text-white">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#3f6ea3] text-sm font-semibold text-white sm:h-10 sm:w-10 sm:text-base">
                     {step.number}
                   </span>
                   <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#3f6ea3]">
                     {step.label}
                   </span>
                 </div>
-                <h2 className="mt-6 text-2xl font-medium leading-snug text-gray-900 sm:text-3xl font-[family-name:var(--font-inter)]">
+                <h2 className="mt-4 text-2xl font-medium leading-snug text-gray-900 sm:mt-6 sm:text-3xl font-[family-name:var(--font-inter)]">
                   {step.heading}
                 </h2>
                 <p className="mt-4 max-w-prose text-lg leading-relaxed text-gray-700">
@@ -54,7 +63,7 @@ export default function Steps() {
               {/* Image */}
               <div
                 data-reveal={imageRight ? "slide-right" : "slide-left"}
-                className={`relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-[#eef3f8] ${
+                className={`relative aspect-[5/3] w-full overflow-hidden rounded-2xl bg-[#eef3f8] md:aspect-[5/4] ${
                   imageRight ? "order-first md:order-last" : "order-first"
                 }`}
               >
@@ -67,9 +76,9 @@ export default function Steps() {
                 />
               </div>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </section>
   );
 }

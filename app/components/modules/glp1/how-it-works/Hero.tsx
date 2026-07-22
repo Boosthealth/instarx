@@ -3,10 +3,7 @@ import { hero, INTAKE_HREF } from "./content";
 
 export default function Hero() {
   return (
-    <section
-      className="px-6 pb-8 sm:pb-10"
-      style={{ paddingTop: "calc(var(--header-height) + 1.5rem)" }}
-    >
+    <section className="pt-4 px-6 pb-8 sm:pb-10">
       <div
         className="relative overflow-hidden max-w-7xl mx-auto rounded-3xl px-8 sm:px-14 py-16 sm:py-24 text-center"
         style={{ background: "var(--glp1-hero-gradient)" }}

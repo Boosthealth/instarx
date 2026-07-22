@@ -10,11 +10,11 @@ export default function Features() {
   return (
     <section className="bg-[var(--glp1-feature-bg)]">
       <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-10 sm:py-16">
-        <div className="max-w-2xl" data-reveal="up">
-          <h2 className="text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
+        <div className="mx-auto max-w-2xl" data-reveal="up">
+          <h2 className="text-center text-3xl font-medium leading-tight text-gray-900 sm:text-4xl font-[family-name:var(--font-inter)]">
             {featuresIntro.heading}
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-gray-700">
+          <p className="text-center mt-4 text-lg leading-relaxed text-gray-700">
             {featuresIntro.body}
           </p>
         </div>

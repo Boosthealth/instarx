@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Header from "@/app/components/modules/glp1/Header";
+import Header from "@/app/components/modules/glp1/how-it-works/Header";
 import Disclaimer from "@/app/components/modules/glp1/Disclaimer";
 import { ScrollReveal } from "@/app/components/modules/glp1/ScrollReveal";
 import { Footer } from "@/app/components/Footer";
@@ -9,6 +9,7 @@ import Steps from "@/app/components/modules/glp1/how-it-works/Steps";
 import Stats from "@/app/components/modules/glp1/how-it-works/Stats";
 import Features from "@/app/components/modules/glp1/how-it-works/Features";
 import Results from "@/app/components/modules/glp1/how-it-works/Results";
+import Reviews from "@/app/components/modules/glp1/how-it-works/Reviews";
 import FaqSection from "@/app/components/modules/glp1/how-it-works/FaqSection";
 import CTA from "@/app/components/modules/glp1/how-it-works/CTA";
 
@@ -36,8 +37,9 @@ export default function Glp1HowItWorks() {
         <Hero />
         <Steps />
         <Stats />
-        <Features />
+        <Reviews />
         <Results />
+        <Features />
         <FaqSection />
         <CTA />
         <Disclaimer />

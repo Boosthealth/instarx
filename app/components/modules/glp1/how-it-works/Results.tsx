@@ -33,7 +33,7 @@ export default function Results() {
                 key={card.title}
                 data-reveal="up"
                 style={{ transitionDelay: `${i * 90}ms` }}
-                className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#eef3f8]"
+                className="relative aspect-[5/4] overflow-hidden rounded-3xl bg-[#eef3f8] lg:aspect-[4/5]"
               >
                 <Image
                   src={card.image}

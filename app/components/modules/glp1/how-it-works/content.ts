@@ -195,6 +195,43 @@ export const results: Result[] = [
   },
 ];
 
+export const reviewsIntro = {
+  heading: "Real people, real results",
+  body: "10,000+ patients have started their GLP-1 journey with InstaRx. Here's what they have to say.",
+};
+
+export type Review = {
+  title: string;
+  text: string;
+  author: string;
+};
+
+// Same customer quotes as modules/home/Reviews.tsx, ported here for the
+// how-it-works page's card layout (no video, unlike the freyameds.com
+// reference this section's look is modeled on).
+export const reviews: Review[] = [
+  {
+    title: "What a great company!",
+    text: "The customer service is spot on (Concierge Style) individualized personal attention, quick response time and a great product. I am 100% happy and will continue with Insta Rx.",
+    author: "Alex B.",
+  },
+  {
+    title: "I feel 10 years younger and my energy is...",
+    text: "I have lost 28 lbs and all my cravings. No side effects and the results are amazing! Thank you Insta!",
+    author: "Sara P.",
+  },
+  {
+    title: "WOW!",
+    text: "I've lost 10 lbs in my first month!! So excited about life again.",
+    author: "Amy J.",
+  },
+  {
+    title: "Life-Changing!",
+    text: "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
+    author: "Darlene N.",
+  },
+];
+
 export const faqIntro = {
   heading: "Questions & answers",
   body: "Learn more about how compounded GLP-1 treatment through InstaRx works.",

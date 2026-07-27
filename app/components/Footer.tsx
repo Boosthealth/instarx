@@ -16,6 +16,7 @@ const footerProductLinks = [
 ];
 
 const footerSupportLinks = [
+  { label: "How It Works", href: "/glp1/how-it-works" },
   { label: "Refund Policy", href: "/policies/refund-policy" },
   { label: "Contact Us", href: "/contact-us" },
 ];

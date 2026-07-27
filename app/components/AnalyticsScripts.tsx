@@ -20,6 +20,7 @@ const EMBEDDABLES_ROUTES = new Set([
   "/nad_plus_intake",
   "/nad-quiz",
   "/glp1-weight-loss",
+  "/quiz02",
 ]);
 
 export default function AnalyticsScripts() {

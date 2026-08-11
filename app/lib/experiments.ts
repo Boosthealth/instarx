@@ -73,55 +73,22 @@ export function funnelSplitDestination(
 }
 
 /**
- * Convert experience key for the homepage lander split. Like the GLP funnel
- * split, this is a split-URL / redirect test: the proxy buckets the visitor at
- * the homepage and 302-redirects each variation to a different GLP-1 lander.
- * Bucketing therefore lives in proxy.ts, not the render path.
+ * Homepage lander destination — the CONCLUDED homepage lander split's winner.
  *
- * NB: this is the v4 experience (Convert experience ID 1004202936, display name
- * "homepage_lander_split_v4") — a clone of v3 (ID 1004202365), created to add a
- * THIRD lander arm (/glp2-v2 "Pink 3.0", the premium editorial redesign).
- * Convert can't add a variation to a started experiment, so we cloned v3. The
- * string below is the experience *key*, which Convert auto-generated on this
- * (third) clone as "hmpg-lndr-splt-cln-cln-clone" and does NOT let you edit once
- * the test is Active. The SDK matches on this key, so it must stay verbatim —
- * the readable "homepage_lander_split_v4" is only the display name, not the key.
- */
-export const HOMEPAGE_LANDER_SPLIT_EXPERIENCE = "hmpg-lndr-splt-cln-cln-clone";
-
-/**
- * Variation key → redirect destination for {@link HOMEPAGE_LANDER_SPLIT_EXPERIENCE}.
+ * The homepage lander split ran v1–v4 (final Convert experience
+ * "homepage_lander_split_v4", ID 1004202936, key "hmpg-lndr-splt-cln-cln-clone")
+ * splitting `/` across Blue /start-glp1, Pink /glp2, and Pink 3.0 /glp2-v2.
+ * Concluded 2026-08-11: PINK /glp2 won decisively on revenue per visitor
+ * (~5x Blue and Pink 3.0 on Google traffic, Jun 17–Aug 11; consistent across
+ * every Google campaign with meaningful volume — see the reporting.instarx.com
+ * traffic report). The Convert dependency for this hop is removed; the proxy
+ * 302s every human bare-homepage visit straight here.
  *
- * `control` (Original, 0%) is intentionally absent: it has no redirect (the
- * visitor stays on the homepage). The keys here MUST match the variation keys
- * configured in Convert exactly.
- *
- * ⚠️ Clone-mangled keys: each clone re-prefixes the variation keys with fresh
- * numeric ids and Convert does NOT let you edit them once the test is Active.
- * On this v4 clone (experience 1004202936) the inherited arms are keyed
- * "1004476830-variation-1" (blue) / "1004476831-variation-2" (pink); the new
- * third arm was hand-keyed clean as "variation-3" in the draft before activation.
- * Verified against the live Convert variation dialogs. Display names in the UI
- * are "Variation 1/2/3"; these are the underlying keys.
+ * Blue and Pink 3.0 remain live at their URLs — affiliate publishers link
+ * directly to lander paths (where the winner is NOT clear-cut per publisher),
+ * and the proxy never redirects lander paths.
  */
-export const HOMEPAGE_LANDER_SPLIT_DESTINATIONS: Record<string, string> = {
-  "1004476830-variation-1": "https://go.instarx.com/start-glp1", // BLUE (Variation 1)
-  "1004476831-variation-2": "https://go.instarx.com/glp2", // PINK (Variation 2)
-  "variation-3": "https://go.instarx.com/glp2-v2", // PINK 3.0 (Variation 3)
-};
-
-/**
- * Resolve a bucketed variation key to its redirect destination, or `null` to
- * keep the visitor on the homepage. Returns `null` for `control`, a bucketing
- * miss (key is null/undefined), or any unrecognised key — all of which mean
- * "don't redirect", matching the control behaviour.
- */
-export function homepageLanderDestination(
-  variationKey: string | null | undefined,
-): string | null {
-  if (!variationKey) return null;
-  return HOMEPAGE_LANDER_SPLIT_DESTINATIONS[variationKey] ?? null;
-}
+export const HOMEPAGE_LANDER_DESTINATION = "https://go.instarx.com/glp2";
 
 /**
  * Convert experience key for the affiliate funnel split. A split-URL / redirect

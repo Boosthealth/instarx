@@ -7,10 +7,9 @@ import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
   GLP_FUNNEL_SPLIT_EXPERIENCE,
-  HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
+  HOMEPAGE_LANDER_DESTINATION,
   affiliateFunnelSplitDestination,
   funnelSplitDestination,
-  homepageLanderDestination,
 } from "@/app/lib/experiments";
 
 /**
@@ -103,37 +102,33 @@ async function routeResponse(
   request: NextRequest,
   visitorId: string,
 ): Promise<NextResponse> {
-  // / — Homepage lander split (split-URL test). Bucket the visitor and 302
-  // the non-control arms to the assigned GLP-1 lander, carrying the visitor id
-  // as a query param so it persists across the redirect. Same prefetch/bot
-  // skip rationale as the /intake split. `control`, a miss, an unknown key,
-  // or a bot → fall through and stay on the homepage.
+  // / — Homepage → Pink lander. The homepage lander split (v1–v4) CONCLUDED
+  // 2026-08-11 with Pink /glp2 the decisive winner (~5x revenue/visitor vs
+  // Blue and Pink 3.0 on Google traffic; consistent across every campaign with
+  // volume). The Convert bucketing for this hop is removed — every human
+  // bare-homepage visit 302s to /glp2. Direct lander links (/start-glp1,
+  // /glp2-v2 — used by affiliate publishers) are untouched: the proxy never
+  // redirects lander paths. Bots/prefetches still fall through to the homepage,
+  // matching the split-era behaviour.
   //
   // `current_page_key` carve-out: the homepage also serves standalone
   // Embeddables landers at the root (e.g. `/?current_page_key=landing_page_5`
   // for Google Shopping campaigns). Those are dedicated landing pages, not the
-  // bare homepage, and must NOT be hijacked into the lander split — doing so
-  // sends paid traffic to the wrong page and breaks ad/landing-page match. Only
-  // the bare homepage (no `current_page_key`) participates in the split.
+  // bare homepage, and must NOT be hijacked — doing so sends paid traffic to
+  // the wrong page and breaks ad/landing-page match. Only the bare homepage
+  // (no `current_page_key`) redirects.
   if (
     request.nextUrl.pathname === "/" &&
     !request.nextUrl.searchParams.has("current_page_key") &&
     !isNonHumanRequest(request)
   ) {
-    const variationKey = await getVariationKey(
-      HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
-      visitorId,
-    );
-    const destination = homepageLanderDestination(variationKey);
-    if (destination) {
-      const target = new URL(destination);
-      // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
-      // the lander pageview (the funnel hop itself rides the ix_attribution
-      // cookie, which proxy() sets on this same redirect response).
-      carryForwardParams(target, request.nextUrl.searchParams);
-      target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
-      return NextResponse.redirect(target, 302);
-    }
+    const target = new URL(HOMEPAGE_LANDER_DESTINATION);
+    // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
+    // the lander pageview (the funnel hop itself rides the ix_attribution
+    // cookie, which proxy() sets on this same redirect response).
+    carryForwardParams(target, request.nextUrl.searchParams);
+    target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+    return NextResponse.redirect(target, 302);
   }
 
   // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and 302

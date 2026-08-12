@@ -6,7 +6,9 @@ import {
 import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
+  AFFILIATE_LANDER_SPLIT_SOURCES,
   GLP_FUNNEL_SPLIT_EXPERIENCE,
+  HOMEPAGE_LANDER_DESTINATION,
   HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
   affiliateFunnelSplitDestination,
   funnelSplitDestination,
@@ -103,37 +105,59 @@ async function routeResponse(
   request: NextRequest,
   visitorId: string,
 ): Promise<NextResponse> {
-  // / — Homepage lander split (split-URL test). Bucket the visitor and 302
-  // the non-control arms to the assigned GLP-1 lander, carrying the visitor id
-  // as a query param so it persists across the redirect. Same prefetch/bot
-  // skip rationale as the /intake split. `control`, a miss, an unknown key,
-  // or a bot → fall through and stay on the homepage.
+  // / — Homepage routing, split by traffic source (2026-08-11):
+  //
+  //  • AFFILIATE traffic (utm_source in AFFILIATE_LANDER_SPLIT_SOURCES —
+  //    networks link to the bare homepage with utm_source/transaction_id
+  //    params) keeps bucketing through the Convert homepage lander split (v4).
+  //    Per-publisher data shows no clear lander winner on alpha, so their
+  //    3-lander split continues. The v4 experience must stay ACTIVE in Convert.
+  //
+  //  • EVERYONE ELSE (Google ads, direct, organic) 302s straight to Pink
+  //    /glp2 — the concluded winner (~5x revenue/visitor vs Blue and Pink 3.0
+  //    on Google traffic, consistent across every campaign with volume). No
+  //    Convert call for these visitors.
+  //
+  // Bots/prefetches still fall through to the homepage, matching the
+  // split-era behaviour.
   //
   // `current_page_key` carve-out: the homepage also serves standalone
   // Embeddables landers at the root (e.g. `/?current_page_key=landing_page_5`
   // for Google Shopping campaigns). Those are dedicated landing pages, not the
-  // bare homepage, and must NOT be hijacked into the lander split — doing so
-  // sends paid traffic to the wrong page and breaks ad/landing-page match. Only
-  // the bare homepage (no `current_page_key`) participates in the split.
+  // bare homepage, and must NOT be hijacked — doing so sends paid traffic to
+  // the wrong page and breaks ad/landing-page match. Only the bare homepage
+  // (no `current_page_key`) redirects.
   if (
     request.nextUrl.pathname === "/" &&
     !request.nextUrl.searchParams.has("current_page_key") &&
     !isNonHumanRequest(request)
   ) {
-    const variationKey = await getVariationKey(
-      HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
-      visitorId,
-    );
-    const destination = homepageLanderDestination(variationKey);
-    if (destination) {
-      const target = new URL(destination);
-      // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
-      // the lander pageview (the funnel hop itself rides the ix_attribution
-      // cookie, which proxy() sets on this same redirect response).
-      carryForwardParams(target, request.nextUrl.searchParams);
-      target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
-      return NextResponse.redirect(target, 302);
+    const utmSource =
+      request.nextUrl.searchParams.get("utm_source")?.trim().toLowerCase() ??
+      "";
+    if (AFFILIATE_LANDER_SPLIT_SOURCES.has(utmSource)) {
+      // Affiliate visitor — unchanged 3-lander Convert split.
+      const variationKey = await getVariationKey(
+        HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
+        visitorId,
+      );
+      const destination = homepageLanderDestination(variationKey);
+      if (destination) {
+        const target = new URL(destination);
+        carryForwardParams(target, request.nextUrl.searchParams);
+        target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+        return NextResponse.redirect(target, 302);
+      }
+      // Bucketing miss (SDK unreachable / experience paused) — fall through to
+      // the winner rather than stranding the paid click on the bare homepage.
     }
+    const target = new URL(HOMEPAGE_LANDER_DESTINATION);
+    // Carry the inbound ad params onto the lander URL so PostHog/GA attribute
+    // the lander pageview (the funnel hop itself rides the ix_attribution
+    // cookie, which proxy() sets on this same redirect response).
+    carryForwardParams(target, request.nextUrl.searchParams);
+    target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+    return NextResponse.redirect(target, 302);
   }
 
   // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and 302

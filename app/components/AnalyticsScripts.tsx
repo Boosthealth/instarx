@@ -14,7 +14,6 @@ const POSTHOG_API_HOST = "https://us.i.posthog.com";
 // Must stay in sync with the pages that render <EmbeddablesScript />.
 const EMBEDDABLES_ROUTES = new Set([
   "/",
-  "/enroll",
   "/glp1",
   "/intake",
   "/intake01",

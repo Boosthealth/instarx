@@ -36,6 +36,7 @@ export default function AnalyticsScripts() {
   // the original `afterInteractive` timing untouched.
   const LAZY_ANALYTICS_ROUTES = new Set([
     "/glp2-v2",
+    "/glp2-v3",
     "/nad-plus",
     "/glp1/how-it-works",
   ]);

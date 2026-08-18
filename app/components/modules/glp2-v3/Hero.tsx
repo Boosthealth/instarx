@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Reveal } from "./Reveal";
 import { V2Button, Stars } from "./ui";
 import { hero, INTAKE_HREF } from "./content";
 
@@ -7,12 +6,17 @@ import { hero, INTAKE_HREF } from "./content";
  * H1, subhead, CTA, price chip, trust line, then the lifestyle photo below the
  * fold copy. Field audits show the hero image (not the H1) is the actual LCP
  * element, so it loads with `priority` — preloaded, fetchpriority=high, no
- * lazy-loading — with explicit width/height to reserve its box. */
+ * lazy-loading — with explicit width/height to reserve its box. Unlike every
+ * other section, the hero is NOT wrapped in <Reveal>: that component paints
+ * its content at opacity:0 until client JS hydrates and an IntersectionObserver
+ * fires, which delays the browser's LCP timestamp until well after the image
+ * bytes have already arrived. The hero is always in the initial viewport, so
+ * the scroll-reveal effect has no purpose here anyway. */
 export function Hero() {
   return (
     <section id="top" className="v2-hero">
       <div className="v2-container v2-hero__inner">
-        <Reveal className="v2-hero__copy">
+        <div className="v2-hero__copy">
           <span className="v2-hero__pill">{hero.eyebrow}</span>
 
           <h1 className="v2-hero__title">{hero.title}</h1>
@@ -47,9 +51,9 @@ export function Hero() {
               </span>
             </div>
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal delay={100} className="v2-hero__media">
+        <div className="v2-hero__media">
           <Image
             src={hero.img}
             alt={hero.imgAlt}
@@ -59,7 +63,7 @@ export function Hero() {
             priority
             fetchPriority="high"
           />
-        </Reveal>
+        </div>
       </div>
     </section>
   );

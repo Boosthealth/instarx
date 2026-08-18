@@ -5,8 +5,9 @@ import { hero, INTAKE_HREF } from "./content";
 
 /* S1 — Announcement bar + Hero (build sheet). Single centered column: eyebrow,
  * H1, subhead, CTA, price chip, trust line, then the lifestyle photo below the
- * fold copy. LCP target is the H1, so the hero image is lazy (no `priority`)
- * with explicit width/height to reserve its box. */
+ * fold copy. Field audits show the hero image (not the H1) is the actual LCP
+ * element, so it loads with `priority` — preloaded, fetchpriority=high, no
+ * lazy-loading — with explicit width/height to reserve its box. */
 export function Hero() {
   return (
     <section id="top" className="v2-hero">
@@ -55,7 +56,8 @@ export function Hero() {
             width={hero.imgWidth}
             height={hero.imgHeight}
             sizes="(max-width: 640px) 88vw, 480px"
-            loading="lazy"
+            priority
+            fetchPriority="high"
           />
         </Reveal>
       </div>

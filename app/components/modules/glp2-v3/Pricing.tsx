@@ -26,7 +26,6 @@ export function Pricing() {
           <svg
             viewBox="0 0 320 120"
             width="100%"
-            height="auto"
             role="presentation"
             aria-hidden="true"
           >

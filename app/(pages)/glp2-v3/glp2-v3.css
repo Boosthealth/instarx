@@ -1635,6 +1635,11 @@
   margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
   max-width: 420px;
 }
+.v2-pricing__chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .v2-pricing__chart-legend {
   margin-top: 0.85rem;
   display: flex;

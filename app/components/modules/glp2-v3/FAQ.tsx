@@ -66,7 +66,7 @@ function QaRow({
       if (innerRef.current) setContentHeight(innerRef.current.scrollHeight);
     };
     measure();
-    // Re-measure once the web fonts swap in (Fraunces/DM Sans load with
+    // Re-measure once the web fonts swap in (Lora/Lato load with
     // `display: "swap"`), since the first measurement happens against the
     // fallback stack and can leave the open panel clipped after the reflow.
     document.fonts?.ready.then(measure);

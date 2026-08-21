@@ -1,9 +1,8 @@
 /*
  * Scoped styles for the /glp2-v3 HypoSpray GLP-1 Tirzepatide lander.
  *
- * Direction: clinical/needle-free, navy-teal + coral. Fraunces (display) +
- * DM Sans (body) loaded via next/font in page.tsx, same as /glp2-v2 (the
- * reference build named in the Rev 2 dev-instructions doc). This file started
+ * Direction: clinical/needle-free, navy-teal + coral. Lora (display) +
+ * Lato (body) loaded via next/font in page.tsx. This file started
  * as a copy of /glp2-v2's stylesheet (same `.v2` primitives: container,
  * buttons, glass, step/timeline, compare table, FAQ, ticker, footer) with the
  * palette retinted to the HypoSpray design tokens and the hero/S2-S5 sections
@@ -50,8 +49,8 @@
   --v2-coral: #ff6145; /* CTA coral */
   --v2-coral-hover: #d85a30; /* CTA hover */
 
-  --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --v2-fh: var(--font-lora), "Iowan Old Style", Georgia, serif;
+  --v2-fb: var(--font-lato), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --v2-shadow-soft: 0 2px 4px rgba(12, 40, 54, 0.05),
     0 18px 40px -24px rgba(12, 40, 54, 0.22);
@@ -519,6 +518,7 @@
 .v2-btn--primary {
   background: var(--v2-coral);
   color: #fff;
+  font-weight: 700; /* bolder than the shared button text — better readability on coral */
   box-shadow: 0 10px 16px -8px rgba(255, 97, 69, 0.55);
 }
 .v2-btn--primary:hover,
@@ -627,6 +627,7 @@
   position: relative;
   background: rgba(255, 255, 255, 0.92);
   border-color: transparent;
+  font-weight: 700; /* matches .v2-btn--primary's readability bump */
   box-shadow: 0 2px 8px rgba(60, 40, 30, 0.1);
 }
 .v2-floatcta__btn:hover,

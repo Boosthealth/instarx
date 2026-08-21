@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Lato, Lora } from "next/font/google";
 import { V2Footer } from "@/app/components/modules/glp2-v3/V2Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
@@ -19,21 +19,20 @@ import { FloatingCTA } from "@/app/components/modules/glp2-v3/FloatingCTA";
 import { faqGroups } from "@/app/components/modules/glp2-v3/content";
 import "./glp2-v3.css";
 
-// Same house style as /glp2-v2 (that page is this build's named reference),
-// loaded here and scoped via the `.v2` wrapper so the rest of the site keeps
+// Loaded here and scoped via the `.v2` wrapper so the rest of the site keeps
 // Figtree/Inter.
-const fraunces = Fraunces({
+const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-fraunces",
+  variable: "--font-lora",
 });
 
-const dmSans = DM_Sans({
+const lato = Lato({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
   display: "swap",
-  variable: "--font-dm-sans",
+  variable: "--font-lato",
 });
 
 const title =
@@ -62,7 +61,7 @@ const faqSchema = {
 
 export default function Glp2V3() {
   return (
-    <div className={`v2 v2-grain ${fraunces.variable} ${dmSans.variable}`}>
+    <div className={`v2 v2-grain ${lora.variable} ${lato.variable}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

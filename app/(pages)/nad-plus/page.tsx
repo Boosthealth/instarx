@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Lato, Lora } from "next/font/google";
 import { V2Footer } from "@/app/components/modules/nad-plus/V2Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
@@ -20,21 +20,20 @@ import { Ticker } from "@/app/components/modules/nad-plus/Ticker";
 import { FloatingCTA } from "@/app/components/modules/nad-plus/FloatingCTA";
 import "./nad-plus.css";
 
-// Editorial/luxe-wellness type pairing — same house style as /glp2-v2 and
-// /optin. Loaded here (not globally) and scoped via the `.v2` wrapper so the
-// rest of the site keeps Figtree/Inter.
-const fraunces = Fraunces({
+// Editorial/luxe-wellness type pairing. Loaded here (not globally) and
+// scoped via the `.v2` wrapper so the rest of the site keeps Figtree/Inter.
+const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-fraunces",
+  variable: "--font-lora",
 });
 
-const dmSans = DM_Sans({
+const lato = Lato({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
   display: "swap",
-  variable: "--font-dm-sans",
+  variable: "--font-lato",
 });
 
 const title =
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
 
 export default function NadPlus() {
   return (
-    <div className={`v2 v2-grain ${fraunces.variable} ${dmSans.variable}`}>
+    <div className={`v2 v2-grain ${lora.variable} ${lato.variable}`}>
       <AnchorScrollFix />
       <PageViewedEvent pageName="nad-plus" />
       <AnnounceBar />

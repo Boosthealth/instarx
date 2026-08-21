@@ -8,7 +8,7 @@ import { reviews } from "./content";
 
 /* Stacked, click-to-advance testimonial carousel. The interaction is adapted
  * from a community "stagger testimonials" pattern but fully re-skinned to the v2
- * editorial system (cream cards, Fraunces quotes, our ink/rose tokens) — no
+ * editorial system (cream cards, Lora quotes, our ink/rose tokens) — no
  * shadcn tokens, no stock avatars. The centre card is highlighted; the flanking
  * cards fan out behind it and can be clicked to bring forward. */
 

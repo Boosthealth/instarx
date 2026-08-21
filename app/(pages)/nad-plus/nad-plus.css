@@ -2,7 +2,7 @@
  * Scoped styles for the /nad-plus premium editorial NAD+ lander.
  *
  * Direction: editorial / luxe-wellness. Cream/beige canvas, dusty-rose accent,
- * Fraunces (display) + DM Sans (body) loaded via next/font in page.tsx. Layout
+ * Lora (display) + Lato (body) loaded via next/font in page.tsx. Layout
  * is mostly Tailwind utilities on the components; this file owns the palette
  * tokens, font wiring, marquee + scroll-reveal motion, grain texture, and a few
  * primitives that are cleaner as plain CSS than long utility chains. Everything
@@ -64,8 +64,8 @@
   --v2-blob-peach: #f6cdb3;
   --v2-blob-beige: #e8d2b6;
 
-  --v2-fh: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
-  --v2-fb: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --v2-fh: var(--font-lora), "Iowan Old Style", Georgia, serif;
+  --v2-fb: var(--font-lato), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --v2-shadow-soft: 0 2px 4px rgba(60, 40, 30, 0.04),
     0 18px 40px -24px rgba(60, 40, 30, 0.22);

@@ -6,10 +6,9 @@ import {
 import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
-  GLP_FUNNEL_SPLIT_EXPERIENCE,
   HOMEPAGE_LANDER_SPLIT_EXPERIENCE,
   affiliateFunnelSplitDestination,
-  funnelSplitDestination,
+  funnelSplitDestinationFor,
   homepageLanderDestination,
 } from "@/app/lib/experiments";
 
@@ -137,11 +136,20 @@ async function routeResponse(
   }
 
   // /intake — GLP-1 funnel split (split-URL test). Bucket the visitor and 302
-  // the non-control arms to their funnel, carrying the visitor id as a query
-  // param so the funnel (a different domain that can't read our cvt_vid cookie)
-  // can attribute the conversion back to this experiment. Prefetch/crawler
-  // traffic skips bucketing so bots don't burn allocations. `control`, a miss,
-  // an unknown key, or a bot → fall through and stay on /intake.
+  // them to their funnel, carrying the visitor id as a query param so the
+  // funnel (a different domain that can't read our cvt_vid cookie) can
+  // attribute the conversion back on the same id. Prefetch/crawler traffic
+  // skips bucketing entirely and falls through to the /intake page, so bots
+  // never land in a funnel or skew the arm counts.
+  //
+  // Allocation is decided HERE, not in Convert. Convert freezes a running
+  // experience's traffic percentages once it has visitors, which made every
+  // re-weighting a fresh-experience + key-swap + deploy dance. We already mint
+  // a stable `cvt_vid` per visitor above, so the split is a pure function of
+  // that id — see GLP_FUNNEL_SPLIT_WEIGHTS in app/lib/experiments.ts. Changing
+  // the mix is now a one-line edit to those weights. Convert still owns the
+  // homepage lander split and the affiliate split below; measurement for this
+  // split lives in PostHog + Stripe, as it already did.
   //
   // NB: the `homepage-cta-click` goal that backs the lander CTR metric is NOT
   // fired here — see app/components/CtaClickTracker.tsx, which fires it from a
@@ -149,25 +157,18 @@ async function routeResponse(
   // inflated the count from bots, prefetches, refreshes, and back-button
   // revisits.
   if (request.nextUrl.pathname === "/intake" && !isNonHumanRequest(request)) {
-    const variationKey = await getVariationKey(
-      GLP_FUNNEL_SPLIT_EXPERIENCE,
-      visitorId,
-    );
-    const destination = funnelSplitDestination(variationKey);
-    if (destination) {
-      const target = new URL(destination);
-      // Attribution reaches the funnel's entry URL (Embeddables reads it via
-      // originUrl). Prefer params on this request; fall back to the attribution
-      // cookie, since the lander → /intake click is client-routed and arrives
-      // here with the query string stripped.
-      carryForwardParams(target, request.nextUrl.searchParams);
-      const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
-      if (storedAttribution) {
-        carryForwardParams(target, new URLSearchParams(storedAttribution));
-      }
-      target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
-      return NextResponse.redirect(target, 302);
+    const target = new URL(funnelSplitDestinationFor(visitorId));
+    // Attribution reaches the funnel's entry URL (Embeddables reads it via
+    // originUrl). Prefer params on this request; fall back to the attribution
+    // cookie, since the lander → /intake click is client-routed and arrives
+    // here with the query string stripped.
+    carryForwardParams(target, request.nextUrl.searchParams);
+    const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
+    if (storedAttribution) {
+      carryForwardParams(target, new URLSearchParams(storedAttribution));
     }
+    target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+    return NextResponse.redirect(target, 302);
   }
 
   // /quiz — Affiliate funnel split (split-URL test). Publishers send their

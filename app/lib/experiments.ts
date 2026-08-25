@@ -26,50 +26,77 @@ export function normalizeHeroVariant(
 }
 
 /**
- * Convert experience key for the /intake GLP-1 funnel split. Unlike the hero
- * test (a content variation), this is a split-URL / redirect test: the proxy
- * buckets the visitor and 302-redirects each variation to a different intake
- * funnel. Bucketing therefore lives in proxy.ts, not the render path.
+ * The /intake GLP-1 funnel split is a split-URL / redirect test, and unlike the
+ * other splits it is NO LONGER bucketed by Convert. History: the original
+ * `glp_funnel_split` collected >1k visitors, at which point Convert froze its
+ * traffic percentages (only a fresh Draft has editable %). Re-weighting then
+ * cost a fresh experience + a constant swap + a deploy every time — that is why
+ * `glp_funnel_split_v2` existed at all.
  *
- * v2 (2026-07-09): the original `glp_funnel_split` had collected >1k visitors,
- * so Convert had locked its allocation (only a fresh Draft has editable %).
- * Rather than clone (which re-mangles every key — see docs/ab-testing-convert.md),
- * we created a FRESH experience `glp_funnel_split_v2` and hand-keyed the SAME
- * clean variation keys, so this file's only change was this constant — the
- * destinations map below is byte-identical to v1. The v2 allocation drops the
- * `start.instarx.com` arm to 0% (worst funnel on CVR, AOV, and revenue/visitor
- * over 3 weeks) and runs quiz/intake 50/50.
+ * Since proxy.ts already mints a stable `cvt_vid` per visitor, the allocation
+ * now lives in code, below. Re-weighting is a one-line edit and a deploy, with
+ * no dashboard step and no key mangling. Measurement was already PostHog +
+ * Stripe rather than Convert goals, so nothing downstream changes.
+ *
+ * 2026-08-25: `start.instarx.com` re-added as a third arm (redesigned funnel).
+ * It had been at 0% since 2026-07-09 under the previous, retired build.
  */
-export const GLP_FUNNEL_SPLIT_EXPERIENCE = "glp_funnel_split_v2";
 
 /**
- * Variation key → redirect destination for {@link GLP_FUNNEL_SPLIT_EXPERIENCE}.
+ * Weighted arms for the /intake funnel split, bucketed IN CODE rather than by
+ * Convert. Convert locks a running experience's allocation once it has
+ * visitors, so re-adding `start` there would mean a fresh experience + a key
+ * swap + a deploy. We already mint a stable `cvt_vid` per visitor in proxy.ts,
+ * so the split can just live here: change the weights, deploy, done.
  *
- * `control` is intentionally absent: it has no redirect (the visitor stays on
- * /intake) and is allocated 0% in the Convert dashboard. The keys here MUST
- * match the variation keys configured in Convert exactly.
- *
- * `variation_1` (start.instarx.com) is retained at 0% allocation in v2 (start
- * retired for underperformance) — kept in the map so the keys stay stable and
- * a re-add is a Convert-only allocation change. Convert never returns it at 0%.
+ * Weights are integers and need not sum to 100 — a visitor is placed by
+ * position within the running total, so re-weighting is a one-line edit.
+ * Order matters for stickiness: appending a new arm at the END re-buckets the
+ * fewest existing visitors. Editing a weight in the middle shifts every arm
+ * after it.
  */
-export const GLP_FUNNEL_SPLIT_DESTINATIONS: Record<string, string> = {
-  variation_1: "https://start.instarx.com/", // start (Intake v3) — 0% in v2 (retired)
-  variation_2: "https://quiz.instarx.com/", // quiz (Intake v2) — 50%
-  variation_3: "https://intake.instarx.com/", // intake (Intake01 v2) — 50%
-};
+export const GLP_FUNNEL_SPLIT_WEIGHTS: ReadonlyArray<
+  readonly [destination: string, weight: number]
+> = [
+  ["https://quiz.instarx.com/", 33], // quiz (Intake v2)
+  ["https://intake.instarx.com/", 33], // intake (Intake01 v2)
+  ["https://start.instarx.com/", 34], // start (Intake v3, redesigned)
+];
 
 /**
- * Resolve a bucketed variation key to its redirect destination, or `null` to
- * keep the visitor on /intake. Returns `null` for `control`, a bucketing miss
- * (key is null/undefined), or any unrecognised key — all of which mean "don't
- * redirect", matching the control behaviour.
+ * FNV-1a over the visitor id. Deterministic and uniform enough for traffic
+ * allocation, and dependency-free so it runs in the proxy without pulling the
+ * Convert SDK into the hot path. Returns an unsigned 32-bit int.
  */
-export function funnelSplitDestination(
-  variationKey: string | null | undefined,
-): string | null {
-  if (!variationKey) return null;
-  return GLP_FUNNEL_SPLIT_DESTINATIONS[variationKey] ?? null;
+function hashVisitorId(visitorId: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < visitorId.length; i += 1) {
+    hash ^= visitorId.charCodeAt(i);
+    // 32-bit FNV prime multiply, kept in range via Math.imul.
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
+/**
+ * Resolve a visitor to a funnel destination using {@link GLP_FUNNEL_SPLIT_WEIGHTS}.
+ *
+ * Assignment is a pure function of the visitor id, so a returning visitor with
+ * the same `cvt_vid` cookie always lands on the same funnel — the stickiness
+ * Convert used to provide. Never returns null: every /intake visitor gets a
+ * funnel. An empty visitor id (shouldn't happen — proxy.ts mints one before
+ * calling) falls back to the first arm rather than leaving the visitor stranded.
+ */
+export function funnelSplitDestinationFor(visitorId: string): string {
+  const total = GLP_FUNNEL_SPLIT_WEIGHTS.reduce((sum, [, w]) => sum + w, 0);
+  if (!visitorId || total <= 0) return GLP_FUNNEL_SPLIT_WEIGHTS[0][0];
+
+  let position = hashVisitorId(visitorId) % total;
+  for (const [destination, weight] of GLP_FUNNEL_SPLIT_WEIGHTS) {
+    if (position < weight) return destination;
+    position -= weight;
+  }
+  return GLP_FUNNEL_SPLIT_WEIGHTS[GLP_FUNNEL_SPLIT_WEIGHTS.length - 1][0];
 }
 
 /**

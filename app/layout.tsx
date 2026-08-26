@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AnalyticsScripts from "./components/AnalyticsScripts";
 import CtaClickTracker from "./components/CtaClickTracker";
+import PhoneCtaTracker from "./components/PhoneCtaTracker";
 import {
   ATTRIBUTION_COOKIE,
   ATTRIBUTION_KEYS,
@@ -109,6 +110,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: attributionScript }} />
         <AnalyticsScripts />
         <CtaClickTracker />
+        <PhoneCtaTracker />
         {children}
       </body>
     </html>

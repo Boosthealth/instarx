@@ -56,7 +56,7 @@ const DESCRIPTION_BASE =
  */
 export const LANDERS: Record<string, LanderContent> = {
   "tirzepatide-hsa": {
-    h1: ["Pay for Tirzepatide With", "Your HSA/FSA Card"],
+    h1: ["Pay for Tirzepatide", "With Your HSA/FSA Card"],
     lede: "No insurance needed. Doctor-prescribed tirzepatide, fully HSA/FSA eligible.",
     priceRest:
       "Pay with your HSA/FSA card at checkout. No hidden fees. No clinic visits.",
@@ -164,7 +164,7 @@ export const LANDERS: Record<string, LanderContent> = {
     description: `GLP-1 prescribed online in minutes, HSA/FSA eligible. ${DESCRIPTION_BASE}`,
   },
   semaglutide: {
-    h1: ["Pay for Semaglutide With", "Your HSA/FSA Card"],
+    h1: ["Pay for Semaglutide", "With Your HSA/FSA Card"],
     lede: "No insurance needed. Doctor-prescribed semaglutide, fully HSA/FSA eligible.",
     priceRest:
       "Pay with your HSA/FSA card at checkout. No hidden fees. No clinic visits.",

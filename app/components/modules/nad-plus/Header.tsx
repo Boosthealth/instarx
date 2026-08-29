@@ -48,7 +48,7 @@ export function Header() {
           </a>
 
           {/* Center: nav with animated underline. Shown at lg+ (≥1024px) only —
-              below that the four links + logo + CTA crowd the single row, so we
+              below that the nav links + logo + CTA crowd the single row, so we
               keep just logo + CTA (the floating CTA covers conversion on scroll).
               This page is a single-scroll lander, so the nav links are anchor
               aids, not required navigation; a hamburger would be overkill. */}

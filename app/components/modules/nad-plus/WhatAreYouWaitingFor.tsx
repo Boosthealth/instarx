@@ -45,8 +45,9 @@ export function WhatAreYouWaitingFor() {
               >
                 Get started
               </V2Button>
+              {/* Jumps back up to the on-page plan chart. */}
               <V2Button
-                href={INTAKE_HREF}
+                href="#pricing"
                 variant="glass"
                 className="w-full sm:w-auto"
               >

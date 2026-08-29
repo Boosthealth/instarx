@@ -580,7 +580,7 @@
   bottom: clamp(10.75rem, 6vw + 5.75rem, 13rem);
   left: clamp(2rem, 5vw, 5rem);
   width: max-content;
-  /* Wide enough that the "$100 off" badge stays a pill on one line. */
+  /* Wide enough that the discount badge stays a pill on one line. */
   max-width: none;
   pointer-events: auto;
 }
@@ -1164,13 +1164,13 @@
   letter-spacing: 0.02em;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
-  white-space: nowrap; /* keep "$100 off" on one line — never wrap into a blob */
+  white-space: nowrap; /* keep the discount chip on one line — never wrap into a blob */
   /* No border — a clean soft-beige pill that sits flat on the matte-white card. */
   background: var(--v2-blush);
   color: var(--v2-ink);
 }
 /* Solid chip — borrows the primary-button treatment (solid ink fill, white
-   text, pill, soft button shadow) for a punchy badge like "$100 off". It's a
+   text, pill, soft button shadow) for a punchy badge like the discount chip. It's a
    static label, so no hover/arrow — just the button's resting look. */
 .v2-chip--solid {
   background: var(--v2-ink);
@@ -2129,7 +2129,8 @@
    2) .nad-science   — headline + image + accordion claim list (Reference 2)
    3) .nad-quality   — header rail + test rows with PASSED badges (Reference 4)
    4) .nad-compare3  — 3-column comparison table
-   5) .v2-foot__disclaimers — required NAD+ regulatory fine print in the footer
+   5) .nad-pricing   — plan chart: one card per product form (Shot / Spray)
+   6) .v2-foot__disclaimers — required NAD+ regulatory fine print in the footer
    All reuse the existing v2 tokens (ink/cream/line/rose/fonts).
    =========================================================================== */
 
@@ -2506,9 +2507,10 @@
 .nad-compare3__col--us .nad-compare3__col-dose {
   color: var(--v2-ink-soft);
 }
-.nad-compare3__flag {
-  align-self: flex-start;
-  margin-bottom: 0.2rem;
+/* Solid-ink uppercase flag pill — one recipe shared by the comparison table's
+   "Best choice" flag and the pricing chart's "Best value" flag. */
+.nad-compare3__flag,
+.nad-pricing__flag {
   font-family: var(--v2-fb);
   font-size: 0.66rem;
   font-weight: 700;
@@ -2518,6 +2520,10 @@
   background: var(--v2-ink);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
+}
+.nad-compare3__flag {
+  align-self: flex-start;
+  margin-bottom: 0.2rem;
 }
 .nad-compare3__rows {
   list-style: none;
@@ -2663,6 +2669,116 @@
   .nad-compare3__cell--us .nad-compare3__cell-label {
     color: var(--v2-ink);
   }
+}
+
+/* --- Pricing (#pricing): one plan card per product form ------------------- */
+.nad-pricing {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  max-width: 62rem;
+  margin: 0 auto;
+}
+@media (min-width: 861px) {
+  .nad-pricing {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+.nad-pricing__card {
+  display: flex;
+  flex-direction: column;
+  background: var(--v2-cream);
+  border: 1px solid var(--v2-line);
+  border-radius: 22px;
+  box-shadow: var(--v2-shadow-soft);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+.nad-pricing__product {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.2;
+  color: var(--v2-ink);
+}
+.nad-pricing__tagline {
+  margin-top: 0.35rem;
+  font-family: var(--v2-fb);
+  font-size: 0.85rem;
+  color: var(--v2-ink-mute);
+}
+.nad-pricing__rows {
+  list-style: none;
+  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--v2-line);
+  /* The CTA sits flush at the card bottom on both cards, even if row heights
+     differ a hair between products. */
+  flex: 1;
+}
+.nad-pricing__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(0.85rem, 1.6vw, 1.1rem) 0;
+  border-bottom: 1px solid var(--v2-line);
+}
+.nad-pricing__term-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+.nad-pricing__term {
+  font-family: var(--v2-fb);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--v2-ink);
+}
+/* Shares the flag pill recipe with .nad-compare3__flag (declared there). */
+.nad-pricing__flag {
+  white-space: nowrap;
+}
+/* First-month intro flag — quieter beige pill so "Best value" stays the one
+   solid-ink accent per card. */
+.nad-pricing__flag--intro {
+  color: var(--v2-ink);
+  background: var(--v2-blush);
+}
+.nad-pricing__price-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+.nad-pricing__price {
+  font-family: var(--v2-fh);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  line-height: 1.15;
+  color: var(--v2-ink);
+}
+.nad-pricing__per {
+  font-family: var(--v2-fb);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--v2-ink-mute);
+}
+.nad-pricing__note {
+  margin-top: 0.2rem;
+  font-family: var(--v2-fb);
+  font-size: 0.78rem;
+  color: var(--v2-ink-mute);
+  max-width: 15rem;
+}
+.nad-pricing__cta {
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  width: 100%;
+}
+.nad-pricing__fineprint {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  text-align: center;
 }
 
 /* --- 3) Footer disclaimers ----------------------------------------------- */

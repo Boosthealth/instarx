@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import { Button } from "./Button";
 import type { WeightLossHeroVariant } from "@/app/lib/experiments";
+import { LANDER_PRICE, type LanderContent } from "@/app/lib/landers";
 
 // A/B test content keyed by Convert variation. `control` renders the original
 // hero verbatim; `variation_1` swaps the headline and primary CTA label.
@@ -70,12 +71,33 @@ export default function Hero({
   variant = "control",
   layout = "default",
   ctaHref = "https://go.instarx.com/intake",
+  lander,
 }: {
   variant?: WeightLossHeroVariant;
   layout?: "default" | "a" | "b" | "d" | "c2";
   ctaHref?: string;
+  /**
+   * Message-matched ad-lander copy (app/lib/landers.ts). Overrides the hero's
+   * text slots only — headline, lede, price line, bullets, CTA labels — so a
+   * /glp2/lp/<slug> page renders the searcher's promise while the layout,
+   * image, and everything below the hero stay identical to /glp2.
+   */
+  lander?: LanderContent;
 }) {
   const content = HERO_CONTENT[variant];
+  const headline: ReactNode = lander ? (
+    <>
+      {lander.h1[0]}
+      <br />
+      {lander.h1.slice(1).join(" ")}
+    </>
+  ) : (
+    content.headline
+  );
+  const ctaText = lander?.cta ?? content.primaryCta;
+  const items = lander
+    ? checkItems.map((item, i) => ({ icon: item.icon, text: lander.bullets[i] }))
+    : checkItems;
   const isVariant = layout !== "default";
   // b is the only variant that places the mobile CTA above the price paragraph.
   const ctaAbovePrice = layout === "b";
@@ -103,7 +125,7 @@ export default function Hero({
     <div className="mb-6 sm:hidden">
       <Button
         href={ctaHref}
-        text="Find your treatment →"
+        text={lander?.cta ?? "Find your treatment →"}
         className="w-full"
       />
       <p className="mt-4 text-center text-sm text-gray-700">
@@ -126,11 +148,12 @@ export default function Hero({
               <TrustpilotStars className={layout === "c2" ? "justify-center sm:justify-start" : ""} />
 
               <h1 className={`text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4 ${mobileCenter}`.trim()}>
-                {content.headline}
+                {headline}
               </h1>
               {/* Lede: C2 removes it on mobile only (desktop keeps it verbatim). */}
               <p className={`mb-4 max-w-md ${ledeClasses}`.trim()}>
-                Lose up to 17%* of your body weight with prescription GLP‑1.
+                {lander?.lede ??
+                  "Lose up to 17%* of your body weight with prescription GLP‑1."}
               </p>
               {/* Variant B: CTA sits above the price paragraph on mobile. */}
               {ctaAbovePrice && mobileCta}
@@ -150,14 +173,25 @@ export default function Hero({
               {/* Default/D price paragraph; for C2 this is the desktop-only inline copy (mobile uses the reordered stacked version above). */}
               <p className={`mb-5 sm:mb-6 ${priceClasses}`.trim()}>
                 Starting at{" "}
-                <span className="text-2xl font-bold sm:text-3xl">$148</span>
-                {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
-                <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
+                <span className="text-2xl font-bold sm:text-3xl">
+                  {LANDER_PRICE}
+                </span>
+                {lander ? (
+                  <>
+                    {". "}
+                    <span className="font-semibold">{lander.priceRest}</span>
+                  </>
+                ) : (
+                  <>
+                    {" "}— Doctor-prescribed GLP‑1, delivered in 1-2 days.{" "}
+                    <span className="font-semibold">No insurance needed. No hidden fees. No clinic visits.</span>
+                  </>
+                )}
               </p>
               {/* All variants except B place the CTA below the price paragraph. */}
               {isVariant && !ctaAbovePrice && mobileCta}
               <ul className="space-y-2 mb-6 sm:mb-8">
-                {checkItems.map((item, i) => (
+                {items.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <Image
                       src={`/lose-weight/${item.icon}`}
@@ -176,7 +210,7 @@ export default function Hero({
                   isVariant ? " hidden sm:flex" : ""
                 }`}
               >
-                <Button href={ctaHref} text={content.primaryCta} className="w-full sm:w-auto" />
+                <Button href={ctaHref} text={ctaText} className="w-full sm:w-auto" />
                 <Button href={ctaHref} text="See pricing" color="light" className="w-full sm:w-auto" />
               </div>
               <p

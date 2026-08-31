@@ -2,9 +2,11 @@
  * Single source of copy + data for the /nad-plus lander. Same pattern as the
  * /glp2-v2 module: the client can tweak words here without touching layout, and
  * each section component stays focused on presentation. Copy is adapted from the
- * client's NAD.docx; all factual claims, prices, and dosages are preserved
- * verbatim (Starting at $99, 500–1000mg, $99/mo, 250k+ customers, free 1–2 day
- * shipping, FDA-registered 503A compounding).
+ * client's NAD.docx; all factual claims and dosages are preserved verbatim
+ * (500–1000mg, 250k+ customers, free 1–2 day shipping, FDA-registered 503A
+ * compounding). Prices come from the 2026-08 price sheet — the `pricing`
+ * export below is the single source for the plan chart, and the hero offer
+ * card derives from it via `heroOffer`.
  */
 
 // All CTAs point at the dedicated NAD+ intake site.
@@ -16,6 +18,7 @@ export const announcement = "NAD+ in stock — doctor-prescribed, delivered in 1
 export const navLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Benefits", href: "#benefits" },
+  { label: "Pricing", href: "#pricing" },
   { label: "Reviews", href: "#reviews" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -28,8 +31,8 @@ export type HeroIconName = "Stethoscope" | "ClipboardCheck" | "BadgeDollarSign";
 /* Hero trust-bar (Coivas-style strip below the hero): each item is an icon +
  * a short bold label + a one-line description. `icon` is a lucide-react name,
  * resolved in Hero.tsx. Facts preserved from the NAD.docx hero: 100% online
- * visit + dosage range, Rx/telemed included + no insurance, flat price + free
- * fast shipping. */
+ * visit + dosage range, Rx/telemed included + no insurance, transparent
+ * pricing + free fast shipping. */
 export const heroChecks: Array<{
   icon: HeroIconName;
   label: string;
@@ -47,8 +50,8 @@ export const heroChecks: Array<{
   },
   {
     icon: "BadgeDollarSign",
-    label: "One flat price",
-    text: "Same price · free 1–2 day shipping.",
+    label: "Transparent pricing",
+    text: "No hidden fees · free 1–2 day shipping.",
   },
 ];
 
@@ -168,6 +171,83 @@ export const timeline = [
   },
 ];
 
+/* Pricing chart (#pricing) — one card per product form (Shot / Spray), each
+ * with four plan rows. Rates come from the 2026-08 price sheet as NUMBERS; the
+ * helpers below derive every displayed string (intro pill, billed-upfront
+ * totals, fine print) so a rate change can never leave the fine print or the
+ * hero offer quoting a stale price. Components still receive only preformatted
+ * strings. */
+export type PricingPlan = {
+  term: string;
+  perMonth: string;
+  note: string;
+  intro?: string;
+  best?: boolean;
+};
+
+const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
+
+/* Monthly plan: a discounted first month (`intro`), then the flat rate. */
+const monthly = (rate: number, intro: number): PricingPlan => ({
+  term: "Monthly",
+  perMonth: usd(rate),
+  intro: usd(intro),
+  note: `${usd(intro)} your first month, then billed monthly`,
+});
+
+/* Prepaid plan: a lower flat monthly rate, billed upfront for the term. */
+const prepaid = (
+  term: string,
+  rate: number,
+  months: number,
+  best = false,
+): PricingPlan => ({
+  term,
+  perMonth: usd(rate),
+  note: `${usd(rate * months)} billed every ${months} months`,
+  best,
+});
+
+const SHOT_MONTHLY = { rate: 188, intro: 108 };
+const SPRAY_MONTHLY = { rate: 198, intro: 118 };
+
+export const pricing: Array<{
+  product: string;
+  tagline: string;
+  plans: PricingPlan[];
+}> = [
+  {
+    product: "NAD+ Shot",
+    tagline: "Injectable NAD+ · 500–1000mg · ~100% bioavailability",
+    plans: [
+      monthly(SHOT_MONTHLY.rate, SHOT_MONTHLY.intro),
+      prepaid("Quarterly", 158, 3),
+      prepaid("6 Month", 148, 6),
+      prepaid("12 Month", 145, 12, true),
+    ],
+  },
+  {
+    product: "NAD+ Spray",
+    tagline: "Needle-free nasal spray · daily at-home dosing",
+    plans: [
+      monthly(SPRAY_MONTHLY.rate, SPRAY_MONTHLY.intro),
+      prepaid("Quarterly", 168, 3),
+      prepaid("6 Month", 158, 6),
+      prepaid("12 Month", 155, 12, true),
+    ],
+  },
+];
+
+/* Hero offer card lockup — derived from the Shot Monthly plan so the hero can
+ * never drift from the chart. The label makes the first-month-only nature of
+ * the discounted price explicit (compliance: no unqualified "starting at"). */
+export const heroOffer = {
+  label: "First month",
+  price: usd(SHOT_MONTHLY.intro),
+  was: usd(SHOT_MONTHLY.rate),
+  chip: `${usd(SHOT_MONTHLY.rate - SHOT_MONTHLY.intro)} off`,
+};
+
 /* 3-column comparison: InstaRx NAD+ Injections vs unregulated research peptides
  * vs oral supplements. Verbatim from the docx comparison block. Rendered in
  * Comparison.tsx — the `us` column is emphasized (always a ✓), the other two
@@ -238,7 +318,7 @@ export const comparison = {
     },
     {
       label: "Monthly cost",
-      us: "Starting at $99/mo",
+      us: "From $145/mo (12-month plan)",
       peptide: { text: "Varies — low price = risky" },
       oral: { text: "$40–$100/mo", partial: true },
     },
@@ -352,11 +432,11 @@ export const faqGroups = [
     items: [
       {
         q: "How does the pricing work?",
-        a: "NAD+ starts at $99, with monthly treatment starting at $99/mo. You pay the same flat price every dose — no hidden fees and no surprises.",
+        a: "NAD+ Shots start at $108 for your first month ($188/mo after), and longer plans bring the rate down to $145/mo. The needle-free NAD+ Spray starts at $118 for your first month, with plans from $155/mo. Every plan is one flat price — no hidden fees and no surprises.",
       },
       {
         q: "What if I need to cancel?",
-        a: "There's no monthly membership and no long-term commitment — cancel any time.",
+        a: "Monthly plans have no long-term commitment — cancel any time. Quarterly and longer plans are billed upfront for the term you choose.",
       },
     ],
   },

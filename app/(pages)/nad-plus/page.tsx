@@ -11,6 +11,7 @@ import { Benefits } from "@/app/components/modules/nad-plus/Benefits";
 import { Mechanism } from "@/app/components/modules/nad-plus/Mechanism";
 import { HowItWorks } from "@/app/components/modules/nad-plus/HowItWorks";
 import { Comparison } from "@/app/components/modules/nad-plus/Comparison";
+import { Pricing } from "@/app/components/modules/nad-plus/Pricing";
 import { QualityTested } from "@/app/components/modules/nad-plus/QualityTested";
 import { Reviews } from "@/app/components/modules/nad-plus/Reviews";
 import { Community } from "@/app/components/modules/nad-plus/Community";
@@ -37,7 +38,7 @@ const lato = Lato({
 });
 
 const title =
-  "InstaRx - Start Aging Backwards With NAD+ - Starting at Just $99";
+  "InstaRx - Start Aging Backwards With NAD+ - First Month Just $108";
 const description =
   "InstaRx delivers doctor-prescribed NAD+ injections to your door. Boost energy, sharpen memory, and support healthy aging with personalized, medically supervised treatment — 100% online, no insurance required.";
 
@@ -61,6 +62,7 @@ export default function NadPlus() {
         <Mechanism />
         <HowItWorks />
         <Comparison />
+        <Pricing />
         <QualityTested />
         <Reviews />
         <Community />

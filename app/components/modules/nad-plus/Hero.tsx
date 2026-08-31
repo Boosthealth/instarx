@@ -8,7 +8,7 @@ import {
 import { V2Button, Stars } from "./ui";
 import { GradientBg } from "./GradientBg";
 import { ReassuranceLine } from "./ReassuranceLine";
-import { heroChecks, INTAKE_HREF, type HeroIconName } from "./content";
+import { heroChecks, heroOffer, INTAKE_HREF, type HeroIconName } from "./content";
 
 // Portrait of a member holding a NAD+ vial. Sits in the hero photo layer and
 // bleeds off the bottom of the hero card.
@@ -62,22 +62,25 @@ export function Hero() {
                 className="text-xs font-semibold uppercase tracking-wider"
                 style={{ color: "var(--v2-ink-mute)" }}
               >
-                Starting at
+                {heroOffer.label}
               </p>
               <p className="v2-h3" style={{ fontStyle: "normal" }}>
-                $99{" "}
-                <span
+                {heroOffer.price}{" "}
+                {/* Semantic <s> + sr-only prefix so screen readers hear
+                    "regularly $188" instead of two bare contradictory prices. */}
+                <s
                   className="align-middle text-sm font-normal line-through"
                   style={{
                     fontFamily: "var(--v2-fb)",
                     color: "var(--v2-ink-mute)",
                   }}
                 >
-                  $199
-                </span>
+                  <span className="sr-only">regularly </span>
+                  {heroOffer.was}
+                </s>
               </p>
             </div>
-            <span className="v2-chip v2-chip--solid">$100 off</span>
+            <span className="v2-chip v2-chip--solid">{heroOffer.chip}</span>
           </div>
         </div>
 
@@ -102,7 +105,7 @@ export function Hero() {
             </h1>
 
             {/* Benefit sub-line — the price lives in the offer card (right), so
-                the lede stays a clean benefit statement and doesn't repeat $99. */}
+                the lede stays a clean benefit statement and doesn't repeat it. */}
             <p className="v2-lede mb-6 max-w-lg">
               Boost energy, look younger, and improve memory with the{" "}
               <span style={{ color: "var(--v2-ink)", fontWeight: 600 }}>
@@ -120,9 +123,9 @@ export function Hero() {
               >
                 Get started
               </V2Button>
-              {/* Glass secondary button */}
+              {/* Glass secondary button — jumps to the on-page plan chart. */}
               <V2Button
-                href={INTAKE_HREF}
+                href="#pricing"
                 variant="glass"
                 className="v2-btn--lg w-full sm:w-auto"
               >

@@ -5,7 +5,67 @@ Server-side experimentation using the **Convert.com Full-Stack SDK**
 Variations are decided on the server and delivered in the HTML, so there is no
 client-side flicker (no CLS) and no flash of the control variant.
 
-**Last updated:** 2026-06-02
+**Last updated:** 2026-06-25
+
+## ⚡ Operational quick-reference (read this BEFORE touching Convert / `experiments.ts`)
+
+**Source of truth for what's actually live** (public, no auth):
+`https://cdn-4.convertexperiments.com/api/v1/config/10049347/100417921`
+(Drafts do NOT appear here until activated; the server-side SDK reads this config.)
+
+### Current live experiments (2026-06-25)
+
+| Display name | Experience KEY (the SDK matches this string) | Route | Type | Status |
+| --- | --- | --- | --- | --- |
+| homepage_lander_split_v4 | `hmpg-lndr-splt-cln-cln-clone` | `/` | redirect | **active** |
+| glp_funnel_split | `glp_funnel_split` | `/intake` | redirect | active |
+| weight_loss_hero | `weight_loss_hero` | `/weight-loss` | content | as configured |
+
+**Homepage split** — `HOMEPAGE_LANDER_SPLIT_DESTINATIONS` in `app/lib/experiments.ts`:
+
+| Variation key | → Lander | Alloc |
+| --- | --- | --- |
+| `1004476830-variation-1` | `/start-glp1` (blue) | 33% |
+| `1004476831-variation-2` | `/glp2` (pink) | 33% |
+| `variation-3` | `/glp2-v2` (Pink 3.0) | 34% |
+| Original | stay on homepage | 0% |
+
+**Funnel split** — `GLP_FUNNEL_SPLIT_DESTINATIONS`:
+
+| Variation key | → Funnel | Alloc |
+| --- | --- | --- |
+| `variation_1` | `start.instarx.com` | 34% |
+| `variation_2` | `quiz.instarx.com` | 33% |
+| `variation_3` | `intake.instarx.com` | 33% |
+| `control` | stay on `/intake` | 0% |
+
+> ⚠️ **Who owns what:** Convert owns the experience key, variation keys, and traffic %. The **code** owns the destinations (`*_DESTINATIONS` maps) and which routes run a test (`proxy.ts` matcher). To change where an arm points, edit the map + PR — **not** the Convert UI.
+
+### Hard-won gotchas (each has cost us deploys)
+
+1. **Can't add a variation to a STARTED experiment** → you must **Clone** it into a new draft (that's why we're on v4).
+2. **Cloning re-mangles ALL keys** (experience + each variation get fresh `<id>-variation-N` prefixes) and **keys lock once Active**. The SDK matches on the key *string*, so after a clone you MUST re-point `experiments.ts` to the new keys or the whole split breaks. Read the real keys from the Convert Edit-Variation dialogs (draft) or the CDN config (active) — **never guess**.
+3. **Set clean keys in the draft before activating** where you can (e.g. `variation-3`) — they lock on Activate.
+4. **CDN propagation ≈ 2 min.** A freshly-activated experience isn't in the public config (which the SDK reads) for ~2 min. Deploying code that points at a not-yet-propagated key = stranding.
+5. **Deploy order to avoid stranding** (`/` is bucketed server-side; a missing/locked key → bare homepage for everyone): **activate the NEW experience → confirm it's in the CDN config → deploy the code → THEN pause the OLD one.** Never pause the old before the new code is live.
+6. **Verifying live:** a fresh `curl https://go.instarx.com/` (no cookie) DOES get bucketed — it 302s to a lander; sample ~15 to see the split. Headless *browsers* can trip the Vercel checkpoint and not bucket — so the authoritative state is the CDN config URL above.
+7. **UTM pass-through:** the proxy copies inbound params onto the lander redirect AND stores them in the `.instarx.com` `ix_attribution` cookie; at `/intake` it re-attaches them onto the funnel redirect (the lander→`/intake` click is client-routed and strips the URL query, so the params ride the **cookie**). Embeddables then persists them to checkout/thank-you (~85–90% reach `/thank-you`). Attribute off the **first landing pageview**, not the thank-you URL.
+
+### Playbook: add a new lander arm to the homepage split
+
+1. Build the lander page (e.g. `/glp2-v2`); its CTA must point at `https://go.instarx.com/intake`. Add its path to `HOMEPAGE_LANDER_PATHS` in `app/components/CtaClickTracker.tsx` (so the CTA-click goal fires).
+2. In Convert: **Clone** the current homepage experience → new draft (`vN+1`). Add the new variation (hand-key it clean, e.g. `variation-3`). Set allocation (Original stays 0%).
+3. Grab the keys: experience key from the Experiences list **"Key" column**; each variation key from its `•••` → **Edit**.
+4. Update `app/lib/experiments.ts`: `HOMEPAGE_LANDER_SPLIT_EXPERIENCE` = new experience key; `HOMEPAGE_LANDER_SPLIT_DESTINATIONS` = `{ variation key → lander URL }`. PR to `main`.
+5. **Go live in this order:** activate the new experience → confirm it's in the CDN config (~2 min) → merge/deploy → confirm `/glp2-vN` is being served (sample fresh curls) → **pause the old experience.**
+
+### Changelog
+
+- **2026-06-25** — Homepage split: added `/glp2-v2` (Pink 3.0) as a 3rd arm. Cloned v3 → **v4** (`homepage_lander_split_v4`, key `hmpg-lndr-splt-cln-cln-clone`); blue 33 / pink 33 / glp2-v2 34. PR #35.
+- **2026-06-21** — Homepage split v2 → **v3** (`hmpg-lndr-splt-cln-cln`): dropped the losing `/glp2-da` (Pink 2.0) arm, rebalanced blue/pink to 50/50. PR #31.
+- **2026-06-19** — Homepage split: added `/glp2-da` (Pink 2.0) as a 3rd arm via the v2 clone (`homepage-lander-split-clone`). PRs #27 / #28 / #29 (the key-mangling fixes).
+- **2026-06-16** — `glp_funnel_split` `variation_1` destination changed `go.instarx.com/intake01` → `start.instarx.com`. PR #25.
+- **2026-06-02** — Initial server-side Convert setup (`weight_loss_hero` content test + `glp_funnel_split` redirect test).
 
 ## Why bucketing runs in the Server Component (not the proxy)
 

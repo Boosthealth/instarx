@@ -58,8 +58,8 @@ export function normalizeHeroVariant(
 export const GLP_FUNNEL_SPLIT_WEIGHTS: ReadonlyArray<
   readonly [destination: string, weight: number]
 > = [
-  ["https://quiz.instarx.com/", 25], // quiz (Intake v2)
-  ["https://intake.instarx.com/", 25], // intake (Intake01 v2)
+  ["https://quiz.instarx.com/", 0], // quiz (Intake v2) — paused 2026-08-31
+  ["https://intake.instarx.com/", 50], // intake (Intake01 v2)
   ["https://start.instarx.com/", 25], // start (Intake v3, redesigned)
   ["https://flow.instarx.com/", 25], // flow (Heyflow intake, added 2026-08-31)
 ];

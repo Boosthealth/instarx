@@ -13,6 +13,7 @@ import { Footer } from "@/app/components/Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
 import { LanderSplitEvent } from "@/app/components/LanderSplitEvent";
+import { ComparisonBlock } from "@/app/components/modules/home/ComparisonBlock";
 import { LANDERS } from "@/app/lib/landers";
 
 /**
@@ -73,6 +74,7 @@ export default async function Glp2Lander({
       <Header />
       <main>
         <Hero lander={lander} />
+        {lander.compare && <ComparisonBlock />}
         <Results />
         <VideoTestimonials />
         <HowItWorks />

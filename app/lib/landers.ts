@@ -33,6 +33,12 @@ export type LanderContent = {
   title: string;
   /** Meta description. */
   description: string;
+  /**
+   * Render the competitor comparison block directly under the hero
+   * (app/components/modules/home/ComparisonBlock.tsx). Only the
+   * competitor-conquest lander sets this.
+   */
+  compare?: true;
 };
 
 /** Price anchor shared by every lander's price line. */
@@ -162,6 +168,27 @@ export const LANDERS: Record<string, LanderContent> = {
     cta: "Start My Online Visit →",
     title: "GLP-1 Prescribed Online in Minutes - HSA/FSA Eligible",
     description: `GLP-1 prescribed online in minutes, HSA/FSA eligible. ${DESCRIPTION_BASE}`,
+  },
+  /**
+   * Competitor-conquest lander. Ads bid on orphaned competitor searches (Hims
+   * ended compounded GLP-1 in 2026; Ro stopped taking HSA cards) and never name
+   * them; this page does, factually, in the ComparisonBlock under the hero.
+   */
+  switch: {
+    h1: ["Your Plan Ended.", "Ours Didn't."],
+    lede: "Compounded tirzepatide and semaglutide are still here: licensed doctor, state-inspected pharmacy, same price every dose, and your HSA/FSA card works at checkout.",
+    priceRest:
+      "Zero monthly membership. Same price every dose. Delivered in 1-2 days.",
+    bullets: [
+      "Compounded tirzepatide or semaglutide, your choice. Doctor visit included.",
+      "HSA/FSA accepted at checkout. No insurance required.",
+      "Same price, every dose.",
+      "Free 1-2 day shipping, temperature-controlled.",
+    ],
+    cta: "Switch In 5 Minutes →",
+    title: "Switching From a Branded-Only Program? Compounded GLP-1 From $148",
+    description: `Compounded tirzepatide and semaglutide from $148, HSA/FSA accepted, no monthly membership. ${DESCRIPTION_BASE}`,
+    compare: true,
   },
   semaglutide: {
     h1: ["Pay for Semaglutide", "With Your HSA/FSA Card"],

@@ -11,6 +11,7 @@ import {
   funnelSplitDestinationFor,
   homepageLanderDestination,
 } from "@/app/lib/experiments";
+import { isLanderSlug, landerArmFor, type LanderArm } from "@/app/lib/landers";
 
 /**
  * Lightweight proxy (Next.js 16's renamed "middleware" convention; runs on the
@@ -59,11 +60,51 @@ function carryForwardParams(target: URL, source: URLSearchParams): void {
   });
 }
 
+// /glp2 message-matched lander split (content test, same URL). Ads keep their
+// final URL and append `lp=<slug>` via a final-URL suffix; we bucket the
+// visitor 50/50 (sticky, pure function of cvt_vid — see app/lib/landers.ts)
+// and REWRITE the "new" arm to the prerendered /glp2/lp/<slug> page. The
+// address bar stays /glp2?lp=…, so no redirect, no final-URL change, and no ad
+// re-review. Control and bots fall through to the unchanged /glp2 page.
+// `?arm=new|control` overrides the coin flip for QA; those visits are marked
+// `forced` so dashboards can exclude them.
+type LanderSplit = { slug: string; arm: LanderArm; forced: boolean };
+
+function glp2LanderSplit(
+  request: NextRequest,
+  visitorId: string,
+): LanderSplit | null {
+  if (request.nextUrl.pathname !== "/glp2") return null;
+  const slug = request.nextUrl.searchParams.get("lp");
+  if (!isLanderSlug(slug) || isNonHumanRequest(request)) return null;
+  const armOverride = request.nextUrl.searchParams.get("arm");
+  const forced = armOverride === "new" || armOverride === "control";
+  const arm = forced ? (armOverride as LanderArm) : landerArmFor(visitorId);
+  return { slug, arm, forced };
+}
+
 export async function proxy(request: NextRequest) {
   const existingId = request.cookies.get(VISITOR_COOKIE)?.value;
   const visitorId = existingId ?? crypto.randomUUID();
 
-  const response = await routeResponse(request, visitorId);
+  const landerSplit = glp2LanderSplit(request, visitorId);
+  const response = await routeResponse(request, visitorId, landerSplit);
+
+  // Expose the lander-split assignment to the client (both arms render a
+  // LanderSplitEvent that reports it to the dataLayer). Session-scoped cookie:
+  // stickiness comes from cvt_vid, this is only the event's data channel.
+  if (landerSplit) {
+    response.cookies.set(
+      "ix_lander",
+      `${landerSplit.slug}:${landerSplit.arm}${landerSplit.forced ? ":forced" : ""}`,
+      {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      },
+    );
+  }
 
   // Persist a freshly-minted id on whatever response we return (redirect or
   // next), so the visitor buckets consistently if they come back to /intake.
@@ -82,7 +123,16 @@ export async function proxy(request: NextRequest) {
   // client-side JS never runs (in-app webviews, clicks that beat hydration).
   // Newer params overwrite the stored set; a bare URL leaves it untouched.
   // The domain guard keeps the cookie working on *.vercel.app previews.
-  const attribution = captureAttribution(request.nextUrl.searchParams);
+  // Fold the lander assignment into attribution as utm_ params (already
+  // whitelisted by captureAttribution), so it rides the ix_attribution cookie
+  // into the intake funnel's entry URL → PostHog → the per-arm sales join.
+  const attributionSource = new URLSearchParams(request.nextUrl.searchParams);
+  if (landerSplit) {
+    attributionSource.set("utm_lp", landerSplit.slug);
+    attributionSource.set("utm_lander_arm", landerSplit.arm);
+    if (landerSplit.forced) attributionSource.set("utm_lander_forced", "1");
+  }
+  const attribution = captureAttribution(attributionSource);
   if (attribution) {
     response.cookies.set(ATTRIBUTION_COOKIE, attribution, {
       path: "/",
@@ -101,7 +151,21 @@ export async function proxy(request: NextRequest) {
 async function routeResponse(
   request: NextRequest,
   visitorId: string,
+  landerSplit: LanderSplit | null,
 ): Promise<NextResponse> {
+  // /glp2 lander split — "new" arm rewrites to the prerendered matched lander;
+  // the URL the visitor sees is untouched. Control falls through to /glp2
+  // below (and still gets the visitor-id header like every other route).
+  if (landerSplit?.arm === "new") {
+    const rewriteTarget = request.nextUrl.clone();
+    rewriteTarget.pathname = `/glp2/lp/${landerSplit.slug}`;
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set(VISITOR_HEADER, visitorId);
+    return NextResponse.rewrite(rewriteTarget, {
+      request: { headers: requestHeaders },
+    });
+  }
+
   // / — Homepage lander split (split-URL test). Bucket the visitor and 302
   // the non-control arms to the assigned GLP-1 lander, carrying the visitor id
   // as a query param so it persists across the redirect. Same prefetch/bot
@@ -246,5 +310,5 @@ function isNonHumanRequest(request: NextRequest): boolean {
 // Only run on A/B-tested routes. Add paths here as more server-side
 // experiments are introduced.
 export const config = {
-  matcher: ["/", "/weight-loss", "/intake", "/quiz"],
+  matcher: ["/", "/weight-loss", "/intake", "/quiz", "/glp2"],
 };

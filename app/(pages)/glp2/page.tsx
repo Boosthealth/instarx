@@ -11,6 +11,7 @@ import { FinalCTA } from "@/app/components/modules/home/FinalCTA";
 import { Footer } from "@/app/components/Footer";
 import { AnchorScrollFix } from "@/app/components/modules/home/AnchorScrollFix";
 import { PageViewedEvent } from "@/app/components/modules/home/PageViewedEvent";
+import { LanderSplitEvent } from "@/app/components/LanderSplitEvent";
 
 export const metadata: Metadata = {
   title: "InstaRx - Lose Weight With GLP-1 Meds - Get Started For Just $199",
@@ -29,6 +30,8 @@ export default function Glp2() {
     <>
       <AnchorScrollFix />
       <PageViewedEvent pageName="glp2" />
+      {/* Control arm of the /glp2 lander split (see proxy.ts + app/lib/landers.ts). */}
+      <LanderSplitEvent />
       <Header />
       <main>
         <Hero />

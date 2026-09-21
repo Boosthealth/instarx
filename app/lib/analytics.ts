@@ -1,4 +1,5 @@
 import "server-only";
+import { POSTHOG_HOST, POSTHOG_KEY } from "@/app/lib/posthog";
 
 /**
  * Server-side PostHog capture for routes that 302 before any page — and so
@@ -13,11 +14,6 @@ import "server-only";
  * app/lib/experiments.ts), and one fetch is lighter than a batching client whose
  * timer never fires inside a short serverless invocation.
  */
-
-// Same public project key as the client snippet in
-// app/components/AnalyticsScripts.tsx. It is a public (phc_) key, safe to embed.
-const POSTHOG_KEY = "phc_5dyMpbsb6sk28QyTlgtcnXfR0PrpPBvgAZlRL6Syrmy";
-const POSTHOG_HOST = "https://us.i.posthog.com";
 
 // Hard ceiling on the capture POST. A serverless invocation freezes once the
 // redirect response is returned, so the proxy awaits delivery (a fire-and-forget

@@ -2,10 +2,9 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { POSTHOG_HOST as POSTHOG_API_HOST, POSTHOG_KEY } from "@/app/lib/posthog";
 
 const GTM_ID = "GTM-NPDBMQX2";
-const POSTHOG_KEY = "phc_5dyMpbsb6sk28QyTlgtcnXfR0PrpPBvgAZlRL6Syrmy";
-const POSTHOG_API_HOST = "https://us.i.posthog.com";
 
 // Pages that embed Savvy/Embeddables flows. The third-party flow owns PostHog
 // on these routes, so we keep OUR PostHog off them to avoid collisions/

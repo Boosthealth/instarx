@@ -24,6 +24,12 @@ export const ATTRIBUTION_COOKIE = "ix_attribution";
 // fbclid Meta, msclkid Microsoft, ttclid TikTok; ad_id/ad_group/ad_group_id/
 // adset/adname/campaignid/campaign_id/transaction_id/sub_id ad-network
 // template params (Bandit et al); _hsmi/_hsenc HubSpot email tracking.
+//
+// Affiliate click ids: click_id/aff_id/offer_id and the s1–s5 sub-id slots are
+// the standard names affiliate networks pass on a /quiz link. Without them in
+// this list the click id lives only in the URL and is lost on the first hop
+// that drops the query string (client-routed lander → /intake, a revisit, a
+// resumed funnel) — so a publisher-reported sale can't be reconciled.
 export const ATTRIBUTION_KEYS = [
   "gclid",
   "gbraid",
@@ -42,6 +48,14 @@ export const ATTRIBUTION_KEYS = [
   "campaign_id",
   "transaction_id",
   "sub_id",
+  "click_id",
+  "aff_id",
+  "offer_id",
+  "s1",
+  "s2",
+  "s3",
+  "s4",
+  "s5",
   "_hsmi",
   "_hsenc",
 ];

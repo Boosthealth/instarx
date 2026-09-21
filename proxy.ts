@@ -3,6 +3,7 @@ import {
   ATTRIBUTION_COOKIE,
   captureAttribution,
 } from "@/app/lib/attribution";
+import { captureAffiliateClick } from "@/app/lib/analytics";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
@@ -49,12 +50,13 @@ const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 // Copy attribution params from `source` onto a redirect target so they survive
 // the 302 into the lander / funnel. Existing target params win (we never clobber
 // a value already on the destination), and cvt_vid is managed separately so it's
-// skipped. Without this, every redirected ad click reaches the funnel/analytics
-// stripped of campaign data — PostHog/GA can't attribute and Google Ads loses gclid.
+// skipped. Empty-valued params are carried too: an affiliate click id sent as a
+// bare `click_id=` still marks the network, and dropping it lost that signal.
+// Without this, every redirected ad click reaches the funnel/analytics stripped
+// of campaign data — PostHog/GA can't attribute and Google Ads loses gclid.
 function carryForwardParams(target: URL, source: URLSearchParams): void {
   source.forEach((value, key) => {
     if (key === VISITOR_QUERY_PARAM) return;
-    if (!value) return;
     if (!target.searchParams.has(key)) target.searchParams.set(key, value);
   });
 }
@@ -179,13 +181,15 @@ async function routeResponse(
   // unknown key, and non-human traffic all 302 to the fallback funnel instead
   // (bots still skip getVariationKey so they don't burn allocations).
   if (request.nextUrl.pathname === "/quiz") {
-    const variationKey = isNonHumanRequest(request)
+    const nonHuman = isNonHumanRequest(request);
+    const variationKey = nonHuman
       ? null
       : await getVariationKey(AFFILIATE_FUNNEL_SPLIT_EXPERIENCE, visitorId);
-    const target = new URL(affiliateFunnelSplitDestination(variationKey));
-    // The publisher's params (transaction_id, utm_*, sub-ids) arrive on THIS
-    // request — copy them onto the funnel URL, where Embeddables captures them
-    // via originUrl. The attribution cookie only fills gaps, e.g. a revisit
+    const destination = affiliateFunnelSplitDestination(variationKey);
+    const target = new URL(destination);
+    // The publisher's params (transaction_id, click_id, sub-ids, utm_*) arrive
+    // on THIS request — copy them onto the funnel URL, where Embeddables captures
+    // them via originUrl. The attribution cookie only fills gaps, e.g. a revisit
     // whose link params were stripped.
     carryForwardParams(target, request.nextUrl.searchParams);
     const storedAttribution = request.cookies.get(ATTRIBUTION_COOKIE)?.value;
@@ -193,6 +197,23 @@ async function routeResponse(
       carryForwardParams(target, new URLSearchParams(storedAttribution));
     }
     target.searchParams.set(VISITOR_QUERY_PARAM, visitorId);
+
+    // Record the click server-side, keyed on cvt_vid, before we redirect out.
+    // This is the only first-party trace the click leaves — the funnel lives on
+    // another domain and this path renders no page — so a sale reported later
+    // against the same id can be reconciled with the publisher. Skipped for
+    // bots/prefetches so the count stays true to real clicks, and awaited (it
+    // has its own short timeout) because the invocation freezes once the 302 is
+    // returned, which would drop a fire-and-forget POST.
+    if (!nonHuman) {
+      await captureAffiliateClick({
+        visitorId,
+        destination,
+        variationKey,
+        params: request.nextUrl.searchParams,
+      });
+    }
+
     return NextResponse.redirect(target, 302);
   }
 
@@ -213,13 +234,9 @@ async function routeResponse(
 // param, no RSC/prefetch headers) so the user's actual visit still buckets
 // normally.
 function isNonHumanRequest(request: NextRequest): boolean {
-  // DEBUG: log what middleware sees so we can verify the prefetch detection
   const hasRscParam = request.nextUrl.searchParams.has("_rsc");
   const nextPrefetchHeader = request.headers.get("next-router-prefetch");
   const rscHeader = request.headers.get("rsc");
-  const allHeaders: Record<string, string> = {};
-  request.headers.forEach((v, k) => { allHeaders[k] = v; });
-  console.log(`[debug-middleware] path=${request.nextUrl.pathname} search="${request.nextUrl.search}" hasRsc=${hasRscParam} nextPrefetch=${nextPrefetchHeader} rsc=${rscHeader} headers=${JSON.stringify(allHeaders)}`);
 
   // Next.js App Router <Link> prefetch — fires when a Link enters the viewport,
   // before any click. App Router RSC prefetches use a `?_rsc=…` query param +

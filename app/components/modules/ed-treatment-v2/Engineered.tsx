@@ -3,8 +3,7 @@ import { MediaSlot } from "./ui";
 
 /* Three benefit rows, media and copy alternating sides on desktop. No
  * entrance fade: the photos drift inside their cards as they pass, and a
- * warm pool of light sits behind each one. The last card overlaps into the
- * band below. */
+ * warm pool of light sits behind each one. */
 export function Engineered() {
   return (
     <section

@@ -3,7 +3,7 @@ import { steps } from "./content";
 import { Reveal } from "./Reveal";
 
 /* Three numbered steps. Numbers stay: the sequence carries information.
- * The three cards rise as one group, in order. */
+ * The three steps rise as one group, in order. */
 export function Steps() {
   return (
     <section
@@ -25,7 +25,7 @@ export function Steps() {
               style={{ "--i": i } as CSSProperties}
             >
               <span className="edv2-step__num" aria-hidden="true">
-                {i + 1}
+                {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="edv2-step__title">{step.title}</h3>
               <p className="edv2-step__body">{step.body}</p>

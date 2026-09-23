@@ -317,21 +317,10 @@ export const delivered = {
   } satisfies MediaSlot,
 } as const;
 
-export type ComparisonIcon =
-  | "pill"
-  | "timer"
-  | "clock"
-  | "utensils"
-  | "brain"
-  | "stethoscope"
-  | "receipt"
-  | "package";
-
 export type ComparisonRow = {
   label: string;
   oldWay: string;
   newWay: string;
-  icon: ComparisonIcon;
 };
 
 export const comparison = {
@@ -343,49 +332,41 @@ export const comparison = {
       label: "Format",
       oldWay: "Swallowed tablet",
       newWay: "Dissolves under the tongue",
-      icon: "pill",
     },
     {
       label: "Feel it in",
       oldWay: "30–60 minutes",
       newWay: "As little as 15 minutes*",
-      icon: "timer",
     },
     {
       label: "Active window",
       oldWay: "Varies by pill",
       newWay: "Up to 36 hours",
-      icon: "clock",
     },
     {
       label: "Affected by food",
       oldWay: "Can be",
       newWay: "Less likely",
-      icon: "utensils",
     },
     {
       label: "Arousal pathway",
       oldWay: "Blood flow only",
       newWay: "Blood flow and the brain's arousal pathway",
-      icon: "brain",
     },
     {
       label: "Doctor visit",
       oldWay: "Waiting room or a portal",
       newWay: "2 minutes online",
-      icon: "stethoscope",
     },
     {
       label: "Price",
       oldWay: "Copay, or subscription tiers",
       newWay: "Flat, shown up front",
-      icon: "receipt",
     },
     {
       label: "Packaging",
       oldWay: "Pharmacy bag",
       newWay: "Plain, unmarked",
-      icon: "package",
     },
   ] satisfies ComparisonRow[],
 } as const;

@@ -1,13 +1,10 @@
 import type { CSSProperties } from "react";
 import { delivered } from "./content";
-import { Glyph, type GlyphName } from "./Glyph";
 import { MediaSlot } from "./ui";
 import { Reveal } from "./Reveal";
 
-const GLYPHS: GlyphName[] = ["stethoscope", "clipboard", "package"];
-
-/* Trust band: packaging shot plus three proof chips. The shot bleeds up
- * over the band above on wide screens; the chips rise as one group. */
+/* Trust band: packaging shot plus three proof points, set as a hairline
+ * list rather than icon cards. The points rise as one group. */
 export function Delivered() {
   return (
     <section
@@ -28,13 +25,8 @@ export function Delivered() {
                 className="edv2-trust edv2-stagger__item"
                 style={{ "--i": i } as CSSProperties}
               >
-                <span className="edv2-trust__icon">
-                  <Glyph name={GLYPHS[i] ?? "stethoscope"} />
-                </span>
-                <div>
-                  <p className="edv2-trust__title">{chip.title}</p>
-                  <p className="edv2-trust__detail">{chip.detail}</p>
-                </div>
+                <p className="edv2-trust__title">{chip.title}</p>
+                <p className="edv2-trust__detail">{chip.detail}</p>
               </li>
             ))}
           </Reveal>

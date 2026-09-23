@@ -29,6 +29,8 @@ export const TODO_CONFIRM = {
   DOSES_QUARTERLY: 36,
   /** Shipping cost and speed claim. */
   SHIPPING: "Free 1–2 day shipping",
+  /** Delivery window as a noun phrase, for sentences and the SEO description. */
+  SHIPPING_DAYS: "1–2 days",
   /** Qualification guarantee wording (confirm with provider partner). */
   NOT_QUALIFIED: "You're not charged if you don't qualify",
   /** Cancellation terms. */
@@ -52,14 +54,12 @@ export const TODO_CONFIRM = {
 } as const;
 
 const money = (n: number) => `$${n}`;
-export const perDose = (price: number, doses: number) =>
+const perDose = (price: number, doses: number) =>
   `$${(price / doses).toFixed(2).replace(/\.00$/, "")}`;
 
 /** Sitewide, real, not ED-specific. Always labelled as InstaRx. */
 export const rating = {
   score: "4.7",
-  label: "Excellent",
-  customers: "10,000+ InstaRx customers",
   line: "Excellent 4.7 · 10,000+ InstaRx customers",
 } as const;
 
@@ -102,8 +102,7 @@ export const hero = {
   subheadTail:
     "Prescribed online by a US-licensed doctor if it's right for you, shipped in plain packaging.",
   cta: "See if I qualify",
-  ctaMicro:
-    "Private online visit · Prescription required · You're not charged if you don't qualify",
+  ctaMicro: `Private online visit · Prescription required · ${TODO_CONFIRM.NOT_QUALIFIED}`,
   video: {
     src: TODO_CONFIRM.HERO_VIDEO_SRC,
     poster: TODO_CONFIRM.HERO_POSTER_SRC,
@@ -119,12 +118,12 @@ export const hero = {
   },
 } as const;
 
+/* The hero, sticky bar, tier and final CTA all say "first month" for
+ * PRICE_MONTHLY so one product never shows three different "regular" prices. */
 export const heroOffer = {
-  price: money(TODO_CONFIRM.PRICE_MONTHLY),
+  price: `${money(TODO_CONFIRM.PRICE_MONTHLY)} first month`,
   was: money(TODO_CONFIRM.PRICE_MONTHLY_WAS),
-  chip: `${money(TODO_CONFIRM.PRICE_MONTHLY)}/month, was ${money(TODO_CONFIRM.PRICE_MONTHLY_WAS)}`,
   perDose: `about ${perDose(TODO_CONFIRM.PRICE_MONTHLY, TODO_CONFIRM.DOSES_MONTHLY)} a dose`,
-  terms: "Flat price. No membership. Cancel anytime.",
 } as const;
 
 export type Ingredient = {
@@ -204,7 +203,7 @@ export const formula = {
     },
   ] satisfies Ingredient[],
   footer:
-    "Each ingredient is FDA-approved on its own. Quattro™ is a compounded combination prepared by a state-licensed 503A compounding pharmacy for you; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
+    "Sildenafil, tadalafil and vardenafil are each FDA-approved on their own; apomorphine is used off-label. Quattro™ is a compounded combination prepared by a state-licensed 503A compounding pharmacy for you; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
 } as const;
 
 export type Benefit = {
@@ -218,7 +217,7 @@ export const benefits = {
   items: [
     {
       title: "Melts in minutes.",
-      body: "Absorbs through the tissue under your tongue instead of waiting on digestion, so many men feel it in as little as 15 minutes.*",
+      body: "Absorbs through the tissue under your tongue instead of waiting on digestion, so many men feel it in as little as 15 minutes*.",
       media: {
         label: "Benefit visual · 1:1 · sublingual troche macro",
         asset:
@@ -266,7 +265,7 @@ export const delivered = {
     },
     {
       title: "Discreet delivery",
-      detail: "Plain packaging · free 1–2 day shipping",
+      detail: `Plain packaging · delivered in ${TODO_CONFIRM.SHIPPING_DAYS}`,
     },
   ],
   media: {
@@ -375,7 +374,7 @@ const sharedFeatures = [
 
 export const pricing = {
   heading: "The power of 4. In 1 dose.",
-  sub: "One flat price. No membership. Cancel anytime.",
+  sub: "Pricing shown up front. No membership. Cancel anytime.",
   tiers: [
     {
       key: "monthly",
@@ -448,6 +447,8 @@ export const reviews = {
   /** Real InstaRx reviews only. Empty until ED reviews exist. */
   items: [] as Review[],
   pending: {
+    /** Section heading while no ED reviews exist; `heading` takes over once they do. */
+    sectionHeading: "What InstaRx customers say.",
     heading: "Reviews pending",
     body: "We publish real, verified InstaRx customer reviews only. This section fills as ED customers share their results.",
     /** Themes we are collecting for (brief 5.12); shown as labelled placeholders. */
@@ -458,12 +459,14 @@ export const reviews = {
       "No waiting room",
     ],
     cardLabel: "Placeholder · verified review pending",
+    /** Under each theme card. Never an attribution: these are not quotes. */
+    themeLabel: "Theme we're collecting reviews for",
   },
 } as const;
 
 export const finalCta = {
   heading: "Ready when you are.",
-  body: "Two minutes online. A real doctor. Plain packaging at your door in 1–2 days.",
+  body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
   cta: "See if I qualify",
   sub: `First month ${money(TODO_CONFIRM.PRICE_MONTHLY)}. Cancel anytime.`,
 } as const;
@@ -494,7 +497,7 @@ export const footerDisclaimers = {
 } as const;
 
 export const metadata = {
-  title: "4-in-1 ED Sublingual from $99/mo | Insta-Ready by InstaRx",
-  description:
-    "Sildenafil, tadalafil, vardenafil and apomorphine in one sublingual dose. Doctor-prescribed online, flat price, no membership, plain packaging in 1–2 days.",
+  /* Rendered with title.absolute in page.tsx, so no "| InstaRx" template suffix. */
+  title: `4-in-1 ED Sublingual from ${money(TODO_CONFIRM.PRICE_MONTHLY)}/mo | Insta-Ready by InstaRx`,
+  description: `Sildenafil, tadalafil, vardenafil and apomorphine in one sublingual dose. Doctor-prescribed online, no membership, plain packaging in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
 } as const;

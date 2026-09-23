@@ -79,7 +79,10 @@ export function Stars({
 
 /* Labelled media slot. Renders the gradient placeholder plus the label so the
  * asset brief is visible on the page while real media is pending. Pass
- * `children` to layer real media (video, next/image) on top of the gradient. */
+ * `children` to layer real media (video, next/image) on top of the gradient.
+ * The gradient and its label are decorative: an empty slot is hidden from
+ * assistive tech, and a filled slot lets the child (Image alt, aria-hidden
+ * video) carry the semantics. */
 export function MediaSlot({
   slot,
   className = "",
@@ -99,8 +102,7 @@ export function MediaSlot({
     <div
       className={`edv2-slot edv2-slot--${slot.tone} ${className}`.trim()}
       style={style}
-      role="img"
-      aria-label={`Media placeholder: ${slot.label}`}
+      aria-hidden={children ? undefined : "true"}
     >
       <div className="edv2-slot__grain" aria-hidden="true" />
       {children}

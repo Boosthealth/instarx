@@ -16,7 +16,8 @@ import { VideoHero } from "@/app/components/modules/ed-treatment-v2/VideoHero";
 import { metadata as pageMeta } from "@/app/components/modules/ed-treatment-v2/content";
 
 export const metadata: Metadata = {
-  title: pageMeta.title,
+  /* absolute: the root layout's "%s | InstaRx" template would double the brand. */
+  title: { absolute: pageMeta.title },
   description: pageMeta.description,
   openGraph: {
     title: pageMeta.title,

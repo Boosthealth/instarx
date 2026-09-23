@@ -143,10 +143,11 @@
 .edv2 :focus-visible {
   outline: 2px solid var(--edv2-focus);
   outline-offset: 3px;
-  border-radius: var(--edv2-r-sm);
 }
 
-.edv2 a:not(.edv2-btn) {
+/* Zero-specificity reset so every later link rule (p a, .edv2-link, header
+ * anchor, footer links, sticky safety link) wins without !important. */
+.edv2 :where(a:not(.edv2-btn)) {
   color: inherit;
   text-decoration: none;
 }
@@ -179,15 +180,6 @@
 
 .edv2-section {
   padding-block: var(--edv2-section-y);
-}
-
-.edv2-section--tight {
-  padding-block: var(--edv2-section-y-tight);
-}
-
-.edv2-section--dark {
-  background: var(--edv2-bg-dark);
-  color: var(--edv2-text-on-dark);
 }
 
 .edv2-section--soft {
@@ -239,7 +231,6 @@
   margin: 0;
 }
 
-.edv2-section--dark .edv2-lead,
 .edv2-stack .edv2-lead {
   color: var(--edv2-text-on-dark-2);
 }
@@ -256,10 +247,6 @@
 
 .edv2-muted {
   color: var(--edv2-text-2);
-}
-
-.edv2-section--dark .edv2-muted {
-  color: var(--edv2-text-on-dark-3);
 }
 
 /* ---------- Buttons ---------- */
@@ -285,7 +272,6 @@
     background-color var(--edv2-dur-ui) ease,
     box-shadow 400ms var(--edv2-ease-out),
     transform var(--edv2-dur-fast) var(--edv2-ease-out);
-  will-change: transform;
 }
 
 .edv2-btn:active {
@@ -629,10 +615,6 @@
   width: 0.95rem;
   height: 0.95rem;
   fill: currentColor;
-}
-
-.edv2-hero__title {
-  display: block;
 }
 
 .edv2-hero__title span {
@@ -1159,22 +1141,6 @@
     var(--edv2-shadow-lg);
 }
 
-@media (min-width: 48rem) {
-  .edv2-pricing__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .edv2-tier--recommended {
-    order: -1;
-  }
-}
-
-@media (min-width: 48rem) {
-  .edv2-tier--recommended {
-    order: 0;
-  }
-}
-
 .edv2-tier__badge {
   position: absolute;
   top: -0.85rem;
@@ -1320,7 +1286,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  counter-reset: edv2-step;
 }
 
 @media (min-width: 48rem) {
@@ -1331,7 +1296,6 @@
 }
 
 .edv2-step {
-  counter-increment: edv2-step;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1706,10 +1670,6 @@
   display: none;
 }
 
-.edv2-stack__carousel {
-  display: flex;
-}
-
 @media (min-width: 64rem) {
   .edv2-stack__runway {
     display: block;
@@ -1735,6 +1695,36 @@
 
   .edv2-stack__runway[data-static="true"] .edv2-stack__card-inner {
     min-height: 0;
+  }
+
+  /* Same static layout straight from the media query, so a reduced-motion
+   * visitor gets it before hydration and without JS; data-static then
+   * removes the inline transforms and the progress rail. */
+  @media (prefers-reduced-motion: reduce) {
+    .edv2-stack__runway {
+      height: auto;
+    }
+
+    .edv2-stack__runway .edv2-stack__viewport {
+      position: static;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .edv2-stack__runway .edv2-stack__frame {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .edv2-stack__runway .edv2-stack__card-inner {
+      min-height: 0;
+    }
+
+    .edv2-stack__rail {
+      display: none;
+    }
   }
 
   .edv2-stack__carousel {

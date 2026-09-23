@@ -18,7 +18,7 @@ export function Reviews() {
       <div className="edv2-container">
         <Reveal className="edv2-head">
           <h2 id="edv2-reviews-title" className="edv2-h2">
-            {reviews.heading}
+            {hasReviews ? reviews.heading : reviews.pending.sectionHeading}
           </h2>
           <p className="edv2-lead">{reviews.sub}</p>
           <p className="edv2-reviews__rating">
@@ -67,7 +67,9 @@ export function Reviews() {
                     {reviews.pending.cardLabel}
                   </span>
                   <p className="edv2-review__quote">{theme}</p>
-                  <p className="edv2-review__meta">Verified InstaRx customer</p>
+                  <p className="edv2-review__meta">
+                    {reviews.pending.themeLabel}
+                  </p>
                 </Reveal>
               ))}
             </ul>

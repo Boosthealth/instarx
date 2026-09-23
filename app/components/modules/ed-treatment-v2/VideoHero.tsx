@@ -109,10 +109,9 @@ export function VideoHero() {
               loop
               playsInline
               preload="none"
-              poster={posterState === "ready" ? hero.video.poster : undefined}
               aria-hidden="true"
               tabIndex={-1}
-              onCanPlay={() => setVideoState("ready")}
+              onPlaying={() => setVideoState("ready")}
               onError={() => setVideoState("error")}
             />
           )}
@@ -155,7 +154,7 @@ export function VideoHero() {
             style={{ "--i": 3 } as React.CSSProperties}
           >
             <span className="edv2-chip edv2-chip--on-dark edv2-hero__price">
-              <strong>{heroOffer.price}/month</strong>
+              <strong>{heroOffer.price}</strong>
               <span aria-hidden="true">·</span>
               <WasPrice value={heroOffer.was} />
             </span>

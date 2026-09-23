@@ -1,7 +1,8 @@
 import "./ed-treatment-v2.css";
 
 /* Route-scoped layout: the .edv2 token scope and TLS warm-up for the
- * analytics origins that load after idle on this lander.
+ * analytics origins (GTM, Meta, PostHog) that AnalyticsScripts loads on every
+ * page. Adding this route to LAZY_ANALYTICS_ROUTES there is a separate change.
  *
  * Type: the page reads --edv2-font-sans, which the stylesheet maps to the
  * sitewide --font-figtree set on <html> by the root layout. A route-level

@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   motion,
   useMotionTemplate,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
@@ -24,7 +23,19 @@ const N = formula.items.length;
  * the runway collapses into a static stacked list. */
 export function CompleteStack() {
   const runwayRef = useRef<HTMLDivElement | null>(null);
-  const reduce = useReducedMotion() ?? false;
+  /* Read the media query in an effect, not via framer's useReducedMotion:
+   * that hook is null on the server and the real value on the first client
+   * render, which is a hydration mismatch for exactly the visitors who asked
+   * for reduced motion. The stylesheet already lays the runway out statically
+   * under the same media query, so the pre-effect frame is correct too. */
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduce(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const [active, setActive] = useState(0);
   const { scrollYProgress } = useScroll({
     target: runwayRef,

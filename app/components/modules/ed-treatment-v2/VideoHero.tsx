@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { hero, heroOffer, INTAKE_HREF } from "./content";
-import { Button, MediaSlot, TrustBadge, WasPrice } from "./ui";
+import { Button, MediaSlot, SlotImage, TrustBadge, WasPrice } from "./ui";
 
 /* Video hero. Order of operations, deliberately:
  * 1. The poster (next/image, priority) is the LCP element and paints first.
@@ -18,6 +17,13 @@ export function VideoHero() {
   const [posterState, setPosterState] = useState<"loading" | "ready" | "error">(
     "loading",
   );
+
+  // A cached poster can finish before hydration, in which case its load event
+  // fired into the void. A callback ref sees the element the moment it mounts
+  // and reads its state once instead of waiting for an event that never comes.
+  const posterRef = useCallback((img: HTMLImageElement | null) => {
+    if (img?.complete && img.naturalWidth > 0) setPosterState("ready");
+  }, []);
   const [videoState, setVideoState] = useState<
     "idle" | "loading" | "ready" | "error"
   >("idle");
@@ -88,13 +94,12 @@ export function VideoHero() {
           hideLabel={posterState === "ready"}
         >
           {posterState !== "error" && (
-            <Image
+            <SlotImage
+              ref={posterRef}
               src={hero.video.poster}
-              alt=""
-              fill
-              priority
-              fetchPriority="high"
+              srcMobile={hero.video.posterMobile}
               sizes="100vw"
+              priority
               className="edv2-hero__poster"
               onLoad={() => setPosterState("ready")}
               onError={() => setPosterState("error")}

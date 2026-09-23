@@ -1,7 +1,12 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import type {
+  CSSProperties,
+  ReactEventHandler,
+  ReactNode,
+  Ref,
+} from "react";
 import {
   rating,
   TODO_CONFIRM,
@@ -82,6 +87,70 @@ export function Stars({
   );
 }
 
+/* Decorative still that fills its positioned parent. With `srcMobile` it
+ * becomes a <picture>: the desktop file behind a min-width source, the mobile
+ * file as the <img>, both through the image optimizer via getImageProps, so
+ * each viewport downloads exactly one. Without it, plain next/image `fill`. */
+export function SlotImage({
+  src,
+  srcMobile,
+  sizes,
+  className,
+  priority = false,
+  ref,
+  onLoad,
+  onError,
+}: {
+  src: string;
+  srcMobile?: string;
+  sizes: string;
+  className: string;
+  priority?: boolean;
+  ref?: Ref<HTMLImageElement>;
+  onLoad?: ReactEventHandler<HTMLImageElement>;
+  onError?: ReactEventHandler<HTMLImageElement>;
+}) {
+  if (!srcMobile) {
+    return (
+      <Image
+        ref={ref}
+        src={src}
+        alt=""
+        fill
+        sizes={sizes}
+        priority={priority}
+        fetchPriority={priority ? "high" : undefined}
+        className={className}
+        onLoad={onLoad}
+        onError={onError}
+      />
+    );
+  }
+  const common = { alt: "", fill: true, sizes } as const;
+  const { props: wide } = getImageProps({ ...common, src });
+  const { props: tall } = getImageProps({ ...common, src: srcMobile });
+  return (
+    <picture>
+      <source
+        media="(min-width: 48rem)"
+        srcSet={wide.srcSet}
+        sizes={wide.sizes}
+      />
+      {/* Plain <img> inside <picture> on purpose: both files already go through getImageProps. */}
+      <img
+        {...tall}
+        ref={ref}
+        alt=""
+        className={className}
+        loading={priority ? "eager" : tall.loading}
+        fetchPriority={priority ? "high" : undefined}
+        onLoad={onLoad}
+        onError={onError}
+      />
+    </picture>
+  );
+}
+
 /* Labelled media slot. Renders the gradient placeholder plus the label so the
  * asset brief is visible on the page while real media is pending. Pass
  * `children` to layer real media (video, next/image) on top of the gradient.
@@ -112,11 +181,10 @@ export function MediaSlot({
     >
       <div className="edv2-slot__grain" aria-hidden="true" />
       {slot.src && (
-        <Image
+        <SlotImage
           src={slot.src}
-          alt=""
-          fill
-          sizes="(min-width: 48rem) 40vw, 100vw"
+          srcMobile={slot.srcMobile}
+          sizes="(min-width: 48rem) 45vw, 100vw"
           className="edv2-slot__img"
         />
       )}

@@ -47,10 +47,9 @@ export const TODO_CONFIRM = {
   /** Safety-information destination. A combined Quattro™ safety page does not
    *  exist yet; the sildenafil page is the closest live one. */
   SAFETY_HREF: "/safety/sildenafil",
-  /** Poster and video paths. Neither asset exists yet; the hero renders a
-   *  labelled gradient slot underneath so a missing poster still shows a hero. */
+  /** Video path. The loop does not exist yet; the poster stills do, and the
+   *  labelled gradient slot underneath still renders if a poster 404s. */
   HERO_VIDEO_SRC: "/video/ed-treatment-v2/hero.mp4",
-  HERO_POSTER_SRC: "/images/ed-treatment-v2/hero-poster.jpg",
   /** Public Trustpilot profile URL. Neither instarx.com nor go.instarx.com
    *  links one today (checked 2026-09-23), so TrustBadge shows the sitewide
    *  rating labelled InstaRx and no Trustpilot mark until this is set. */
@@ -102,6 +101,10 @@ export type MediaSlot = {
    * over the gradient and drops the brief label. Decorative: the copy beside
    * it carries the meaning, so it ships with an empty alt. */
   src?: string;
+  /** Separate still for viewports under 48rem when the mobile crop needs its
+   * own framing (a 4:5 for a 3:2 slot). Served via <picture>, so only one of
+   * the two downloads. */
+  srcMobile?: string;
 };
 
 export type HeroVariant = "default" | "A" | "B" | "C" | "D" | "E";
@@ -125,12 +128,15 @@ export const hero = {
   ctaMicro: `Private online visit · Prescription required · ${TODO_CONFIRM.NOT_QUALIFIED}`,
   video: {
     src: TODO_CONFIRM.HERO_VIDEO_SRC,
-    poster: TODO_CONFIRM.HERO_POSTER_SRC,
+    /** Poster stills, 16:9 for desktop and 9:16 for mobile. These are the
+     *  LCP frame today and the start frames for the loop later. */
+    poster: "/images/ed-treatment-v2/hero-poster-wide.webp",
+    posterMobile: "/images/ed-treatment-v2/hero-poster-tall.webp",
     slot: {
       label:
         "Hero video · 16:9 desktop / 9:16 mobile · muted loop · poster first",
       asset:
-        "Low-light lifestyle footage, adult and unhurried: a man at the end of an evening, city or home interior, no faces in focus, no body parts, no bedroom. Cool navy shadows, one warm light source. 8–12 s seamless loop, no audio.",
+        "Night apartment: a man in a half-unbuttoned shirt seen from behind, a woman's hand on the back of his neck from out of frame, city lights blurred through the window, one warm lamp. 8–12 s seamless loop, no audio.",
       aspect: "16 / 9",
       aspectMobile: "9 / 16",
       tone: 0,
@@ -186,6 +192,7 @@ export const formula = {
       strength: TODO_CONFIRM.STRENGTHS.vardenafil,
       media: {
         label: "Ingredient card · 4:5 abstract macro · no faces",
+        src: "/images/ed-treatment-v2/formula-strength.webp",
         asset:
           "Dense, dark material texture with a single warm highlight: brushed metal or stone.",
         aspect: "4 / 5",
@@ -202,9 +209,10 @@ export const formula = {
       media: {
         label: "Ingredient card · 4:5 abstract macro · no faces",
         asset:
-          "A long exposure: city light trails or a slow tide at dusk, implying duration.",
+          "Bare shoulder and back turned to a blue window before dawn, deep shadow, warm skin. No face.",
         aspect: "4 / 5",
         tone: 3,
+        src: "/images/ed-treatment-v2/formula-stamina.webp",
       },
     },
     {
@@ -217,9 +225,10 @@ export const formula = {
       media: {
         label: "Ingredient card · 4:5 abstract macro · no faces",
         asset:
-          "Abstract neural or light-fibre macro in warm amber on navy, no anatomy.",
+          "Two faces a breath apart, lips parted, eyes closed, warm amber light on navy.",
         aspect: "4 / 5",
         tone: 4,
+        src: "/images/ed-treatment-v2/formula-desire.webp",
       },
     },
   ] satisfies Ingredient[],
@@ -242,9 +251,10 @@ export const benefits = {
       media: {
         label: "Benefit visual · 1:1 · sublingual troche macro",
         asset:
-          "Top-down macro of a single troche on dark slate, one warm rim light.",
+          "Macro: two fingertips lifting a single pale troche toward parted lips, nose and mouth only, dusk light.",
         aspect: "1 / 1",
         tone: 1,
+        src: "/images/ed-treatment-v2/benefit-melts.webp",
       },
     },
     {
@@ -253,9 +263,10 @@ export const benefits = {
       media: {
         label: "Benefit visual · 1:1 · low-light dinner table, no faces",
         asset:
-          "Candlelit table after dinner: two glasses, no people, cinematic shadow.",
+          "Candlelit table after dinner: two glasses of red, her hand resting on his, wrists and a watch only.",
         aspect: "1 / 1",
         tone: 3,
+        src: "/images/ed-treatment-v2/benefit-dinner.webp",
       },
     },
     {
@@ -264,9 +275,10 @@ export const benefits = {
       media: {
         label: "Benefit visual · 1:1 · duration, no faces",
         asset:
-          "Bedside clock or a window from night to morning, abstract and calm.",
+          "Couple asleep under a blue duvet at first light, faces soft, shoulders covered.",
         aspect: "1 / 1",
         tone: 2,
+        src: "/images/ed-treatment-v2/benefit-ready.webp",
       },
     },
   ] satisfies Benefit[],
@@ -292,10 +304,12 @@ export const delivered = {
   media: {
     label: "Packaging shot · 3:2 · plain box on a doorstep or table",
     asset:
-      "Unbranded matte box, front door or hallway table, morning light. No people.",
+      "Unbranded matte box on a hallway console, keys beside it, no people. Desktop: grey morning daylight. Mobile: blue dusk through the open front door.",
     aspect: "3 / 2",
     aspectMobile: "4 / 5",
     tone: 2,
+    src: "/images/ed-treatment-v2/delivered-wide.webp",
+    srcMobile: "/images/ed-treatment-v2/delivered-tall.webp",
   } satisfies MediaSlot,
 } as const;
 

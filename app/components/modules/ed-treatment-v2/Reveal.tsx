@@ -8,13 +8,11 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  * 1.2s safety net so content is never stuck invisible. */
 export function Reveal({
   children,
-  delay = 0,
   as: Tag = "div",
   className = "",
 }: {
   children: ReactNode;
-  delay?: number;
-  as?: "div" | "li" | "section" | "article" | "p";
+  as?: "div" | "li" | "ul" | "ol" | "section" | "article" | "p";
   className?: string;
 }) {
   const ref = useRef<HTMLElement | null>(null);
@@ -27,7 +25,11 @@ export function Reveal({
       const id = requestAnimationFrame(() => setShown(true));
       return () => cancelAnimationFrame(id);
     }
-    const fallback = window.setTimeout(() => setShown(true), 1200);
+    /* The safety net only fires for an element that is on screen, so groups
+     * further down still play their entrance when scrolled to. */
+    const fallback = window.setTimeout(() => {
+      if (el.getBoundingClientRect().top < window.innerHeight) setShown(true);
+    }, 1200);
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -54,7 +56,6 @@ export function Reveal({
       ref={ref}
       className={`edv2-reveal ${className}`.trim()}
       data-in={shown ? "true" : "false"}
-      style={delay ? { "--reveal-delay": `${delay}ms` } : undefined}
     >
       {children}
     </Comp>

@@ -1,6 +1,8 @@
-import { finalCta, INTAKE_HREF } from "./content";
-import { Button } from "./ui";
-import { Reveal } from "./Reveal";
+import { benefits, finalCta, INTAKE_HREF } from "./content";
+import { Ambient, Button } from "./ui";
+
+/* The "Ready when you are" still lights this band from behind. */
+const AMBIENT_SRC = benefits.items[benefits.items.length - 1]?.media.src;
 
 /* Closing CTA band. The sticky bar watches this section and hides while it
  * is on screen, so the two never stack. */
@@ -11,8 +13,9 @@ export function FinalCta() {
       id="edv2-final"
       aria-labelledby="edv2-final-title"
     >
+      {AMBIENT_SRC && <Ambient src={AMBIENT_SRC} />}
       <div className="edv2-container">
-        <Reveal className="edv2-final__inner">
+        <div className="edv2-final__inner">
           <h2 id="edv2-final-title" className="edv2-h2">
             {finalCta.heading}
           </h2>
@@ -21,7 +24,7 @@ export function FinalCta() {
             {finalCta.cta}
           </Button>
           <p className="edv2-small edv2-final__sub">{finalCta.sub}</p>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

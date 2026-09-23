@@ -1,29 +1,10 @@
-import {
-  Brain,
-  Clock,
-  Package,
-  Pill,
-  Receipt,
-  Stethoscope,
-  Timer,
-  Utensils,
-  type LucideIcon,
-} from "lucide-react";
-import { comparison, type ComparisonIcon } from "./content";
+import type { CSSProperties } from "react";
+import { comparison } from "./content";
+import { Glyph } from "./Glyph";
 import { Reveal } from "./Reveal";
 
-const ICONS: Record<ComparisonIcon, LucideIcon> = {
-  pill: Pill,
-  timer: Timer,
-  clock: Clock,
-  utensils: Utensils,
-  brain: Brain,
-  stethoscope: Stethoscope,
-  receipt: Receipt,
-  package: Package,
-};
-
-/* Two columns, same eight rows, revealed top to bottom in sequence. */
+/* Two columns, same eight rows. One reveal for the whole table: row i rises
+ * in both columns together, 40ms behind row i-1. */
 export function OldWayNewWay() {
   return (
     <section
@@ -31,12 +12,12 @@ export function OldWayNewWay() {
       aria-labelledby="edv2-compare-title"
     >
       <div className="edv2-container">
-        <Reveal className="edv2-head edv2-head--center">
+        <div className="edv2-head edv2-head--center">
           <h2 id="edv2-compare-title" className="edv2-h2">
             {comparison.heading}
           </h2>
-        </Reveal>
-        <div className="edv2-compare">
+        </div>
+        <Reveal className="edv2-compare edv2-stagger">
           <Column
             title={comparison.oldLabel}
             variant="old"
@@ -47,7 +28,7 @@ export function OldWayNewWay() {
             variant="new"
             values={comparison.rows.map((r) => r.newWay)}
           />
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -66,25 +47,21 @@ function Column({
     <div className={`edv2-compare__col edv2-compare__col--${variant}`}>
       <h3 className="edv2-compare__title">{title}</h3>
       <ul className="edv2-compare__rows">
-        {comparison.rows.map((row, i) => {
-          const Icon = ICONS[row.icon];
-          return (
-            <Reveal
-              key={row.label}
-              as="li"
-              className="edv2-compare__row"
-              delay={i * 50}
-            >
-              <span className="edv2-compare__icon" aria-hidden="true">
-                <Icon strokeWidth={2} />
-              </span>
-              <div>
-                <span className="edv2-compare__label">{row.label}</span>
-                <span className="edv2-compare__value">{values[i]}</span>
-              </div>
-            </Reveal>
-          );
-        })}
+        {comparison.rows.map((row, i) => (
+          <li
+            key={row.label}
+            className="edv2-compare__row edv2-stagger__item"
+            style={{ "--i": i } as CSSProperties}
+          >
+            <span className="edv2-compare__icon">
+              <Glyph name={row.icon} />
+            </span>
+            <div>
+              <span className="edv2-compare__label">{row.label}</span>
+              <span className="edv2-compare__value">{values[i]}</span>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -122,6 +122,10 @@ export const hero = {
   } satisfies Record<HeroVariant, string>,
   subhead:
     "Insta-Ready Quattro™ combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It dissolves under your tongue, so many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
+  /** Phone subhead: the CTA sits near the fold, so two short sentences.
+   *  Headline C's device plus the Part 4 onset line, footnote kept. */
+  subheadShort:
+    "Four ingredients in one dose that dissolves under your tongue. Many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
   subheadTail:
     "Prescribed online by a US-licensed doctor if it's right for you, shipped in plain packaging.",
   cta: "See if I qualify",

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { hero, heroOffer, INTAKE_HREF } from "./content";
+import { HeroParallax } from "./Parallax";
 import { Button, MediaSlot, SlotImage, TrustBadge, WasPrice } from "./ui";
 
 /* Video hero. Order of operations, deliberately:
@@ -87,7 +88,7 @@ export function VideoHero() {
 
   return (
     <section className="edv2-hero" aria-labelledby="edv2-hero-title">
-      <div className="edv2-hero__media">
+      <HeroParallax>
         <MediaSlot
           slot={hero.video.slot}
           className="edv2-hero__slot"
@@ -121,7 +122,7 @@ export function VideoHero() {
             />
           )}
         </MediaSlot>
-      </div>
+      </HeroParallax>
       <div className="edv2-hero__scrim" aria-hidden="true" />
 
       <div className="edv2-container edv2-hero__content">
@@ -149,8 +150,11 @@ export function VideoHero() {
             className="edv2-hero__sub"
             style={{ "--i": 2 } as React.CSSProperties}
           >
-            {hero.subhead}{" "}
-            <span className="edv2-hero__sub-tail">{hero.subheadTail}</span>
+            <span className="edv2-hero__sub-short">{hero.subheadShort}</span>
+            <span className="edv2-hero__sub-long">
+              {hero.subhead}{" "}
+              <span className="edv2-hero__sub-tail">{hero.subheadTail}</span>
+            </span>
           </p>
 
           <div

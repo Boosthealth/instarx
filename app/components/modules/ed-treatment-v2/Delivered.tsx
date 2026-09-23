@@ -1,11 +1,13 @@
-import { ClipboardCheck, Package, Stethoscope } from "lucide-react";
+import type { CSSProperties } from "react";
 import { delivered } from "./content";
+import { Glyph, type GlyphName } from "./Glyph";
 import { MediaSlot } from "./ui";
 import { Reveal } from "./Reveal";
 
-const ICONS = [Stethoscope, ClipboardCheck, Package];
+const GLYPHS: GlyphName[] = ["stethoscope", "clipboard", "package"];
 
-/* Trust band: packaging shot plus three proof chips. */
+/* Trust band: packaging shot plus three proof chips. The shot bleeds up
+ * over the band above on wide screens; the chips rise as one group. */
 export function Delivered() {
   return (
     <section
@@ -13,31 +15,30 @@ export function Delivered() {
       aria-labelledby="edv2-delivered-title"
     >
       <div className="edv2-container edv2-delivered__grid">
-        <Reveal>
-          <MediaSlot slot={delivered.media} className="edv2-delivered__media" />
-        </Reveal>
-        <Reveal className="edv2-delivered__copy" delay={80}>
+        <MediaSlot slot={delivered.media} className="edv2-delivered__media" />
+        <div className="edv2-delivered__copy">
           <h2 id="edv2-delivered-title" className="edv2-h2">
             {delivered.heading}
           </h2>
           <p className="edv2-lead">{delivered.body}</p>
-          <ul className="edv2-delivered__chips">
-            {delivered.chips.map((chip, i) => {
-              const Icon = ICONS[i] ?? Stethoscope;
-              return (
-                <li key={chip.title} className="edv2-trust">
-                  <span className="edv2-trust__icon" aria-hidden="true">
-                    <Icon strokeWidth={2} />
-                  </span>
-                  <div>
-                    <p className="edv2-trust__title">{chip.title}</p>
-                    <p className="edv2-trust__detail">{chip.detail}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </Reveal>
+          <Reveal className="edv2-delivered__chips edv2-stagger" as="ul">
+            {delivered.chips.map((chip, i) => (
+              <li
+                key={chip.title}
+                className="edv2-trust edv2-stagger__item"
+                style={{ "--i": i } as CSSProperties}
+              >
+                <span className="edv2-trust__icon">
+                  <Glyph name={GLYPHS[i] ?? "stethoscope"} />
+                </span>
+                <div>
+                  <p className="edv2-trust__title">{chip.title}</p>
+                  <p className="edv2-trust__detail">{chip.detail}</p>
+                </div>
+              </li>
+            ))}
+          </Reveal>
+        </div>
       </div>
     </section>
   );

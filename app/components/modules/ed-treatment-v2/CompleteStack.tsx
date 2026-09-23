@@ -10,10 +10,11 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { formula, type Ingredient } from "./content";
-import { MediaSlot } from "./ui";
-import { Reveal } from "./Reveal";
+import { Ambient, MediaSlot } from "./ui";
 
 const N = formula.items.length;
+/* The first card's still tints the whole band. */
+const AMBIENT_SRC = formula.items[0]?.media.src;
 
 /* The signature section. Desktop: a runway N viewports tall with one sticky
  * viewport; card i+1 rises over card i, which recedes (scale 0.94, opacity
@@ -53,13 +54,14 @@ export function CompleteStack() {
       id="formula"
       aria-labelledby="edv2-stack-title"
     >
+      {AMBIENT_SRC && <Ambient src={AMBIENT_SRC} />}
       <div className="edv2-container">
-        <Reveal className="edv2-head">
+        <div className="edv2-head">
           <h2 id="edv2-stack-title" className="edv2-h2">
             {formula.heading}
           </h2>
           <p className="edv2-lead">{formula.sub}</p>
-        </Reveal>
+        </div>
       </div>
 
       {/* Desktop runway */}

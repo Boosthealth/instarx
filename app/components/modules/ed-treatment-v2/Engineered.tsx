@@ -1,8 +1,10 @@
 import { benefits } from "./content";
 import { MediaSlot } from "./ui";
-import { Reveal } from "./Reveal";
 
-/* Three benefit rows, media and copy alternating sides on desktop. */
+/* Three benefit rows, media and copy alternating sides on desktop. No
+ * entrance fade: the photos drift inside their cards as they pass, and a
+ * warm pool of light sits behind each one. The last card overlaps into the
+ * band below. */
 export function Engineered() {
   return (
     <section
@@ -10,20 +12,20 @@ export function Engineered() {
       aria-labelledby="edv2-benefits-title"
     >
       <div className="edv2-container">
-        <Reveal className="edv2-head">
+        <div className="edv2-head">
           <h2 id="edv2-benefits-title" className="edv2-h2">
             {benefits.heading}
           </h2>
-        </Reveal>
+        </div>
         <ul className="edv2-benefits__list">
           {benefits.items.map((item) => (
-            <Reveal key={item.title} as="li" className="edv2-benefit">
+            <li key={item.title} className="edv2-benefit">
               <MediaSlot slot={item.media} className="edv2-benefit__media" />
               <div className="edv2-benefit__copy">
                 <h3 className="edv2-h3">{item.title}</h3>
                 <p>{item.body}</p>
               </div>
-            </Reveal>
+            </li>
           ))}
         </ul>
       </div>

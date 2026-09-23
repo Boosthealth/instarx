@@ -12,6 +12,7 @@ import {
   TODO_CONFIRM,
   type MediaSlot as MediaSlotSpec,
 } from "./content";
+import { ParallaxLayer } from "./Parallax";
 
 type ButtonVariant = "primary" | "dark" | "ghost-light";
 type ButtonSize = "sm" | "md" | "lg";
@@ -181,12 +182,14 @@ export function MediaSlot({
     >
       <div className="edv2-slot__grain" aria-hidden="true" />
       {slot.src && (
-        <SlotImage
-          src={slot.src}
-          srcMobile={slot.srcMobile}
-          sizes="(min-width: 48rem) 45vw, 100vw"
-          className="edv2-slot__img"
-        />
+        <ParallaxLayer>
+          <SlotImage
+            src={slot.src}
+            srcMobile={slot.srcMobile}
+            sizes="(min-width: 48rem) 45vw, 100vw"
+            className="edv2-slot__img"
+          />
+        </ParallaxLayer>
       )}
       {children}
       {!hideLabel && !slot.src && (
@@ -194,6 +197,26 @@ export function MediaSlot({
           {slot.label}
         </span>
       )}
+    </div>
+  );
+}
+
+/* Ambient light for a dark band: the band's own still, scaled up, blurred
+ * to colour fields and laid at low opacity under a grain, so the section
+ * glows with the palette of its imagery instead of sitting on flat zinc.
+ * A small file is plenty once it is blurred 40px. */
+export function Ambient({ src }: { src: string }) {
+  return (
+    <div className="edv2-ambient" aria-hidden="true">
+      <Image
+        src={src}
+        alt=""
+        fill
+        sizes="40vw"
+        loading="lazy"
+        className="edv2-ambient__img"
+      />
+      <div className="edv2-ambient__grain" />
     </div>
   );
 }

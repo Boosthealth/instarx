@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Check, ShieldAlert } from "lucide-react";
 import { INTAKE_HREF, pricing, safetyStrip } from "./content";
@@ -14,20 +15,25 @@ export function Pricing() {
       aria-labelledby="edv2-pricing-title"
     >
       <div className="edv2-container">
-        <Reveal className="edv2-head edv2-head--center">
+        <div className="edv2-head edv2-head--center">
           <h2 id="edv2-pricing-title" className="edv2-h2">
             {pricing.heading}
           </h2>
           <p className="edv2-lead">{pricing.sub}</p>
-        </Reveal>
+        </div>
 
-        <div className="edv2-pricing__grid">
-          {pricing.tiers.map((tier, i) => (
-            <Reveal
+        {/* The tiers rise together; the recommended one lands 80ms later so
+            the eye finishes on it. */}
+        <Reveal className="edv2-pricing__grid edv2-stagger">
+          {pricing.tiers.map((tier) => (
+            <article
               key={tier.key}
-              as="article"
-              className={`edv2-tier ${tier.recommended ? "edv2-tier--recommended" : ""}`.trim()}
-              delay={i * 70}
+              className={`edv2-tier edv2-stagger__item ${tier.recommended ? "edv2-tier--recommended" : ""}`.trim()}
+              style={
+                tier.recommended
+                  ? ({ "--stagger-delay": "80ms" } as CSSProperties)
+                  : undefined
+              }
             >
               {tier.recommended && (
                 <span className="edv2-tier__badge">
@@ -67,15 +73,13 @@ export function Pricing() {
               >
                 {tier.cta}
               </Button>
-            </Reveal>
+            </article>
           ))}
-        </div>
-
-        <Reveal as="p" className="edv2-small edv2-pricing__fine">
-          {pricing.fine}
         </Reveal>
 
-        <Reveal className="edv2-safety" delay={60}>
+        <p className="edv2-small edv2-pricing__fine">{pricing.fine}</p>
+
+        <div className="edv2-safety">
           <ShieldAlert aria-hidden="true" strokeWidth={2} />
           <p>
             <strong>{safetyStrip.lead}</strong> {safetyStrip.body}{" "}
@@ -83,7 +87,7 @@ export function Pricing() {
               {safetyStrip.linkLabel}
             </Link>
           </p>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

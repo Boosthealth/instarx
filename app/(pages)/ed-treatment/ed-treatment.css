@@ -239,29 +239,27 @@
 }
 
 /* ---- Reveal (once, 340ms, no bounce) ----------------------------------- */
-.ed-reveal {
+/* Hidden states apply only once JS has mounted (`data-js` on .ed), so the
+   server HTML stays fully visible without JS. */
+.ed[data-js] .ed-reveal:not(.is-in) {
   opacity: 0;
   transform: translateY(14px);
+}
+.ed-reveal {
   transition:
     opacity var(--ed-reveal) var(--ed-ease-out),
     transform var(--ed-reveal) var(--ed-ease-out);
 }
-.ed-reveal.is-in {
-  opacity: 1;
-  transform: none;
-}
 /* Sequenced children of a RevealGroup (comparison rows, cards). */
-.ed-seq {
+.ed[data-js] .ed-reveal-group:not(.is-in) .ed-seq {
   opacity: 0;
   transform: translateY(10px);
+}
+.ed-seq {
   transition:
     opacity 300ms var(--ed-ease-out),
     transform 300ms var(--ed-ease-out);
   transition-delay: calc(var(--i, 0) * 60ms);
-}
-.is-in .ed-seq {
-  opacity: 1;
-  transform: none;
 }
 
 /* ---- Announce bar ------------------------------------------------------ */
@@ -281,6 +279,14 @@
   color: inherit;
   text-decoration: none;
   text-align: center;
+}
+@media (max-width: 639px) {
+  .ed-announce a > span:not(.ed-announce__dot) {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 .ed-announce__dot {
   flex: none;
@@ -398,6 +404,17 @@
   line-height: 1.55;
   color: var(--ed-on-ink-muted);
   text-wrap: pretty;
+}
+.ed-hero__sub--full {
+  display: none;
+}
+@media (min-width: 640px) {
+  .ed-hero__sub--full {
+    display: block;
+  }
+  .ed-hero__sub--short {
+    display: none;
+  }
 }
 @media (min-width: 1024px) {
   .ed-hero__sub {
@@ -607,11 +624,6 @@
   margin: 16px 0 0;
   padding: 0;
   list-style: none;
-}
-/* Four short answers sit 2x2 on phones so step 1 stays compact and the
-   shorter steps don't leave a tall empty band under a stable-height stage. */
-.ed-q__answers[data-count="4"] {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 @media (min-width: 640px) {
   .ed-q__answers {
@@ -1367,6 +1379,10 @@
   font-size: 0.8125rem;
   line-height: 1.5;
 }
+.ed-final__safety {
+  max-width: 64ch;
+  margin-top: 28px;
+}
 .ed-safety strong {
   font-weight: 700;
 }
@@ -1758,7 +1774,9 @@
     animation: none;
   }
   .ed-reveal,
-  .ed-seq {
+  .ed-seq,
+  .ed[data-js] .ed-reveal:not(.is-in),
+  .ed[data-js] .ed-reveal-group:not(.is-in) .ed-seq {
     opacity: 1;
     transform: none;
     transition: none;

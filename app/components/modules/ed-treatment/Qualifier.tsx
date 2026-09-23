@@ -122,11 +122,7 @@ export function Qualifier() {
       aria-label={qualifier.label}
     >
       <div className="ed-q__bar">
-        <span className="ed-q__label">
-          {mode === "quiz"
-            ? qualifier.stepLabel(step + 1, STEPS.length)
-            : qualifier.label}
-        </span>
+        <span className="ed-q__label">{qualifier.label}</span>
         <button
           type="button"
           className="ed-q__back"
@@ -176,6 +172,9 @@ export function Qualifier() {
                     questionRefs.current[i] = el;
                   }}
                 >
+                  <span className="ed-sr">
+                    {qualifier.stepLabel(i + 1, STEPS.length)}:{" "}
+                  </span>
                   {s.question}
                 </h2>
                 <ul className="ed-q__answers" data-count={s.answers.length}>
@@ -310,6 +309,7 @@ function Result({
           );
         })}
       </ul>
+      <SafetyStrip />
 
       <div className="ed-result__foot">
         <p className="ed-result__provider">{r.provider}</p>
@@ -322,7 +322,6 @@ function Result({
             </li>
           ))}
         </ul>
-        <SafetyStrip />
         <p className="ed-result__disclosure">{r.disclosure}</p>
         <div className="ed-result__actions">
           <button type="button" className="ed-textbtn" onClick={onRestart}>

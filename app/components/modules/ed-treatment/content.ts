@@ -91,7 +91,8 @@ export const primaryCta = "Find my treatment";
 
 /* 5.2 Hero. `heroVariant` selects the H1 for split tests: one-line change. */
 export const heroHeadlines = {
-  A: "Ready in minutes. Ready all weekend.",
+  // Part 4: onset is only "as little as 15 minutes*", so the H1 carries the footnote mark.
+  A: "Ready in minutes.* Ready all weekend.",
   B: "Stop planning around a pill.",
   C: "Four ingredients. One dose. Ready when it counts.",
   // Part 4 deviation: the brief's D ended "treat desire, not just blood flow".
@@ -107,6 +108,9 @@ export const hero = {
   headline: heroHeadlines[heroVariant],
   subhead:
     "Insta-Ready Quattro™ combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It dissolves under your tongue, so many men feel it in as little as 15 minutes* and stay ready for up to 36 hours. Prescribed online by a US-licensed doctor if it's right for you, shipped in plain packaging.",
+  // Phones: shorter subhead so the first qualifier answer lands in the first viewport.
+  subheadShort:
+    "Four ingredients, dissolved under your tongue. Many men feel it in as little as 15 minutes* and stay ready up to 36 hours. Prescribed online by a US-licensed doctor.",
   rating: {
     label: "Excellent 4.7",
     detail: "10,000+ InstaRx customers",

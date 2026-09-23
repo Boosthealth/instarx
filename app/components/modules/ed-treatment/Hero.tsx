@@ -27,8 +27,17 @@ export function Hero() {
             </h1>
           </div>
           <div className="ed-hero__aside">
-            <p className="ed-hero__sub ed-enter" style={d(2)}>
+            <p
+              className="ed-hero__sub ed-hero__sub--full ed-enter"
+              style={d(2)}
+            >
               {hero.subhead}
+            </p>
+            <p
+              className="ed-hero__sub ed-hero__sub--short ed-enter"
+              style={d(2)}
+            >
+              {hero.subheadShort}
             </p>
             <p className="ed-rating ed-enter" style={d(3)}>
               <Stars />

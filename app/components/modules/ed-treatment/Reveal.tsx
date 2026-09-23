@@ -20,33 +20,29 @@ export function Reveal({
   group?: boolean;
 }) {
   const ref = useRef<HTMLElement | null>(null);
-  // Start hidden so the client's first render matches SSR; the observer (or a
-  // 1.2s safety net) reveals, so content is never stuck invisible.
+  // Server HTML is visible; the hidden state only applies once `.ed[data-js]`
+  // is set below, and the observer reveals as each block approaches.
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    el.closest(".ed")?.setAttribute("data-js", "");
     if (typeof IntersectionObserver === "undefined") {
       const id = requestAnimationFrame(() => setShown(true));
       return () => cancelAnimationFrame(id);
     }
-    const fallback = window.setTimeout(() => setShown(true), 1200);
     const obs = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           setShown(true);
-          window.clearTimeout(fallback);
           obs.disconnect();
         }
       },
       { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     );
     obs.observe(el);
-    return () => {
-      window.clearTimeout(fallback);
-      obs.disconnect();
-    };
+    return () => obs.disconnect();
   }, []);
 
   const Comp = Tag as React.ElementType;

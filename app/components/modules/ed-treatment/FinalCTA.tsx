@@ -1,5 +1,5 @@
 import { Reveal } from "./Reveal";
-import { EdButton } from "./ui";
+import { EdButton, SafetyStrip } from "./ui";
 import { INTAKE_HREF, finalCta } from "./content";
 
 /* 5.14 close. */
@@ -21,6 +21,7 @@ export function FinalCTA() {
           </EdButton>
           <span className="ed-final__sub">{finalCta.sub}</span>
         </div>
+        <SafetyStrip className="ed-final__safety" />
       </Reveal>
     </section>
   );

@@ -37,7 +37,8 @@ const body = Public_Sans({
 });
 
 export const metadata: Metadata = {
-  title: meta.title,
+  // Absolute: meta.title already carries the brand, so skip the root template.
+  title: { absolute: meta.title },
   description: meta.description,
   openGraph: {
     title: meta.title,

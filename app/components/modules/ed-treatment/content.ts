@@ -91,8 +91,8 @@ export const primaryCta = "Find my treatment";
 
 /* 5.2 Hero. `heroVariant` selects the H1 for split tests: one-line change. */
 export const heroHeadlines = {
-  // Part 4: onset is only "as little as 15 minutes*", so the H1 carries the footnote mark.
-  A: "Ready in minutes.* Ready all weekend.",
+  // Part 4: onset is only ever "as little as 15 minutes*" with the footnote.
+  A: "Ready in as little as 15 minutes.* Ready all weekend.",
   B: "Stop planning around a pill.",
   C: "Four ingredients. One dose. Ready when it counts.",
   // Part 4 deviation: the brief's D ended "treat desire, not just blood flow".
@@ -344,7 +344,7 @@ export const formula = {
     },
   ],
   footer:
-    "Each ingredient is FDA-approved on its own, except apomorphine, which is used off-label. Quattro™ is a compounded combination prepared for you by a state-licensed 503A pharmacy; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
+    "Each ingredient is FDA-approved on its own, except apomorphine, which is used off-label. Quattro™ is a compounded combination prepared for you by a state-licensed 503A compounding pharmacy; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
 };
 
 /* 5.6 */
@@ -402,10 +402,10 @@ export const comparison = {
 /* 5.9 */
 export const transparency = {
   headline: "Straight answers about compounded treatment.",
-  body: `Insta-Ready formulas are compounded prescription medications, prepared for you by a state-licensed 503A pharmacy. Compounded medications are not FDA-approved finished products, and the FDA does not review them the way it reviews approved drugs. The ingredients themselves are FDA-approved on their own (sildenafil, tadalafil, vardenafil) or used off-label (apomorphine, bremelanotide). A US-licensed provider reviews your health history, medications and contraindications before deciding whether treatment is appropriate. Completing the intake doesn't guarantee a prescription, and ${TODO_NOT_CHARGED.charAt(0).toLowerCase()}${TODO_NOT_CHARGED.slice(1)}.`,
+  body: `Insta-Ready formulas are compounded prescription medications, prepared for you by a state-licensed 503A compounding pharmacy. Compounded medications are not FDA-approved finished products, and the FDA does not review them the way it reviews approved drugs. The ingredients themselves are FDA-approved on their own (sildenafil, tadalafil, vardenafil) or used off-label (apomorphine, bremelanotide). A US-licensed provider reviews your health history, medications and contraindications before deciding whether treatment is appropriate. Completing the intake doesn't guarantee a prescription, and ${TODO_NOT_CHARGED.charAt(0).toLowerCase()}${TODO_NOT_CHARGED.slice(1)}.`,
   bullets: [
     "US-licensed providers",
-    "State-licensed 503A pharmacies",
+    "State-licensed 503A compounding pharmacies",
     TODO_LEGITSCRIPT_ED_CONFIRMED
       ? "HIPAA-compliant · LegitScript certified"
       : "HIPAA-compliant",
@@ -533,11 +533,11 @@ export const faqGroups = [
         q: "How is it different from Viagra or Cialis?",
         // Part 4 deviation: "absorbs directly" replaced with the tissue wording
         // (no implied full bypass of digestion).
-        a: "Generic Viagra and Cialis are single-ingredient tablets, and we offer both. Quattro™ combines those actives with vardenafil and apomorphine in a sublingual that absorbs through the tissue under your tongue, so it can work sooner and also acts on the brain's arousal pathway. Your doctor recommends what fits you.",
+        a: "Generic Viagra and Cialis are single-ingredient tablets, and we offer both. Quattro™ combines those actives with vardenafil and apomorphine in a sublingual that absorbs through the tissue under your tongue, so many men feel it in as little as 15 minutes* and it also acts on the brain's arousal pathway. Your doctor recommends what fits you.",
       },
       {
         q: "Is it FDA-approved?",
-        a: "The individual ingredients sildenafil, tadalafil and vardenafil are. The compounded combination is prepared for you by a state-licensed 503A pharmacy and is not an FDA-approved finished drug. Apomorphine is used off-label.",
+        a: "The individual ingredients sildenafil, tadalafil and vardenafil are. The compounded combination is prepared for you by a state-licensed 503A compounding pharmacy and is not an FDA-approved finished drug. Apomorphine is used off-label.",
       },
       {
         q: "How fast does it work?",
@@ -639,9 +639,15 @@ export const footer = {
   safetyLinks: [
     { label: "Sildenafil", href: "/safety/sildenafil" },
     { label: "Tadalafil", href: "/safety/tadalafil" },
-    { label: "Vardenafil", href: "/safety/vardenafil" },
-    { label: "Apomorphine", href: "/safety/apomorphine" },
-    { label: "Bremelanotide (PT-141)", href: "/safety/bremelanotide" },
+    { label: "Vardenafil", href: "https://www.drugs.com/vardenafil.html" },
+    {
+      label: "Apomorphine",
+      href: "https://www.drugs.com/mtm/apomorphine.html",
+    },
+    {
+      label: "Bremelanotide (PT-141)",
+      href: "https://www.drugs.com/mtm/bremelanotide.html",
+    },
   ],
   columns: [
     {

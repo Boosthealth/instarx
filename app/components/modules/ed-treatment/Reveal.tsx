@@ -27,7 +27,15 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Mark on-screen blocks revealed before hiding kicks in, so content that
+    // is already painted never blinks out.
+    const onScreen = el.getBoundingClientRect().top < window.innerHeight;
+    if (onScreen) el.classList.add("is-in");
     el.closest(".ed")?.setAttribute("data-js", "");
+    if (onScreen) {
+      const id = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(id);
+    }
     if (typeof IntersectionObserver === "undefined") {
       const id = requestAnimationFrame(() => setShown(true));
       return () => cancelAnimationFrame(id);

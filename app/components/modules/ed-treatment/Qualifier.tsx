@@ -35,6 +35,7 @@ export function Qualifier() {
   const [answers, setAnswers] = useState<Answers>({});
   const [mode, setMode] = useState<Mode>("quiz");
   const pending = useRef(false);
+  const advanceTimer = useRef<number | undefined>(undefined);
   const focusNext = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const questionRefs = useRef<Array<HTMLHeadingElement | null>>([]);
@@ -67,7 +68,7 @@ export function Qualifier() {
       const key = STEPS[index].key as keyof Answers;
       setAnswers((a) => ({ ...a, [key]: value }));
       pending.current = true;
-      window.setTimeout(
+      advanceTimer.current = window.setTimeout(
         () => {
           pending.current = false;
           focusNext.current = true;
@@ -84,16 +85,26 @@ export function Qualifier() {
     [setAnswers],
   );
 
+  const cancelAdvance = () => {
+    window.clearTimeout(advanceTimer.current);
+    pending.current = false;
+  };
+
   const back = () => {
+    cancelAdvance();
     focusNext.current = true;
     if (mode !== "quiz") {
       setMode("quiz");
+      if (window.location.hash === "#formulas") {
+        history.replaceState(null, "", window.location.pathname);
+      }
       return;
     }
     setStep((s) => Math.max(0, s - 1));
   };
 
   const restart = () => {
+    cancelAdvance();
     focusNext.current = true;
     setAnswers({});
     setStep(0);

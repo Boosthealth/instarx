@@ -94,7 +94,6 @@
 .ed *:focus-visible {
   outline: 2px solid var(--ed-amber);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 .ed-wrap {
@@ -1687,6 +1686,9 @@
 }
 
 /* ---- Footer ------------------------------------------------------------ */
+#safety {
+  scroll-margin-top: 72px;
+}
 .ed-footer {
   background: var(--ed-ink);
   color: var(--ed-on-ink-muted);

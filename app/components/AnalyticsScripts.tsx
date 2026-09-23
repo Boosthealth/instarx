@@ -41,7 +41,6 @@ export default function AnalyticsScripts() {
     "/nad-plus",
     "/glp1/how-it-works",
     "/ed-treatment",
-    "/ed-treatment-v2",
   ]);
   const analyticsStrategy =
     pathname !== null && LAZY_ANALYTICS_ROUTES.has(pathname)

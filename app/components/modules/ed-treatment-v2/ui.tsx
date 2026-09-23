@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import type { MediaSlot as MediaSlotSpec } from "./content";
+import {
+  rating,
+  TODO_CONFIRM,
+  type MediaSlot as MediaSlotSpec,
+} from "./content";
 
 type ButtonVariant = "primary" | "dark" | "ghost-light";
 type ButtonSize = "sm" | "md" | "lg";
@@ -122,5 +126,99 @@ export function WasPrice({ value }: { value: string }) {
       <span className="sr-only">regularly </span>
       {value}
     </s>
+  );
+}
+
+const STAR_PATH =
+  "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
+
+function StarBox({ fill }: { fill: number }) {
+  const pct = Math.round(Math.max(0, Math.min(1, fill)) * 100);
+  return (
+    <span
+      className="edv2-rating__box"
+      style={{ "--fill": `${pct}%` } as CSSProperties}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d={STAR_PATH} />
+      </svg>
+    </span>
+  );
+}
+
+/* Trustpilot-style rating badge: five boxed stars with a fractional fill on
+ * the last, "Excellent 4.7 out of 5", and whose rating it is. The Trustpilot
+ * mark and outbound link appear only once TODO_CONFIRM.TRUSTPILOT_URL is set;
+ * until then the badge is labelled InstaRx (brief Part 4). Default is the
+ * stacked, centred form; `compact` is the single-row hero form. */
+export function TrustBadge({
+  compact = false,
+  onDark = false,
+  className = "",
+}: {
+  compact?: boolean;
+  onDark?: boolean;
+  className?: string;
+}) {
+  const score = Number(rating.score);
+  const url = TODO_CONFIRM.TRUSTPILOT_URL;
+  const by = url ? "on Trustpilot" : `by ${rating.source}`;
+  const label = `Rated ${rating.grade}, ${rating.score} out of ${rating.outOf} ${by}. ${rating.count}.`;
+  const cls = [
+    "edv2-rating",
+    compact && "edv2-rating--compact",
+    onDark && "edv2-rating--on-dark",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const inner = (
+    <>
+      <span className="edv2-rating__source">
+        {url ? (
+          <>
+            <svg
+              className="edv2-rating__mark"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d={STAR_PATH} />
+            </svg>
+            Trustpilot
+          </>
+        ) : (
+          rating.source
+        )}
+      </span>
+      <span className="edv2-rating__boxes">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <StarBox key={i} fill={score - i} />
+        ))}
+      </span>
+      <span className="edv2-rating__score">
+        <strong>
+          {rating.grade} {rating.score}
+        </strong>{" "}
+        out of {rating.outOf}
+      </span>
+      {!compact && <span className="edv2-rating__count">{rating.count}</span>}
+    </>
+  );
+
+  return url ? (
+    <a
+      className={cls}
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+    >
+      {inner}
+    </a>
+  ) : (
+    <span className={cls} role="img" aria-label={label}>
+      {inner}
+    </span>
   );
 }

@@ -51,16 +51,25 @@ export const TODO_CONFIRM = {
    *  labelled gradient slot underneath so a missing poster still shows a hero. */
   HERO_VIDEO_SRC: "/video/ed-treatment-v2/hero.mp4",
   HERO_POSTER_SRC: "/images/ed-treatment-v2/hero-poster.jpg",
+  /** Public Trustpilot profile URL. Neither instarx.com nor go.instarx.com
+   *  links one today (checked 2026-09-23), so TrustBadge shows the sitewide
+   *  rating labelled InstaRx and no Trustpilot mark until this is set. */
+  TRUSTPILOT_URL: null as string | null,
 } as const;
 
 const money = (n: number) => `$${n}`;
 const perDose = (price: number, doses: number) =>
   `$${(price / doses).toFixed(2).replace(/\.00$/, "")}`;
 
-/** Sitewide, real, not ED-specific. Always labelled as InstaRx. */
+/** Sitewide, real, not ED-specific. Always labelled as InstaRx (brief Part 4).
+ *  Rendered by TrustBadge in the hero (compact) and above the testimonials. */
 export const rating = {
+  grade: "Excellent",
   score: "4.7",
-  line: "Excellent 4.7 · 10,000+ InstaRx customers",
+  outOf: "5",
+  /** Whose rating this is. Replaced by the Trustpilot mark once TRUSTPILOT_URL exists. */
+  source: "InstaRx customer rating",
+  count: "Across 10,000+ InstaRx customers",
 } as const;
 
 export const header = {
@@ -433,6 +442,8 @@ export const steps = {
 } as const;
 
 export type Review = {
+  /** One-line headline in the customer's words, e.g. "Worth the investment". */
+  title: string;
   quote: string;
   /** First name and last initial only, e.g. "Mark T." Never invented. */
   name: string;
@@ -442,25 +453,72 @@ export type Review = {
 };
 
 export const reviews = {
-  heading: "Verified results.",
-  sub: "Real InstaRx customer reviews. ED-specific reviews are added as they are collected.",
+  heading: "What InstaRx customers say.",
+  sub: "Real, verified InstaRx customer reviews. ED-specific reviews are added as they are collected.",
   /** Real InstaRx reviews only. Empty until ED reviews exist. */
   items: [] as Review[],
-  pending: {
-    /** Section heading while no ED reviews exist; `heading` takes over once they do. */
-    sectionHeading: "What InstaRx customers say.",
-    heading: "Reviews pending",
-    body: "We publish real, verified InstaRx customer reviews only. This section fills as ED customers share their results.",
-    /** Themes we are collecting for (brief 5.12); shown as labelled placeholders. */
-    themes: [
-      "Didn't have to plan around it",
-      "Partner noticed",
-      "Discreet, plain packaging",
-      "No waiting room",
-    ],
-    cardLabel: "Placeholder · verified review pending",
-    /** Under each theme card. Never an attribution: these are not quotes. */
-    themeLabel: "Theme we're collecting reviews for",
+  /** SAMPLE CONTENT, NOT INSTARX REVIEWS. Six MEDVi customer reviews copied
+   *  verbatim from quad.medvi.org (2026-09-23) so the marquee can be judged at
+   *  real text density. Rendered only while `items` is empty, under a visible
+   *  banner and a per-card "Sample" tag. Replace with verified InstaRx reviews
+   *  before this route takes traffic: another company's reviews shown as ours
+   *  is a fabricated endorsement (FTC fake-reviews rule) and breaks brief
+   *  Part 4. Quad shows customer photos; these cards use initials until
+   *  InstaRx has photos with consent. */
+  sample: {
+    banner:
+      "Sample content: these six cards are MEDVi reviews copied from quad.medvi.org to size the layout. They are not InstaRx reviews and are replaced with verified ones before launch.",
+    tag: "Sample · MEDVi review",
+    items: [
+      {
+        name: "Ethan H.",
+        title: "Libido Boost Takes Things to the Next Level",
+        quote:
+          "Incredible product — not only does it work, but the libido boost truly takes things to the next level in an amazing way.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+      {
+        name: "Doug R.",
+        title: "Feeling Like My Younger Self Again",
+        quote:
+          "Honestly, I didn't think anything would really help me, but MEDVi proved me wrong. I feel like my younger self again, and my wife's noticed too.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+      {
+        name: "Amir R.",
+        title: "Worth the Investment",
+        quote:
+          "Truly thankful to have discovered a solution that actually works for my needs. It's a little on the expensive side, but absolutely worth the investment.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+      {
+        name: "Frank N.",
+        title: "Huge Difference: More Energy, More Drive",
+        quote:
+          "I was nervous to try something new, but the difference has been huge. More energy, more drive, and just better in every way.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+      {
+        name: "Bryan G.",
+        title: "Nothing Compares to MEDVi's Combination",
+        quote:
+          "I've tried other products, but nothing compares to MEDVi. The combination of medicines works perfectly together, and the difference is incredible.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+      {
+        name: "John D.",
+        title: "Game-Changing Libido",
+        quote:
+          "I was skeptical at first, but MEDVi proved me wrong. The increased libido and improved blood flow have been game-changing for me and my wife.",
+        label: "MEDVi customer (sample)",
+        rating: 5,
+      },
+    ] as Review[],
   },
 } as const;
 

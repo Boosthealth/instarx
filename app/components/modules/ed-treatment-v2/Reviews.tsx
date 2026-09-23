@@ -1,12 +1,59 @@
-import { rating, reviews } from "./content";
-import { Stars } from "./ui";
+import { reviews, type Review } from "./content";
+import { Stars, TrustBadge } from "./ui";
 import { Reveal } from "./Reveal";
 
-/* Verified results. Empty-safe: with no ED reviews yet, the section shows a
- * clear "reviews pending" state and labelled theme placeholders. No invented
- * names, no invented quotes. */
+/* Testimonials: a CSS marquee of review cards (avatar initials, name, stars,
+ * headline, quote) under the sitewide rating badge. Structure mirrors the
+ * quad.medvi.org wall; motion is the 21st.dev infinite-moving-cards idea done
+ * in CSS so it runs off the main thread next to the hero video.
+ *
+ * Empty-safe and honest: with no ED reviews yet, the six MEDVi sample reviews
+ * from content.ts render under a visible banner and a per-card "Sample" tag.
+ * Real reviews replace them the moment `reviews.items` is non-empty. */
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((part) => part.replace(/[^A-Za-z]/g, "")[0] ?? "")
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+function ReviewCard({ review, sample }: { review: Review; sample: boolean }) {
+  return (
+    <li className="edv2-review">
+      {sample && <span className="edv2-review__tag">{reviews.sample.tag}</span>}
+      <div className="edv2-review__who">
+        <span className="edv2-review__avatar" aria-hidden="true">
+          {initials(review.name)}
+        </span>
+        <span className="edv2-review__id">
+          <strong>{review.name}</strong>
+          <span>{review.label}</span>
+        </span>
+        <Stars
+          count={review.rating}
+          label={`${review.rating} out of 5 stars`}
+          className="edv2-review__stars"
+        />
+      </div>
+      <p className="edv2-review__title">{review.title}</p>
+      <blockquote className="edv2-review__quote">
+        <p>{review.quote}</p>
+      </blockquote>
+    </li>
+  );
+}
+
 export function Reviews() {
-  const hasReviews = reviews.items.length > 0;
+  const live = reviews.items.length > 0;
+  const items: readonly Review[] = live ? reviews.items : reviews.sample.items;
+  const sample = !live;
+  /* ~26px/s (the 21st.dev "slow" speed) at a 22rem card + 1rem gap. */
+  const duration = `${items.length * 14}s`;
+
+  const cards = items.map((review, i) => (
+    <ReviewCard key={`${review.name}-${i}`} review={review} sample={sample} />
+  ));
 
   return (
     <section
@@ -16,66 +63,35 @@ export function Reviews() {
       aria-labelledby="edv2-reviews-title"
     >
       <div className="edv2-container">
-        <Reveal className="edv2-head">
+        <Reveal className="edv2-head edv2-head--center">
+          <TrustBadge />
           <h2 id="edv2-reviews-title" className="edv2-h2">
-            {hasReviews ? reviews.heading : reviews.pending.sectionHeading}
+            {reviews.heading}
           </h2>
           <p className="edv2-lead">{reviews.sub}</p>
-          <p className="edv2-reviews__rating">
-            <Stars label={`Rated ${rating.score} out of 5`} />
-            <span>{rating.line}</span>
-          </p>
         </Reveal>
-
-        {hasReviews ? (
-          <ul className="edv2-reviews__grid">
-            {reviews.items.map((review, i) => (
-              <Reveal
-                key={`${review.name}-${i}`}
-                as="li"
-                className="edv2-review"
-                delay={(i % 4) * 60}
-              >
-                <Stars
-                  count={review.rating}
-                  label={`${review.rating} out of 5 stars`}
-                />
-                <blockquote className="edv2-review__quote">
-                  {review.quote}
-                </blockquote>
-                <p className="edv2-review__meta">
-                  <strong>{review.name}</strong> · {review.label}
-                </p>
-              </Reveal>
-            ))}
-          </ul>
-        ) : (
-          <>
-            <Reveal className="edv2-reviews__pending">
-              <h3>{reviews.pending.heading}</h3>
-              <p>{reviews.pending.body}</p>
-            </Reveal>
-            <ul className="edv2-reviews__grid" aria-label="Review placeholders">
-              {reviews.pending.themes.map((theme, i) => (
-                <Reveal
-                  key={theme}
-                  as="li"
-                  className="edv2-review edv2-review--pending"
-                  delay={i * 60}
-                >
-                  <span className="edv2-review__label">
-                    {reviews.pending.cardLabel}
-                  </span>
-                  <p className="edv2-review__quote">{theme}</p>
-                  <p className="edv2-review__meta">
-                    {reviews.pending.themeLabel}
-                  </p>
-                </Reveal>
-              ))}
-            </ul>
-          </>
+        {sample && (
+          <p className="edv2-reviews__sample" role="note">
+            {reviews.sample.banner}
+          </p>
         )}
       </div>
+
+      <Reveal className="edv2-marquee">
+        <div
+          className="edv2-marquee__track"
+          style={{ "--marquee-dur": duration } as React.CSSProperties}
+        >
+          <ul className="edv2-marquee__set" aria-label="Customer reviews">
+            {cards}
+          </ul>
+          {/* Second copy makes the loop seamless; hidden from assistive tech
+              and removed entirely under reduced motion. */}
+          <ul className="edv2-marquee__set" aria-hidden="true">
+            {cards}
+          </ul>
+        </div>
+      </Reveal>
     </section>
   );
 }

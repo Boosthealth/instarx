@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { hero, heroOffer, INTAKE_HREF, rating } from "./content";
-import { Button, MediaSlot, Stars, WasPrice } from "./ui";
+import { hero, heroOffer, INTAKE_HREF } from "./content";
+import { Button, MediaSlot, TrustBadge, WasPrice } from "./ui";
 
 /* Video hero. Order of operations, deliberately:
  * 1. The poster (next/image, priority) is the LCP element and paints first.
@@ -121,13 +121,12 @@ export function VideoHero() {
 
       <div className="edv2-container edv2-hero__content">
         <div className="edv2-hero__stack">
-          <p
+          <div
             className="edv2-hero__rating"
             style={{ "--i": 0 } as React.CSSProperties}
           >
-            <Stars label={`Rated ${rating.score} out of 5`} />
-            <span>{rating.line}</span>
-          </p>
+            <TrustBadge compact onDark />
+          </div>
 
           <h1
             id="edv2-hero-title"

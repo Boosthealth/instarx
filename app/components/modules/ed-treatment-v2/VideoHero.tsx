@@ -7,8 +7,9 @@ import { Button, MediaSlot, SlotImage, TrustBadge, WasPrice } from "./ui";
 
 /* Video hero. Order of operations, deliberately:
  * 1. The poster (next/image, priority) is the LCP element and paints first.
- * 2. Once the poster has painted (or failed), and only when the visitor has
- *    not asked for reduced motion, the video gets its src and plays. It fades
+ * 2. Once the poster has painted (or failed), and only on 48rem+ viewports
+ *    for visitors who have not asked for reduced motion, the video gets its
+ *    src and plays. It fades
  *    in over the poster on canplay. preload="none" keeps it off the critical
  *    path; a 404 hides the element and the poster/gradient slot remains.
  * The gradient MediaSlot sits underneath both, so a missing poster still
@@ -36,7 +37,9 @@ export function VideoHero() {
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (reduce) return;
+    // The loop is 16:9 only; phones keep their own 9:16 poster framing.
+    const wide = window.matchMedia("(min-width: 48rem)").matches;
+    if (reduce || !wide) return;
     // Defer past the poster paint so the LCP frame is never contended.
     const id = requestAnimationFrame(() => {
       setVideoState("loading");

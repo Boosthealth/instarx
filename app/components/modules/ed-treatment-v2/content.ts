@@ -47,9 +47,6 @@ export const TODO_CONFIRM = {
   /** Safety-information destination. A combined Quattro™ safety page does not
    *  exist yet; the sildenafil page is the closest live one. */
   SAFETY_HREF: "/safety/sildenafil",
-  /** Video path. The loop does not exist yet; the poster stills do, and the
-   *  labelled gradient slot underneath still renders if a poster 404s. */
-  HERO_VIDEO_SRC: "/video/ed-treatment-v2/hero.mp4",
   /** Public Trustpilot profile URL. Neither instarx.com nor go.instarx.com
    *  links one today (checked 2026-09-23), so TrustBadge shows the sitewide
    *  rating labelled InstaRx and no Trustpilot mark until this is set. */
@@ -131,9 +128,12 @@ export const hero = {
   cta: "See if I qualify",
   ctaMicro: `Private online visit · Prescription required · ${TODO_CONFIRM.NOT_QUALIFIED}`,
   video: {
-    src: TODO_CONFIRM.HERO_VIDEO_SRC,
-    /** Poster stills, 16:9 for desktop and 9:16 for mobile. These are the
-     *  LCP frame today and the start frames for the loop later. */
+    /** 16:9 muted loop, generated from the wide poster (same start and end
+     *  frame, so it loops without a cut). Plays at 48rem and up only: phones
+     *  keep the tall poster until a 9:16 loop exists. */
+    src: "/images/ed-treatment-v2/hero-wide.mp4",
+    /** Poster stills, 16:9 for desktop and 9:16 for mobile. The poster is the
+     *  LCP frame; the video fades in over it. */
     poster: "/images/ed-treatment-v2/hero-poster-wide.webp",
     posterMobile: "/images/ed-treatment-v2/hero-poster-tall.webp",
     slot: {
@@ -475,8 +475,9 @@ export const reviews = {
   items: [] as Review[],
   /** SAMPLE CONTENT, NOT INSTARX REVIEWS. Six MEDVi customer reviews copied
    *  verbatim from quad.medvi.org (2026-09-23) so the marquee can be judged at
-   *  real text density. Rendered only while `items` is empty, under a visible
-   *  banner and a per-card "Sample" tag. Replace with verified InstaRx reviews
+   *  real text density. Rendered only while `items` is empty, under the
+   *  "layout preview" lead, each card labelled "MEDVi customer (sample)".
+   *  Replace with verified InstaRx reviews
    *  before this route takes traffic: another company's reviews shown as ours
    *  is a fabricated endorsement (FTC fake-reviews rule) and breaks brief
    *  Part 4. Quad shows customer photos; these cards use initials until
@@ -485,9 +486,6 @@ export const reviews = {
   sample: {
     sub: "Layout preview with sample cards. Verified InstaRx reviews replace them before this page takes traffic.",
     listLabel: "Sample reviews (MEDVi, not InstaRx)",
-    banner:
-      "Sample content: these six cards are MEDVi reviews copied from quad.medvi.org to size the layout. They are not InstaRx reviews and are replaced with verified ones before launch.",
-    tag: "Sample · MEDVi review",
     items: [
       {
         name: "Ethan H.",

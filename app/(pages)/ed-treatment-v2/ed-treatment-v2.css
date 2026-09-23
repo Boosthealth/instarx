@@ -44,21 +44,27 @@
   --edv2-accent-hover: #f7861e;
   --edv2-accent-soft: #fff6ea;
 
-  /* Semantic. */
-  --edv2-bg: var(--edv2-white);
-  --edv2-bg-2: var(--edv2-zinc-50);
-  --edv2-bg-3: var(--edv2-zinc-100);
+  /* Semantic. The light bands sit on a settled grey rather than paper white,
+     so the step down from the dark hero is gentler; white is kept for the
+     cards that should lift off it (pricing, reviews, safety, sticky bar).
+     text-3 is one step darker than zinc-500, which drops under 4.5:1 on the
+     soft band. */
+  --edv2-bg: #f2f2f3;
+  --edv2-bg-2: #e9e9eb;
+  --edv2-bg-3: #e2e2e5;
   --edv2-bg-dark: var(--edv2-zinc-900);
   --edv2-bg-dark-2: var(--edv2-zinc-800);
   --edv2-text: var(--edv2-zinc-900);
   --edv2-text-2: var(--edv2-zinc-600);
-  --edv2-text-3: var(--edv2-zinc-500);
+  --edv2-text-3: #62626b;
   --edv2-text-on-dark: var(--edv2-white);
   --edv2-text-on-dark-2: var(--edv2-zinc-300);
   --edv2-text-on-dark-3: var(--edv2-zinc-400);
-  --edv2-border: var(--edv2-zinc-200);
+  --edv2-border: #d9d9dd;
   --edv2-border-dark: rgba(255, 255, 255, 0.12);
-  --edv2-focus: var(--edv2-accent);
+  /* Ink ring on the grey bands (the accent falls under 3:1 there); the dark
+     bands switch back to the accent below. */
+  --edv2-focus: var(--edv2-zinc-900);
   /* Trustpilot's own greens, for the boxed-star badge only. */
   --edv2-tp-green: #00b67a;
   --edv2-tp-grey: #dcdce0;
@@ -448,6 +454,15 @@
 
 /* ---------- Header ---------- */
 
+/* Dark surfaces keep the vermillion focus ring. */
+.edv2-header,
+.edv2-hero,
+.edv2-stack,
+.edv2-final,
+.edv2-footer {
+  --edv2-focus: var(--edv2-accent);
+}
+
 .edv2-header {
   position: absolute;
   inset-inline: 0;
@@ -551,6 +566,14 @@
 
 .edv2-hero__video[data-ready="true"] {
   opacity: 1;
+}
+
+/* The loop is 16:9 only. If a desktop window narrows after it started, hide
+ * it so the tall poster shows; the offscreen observer then pauses it. */
+@media (max-width: 47.99rem) {
+  .edv2-hero__video {
+    display: none;
+  }
 }
 
 .edv2-hero__scrim {
@@ -1580,19 +1603,6 @@ a.edv2-rating:hover .edv2-rating__source {
 
 /* ---------- Reviews (testimonial marquee) ---------- */
 
-.edv2-reviews__sample {
-  max-width: 48rem;
-  margin: calc(-1 * clamp(1rem, 0.5rem + 2vw, 2rem)) auto 2rem;
-  padding: 0.875rem 1rem;
-  border: 1px dashed var(--edv2-accent);
-  border-radius: var(--edv2-r-md);
-  background: var(--edv2-accent-soft);
-  font-size: var(--edv2-fs-small);
-  color: var(--edv2-text);
-  text-align: center;
-  text-wrap: pretty;
-}
-
 /* CSS marquee, off the main thread: the track holds two identical sets and
  * translates by exactly one set (50% of the track plus half the gap between
  * the sets), so the loop has no seam. Pauses on hover and while anything
@@ -1662,19 +1672,6 @@ a.edv2-rating:hover .edv2-rating__source {
   border-radius: var(--edv2-r-lg);
   background: var(--edv2-white);
   box-shadow: var(--edv2-shadow-sm);
-}
-
-.edv2-review__tag {
-  align-self: flex-start;
-  padding: 0.125rem 0.5rem;
-  border: 1px dashed var(--edv2-accent);
-  border-radius: var(--edv2-r-full);
-  background: var(--edv2-accent-soft);
-  font-size: var(--edv2-fs-micro);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--edv2-accent-ink);
 }
 
 .edv2-review__who {

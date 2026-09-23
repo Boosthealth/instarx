@@ -8,8 +8,10 @@ import { Reveal } from "./Reveal";
  * in CSS so it runs off the main thread next to the hero video.
  *
  * Empty-safe and honest: with no ED reviews yet, the six MEDVi sample reviews
- * from content.ts render under a visible banner and a per-card "Sample" tag,
- * and only outside production builds (VERCEL_ENV is inlined at build time).
+ * from content.ts render under a "layout preview" lead, each labelled
+ * "MEDVi customer (sample)" under the name and listed as sample reviews for
+ * assistive tech, and only outside production builds (VERCEL_ENV is inlined
+ * at build time).
  * Production shows the badge, heading and an empty-state line until
  * `reviews.items` is non-empty, which replaces the samples everywhere. */
 const SHOW_SAMPLES = process.env.VERCEL_ENV !== "production";
@@ -21,10 +23,9 @@ const initials = (name: string) =>
     .slice(0, 2)
     .toUpperCase();
 
-function ReviewCard({ review, sample }: { review: Review; sample: boolean }) {
+function ReviewCard({ review }: { review: Review }) {
   return (
     <li className="edv2-review">
-      {sample && <span className="edv2-review__tag">{reviews.sample.tag}</span>}
       <div className="edv2-review__who">
         <span className="edv2-review__avatar" aria-hidden="true">
           {initials(review.name)}
@@ -64,7 +65,7 @@ export function Reviews() {
   const duration = `${items.length * 14}s`;
 
   const cards = items.map((review, i) => (
-    <ReviewCard key={`${review.name}-${i}`} review={review} sample={sample} />
+    <ReviewCard key={`${review.name}-${i}`} review={review} />
   ));
 
   return (
@@ -82,11 +83,6 @@ export function Reviews() {
           </h2>
           <p className="edv2-lead">{sub}</p>
         </Reveal>
-        {sample && (
-          <p className="edv2-reviews__sample" role="note">
-            {reviews.sample.banner}
-          </p>
-        )}
       </div>
 
       {items.length > 0 && (

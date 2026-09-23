@@ -70,6 +70,13 @@ export const rating = {
   /** Whose rating this is. Replaced by the Trustpilot mark once TRUSTPILOT_URL exists. */
   source: "InstaRx customer rating",
   count: "Across 10,000+ InstaRx customers",
+  outOfLabel: "out of",
+  trustpilotWordmark: "Trustpilot",
+  /** Accessible names for the whole badge (it is one role="img"). */
+  labelInstaRx:
+    "InstaRx customer rating: Excellent, 4.7 out of 5. Across 10,000+ InstaRx customers.",
+  labelTrustpilot:
+    "Rated Excellent, 4.7 out of 5 on Trustpilot. Across 10,000+ InstaRx customers.",
 } as const;
 
 export const header = {
@@ -455,6 +462,11 @@ export type Review = {
 export const reviews = {
   heading: "What InstaRx customers say.",
   sub: "Real, verified InstaRx customer reviews. ED-specific reviews are added as they are collected.",
+  /** Shown instead of `sub` while no real reviews exist (production). */
+  emptySub:
+    "ED-specific reviews are added as they are collected. The rating above is InstaRx's sitewide customer rating.",
+  listLabel: "Customer reviews",
+  starsLabel: (n: number) => `${n} out of 5 stars`,
   /** Real InstaRx reviews only. Empty until ED reviews exist. */
   items: [] as Review[],
   /** SAMPLE CONTENT, NOT INSTARX REVIEWS. Six MEDVi customer reviews copied
@@ -464,8 +476,11 @@ export const reviews = {
    *  before this route takes traffic: another company's reviews shown as ours
    *  is a fabricated endorsement (FTC fake-reviews rule) and breaks brief
    *  Part 4. Quad shows customer photos; these cards use initials until
-   *  InstaRx has photos with consent. */
+   *  InstaRx has photos with consent. Never rendered in a production build
+   *  (Reviews.tsx checks VERCEL_ENV); local and preview builds show them. */
   sample: {
+    sub: "Layout preview with sample cards. Verified InstaRx reviews replace them before this page takes traffic.",
+    listLabel: "Sample reviews (MEDVi, not InstaRx)",
     banner:
       "Sample content: these six cards are MEDVi reviews copied from quad.medvi.org to size the layout. They are not InstaRx reviews and are replaced with verified ones before launch.",
     tag: "Sample · MEDVi review",

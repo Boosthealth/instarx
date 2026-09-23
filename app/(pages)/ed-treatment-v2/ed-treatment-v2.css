@@ -1523,6 +1523,13 @@ a.edv2-rating:hover .edv2-rating__source {
   list-style: none;
 }
 
+/* The list is focusable (keyboard pause + reduced-motion scrolling); keep
+ * its focus ring inside the clipped marquee. */
+.edv2-marquee__set:focus-visible {
+  outline-offset: -0.25rem;
+  border-radius: var(--edv2-r-2xl);
+}
+
 @keyframes edv2-marquee {
   to {
     transform: translateX(calc(-50% - var(--marquee-gap) / 2));

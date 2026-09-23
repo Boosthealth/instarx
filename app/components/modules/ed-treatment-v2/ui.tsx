@@ -162,8 +162,7 @@ export function TrustBadge({
 }) {
   const score = Number(rating.score);
   const url = TODO_CONFIRM.TRUSTPILOT_URL;
-  const by = url ? "on Trustpilot" : `by ${rating.source}`;
-  const label = `Rated ${rating.grade}, ${rating.score} out of ${rating.outOf} ${by}. ${rating.count}.`;
+  const label = url ? rating.labelTrustpilot : rating.labelInstaRx;
   const cls = [
     "edv2-rating",
     compact && "edv2-rating--compact",
@@ -185,7 +184,7 @@ export function TrustBadge({
             >
               <path d={STAR_PATH} />
             </svg>
-            Trustpilot
+            {rating.trustpilotWordmark}
           </>
         ) : (
           rating.source
@@ -200,7 +199,7 @@ export function TrustBadge({
         <strong>
           {rating.grade} {rating.score}
         </strong>{" "}
-        out of {rating.outOf}
+        {rating.outOfLabel} {rating.outOf}
       </span>
       {!compact && <span className="edv2-rating__count">{rating.count}</span>}
     </>

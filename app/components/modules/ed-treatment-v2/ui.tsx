@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
@@ -102,15 +103,25 @@ export function MediaSlot({
     "--slot-aspect": slot.aspect,
     ...(slot.aspectMobile ? { "--slot-aspect-mobile": slot.aspectMobile } : {}),
   } as CSSProperties;
+  const filled = Boolean(children) || Boolean(slot.src);
   return (
     <div
       className={`edv2-slot edv2-slot--${slot.tone} ${className}`.trim()}
       style={style}
-      aria-hidden={children ? undefined : "true"}
+      aria-hidden={filled ? undefined : "true"}
     >
       <div className="edv2-slot__grain" aria-hidden="true" />
+      {slot.src && (
+        <Image
+          src={slot.src}
+          alt=""
+          fill
+          sizes="(min-width: 48rem) 40vw, 100vw"
+          className="edv2-slot__img"
+        />
+      )}
       {children}
-      {!hideLabel && (
+      {!hideLabel && !slot.src && (
         <span className="edv2-slot__label" aria-hidden="true">
           {slot.label}
         </span>

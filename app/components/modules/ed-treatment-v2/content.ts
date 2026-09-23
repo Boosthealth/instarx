@@ -98,6 +98,10 @@ export type MediaSlot = {
   aspectMobile?: string;
   /** Placeholder gradient variant (see .edv2 --slot-* tokens). */
   tone: 0 | 1 | 2 | 3 | 4;
+  /** Real still for the slot, under /public. When set, the slot renders it
+   * over the gradient and drops the brief label. Decorative: the copy beside
+   * it carries the meaning, so it ships with an empty alt. */
+  src?: string;
 };
 
 export type HeroVariant = "default" | "A" | "B" | "C" | "D" | "E";
@@ -167,9 +171,10 @@ export const formula = {
       media: {
         label: "Ingredient card · 4:5 abstract macro · no faces",
         asset:
-          "Macro of a sublingual troche dissolving, blue-lit, shallow depth of field.",
+          "Close crop of a hand gripping a navy linen sheet, warm lamp on the hand, cool window fill, no faces.",
         aspect: "4 / 5",
         tone: 1,
+        src: "/images/ed-treatment-v2/formula-speed.webp",
       },
     },
     {

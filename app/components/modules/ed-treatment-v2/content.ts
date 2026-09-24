@@ -240,9 +240,27 @@ export const formula = {
     "Sildenafil, tadalafil and vardenafil are each FDA-approved on their own; apomorphine is used off-label. Quattro™ is a compounded combination prepared by a state-licensed 503A compounding pharmacy for you; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
 } as const;
 
+/** Frosted labels laid over a benefit photo. Every string repeats a claim
+ *  that already appears elsewhere on the page (hero, comparison table);
+ *  nothing here is new. */
+export type BenefitOverlay =
+  | { kind: "chips"; items: readonly string[] }
+  | {
+      kind: "compare";
+      label: string;
+      oldLabel: string;
+      oldValue: string;
+      newLabel: string;
+      newValue: string;
+    }
+  | { kind: "window"; label: string; value: string };
+
 export type Benefit = {
   title: string;
   body: string;
+  /** Two check-list points under the body. */
+  points: readonly { title: string; body: string }[];
+  overlay: BenefitOverlay;
   media: MediaSlot;
 };
 
@@ -251,7 +269,21 @@ export const benefits = {
   items: [
     {
       title: "Melts in minutes.",
-      body: "Absorbs through the tissue under your tongue instead of waiting on digestion, so many men feel it in as little as 15 minutes*.",
+      body: "One dose that dissolves under your tongue, so many men feel it in as little as 15 minutes*.",
+      points: [
+        {
+          title: "Skips digestion",
+          body: "Absorbs through the tissue under your tongue instead of waiting on your stomach.",
+        },
+        {
+          title: "Four ingredients, one dose",
+          body: "The actives behind Viagra®, Cialis® and Levitra®, plus apomorphine.",
+        },
+      ],
+      overlay: {
+        kind: "chips",
+        items: ["Dissolves under the tongue", "As little as 15 minutes*"],
+      },
       media: {
         label: "Benefit visual · 1:1 · sublingual troche macro",
         asset:
@@ -263,7 +295,25 @@ export const benefits = {
     },
     {
       title: "Dinner and performance.",
-      body: "A meal is less likely to blunt it than a swallowed tablet. No countdown, no skipping the second course. Your provider will tell you how to time it.",
+      body: "A meal is less likely to blunt it than a swallowed tablet. No countdown, no skipping the second course.",
+      points: [
+        {
+          title: "Less affected by food",
+          body: "A swallowed pill can be; a sublingual dose is less likely to be.",
+        },
+        {
+          title: "Timing from your provider",
+          body: "Your provider will tell you how to time it.",
+        },
+      ],
+      overlay: {
+        kind: "compare",
+        label: "Affected by food",
+        oldLabel: "Swallowed pill",
+        oldValue: "Can be",
+        newLabel: "Quattro™",
+        newValue: "Less likely",
+      },
       media: {
         label: "Benefit visual · 1:1 · low-light dinner table, no faces",
         asset:
@@ -276,6 +326,21 @@ export const benefits = {
     {
       title: "Ready when you are.",
       body: "Tadalafil keeps the window open for up to 36 hours. One dose can carry a weekend.",
+      points: [
+        {
+          title: "Up to 36 hours",
+          body: "Tadalafil is the long-acting ingredient, the active in Cialis®.",
+        },
+        {
+          title: "Two pathways",
+          body: "Blood flow, plus the brain's arousal pathway through apomorphine.",
+        },
+      ],
+      overlay: {
+        kind: "window",
+        label: "Active window",
+        value: "Up to 36 hours",
+      },
       media: {
         label: "Benefit visual · 1:1 · duration, no faces",
         asset:
@@ -544,6 +609,18 @@ export const finalCta = {
   body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
   cta: "See if I qualify",
   sub: `First month ${money(TODO_CONFIRM.PRICE_MONTHLY)}. Cancel anytime.`,
+  /** Decorative strip of the page's own stills under the CTA, in an order
+   *  that alternates warm and cool frames. */
+  strip: [
+    formula.items[0].media.src,
+    benefits.items[0].media.src,
+    formula.items[2].media.src,
+    benefits.items[1].media.src,
+    formula.items[1].media.src,
+    delivered.media.srcMobile,
+    formula.items[3].media.src,
+    benefits.items[2].media.src,
+  ],
 } as const;
 
 export const stickyBar = {

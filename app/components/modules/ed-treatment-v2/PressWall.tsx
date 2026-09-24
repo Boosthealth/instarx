@@ -7,8 +7,8 @@ import { Reveal } from "./Reveal";
  * the dark ground directly under the hero, so the hero's night carries on
  * for one more beat before the stack. Motion is the 21st.dev "cinematic logo
  * cloud" entrance, done in CSS: each mark resolves out of a blur, in order,
- * once, when the row scrolls in. A static row rather than a third marquee;
- * the page already moves at the reviews and the still strip.
+ * once, when the row scrolls in. A static row; the only marquee on the page
+ * is the still strip under the final CTA.
  *
  * Empty-safe and honest: with no confirmed InstaRx coverage yet, the nine
  * MEDVi sample logos from content.ts render on their own, with no lead

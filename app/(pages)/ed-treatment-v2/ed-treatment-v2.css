@@ -1613,8 +1613,8 @@
 
 /* Logo wall on the hero's dark ground: one centred, wrapping row of
    monochrome wordmarks (fills baked into the SVGs, zinc-400 on zinc-900).
-   A static row, not a third marquee; the page already moves at the reviews
-   and the still strip. Gap and scale are tuned so all nine sit on one line
+   A static row; the only marquee on the page is the still strip under the
+   final CTA. Gap and scale are tuned so all nine sit on one line
    inside the 80rem container; narrower viewports wrap. */
 .edv2-press {
   background: var(--edv2-bg-dark);
@@ -1980,162 +1980,179 @@ a.edv2-rating:hover .edv2-rating__source {
   color: var(--edv2-text-on-dark-3);
 }
 
-/* ---------- Reviews (testimonial marquee) ---------- */
+/* ---------- Reviews (photo + quote wall) ---------- */
 
-/* CSS marquee, off the main thread: the track holds two identical sets and
- * translates by exactly one set (50% of the track plus half the gap between
- * the sets), so the loop has no seam. Pauses on hover and while anything
- * inside has focus. Duration comes from the item count (see Reviews.tsx). */
-.edv2-marquee {
-  --marquee-gap: 1rem;
-  position: relative;
-  overflow: hidden;
-  padding-block: 0.5rem;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 6%,
-    #000 94%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 6%,
-    #000 94%,
-    transparent
-  );
-}
-
-.edv2-marquee__track {
-  display: flex;
-  gap: var(--marquee-gap);
-  width: max-content;
-  animation: edv2-marquee var(--marquee-dur, 80s) linear infinite;
-}
-
-.edv2-marquee:hover .edv2-marquee__track,
-.edv2-marquee:focus-within .edv2-marquee__track {
-  animation-play-state: paused;
-}
-
-.edv2-marquee__set {
-  display: flex;
-  gap: var(--marquee-gap);
+/* Two columns on phones, four from 64rem. Each column is one review: a 3:4
+ * photo tile and a quote tile. Flipped columns reverse the flex direction
+ * (DOM order stays photo then quote) so the photos step diagonally. The
+ * quote tile flexes to fill the row, so every column in a row ends level. */
+.edv2-mosaic {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* The list is focusable (keyboard pause + reduced-motion scrolling); keep
- * its focus ring inside the clipped marquee. */
-.edv2-marquee__set:focus-visible {
-  outline-offset: -0.25rem;
-  border-radius: var(--edv2-r-lg);
-}
-
-@keyframes edv2-marquee {
-  to {
-    transform: translateX(calc(-50% - var(--marquee-gap) / 2));
-  }
-}
-
-.edv2-review {
-  position: relative;
+.edv2-mosaic__item {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  width: min(22rem, calc(100vw - 3rem));
-  padding: 1.5rem;
-  border: 1px solid var(--edv2-border);
-  border-radius: var(--edv2-r-lg);
-  background: var(--edv2-white);
-  box-shadow: var(--edv2-shadow-sm);
-}
-
-.edv2-review__who {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.edv2-review__avatar {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: var(--edv2-zinc-900);
-  color: var(--edv2-white);
-  font-size: var(--edv2-fs-small);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.edv2-review__id {
-  display: flex;
-  flex-direction: column;
   min-width: 0;
-  line-height: 1.25;
 }
 
-.edv2-review__id strong {
+.edv2-mosaic__item--flip {
+  flex-direction: column-reverse;
+}
+
+.edv2-mosaic__photo {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--edv2-r-xl);
+  background: var(--edv2-bg-3);
+}
+
+.edv2-mosaic__img {
+  object-fit: cover;
+}
+
+/* Foot gradient under the caption; the photo stays fully visible above it. */
+.edv2-mosaic__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Deep enough at the foot that white 12px text clears 4.5:1 over a pale
+     shirt or granite; fades to nothing past the lower half. */
+  background: linear-gradient(
+    to top,
+    rgb(8 8 12 / 0.88),
+    rgb(8 8 12 / 0.72) 14%,
+    rgb(8 8 12 / 0.5) 28%,
+    rgb(8 8 12 / 0) 60%
+  );
+  pointer-events: none;
+}
+
+.edv2-mosaic__who {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 1rem;
+  line-height: 1.25;
+  color: var(--edv2-text-on-dark);
+}
+
+.edv2-mosaic__who strong {
   font-size: var(--edv2-fs-body);
+  font-weight: 600;
+}
+
+.edv2-mosaic__who span {
+  font-size: var(--edv2-fs-micro);
+}
+
+.edv2-mosaic__quote {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 1rem;
+  border-radius: var(--edv2-r-xl);
+  background: var(--edv2-white);
   color: var(--edv2-text);
 }
 
-.edv2-review__id span {
+.edv2-mosaic__stars svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* Only the customer's words live in the blockquote; stars and byline sit
+   beside it in the tile so they are not read as part of the quotation. */
+.edv2-mosaic__bq {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  margin: 0;
+}
+
+.edv2-mosaic__title {
+  margin: 0;
+  font-size: var(--edv2-fs-body);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: var(--edv2-track-heading);
+  text-wrap: balance;
+}
+
+.edv2-mosaic__text {
+  margin: 0;
+  font-size: var(--edv2-fs-small);
+  line-height: 1.5;
+  color: var(--edv2-text-2);
+  text-wrap: pretty;
+}
+
+/* Name and label at the foot of a quote tile that has no photo. */
+.edv2-mosaic__by {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  line-height: 1.25;
+}
+
+.edv2-mosaic__by strong {
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+}
+
+.edv2-mosaic__by span {
   font-size: var(--edv2-fs-micro);
   color: var(--edv2-text-3);
 }
 
-.edv2-review__stars {
-  margin-left: auto;
-}
-
-.edv2-review__title {
-  margin: 0;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: var(--edv2-track-heading);
-  color: var(--edv2-text);
-  text-wrap: balance;
-}
-
-.edv2-review__quote {
-  margin: 0;
-}
-
-.edv2-review__quote p {
-  margin: 0;
-  font-size: var(--edv2-fs-body);
-  line-height: var(--edv2-lh-body);
-  color: var(--edv2-text-2);
-}
-
-/* Reduced motion: a plain horizontal scroller with snap points, one set. */
-@media (prefers-reduced-motion: reduce) {
-  .edv2-marquee {
-    overflow-x: auto;
-    padding-inline: var(--edv2-gutter);
-    scroll-snap-type: x proximity;
-    scrollbar-width: thin;
-    -webkit-mask-image: none;
-    mask-image: none;
+@media (min-width: 40rem) {
+  .edv2-mosaic,
+  .edv2-mosaic__item {
+    gap: 1rem;
   }
 
-  .edv2-marquee__track {
-    animation: none;
+  .edv2-mosaic__who {
+    padding: 1.25rem;
   }
 
-  .edv2-marquee__set[aria-hidden="true"] {
-    display: none;
+  .edv2-mosaic__quote {
+    gap: 0.75rem;
+    padding: 1.5rem;
   }
 
-  .edv2-review {
-    scroll-snap-align: start;
+  .edv2-mosaic__title {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .edv2-mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Used by the final CTA strip (.edv2-strip__track), which sets its own
+ * --marquee-gap. */
+@keyframes edv2-marquee {
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap) / 2));
   }
 }
 
@@ -2179,11 +2196,11 @@ a.edv2-rating:hover .edv2-rating__source {
   color: var(--edv2-text-on-dark-3);
 }
 
-/* Still strip under the final CTA: the page's own photos, tilted a few
-   degrees each, rolling the opposite way to the reviews at about half the
-   speed, and fading at the sides. It eats most of the section's bottom
-   padding so the photos sit low, next to the footer. Reuses the reviews'
-   keyframe; --marquee-gap feeds its travel distance. */
+/* Still strip under the final CTA: the page's own photos and three night
+   frames made for it, tilted a few degrees each, rolling slowly and fading
+   at the sides. It eats most of the section's bottom padding so the photos
+   sit low, next to the footer. The page's only marquee; --marquee-gap feeds
+   the keyframe's travel distance. */
 .edv2-strip {
   --marquee-gap: 1rem;
   --still-h: 12rem;
@@ -2221,7 +2238,7 @@ a.edv2-rating:hover .edv2-rating__source {
   animation: edv2-marquee 70s linear infinite reverse;
 }
 
-/* Pointer users can hold the strip still, as with the reviews wall. */
+/* Pointer users can hold the strip still. */
 .edv2-strip:hover .edv2-strip__track {
   animation-play-state: paused;
 }

@@ -6,8 +6,8 @@ import { Ambient, Button, TrustBadge } from "./ui";
 const AMBIENT_SRC = benefits.items[benefits.items.length - 1]?.media.src;
 
 /* Closing CTA band: rating pill, heading, button, then a slow strip of the
- * page's own stills, tilted a few degrees each, rolling the opposite way to
- * the reviews and fading out at the edges. The strip is decoration only
+ * page's own stills and three night frames made for it, tilted a few degrees
+ * each, rolling slowly and fading out at the edges. The strip is decoration only
  * (every photo already appears above with its copy), so it is hidden from
  * assistive tech and stands still under reduced motion. The sticky bar
  * watches this section and hides while it is on screen, so the two never

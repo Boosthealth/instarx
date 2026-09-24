@@ -539,6 +539,9 @@ export type Review = {
   /** e.g. "Verified InstaRx customer". */
   label: string;
   rating: 1 | 2 | 3 | 4 | 5;
+  /** 3:4 customer photo for the wall, with the customer's consent. Without
+   *  one the review renders as a quote tile with the name at its foot. */
+  photo?: string;
 };
 
 export const reviews = {
@@ -552,21 +555,24 @@ export const reviews = {
   /** Real InstaRx reviews only. Empty until ED reviews exist. */
   items: [] as Review[],
   /** SAMPLE CONTENT, NOT INSTARX REVIEWS. Six MEDVi customer reviews copied
-   *  verbatim from quad.medvi.org (2026-09-23) so the marquee can be judged at
-   *  real text density. Rendered only while `items` is empty, under the
-   *  "layout preview" lead, each card labelled "MEDVi customer (sample)".
-   *  Replace with verified InstaRx reviews
-   *  before this route takes traffic: another company's reviews shown as ours
-   *  is a fabricated endorsement (FTC fake-reviews rule) and breaks brief
-   *  Part 4. Quad shows customer photos; these cards use initials until
-   *  InstaRx has photos with consent. Never rendered in a production build
-   *  (Reviews.tsx checks VERCEL_ENV); local and preview builds show them. */
+   *  verbatim from quad.medvi.org (2026-09-23) so the wall can be judged at
+   *  real text density; Reviews.tsx shows the first four. Rendered only while
+   *  `items` is empty, under the "layout preview" lead, each photo captioned
+   *  "MEDVi customer (sample)". Replace with verified InstaRx reviews before
+   *  this route takes traffic: another company's reviews shown as ours is a
+   *  fabricated endorsement (FTC fake-reviews rule) and breaks brief Part 4.
+   *  The sample photos are generated stand-ins (Higgsfield, 2026-09-24), not
+   *  people, and must never stand in for a real customer: real reviews get
+   *  real photos with consent or no photo at all. Never rendered in a
+   *  production build (Reviews.tsx checks VERCEL_ENV); local and preview
+   *  builds show them. */
   sample: {
     sub: "Layout preview with sample cards. Verified InstaRx reviews replace them before this page takes traffic.",
     listLabel: "Sample reviews (MEDVi, not InstaRx)",
     items: [
       {
         name: "Ethan H.",
+        photo: "/images/ed-treatment-v2/sample-member-trail.webp",
         title: "Libido Boost Takes Things to the Next Level",
         quote:
           "Incredible product — not only does it work, but the libido boost truly takes things to the next level in an amazing way.",
@@ -575,6 +581,7 @@ export const reviews = {
       },
       {
         name: "Doug R.",
+        photo: "/images/ed-treatment-v2/sample-member-boat.webp",
         title: "Feeling Like My Younger Self Again",
         quote:
           "Honestly, I didn't think anything would really help me, but MEDVi proved me wrong. I feel like my younger self again, and my wife's noticed too.",
@@ -583,6 +590,7 @@ export const reviews = {
       },
       {
         name: "Amir R.",
+        photo: "/images/ed-treatment-v2/sample-member-grill.webp",
         title: "Worth the Investment",
         quote:
           "Truly thankful to have discovered a solution that actually works for my needs. It's a little on the expensive side, but absolutely worth the investment.",
@@ -591,6 +599,7 @@ export const reviews = {
       },
       {
         name: "Frank N.",
+        photo: "/images/ed-treatment-v2/sample-member-bike.webp",
         title: "Huge Difference: More Energy, More Drive",
         quote:
           "I was nervous to try something new, but the difference has been huge. More energy, more drive, and just better in every way.",
@@ -663,15 +672,18 @@ export const finalCta = {
   body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
   cta: "See if I qualify",
   sub: `First month ${money(TODO_CONFIRM.PRICE_MONTHLY)}. Cancel anytime.`,
-  /** Decorative strip of the page's own stills under the CTA, in an order
-   *  that alternates warm and cool frames. */
+  /** Decorative strip under the CTA: the page's own stills mixed with three
+   *  night frames made for the strip (mirror, taxi, front door), in an order
+   *  that alternates warm and cool. No packaging or shipment frames here. */
   strip: [
     formula.items[0].media.src,
+    "/images/ed-treatment-v2/strip-mirror.webp",
     benefits.items[0].media.src,
     formula.items[2].media.src,
+    "/images/ed-treatment-v2/strip-taxi.webp",
     benefits.items[1].media.src,
     formula.items[1].media.src,
-    delivered.media.srcMobile,
+    "/images/ed-treatment-v2/strip-keys.webp",
     formula.items[3].media.src,
     benefits.items[2].media.src,
   ],

@@ -1577,7 +1577,7 @@
 .edv2-press {
   background: var(--edv2-bg-dark);
   color: var(--edv2-text-on-dark-3);
-  padding-block: clamp(2.5rem, 2rem + 2.5vw, 4rem) clamp(2rem, 1.5rem + 2vw, 3rem);
+  padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem);
 }
 
 .edv2-press__lead {

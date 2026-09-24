@@ -636,11 +636,11 @@ export const press = {
    *  wall can be judged with real wordmarks. MEDVi's press mentions are not
    *  InstaRx's; showing them as ours would be a false endorsement. Rendered
    *  only while `items` is empty and never in a production build
-   *  (PressWall.tsx checks VERCEL_ENV); local and preview builds show them
-   *  under a "layout preview" lead. Replace with outlets that have actually
-   *  covered InstaRx before this route takes traffic. */
+   *  (PressWall.tsx checks VERCEL_ENV); local and preview builds show the
+   *  logos alone, with no lead, so nothing on screen claims them as ours.
+   *  Replace with outlets that have actually covered InstaRx before this
+   *  route takes traffic. */
   sample: {
-    lead: "Layout preview with sample logos. Confirmed InstaRx coverage replaces them before this page takes traffic.",
     listLabel: "Sample press logos (MEDVi, not InstaRx)",
     items: [
       { name: "Forbes", src: "/images/ed-treatment-v2/press/forbes.svg", w: 80.04, h: 20.081 },

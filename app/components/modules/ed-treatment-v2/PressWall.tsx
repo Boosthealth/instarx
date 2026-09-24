@@ -11,10 +11,11 @@ import { Reveal } from "./Reveal";
  * the page already moves at the reviews and the still strip.
  *
  * Empty-safe and honest: with no confirmed InstaRx coverage yet, the nine
- * MEDVi sample logos from content.ts render under a "layout preview" lead,
- * listed as sample logos for assistive tech, and only outside production
- * builds (VERCEL_ENV is inlined at build time). Production renders nothing
- * until `press.items` is non-empty. */
+ * MEDVi sample logos from content.ts render on their own, with no lead
+ * (nothing on screen claims them as ours), listed as sample logos for
+ * assistive tech, and only outside production builds (VERCEL_ENV is inlined
+ * at build time). Production renders nothing until `press.items` is
+ * non-empty; live coverage gets the "Featured in" lead. */
 const SHOW_SAMPLES = process.env.VERCEL_ENV !== "production";
 
 export function PressWall() {
@@ -28,20 +29,25 @@ export function PressWall() {
   if (items.length === 0) return null;
 
   return (
-    <section className="edv2-press" aria-labelledby="edv2-press-lead">
+    <section
+      className="edv2-press"
+      aria-labelledby={live ? "edv2-press-lead" : undefined}
+      aria-label={live ? undefined : press.sample.listLabel}
+    >
       <div className="edv2-container">
-        <Reveal as="p" className="edv2-press__lead">
-          <span id="edv2-press-lead">
-            {sample ? press.sample.lead : press.lead}
-          </span>
-        </Reveal>
+        {live && (
+          <Reveal as="p" className="edv2-press__lead">
+            <span id="edv2-press-lead">{press.lead}</span>
+          </Reveal>
+        )}
         <Reveal className="edv2-stagger edv2-press__wall">
-          {/* role="list" keeps the list (and its sample label) announced in
-              Safari, which drops list semantics on list-style: none. */}
+          {/* role="list" keeps the list announced in Safari, which drops
+              list semantics on list-style: none. In sample mode the section
+              itself carries the "sample logos" name. */}
           <ul
             className="edv2-press__list"
             role="list"
-            aria-label={sample ? press.sample.listLabel : press.listLabel}
+            aria-label={live ? press.listLabel : undefined}
           >
             {items.map((logo, i) => (
               <li

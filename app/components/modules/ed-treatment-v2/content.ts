@@ -370,15 +370,17 @@ export const delivered = {
       detail: `Plain packaging · delivered in ${TODO_CONFIRM.SHIPPING_DAYS}`,
     },
   ],
+  /** Full-bleed band still, the partner of `steps.media`: the box arrives
+   *  at home at night, in the page's house look. */
   media: {
-    label: "Packaging shot · 3:2 · plain box on a doorstep or table",
+    label: "Delivered background · 16:9 · plain box on a hallway console at night",
     asset:
-      "Unbranded matte box on a hallway console, keys beside it, no people. Desktop: grey morning daylight. Mobile: blue dusk through the open front door.",
-    aspect: "3 / 2",
-    aspectMobile: "4 / 5",
-    tone: 2,
-    src: "/images/ed-treatment-v2/delivered-wide.webp",
-    srcMobile: "/images/ed-treatment-v2/delivered-tall.webp",
+      "Unmarked matte box on a dark hallway console, keys beside it, one warm table lamp, front door ajar on blue dusk, no people. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
+    aspect: "16 / 9",
+    aspectMobile: "3 / 4",
+    tone: 0,
+    src: "/images/ed-treatment-v2/delivered-night-wide.webp",
+    srcMobile: "/images/ed-treatment-v2/delivered-night-tall.webp",
   } satisfies MediaSlot,
 } as const;
 

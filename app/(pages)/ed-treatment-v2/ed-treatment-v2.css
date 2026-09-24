@@ -1174,90 +1174,131 @@
 
 /* ---------- Delivered ---------- */
 
+/* Full-bleed night still, the partner of the Steps band: same house look,
+   different composition. Steps runs its copy along the foot; here the
+   heading and one frosted panel stand in a single column on the shadowed
+   left, the lit box on the right. The still drifts a little as the band
+   passes (ParallaxLayer); the section clips it. */
 .edv2-delivered {
-  overflow: clip;
-}
-
-/* The light pool sits at z 0, the copy and media at z 1 above it. */
-.edv2-delivered__grid {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 46rem);
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
 }
 
-/* Light pool behind the packaging shot, same source as the benefit rows. */
-.edv2-delivered__grid::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  left: 50%;
-  top: 30%;
-  width: min(56rem, 120%);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  background: radial-gradient(
-    closest-side,
-    rgba(252, 95, 43, 0.13),
-    rgba(252, 95, 43, 0.05) 55%,
-    transparent
-  );
-  pointer-events: none;
+@media (min-width: 48rem) {
+  .edv2-delivered {
+    min-height: clamp(34rem, 46vw, 44rem);
+  }
 }
 
 .edv2-delivered__media {
-  --slot-aspect: 3 / 2;
-  --slot-aspect-mobile: 4 / 5;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--edv2-slot-0);
+}
+
+/* Phones: darken the top for the heading and the foot for the panel.
+   Wider: the box sits on the right, so the shade comes from the left, with
+   a little from the top so the heading clears the lamp glow. */
+.edv2-delivered__scrim {
+  position: absolute;
+  inset: 0;
   z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 38%),
+    linear-gradient(0deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 45%);
 }
 
-@media (min-width: 64rem) {
-  .edv2-delivered__grid {
-    grid-template-columns: 1fr 1.15fr;
-    gap: clamp(2rem, 4vw, 5rem);
-  }
-
-  .edv2-delivered__grid::before {
-    left: 72%;
-    top: 40%;
-    width: min(56rem, 70%);
-  }
-
-  .edv2-delivered__media {
-    order: 2;
+@media (min-width: 48rem) {
+  .edv2-delivered__scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(24, 24, 27, 0.72) 0%,
+        rgba(24, 24, 27, 0.4) 38%,
+        rgba(24, 24, 27, 0) 62%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(24, 24, 27, 0.4) 0%,
+        rgba(24, 24, 27, 0) 30%
+      );
   }
 }
 
-.edv2-delivered__copy {
+/* Phones: heading at the top, panel at the foot, the still between them.
+   Wider: both stack in one left column, vertically centred in the band. */
+.edv2-delivered__content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  justify-content: space-between;
+  gap: clamp(3rem, 8vw, 6rem);
+  padding-block: var(--edv2-section-y) clamp(1rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered__content {
+    justify-content: center;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+    padding-block: var(--edv2-section-y);
+  }
+}
+
+.edv2-delivered__head {
+  margin-bottom: 0;
+  max-width: 34rem;
+}
+
+/* One panel: the body sentence, then the three proof points as a hairline
+   list. Same glass as the Steps panel so the two bands match. */
+.edv2-delivered__panel {
+  border-radius: var(--edv2-r-xl);
+  background: rgba(9, 9, 11, 0.56);
+  backdrop-filter: blur(18px) saturate(1.2);
+  padding: 1.25rem 1.25rem 0.25rem;
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered__panel {
+    max-width: 34rem;
+    padding: 1.5rem 1.5rem 0.375rem;
+  }
+}
+
+.edv2-delivered__body {
+  color: var(--edv2-text-on-dark-2);
+  margin-bottom: 1rem;
 }
 
 /* Proof points as a hairline list: title left, detail beside it on wide
    screens, under it on phones. No icons, no cards. */
-.edv2-delivered__chips {
+.edv2-delivered__list {
   list-style: none;
   padding: 0;
-  margin: 0.75rem 0 0;
-  border-bottom: 1px solid var(--edv2-border);
+  margin: 0;
 }
 
 .edv2-trust {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.15rem 1.5rem;
-  padding: 1rem 0;
-  border-top: 1px solid var(--edv2-border);
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 @media (min-width: 40rem) {
   .edv2-trust {
-    grid-template-columns: minmax(11rem, 1fr) 1.4fr;
+    grid-template-columns: minmax(10rem, 1fr) 1.4fr;
     align-items: baseline;
   }
 }
@@ -1266,11 +1307,12 @@
   font-weight: 500;
   letter-spacing: var(--edv2-track-ui);
   margin: 0;
+  color: var(--edv2-white);
 }
 
 .edv2-trust__detail {
   margin: 0;
-  color: var(--edv2-text-2);
+  color: var(--edv2-text-on-dark-2);
   font-size: var(--edv2-fs-small);
 }
 

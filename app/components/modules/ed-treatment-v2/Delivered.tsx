@@ -1,24 +1,42 @@
 import type { CSSProperties } from "react";
 import { delivered } from "./content";
-import { MediaSlot } from "./ui";
+import { ParallaxLayer } from "./Parallax";
 import { Reveal } from "./Reveal";
+import { SlotImage } from "./ui";
 
-/* Trust band: packaging shot plus three proof points, set as a hairline
- * list rather than icon cards. The points rise as one group. */
+/* Trust band over a full-bleed night still, the partner of the Steps band
+ * further down: same house look (one warm tungsten key, navy shadow, grain),
+ * different composition so the two read as a rhythm rather than a repeat.
+ * Steps runs its copy along the foot of the frame; here the heading and one
+ * frosted panel (body plus the three proof points as a hairline list) stand
+ * in a single column on the shadowed left, the lit box on the right. Phones
+ * stack the same pieces: heading at the top, panel at the foot. The still is
+ * decorative; the copy carries the meaning, so it is hidden from assistive
+ * tech. */
 export function Delivered() {
   return (
-    <section
-      className="edv2-section edv2-section--soft edv2-delivered"
-      aria-labelledby="edv2-delivered-title"
-    >
-      <div className="edv2-container edv2-delivered__grid">
-        <MediaSlot slot={delivered.media} className="edv2-delivered__media" />
-        <div className="edv2-delivered__copy">
+    <section className="edv2-delivered" aria-labelledby="edv2-delivered-title">
+      <div className="edv2-delivered__media" aria-hidden="true">
+        <ParallaxLayer>
+          <SlotImage
+            src={delivered.media.src}
+            srcMobile={delivered.media.srcMobile}
+            sizes="100vw"
+            className="edv2-slot__img"
+          />
+        </ParallaxLayer>
+        <div className="edv2-slot__grain" />
+      </div>
+      <div className="edv2-delivered__scrim" aria-hidden="true" />
+      <div className="edv2-container edv2-delivered__content">
+        <div className="edv2-head edv2-delivered__head">
           <h2 id="edv2-delivered-title" className="edv2-h2">
             {delivered.heading}
           </h2>
-          <p className="edv2-lead">{delivered.body}</p>
-          <Reveal className="edv2-delivered__chips edv2-stagger" as="ul">
+        </div>
+        <Reveal className="edv2-delivered__panel edv2-glass edv2-stagger">
+          <p className="edv2-lead edv2-delivered__body">{delivered.body}</p>
+          <ul className="edv2-delivered__list" role="list">
             {delivered.chips.map((chip, i) => (
               <li
                 key={chip.title}
@@ -29,8 +47,8 @@ export function Delivered() {
                 <p className="edv2-trust__detail">{chip.detail}</p>
               </li>
             ))}
-          </Reveal>
-        </div>
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

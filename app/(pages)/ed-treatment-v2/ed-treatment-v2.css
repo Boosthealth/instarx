@@ -1567,6 +1567,87 @@
   color: var(--edv2-text);
 }
 
+/* ---------- Press ---------- */
+
+/* Logo wall on the hero's dark ground: one centred, wrapping row of
+   monochrome wordmarks (fills baked into the SVGs, zinc-400 on zinc-900).
+   A static row, not a third marquee; the page already moves at the reviews
+   and the still strip. Gap and scale are tuned so all nine sit on one line
+   inside the 80rem container; narrower viewports wrap. */
+.edv2-press {
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark-3);
+  padding-block: clamp(2.5rem, 2rem + 2.5vw, 4rem) clamp(2rem, 1.5rem + 2vw, 3rem);
+}
+
+.edv2-press__lead {
+  max-width: 40rem;
+  margin: 0 auto 1.75rem;
+  text-align: center;
+  text-wrap: balance;
+  font-size: var(--edv2-fs-small);
+  letter-spacing: var(--edv2-track-ui);
+  color: var(--edv2-text-on-dark-3);
+}
+
+.edv2-press__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  row-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edv2-press__item {
+  display: flex;
+  align-items: center;
+}
+
+/* Sized from each mark's own viewBox height so the optical sizes MEDVi
+   tuned carry over (NBC's peacock is tall, Fast Company is a long line). */
+.edv2-press__logo {
+  display: block;
+  height: calc(var(--h, 16) * 0.08rem);
+  width: auto;
+}
+
+/* The 21st.dev "cinematic logo cloud" entrance, once, on scroll-in: each mark
+   resolves out of a blur in order. Filter is on the palette for this one
+   reveal because the marks are tiny raster-free SVGs, so nine blurred layers
+   cost nothing. The (0,4,0) hidden-state selector outranks the shared
+   stagger rule. Both rules live inside a no-preference query, so under
+   reduced motion the marks are simply never hidden, whatever the source
+   order; the shared reduced-motion block then covers the rest. */
+@media (prefers-reduced-motion: no-preference) {
+  .edv2-press .edv2-stagger__item {
+    transition:
+      opacity 700ms var(--edv2-ease-out),
+      transform 700ms var(--edv2-ease-out),
+      filter 700ms var(--edv2-ease-out);
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+
+  .edv2-press .edv2-stagger[data-in="false"] .edv2-stagger__item {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    filter: blur(10px);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .edv2-press__logo {
+    height: calc(var(--h, 16) * 0.07rem);
+  }
+
+  .edv2-press__list {
+    row-gap: 1.25rem;
+  }
+}
+
 /* ---------- Steps ---------- */
 
 /* Full-bleed night still with the heading at the top and the three steps

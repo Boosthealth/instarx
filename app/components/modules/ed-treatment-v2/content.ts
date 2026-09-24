@@ -615,6 +615,47 @@ export const reviews = {
   },
 } as const;
 
+export type PressLogo = {
+  /** Outlet name, used as the image alt. */
+  name: string;
+  /** Monochrome SVG under /public, fill baked for the dark band. */
+  src: string;
+  /** Intrinsic viewBox size; the CSS scales from `h`. */
+  w: number;
+  h: number;
+};
+
+export const press = {
+  /** Shown above verified InstaRx coverage. */
+  lead: "Featured in",
+  listLabel: "Press coverage",
+  /** Real InstaRx press mentions only. Empty until coverage is confirmed. */
+  items: [] as PressLogo[],
+  /** SAMPLE CONTENT, NOT INSTARX COVERAGE. The nine outlet logos from the
+   *  quad.medvi.org "Globally recognized" strip (copied 2026-09-24) so the
+   *  wall can be judged with real wordmarks. MEDVi's press mentions are not
+   *  InstaRx's; showing them as ours would be a false endorsement. Rendered
+   *  only while `items` is empty and never in a production build
+   *  (PressWall.tsx checks VERCEL_ENV); local and preview builds show them
+   *  under a "layout preview" lead. Replace with outlets that have actually
+   *  covered InstaRx before this route takes traffic. */
+  sample: {
+    lead: "Layout preview with sample logos. Confirmed InstaRx coverage replaces them before this page takes traffic.",
+    listLabel: "Sample press logos (MEDVi, not InstaRx)",
+    items: [
+      { name: "Forbes", src: "/images/ed-treatment-v2/press/forbes.svg", w: 80.04, h: 20.081 },
+      { name: "WebMD", src: "/images/ed-treatment-v2/press/webmd.svg", w: 78.308, h: 17.825 },
+      { name: "GQ", src: "/images/ed-treatment-v2/press/gq.svg", w: 40, h: 19.953 },
+      { name: "NBC News", src: "/images/ed-treatment-v2/press/nbc-news.svg", w: 42.397, h: 32.192 },
+      { name: "Healthline", src: "/images/ed-treatment-v2/press/healthline.svg", w: 87.853, h: 14.057 },
+      { name: "Fortune", src: "/images/ed-treatment-v2/press/fortune.svg", w: 69.504, h: 16.114 },
+      { name: "The New York Times", src: "/images/ed-treatment-v2/press/new-york-times.svg", w: 109.059, h: 14.336 },
+      { name: "Bloomberg", src: "/images/ed-treatment-v2/press/bloomberg.svg", w: 79.939, h: 14.73 },
+      { name: "Fast Company", src: "/images/ed-treatment-v2/press/fast-company.svg", w: 90, h: 12.936 },
+    ] as PressLogo[],
+  },
+} as const;
+
 export const finalCta = {
   heading: "Ready when you are.",
   body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,

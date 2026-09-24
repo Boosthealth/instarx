@@ -1614,6 +1614,12 @@
   .edv2-tier {
     padding: 2rem;
   }
+
+  /* Three columns at 48rem leave ~190px for the CTA pill; the lg padding
+     fits "See if I qualify" with 2px to spare, so give the label room. */
+  .edv2-tier .edv2-btn--lg {
+    padding-inline: 1.25rem;
+  }
 }
 
 .edv2-tier--recommended {

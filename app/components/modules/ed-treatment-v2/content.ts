@@ -69,7 +69,7 @@ export const TODO_CONFIRM = {
   /** Qualification guarantee wording (confirm with provider partner). */
   NOT_QUALIFIED: "You're not charged if you don't qualify",
   /** Cancellation terms. */
-  CANCEL: "Cancel anytime, no membership",
+  CANCEL: "No membership, cancel anytime",
   /** Provider review turnaround. */
   REVIEW_TIME: "Usually within 24 hours",
   /** Per-ingredient strengths. Publish exact mg or keep "set by your provider". */
@@ -193,10 +193,11 @@ export const hero = {
 
 /* The hero, sticky bar and final CTA all anchor on the same "from" price so
  * one product never shows three different entry prices. No "was" anchor: the
- * schedule has no list price to strike through. */
+ * schedule has no list price to strike through. The schedule prices supply
+ * lengths, not a billing cadence, so nothing here says "/month". */
 export const heroOffer = {
-  price: `From ${money(PRICE_FROM)} a month`,
-  perDose: `as low as ${LOWEST_PER_DOSE} a dose`,
+  price: `From ${money(PRICE_FROM)}`,
+  perDose: `as low as ${LOWEST_PER_DOSE} a dose with a 3-month supply`,
 } as const;
 
 export type Ingredient = {
@@ -508,12 +509,9 @@ export function tierView(pack: PricingPack, term: PricingTermKey): TierView {
   const saved = money(savings(pack));
   return {
     name: pack.name,
-    supply:
-      term === "monthly"
-        ? `${doses} doses, 1-month supply`
-        : `${doses} doses, 3-month supply`,
+    supply: `${doses} doses`,
     price: money(price),
-    unit: term === "monthly" ? "/month" : "/3 months",
+    unit: term === "monthly" ? "for 1 month" : "for 3 months",
     perDose: `${perDose(price, doses)} per dose`,
     saving: term === "quarterly" ? `Save ${saved}` : undefined,
     note:
@@ -532,7 +530,7 @@ const sharedFeatures = [
 
 export const pricing = {
   heading: "The power of 4. In 1 dose.",
-  sub: "Three pack sizes, two supply lengths. No membership. Cancel anytime.",
+  sub: `Three pack sizes, two supply lengths. ${TODO_CONFIRM.CANCEL}.`,
   termsLabel: "Supply length",
   terms: [
     { key: "monthly", label: "1-month supply" },
@@ -709,7 +707,7 @@ export const finalCta = {
   heading: "Ready when you are.",
   body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
   cta: "See if I qualify",
-  sub: `From ${money(PRICE_FROM)} a month. Cancel anytime.`,
+  sub: `From ${money(PRICE_FROM)}. ${TODO_CONFIRM.CANCEL}.`,
   /** Decorative strip under the CTA: the page's own stills mixed with three
    *  night frames made for the strip (mirror, taxi, front door), in an order
    *  that alternates warm and cool. No packaging or shipment frames here. */
@@ -728,7 +726,7 @@ export const finalCta = {
 } as const;
 
 export const stickyBar = {
-  price: `From ${money(PRICE_FROM)}/mo`,
+  price: `From ${money(PRICE_FROM)}`,
   cta: "See if I qualify",
   safetyLabel: "Safety info",
   safetyHref: TODO_CONFIRM.SAFETY_HREF,
@@ -754,6 +752,6 @@ export const footerDisclaimers = {
 
 export const metadata = {
   /* Rendered with title.absolute in page.tsx, so no "| InstaRx" template suffix. */
-  title: `4-in-1 ED Treatment from ${money(PRICE_FROM)}/mo | Insta-Ready by InstaRx`,
+  title: `4-in-1 ED Treatment from ${money(PRICE_FROM)} | Insta-Ready by InstaRx`,
   description: `Sildenafil, tadalafil, vardenafil and apomorphine in one small liquid vial. Doctor-prescribed online, no membership, plain packaging in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
 } as const;

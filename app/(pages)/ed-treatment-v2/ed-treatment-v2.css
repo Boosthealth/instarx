@@ -461,21 +461,92 @@
   --edv2-focus: var(--edv2-accent);
 }
 
-.edv2-header {
+/* Fixed over the page: transparent on the hero, dark glass once scrolled
+   (Header.tsx flips data-scrolled from a sentinel at the top of the
+   document). Below 64rem the glass is the full-width bar; from 64rem it is a
+   pill inside the content width, in the superpower.com manner, with the
+   outer bar staying clear. Only the unprefixed backdrop-filter is written:
+   Lightning CSS adds the -webkit- copy, and a hand-written one after it
+   would win and lose the blur. --edv2-header-h is the transparent bar's
+   height, which the hero pads for; the pill is shorter and does not move
+   the page. */
+.edv2-header__sentinel {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 2.5rem;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.edv2-header {
+  position: fixed;
   inset-inline: 0;
   top: 0;
   z-index: 30;
-  height: var(--edv2-header-h);
+  padding-inline: var(--edv2-gutter);
+  border-bottom: 1px solid transparent;
   color: var(--edv2-white);
+  transition:
+    background-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    border-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    padding var(--edv2-dur-ui) var(--edv2-ease-out),
+    backdrop-filter var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+.edv2-header[data-scrolled="true"] {
+  background: rgb(9 9 11 / 0.7);
+  border-bottom-color: var(--edv2-border-dark);
+  backdrop-filter: blur(20px);
 }
 
 .edv2-header__inner {
-  height: 100%;
+  width: 100%;
+  max-width: calc(var(--edv2-container) - 2 * var(--edv2-gutter));
+  height: var(--edv2-header-h);
+  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--edv2-r-full);
+  transition:
+    background-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    border-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    height var(--edv2-dur-ui) var(--edv2-ease-out),
+    padding var(--edv2-dur-ui) var(--edv2-ease-out),
+    backdrop-filter var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+/* From 64rem the outer bar stays transparent and only the pill is glass.
+   The bar itself lets clicks through so the 10px bands above and below the
+   pill, and the margins beside it on wide screens, do not cover the page;
+   the pill takes them back. */
+@media (min-width: 64rem) {
+  .edv2-header {
+    pointer-events: none;
+  }
+
+  .edv2-header__inner {
+    pointer-events: auto;
+  }
+
+  .edv2-header[data-scrolled="true"] {
+    padding-block: 0.625rem;
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+  }
+
+  .edv2-header[data-scrolled="true"] .edv2-header__inner {
+    height: 3.5rem;
+    padding-inline: 1.25rem 0.375rem;
+    background: rgb(9 9 11 / 0.7);
+    border-color: var(--edv2-border-dark);
+    backdrop-filter: blur(20px);
+  }
 }
 
 .edv2-header__logo {
@@ -494,6 +565,20 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+/* Below 64rem the bottom sticky bar (price and CTA) is the persistent
+   action once the hero button scrolls away, so the header keeps only the
+   logo and the anchor; two vermillion buttons on one phone screen read as
+   noise. From 64rem the sticky bar is gone and the header carries the CTA. */
+.edv2-header__nav > .edv2-btn {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .edv2-header__nav > .edv2-btn {
+    display: inline-flex;
+  }
 }
 
 .edv2-header__anchor {
@@ -1611,11 +1696,11 @@
 
 /* ---------- Press ---------- */
 
-/* Logo wall on the hero's dark ground: one centred, wrapping row of
-   monochrome wordmarks (fills baked into the SVGs, zinc-400 on zinc-900).
-   A static row; the only marquee on the page is the still strip under the
-   final CTA. Gap and scale are tuned so all nine sit on one line
-   inside the 80rem container; narrower viewports wrap. */
+/* Logo wall on the hero's dark ground: one centred, wrapping row of the
+   six outlet wordmarks the other landers use, turned white by a filter. A
+   static row; the only marquee on the page is the still strip under the
+   final CTA. Gap and scale are tuned so all six sit on one line inside the
+   80rem container; narrower viewports wrap. */
 .edv2-press {
   background: var(--edv2-bg-dark);
   color: var(--edv2-text-on-dark-3);
@@ -1649,12 +1734,20 @@
   align-items: center;
 }
 
-/* Sized from each mark's own viewBox height so the optical sizes MEDVi
-   tuned carry over (NBC's peacock is tall, Fast Company is a long line). */
+/* Sized from the px height each mark gets on /nad-plus (--h), so the
+   optical sizes tuned there carry over. The baked fills (OK! red, Lifetime
+   pink, light-grey Health) flatten to one white through the filter; the
+   two-tone mark keeps its counter with grayscale + invert instead. */
 .edv2-press__logo {
   display: block;
-  height: calc(var(--h, 16) * 0.08rem);
+  height: calc(var(--h, 28) * 0.0625rem);
   width: auto;
+  opacity: 0.82;
+  filter: brightness(0) invert(1);
+}
+
+.edv2-press__logo--two-tone {
+  filter: grayscale(1) invert(1);
 }
 
 /* The 21st.dev "cinematic logo cloud" entrance, once, on scroll-in: each mark
@@ -1682,7 +1775,7 @@
 
 @media (max-width: 47.99rem) {
   .edv2-press__logo {
-    height: calc(var(--h, 16) * 0.07rem);
+    height: calc(var(--h, 28) * 0.05rem);
   }
 
   .edv2-press__list {
@@ -1980,12 +2073,13 @@ a.edv2-rating:hover .edv2-rating__source {
   color: var(--edv2-text-on-dark-3);
 }
 
-/* ---------- Reviews (photo + quote wall) ---------- */
+/* ---------- Reviews (still + quote wall) ---------- */
 
-/* Two columns on phones, four from 64rem. Each column is one review: a 3:4
- * photo tile and a quote tile. Flipped columns reverse the flex direction
- * (DOM order stays photo then quote) so the photos step diagonally. The
- * quote tile flexes to fill the row, so every column in a row ends level. */
+/* Each review is one row on phones and half a row from 64rem: a 3:4 still
+ * and a quote tile side by side, both stretched to the taller of the two.
+ * Every other pair is mirrored with `order` (DOM order stays still then
+ * quote), so a desktop row reads still, quote, quote, still and the stills
+ * step diagonally on phones. */
 .edv2-mosaic {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1996,20 +2090,29 @@ a.edv2-rating:hover .edv2-rating__source {
 }
 
 .edv2-mosaic__item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: inherit;
   min-width: 0;
 }
 
-.edv2-mosaic__item--flip {
-  flex-direction: column-reverse;
+.edv2-mosaic__item--flip .edv2-mosaic__photo {
+  order: 2;
 }
 
+/* align-self: stretch is explicit because a grid item with an aspect ratio
+   defaults to start, which would leave a gap under a still shorter than its
+   quote. width: 100% is explicit too: with only the height stretched, the
+   ratio would widen the still past its column (measured 247px in a 173px
+   column at 390px). With both axes set the ratio yields to the row and the
+   image crops; when the quote is the shorter one the ratio still sets the
+   row height. */
 .edv2-mosaic__photo {
   position: relative;
-  isolation: isolate;
-  flex: none;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   aspect-ratio: 3 / 4;
   overflow: hidden;
@@ -2021,49 +2124,11 @@ a.edv2-rating:hover .edv2-rating__source {
   object-fit: cover;
 }
 
-/* Foot gradient under the caption; the photo stays fully visible above it. */
-.edv2-mosaic__photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* Deep enough at the foot that white 12px text clears 4.5:1 over a pale
-     shirt or granite; fades to nothing past the lower half. */
-  background: linear-gradient(
-    to top,
-    rgb(8 8 12 / 0.88),
-    rgb(8 8 12 / 0.72) 14%,
-    rgb(8 8 12 / 0.5) 28%,
-    rgb(8 8 12 / 0) 60%
-  );
-  pointer-events: none;
-}
-
-.edv2-mosaic__who {
-  position: absolute;
-  z-index: 1;
-  inset: auto 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  padding: 1rem;
-  line-height: 1.25;
-  color: var(--edv2-text-on-dark);
-}
-
-.edv2-mosaic__who strong {
-  font-size: var(--edv2-fs-body);
-  font-weight: 600;
-}
-
-.edv2-mosaic__who span {
-  font-size: var(--edv2-fs-micro);
-}
-
 .edv2-mosaic__quote {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
+  min-width: 0;
   margin: 0;
   padding: 1rem;
   border-radius: var(--edv2-r-xl);
@@ -2102,7 +2167,7 @@ a.edv2-rating:hover .edv2-rating__source {
   text-wrap: pretty;
 }
 
-/* Name and label at the foot of a quote tile that has no photo. */
+/* Name and label at the foot of the quote tile. */
 .edv2-mosaic__by {
   display: flex;
   flex-direction: column;
@@ -2122,14 +2187,19 @@ a.edv2-rating:hover .edv2-rating__source {
   color: var(--edv2-text-3);
 }
 
+/* The stills are made for the page, not the reviewers; the wall says so. */
+.edv2-mosaic__note {
+  max-width: 40rem;
+  margin: 1rem auto 0;
+  text-align: center;
+  font-size: var(--edv2-fs-micro);
+  color: var(--edv2-text-3);
+}
+
 @media (min-width: 40rem) {
   .edv2-mosaic,
   .edv2-mosaic__item {
     gap: 1rem;
-  }
-
-  .edv2-mosaic__who {
-    padding: 1.25rem;
   }
 
   .edv2-mosaic__quote {
@@ -2139,6 +2209,10 @@ a.edv2-rating:hover .edv2-rating__source {
 
   .edv2-mosaic__title {
     font-size: 1.0625rem;
+  }
+
+  .edv2-mosaic__text {
+    font-size: var(--edv2-fs-body);
   }
 }
 
@@ -2487,6 +2561,12 @@ a.edv2-rating:hover .edv2-rating__source {
   }
 
   .edv2-hero__video {
+    transition: none;
+  }
+
+  /* The glass state still switches; it just does not animate the padding. */
+  .edv2-header,
+  .edv2-header__inner {
     transition: none;
   }
 

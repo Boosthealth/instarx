@@ -531,140 +531,85 @@ export const steps = {
 } as const;
 
 export type Review = {
-  /** One-line headline in the customer's words, e.g. "Worth the investment". */
+  /** One-line headline in the customer's words, e.g. "What a great company". */
   title: string;
   quote: string;
-  /** First name and last initial only, e.g. "Mark T." Never invented. */
+  /** First name and last initial only, e.g. "Alex B." Never invented. */
   name: string;
-  /** e.g. "Verified InstaRx customer". */
+  /** e.g. "InstaRx customer". */
   label: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  /** 3:4 customer photo for the wall, with the customer's consent. Without
-   *  one the review renders as a quote tile with the name at its foot. */
+  /** Star rating as the customer gave it. Left out when the source review
+   *  carries none: the tile then shows no stars rather than an invented 5. */
+  rating?: 1 | 2 | 3 | 4 | 5;
+  /** 3:4 still that sits beside the quote on the wall. Illustrative, made
+   *  for the page, not the reviewer; `reviews.photoNote` says so under the
+   *  wall. A photo of the actual customer needs their written consent. */
   photo?: string;
 };
 
 export const reviews = {
   heading: "What InstaRx customers say.",
-  sub: "Real, verified InstaRx customer reviews. ED-specific reviews are added as they are collected.",
-  /** Shown instead of `sub` while no real reviews exist (production). */
-  emptySub:
-    "ED-specific reviews are added as they are collected. The rating above is InstaRx's sitewide customer rating.",
+  sub: "Real InstaRx customer reviews. ED-specific reviews are added as they are collected.",
   listLabel: "Customer reviews",
   starsLabel: (n: number) => `${n} out of 5 stars`,
-  /** Real InstaRx reviews only. Empty until ED reviews exist. */
-  items: [] as Review[],
-  /** SAMPLE CONTENT, NOT INSTARX REVIEWS. Six MEDVi customer reviews copied
-   *  verbatim from quad.medvi.org (2026-09-23) so the wall can be judged at
-   *  real text density; Reviews.tsx shows the first four. Rendered only while
-   *  `items` is empty, under the "layout preview" lead, each photo captioned
-   *  "MEDVi customer (sample)". Replace with verified InstaRx reviews before
-   *  this route takes traffic: another company's reviews shown as ours is a
-   *  fabricated endorsement (FTC fake-reviews rule) and breaks brief Part 4.
-   *  The sample photos are generated stand-ins (Higgsfield, 2026-09-24), not
-   *  people, and must never stand in for a real customer: real reviews get
-   *  real photos with consent or no photo at all. Never rendered in a
-   *  production build (Reviews.tsx checks VERCEL_ENV); local and preview
-   *  builds show them. */
-  sample: {
-    sub: "Layout preview with sample cards. Verified InstaRx reviews replace them before this page takes traffic.",
-    listLabel: "Sample reviews (MEDVi, not InstaRx)",
-    items: [
-      {
-        name: "Ethan H.",
-        photo: "/images/ed-treatment-v2/sample-member-trail.webp",
-        title: "Libido Boost Takes Things to the Next Level",
-        quote:
-          "Incredible product — not only does it work, but the libido boost truly takes things to the next level in an amazing way.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-      {
-        name: "Doug R.",
-        photo: "/images/ed-treatment-v2/sample-member-boat.webp",
-        title: "Feeling Like My Younger Self Again",
-        quote:
-          "Honestly, I didn't think anything would really help me, but MEDVi proved me wrong. I feel like my younger self again, and my wife's noticed too.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-      {
-        name: "Amir R.",
-        photo: "/images/ed-treatment-v2/sample-member-grill.webp",
-        title: "Worth the Investment",
-        quote:
-          "Truly thankful to have discovered a solution that actually works for my needs. It's a little on the expensive side, but absolutely worth the investment.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-      {
-        name: "Frank N.",
-        photo: "/images/ed-treatment-v2/sample-member-bike.webp",
-        title: "Huge Difference: More Energy, More Drive",
-        quote:
-          "I was nervous to try something new, but the difference has been huge. More energy, more drive, and just better in every way.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-      {
-        name: "Bryan G.",
-        title: "Nothing Compares to MEDVi's Combination",
-        quote:
-          "I've tried other products, but nothing compares to MEDVi. The combination of medicines works perfectly together, and the difference is incredible.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-      {
-        name: "John D.",
-        title: "Game-Changing Libido",
-        quote:
-          "I was skeptical at first, but MEDVi proved me wrong. The increased libido and improved blood flow have been game-changing for me and my wife.",
-        label: "MEDVi customer (sample)",
-        rating: 5,
-      },
-    ] as Review[],
-  },
+  /** Under the wall. The stills are not the reviewers and the page says so
+   *  (FTC endorsement guides; brief Part 4). */
+  photoNote: "Photos are illustrative and do not show the reviewers.",
+  /** Real InstaRx customer reviews only: the two product-agnostic ones
+   *  (service, confidence, support) that /glp2-v2 and /glp2-v3 already run,
+   *  word for word, with no rating because the source carries none. No
+   *  third-party reviews, ever. ED-specific reviews join as collected. */
+  items: [
+    {
+      name: "Alex B.",
+      label: "InstaRx customer",
+      photo: "/images/ed-treatment-v2/wall-trail.webp",
+      title: "What a great company",
+      quote:
+        "The customer service is spot on — individualized personal attention, quick response time and a great product. I am 100% happy and will continue with InstaRx.",
+    },
+    {
+      name: "Darlene N.",
+      label: "InstaRx customer",
+      photo: "/images/ed-treatment-v2/wall-boat.webp",
+      title: "Life-changing",
+      quote:
+        "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
+    },
+  ] as readonly Review[],
 } as const;
 
 export type PressLogo = {
   /** Outlet name, used as the image alt. */
   name: string;
-  /** Monochrome SVG under /public, fill baked for the dark band. */
+  /** Vectorised wordmark under /public/lose-weight/press, shared with the
+   *  other landers; the CSS filter turns it white for the dark band. */
   src: string;
-  /** Intrinsic viewBox size; the CSS scales from `h`. */
+  /** Intrinsic viewBox size, for next/image's aspect ratio. */
   w: number;
   h: number;
+  /** Rendered height in px at desktop: the optical sizes tuned on /nad-plus. */
+  px: number;
+  /** Keeps a two-colour mark's internal contrast (LA Weekly's boxed "LA"),
+   *  which the flat white filter would fill in. */
+  twoTone?: boolean;
 };
 
 export const press = {
-  /** Shown above verified InstaRx coverage. */
   lead: "Featured in",
   listLabel: "Press coverage",
-  /** Real InstaRx press mentions only. Empty until coverage is confirmed. */
-  items: [] as PressLogo[],
-  /** SAMPLE CONTENT, NOT INSTARX COVERAGE. The nine outlet logos from the
-   *  quad.medvi.org "Globally recognized" strip (copied 2026-09-24) so the
-   *  wall can be judged with real wordmarks. MEDVi's press mentions are not
-   *  InstaRx's; showing them as ours would be a false endorsement. Rendered
-   *  only while `items` is empty and never in a production build
-   *  (PressWall.tsx checks VERCEL_ENV); local and preview builds show the
-   *  logos alone, with no lead, so nothing on screen claims them as ours.
-   *  Replace with outlets that have actually covered InstaRx before this
-   *  route takes traffic. */
-  sample: {
-    listLabel: "Sample press logos (MEDVi, not InstaRx)",
-    items: [
-      { name: "Forbes", src: "/images/ed-treatment-v2/press/forbes.svg", w: 80.04, h: 20.081 },
-      { name: "WebMD", src: "/images/ed-treatment-v2/press/webmd.svg", w: 78.308, h: 17.825 },
-      { name: "GQ", src: "/images/ed-treatment-v2/press/gq.svg", w: 40, h: 19.953 },
-      { name: "NBC News", src: "/images/ed-treatment-v2/press/nbc-news.svg", w: 42.397, h: 32.192 },
-      { name: "Healthline", src: "/images/ed-treatment-v2/press/healthline.svg", w: 87.853, h: 14.057 },
-      { name: "Fortune", src: "/images/ed-treatment-v2/press/fortune.svg", w: 69.504, h: 16.114 },
-      { name: "The New York Times", src: "/images/ed-treatment-v2/press/new-york-times.svg", w: 109.059, h: 14.336 },
-      { name: "Bloomberg", src: "/images/ed-treatment-v2/press/bloomberg.svg", w: 79.939, h: 14.73 },
-      { name: "Fast Company", src: "/images/ed-treatment-v2/press/fast-company.svg", w: 90, h: 12.936 },
-    ] as PressLogo[],
-  },
+  /** The outlets the live landers (/lose-weight, /nad-plus) list under
+   *  "As featured in", from the same files, so a change there carries over.
+   *  Nothing else: another company's coverage shown here would be a false
+   *  endorsement. */
+  items: [
+    { name: "OK! magazine", src: "/lose-weight/press/ok-magazine.svg", w: 1804, h: 1130, px: 37 },
+    { name: "The Balancing Act", src: "/lose-weight/press/balancing-act.svg", w: 675.46, h: 130.61, px: 29 },
+    { name: "Woman's World", src: "/lose-weight/press/womans-world.svg", w: 1917, h: 257, px: 24 },
+    { name: "LA Weekly", src: "/lose-weight/press/la-weekly.svg", w: 300, h: 77, px: 29, twoTone: true },
+    { name: "Lifetime", src: "/lose-weight/press/lifetime.svg", w: 237.364, h: 71.967, px: 29 },
+    { name: "Health Uncensored with Dr. Drew", src: "/lose-weight/press/health-uncensored.svg", w: 1400, h: 711.9, px: 44 },
+  ] as readonly PressLogo[],
 } as const;
 
 export const finalCta = {

@@ -4,32 +4,18 @@ import { reviews, type Review } from "./content";
 import { Stars, TrustBadge } from "./ui";
 import { Reveal } from "./Reveal";
 
-/* Testimonials: a photo-and-quote wall under the sitewide rating badge.
- * Each review is one column of two tiles, a 3:4 customer photo with the name
- * and label over its foot and a quote tile with stars, headline and quote.
- * Every other column is flipped so the photos step diagonally across the
- * wall. No motion beyond the shared stagger on entry.
+/* Testimonials: a still-and-quote wall under the sitewide rating badge.
+ * Each review is a pair of tiles side by side, a 3:4 still and a quote tile
+ * (headline, quote, name and label, and stars only when the customer gave a
+ * rating). Every other pair is mirrored, so a desktop row reads still,
+ * quote, quote, still and the stills step diagonally on phones. No motion
+ * beyond the shared stagger on entry.
  *
- * Empty-safe and honest: with no ED reviews yet, the first four MEDVi sample
- * reviews from content.ts render under a "layout preview" lead, each photo
- * captioned "MEDVi customer (sample)" and the list named as sample reviews
- * for assistive tech, and only outside production builds (VERCEL_ENV is
- * inlined at build time). The sample photos are generated stand-ins, not
- * customers. Production shows the badge, heading and an empty-state line
- * until `reviews.items` is non-empty, which replaces the samples everywhere.
- * A live review without a photo renders as a quote tile with the name and
- * label at its foot. */
-const SHOW_SAMPLES = process.env.VERCEL_ENV !== "production";
-/** Sample tiles on the wall: one desktop row, two rows of two on phones. */
-const SAMPLE_COUNT = 4;
+ * Honest by construction: `reviews.items` holds real InstaRx customer
+ * reviews only, and the stills are illustrative (made for the page, not the
+ * reviewers), which the note under the wall says in so many words. */
 
-function Tile({ review, index }: { review: Review; index: number }) {
-  const who = (
-    <>
-      <strong>{review.name}</strong>
-      <span>{review.label}</span>
-    </>
-  );
+function Pair({ review, index }: { review: Review; index: number }) {
   const flip = index % 2 === 1 ? " edv2-mosaic__item--flip" : "";
   return (
     <li
@@ -37,8 +23,8 @@ function Tile({ review, index }: { review: Review; index: number }) {
       style={{ "--i": index } as CSSProperties}
     >
       {review.photo && (
-        <figure className="edv2-mosaic__photo">
-          {/* Decorative: the caption carries the name and label as text. */}
+        <div className="edv2-mosaic__photo">
+          {/* Illustrative, so no alt text; the note under the wall covers it. */}
           <Image
             src={review.photo}
             alt=""
@@ -46,41 +32,32 @@ function Tile({ review, index }: { review: Review; index: number }) {
             sizes="(min-width: 64rem) 20rem, 50vw"
             className="edv2-mosaic__img"
           />
-          <figcaption className="edv2-mosaic__who">{who}</figcaption>
-        </figure>
+        </div>
       )}
       {/* Only the customer's words go inside the blockquote; the rating and
           the byline are ours, so they sit beside it in the tile. */}
       <div className="edv2-mosaic__quote">
-        <Stars
-          count={review.rating}
-          label={reviews.starsLabel(review.rating)}
-          className="edv2-mosaic__stars"
-        />
+        {review.rating !== undefined && (
+          <Stars
+            count={review.rating}
+            label={reviews.starsLabel(review.rating)}
+            className="edv2-mosaic__stars"
+          />
+        )}
         <blockquote className="edv2-mosaic__bq">
           <p className="edv2-mosaic__title">{review.title}</p>
           <p className="edv2-mosaic__text">{review.quote}</p>
         </blockquote>
-        {!review.photo && <footer className="edv2-mosaic__by">{who}</footer>}
+        <footer className="edv2-mosaic__by">
+          <strong>{review.name}</strong>
+          <span>{review.label}</span>
+        </footer>
       </div>
     </li>
   );
 }
 
 export function Reviews() {
-  const live = reviews.items.length > 0;
-  const sample = !live && SHOW_SAMPLES;
-  const items: readonly Review[] = live
-    ? reviews.items
-    : sample
-      ? reviews.sample.items.slice(0, SAMPLE_COUNT)
-      : [];
-  const sub = live
-    ? reviews.sub
-    : sample
-      ? reviews.sample.sub
-      : reviews.emptySub;
-
   return (
     <section
       className="edv2-section edv2-section--soft edv2-reviews"
@@ -94,24 +71,19 @@ export function Reviews() {
           <h2 id="edv2-reviews-title" className="edv2-h2">
             {reviews.heading}
           </h2>
-          <p className="edv2-lead">{sub}</p>
+          <p className="edv2-lead">{reviews.sub}</p>
         </Reveal>
 
-        {items.length > 0 && (
-          <Reveal className="edv2-stagger edv2-mosaic-wrap">
-            {/* role="list" keeps the list announced in Safari, which drops
-                list semantics on list-style: none. */}
-            <ul
-              className="edv2-mosaic"
-              role="list"
-              aria-label={sample ? reviews.sample.listLabel : reviews.listLabel}
-            >
-              {items.map((review, i) => (
-                <Tile key={`${review.name}-${i}`} review={review} index={i} />
-              ))}
-            </ul>
-          </Reveal>
-        )}
+        <Reveal className="edv2-stagger edv2-mosaic-wrap">
+          {/* role="list" keeps the list announced in Safari, which drops
+              list semantics on list-style: none. */}
+          <ul className="edv2-mosaic" role="list" aria-label={reviews.listLabel}>
+            {reviews.items.map((review, i) => (
+              <Pair key={`${review.name}-${i}`} review={review} index={i} />
+            ))}
+          </ul>
+          <p className="edv2-mosaic__note">{reviews.photoNote}</p>
+        </Reveal>
       </div>
     </section>
   );

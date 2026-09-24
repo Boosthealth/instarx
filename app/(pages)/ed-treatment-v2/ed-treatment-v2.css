@@ -1569,52 +1569,153 @@
 
 /* ---------- Steps ---------- */
 
-/* Open columns on a hairline, no cards: the numeral is a quiet index. */
+/* Full-bleed night still with the heading at the top and the three steps
+   in one frosted panel along the bottom. The still drifts a little as the
+   band passes (ParallaxLayer); the section clips it. */
+.edv2-steps {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 48rem);
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+}
+
+@media (min-width: 48rem) {
+  .edv2-steps {
+    min-height: clamp(38rem, 52vw, 50rem);
+  }
+}
+
+.edv2-steps__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--edv2-slot-0);
+}
+
+/* Phones crop the 3:4 still at the sides; favour the left crop so the
+   subject sits to the right of the heading instead of under it. */
+@media (max-width: 47.99rem) {
+  .edv2-steps__media .edv2-slot__img {
+    object-position: 18% 50%;
+  }
+}
+
+/* Phones: darken the top for the heading and the foot for the panel.
+   Wider: the subject sits on the right, so the shade comes from the left
+   and the top; the panel's own glass handles the foot. */
+.edv2-steps__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 38%),
+    linear-gradient(0deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 45%);
+}
+
+@media (min-width: 48rem) {
+  .edv2-steps__scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(24, 24, 27, 0.55) 0%,
+        rgba(24, 24, 27, 0) 32%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(24, 24, 27, 0.6) 0%,
+        rgba(24, 24, 27, 0) 55%
+      ),
+      linear-gradient(0deg, rgba(24, 24, 27, 0.5) 0%, rgba(24, 24, 27, 0) 40%);
+  }
+}
+
+.edv2-steps__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(3rem, 8vw, 6rem);
+  padding-block: var(--edv2-section-y) clamp(1rem, 2.5vw, 2rem);
+}
+
+.edv2-steps__head {
+  margin-bottom: 0;
+  max-width: 34rem;
+}
+
+/* One panel, three cells, hairline dividers: a single object at the foot
+   of the photo, not three floating cards. Heavier glass than the chips
+   because body copy has to read over the sofa. */
 .edv2-steps__list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  border-radius: var(--edv2-r-xl);
+  background: rgba(9, 9, 11, 0.56);
+  backdrop-filter: blur(18px) saturate(1.2);
+  overflow: hidden;
 }
 
 @media (min-width: 48rem) {
   .edv2-steps__list {
     grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
   }
 }
 
 .edv2-step {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--edv2-text);
+  gap: 0.5rem;
+  padding: 1.25rem 1.25rem 1.375rem;
   position: relative;
+}
+
+.edv2-step + .edv2-step {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+@media (min-width: 48rem) {
+  .edv2-step {
+    padding: 1.5rem 1.5rem 1.625rem;
+  }
+
+  .edv2-step + .edv2-step {
+    border-top: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+  }
 }
 
 .edv2-step__num {
   font-size: var(--edv2-fs-small);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
-  color: var(--edv2-text-3);
+  color: var(--edv2-accent);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .edv2-step__title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: var(--edv2-track-ui);
-  line-height: 1.2;
+  line-height: 1.25;
   margin: 0;
+  color: var(--edv2-white);
+  text-wrap: balance;
 }
 
 .edv2-step__body {
   margin: 0;
-  color: var(--edv2-text-2);
+  color: var(--edv2-text-on-dark-2);
   text-wrap: pretty;
 }
 

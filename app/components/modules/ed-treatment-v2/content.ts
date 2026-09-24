@@ -515,6 +515,17 @@ export const steps = {
       body: `${TODO_CONFIRM.SHIPPING} with usage instructions. Message your care team any time.`,
     },
   ],
+  /** Full-bleed band still: the visit happens from the sofa, not a clinic. */
+  media: {
+    label: "Steps background · 16:9 · man on a sofa at night",
+    asset:
+      "A man on a dark sofa at night, lit by one warm floor lamp, phone in hand, the left two thirds of the frame in shadow for the copy. Mobile: 3:4, subject in the upper half, lower half empty for the panel.",
+    aspect: "16 / 9",
+    aspectMobile: "3 / 4",
+    tone: 0,
+    src: "/images/ed-treatment-v2/steps-wide.webp",
+    srcMobile: "/images/ed-treatment-v2/steps-tall.webp",
+  } satisfies MediaSlot,
 } as const;
 
 export type Review = {

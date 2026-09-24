@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { hero, heroOffer, INTAKE_HREF } from "./content";
 import { HeroParallax } from "./Parallax";
-import { Button, MediaSlot, SlotImage, TrustBadge, WasPrice } from "./ui";
+import { Button, MediaSlot, SlotImage, TrustBadge } from "./ui";
 
 /* Video hero. Order of operations, deliberately:
  * 1. The poster (next/image, priority) is the LCP element and paints first.
@@ -166,8 +166,6 @@ export function VideoHero() {
           >
             <span className="edv2-chip edv2-chip--on-dark edv2-hero__price">
               <strong>{heroOffer.price}</strong>
-              <span aria-hidden="true">·</span>
-              <WasPrice value={heroOffer.was} />
             </span>
             <span className="edv2-small edv2-muted">{heroOffer.perDose}</span>
           </div>

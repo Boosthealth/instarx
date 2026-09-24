@@ -367,9 +367,10 @@
   backdrop-filter: blur(8px);
 }
 
-.edv2-chip s {
-  color: var(--edv2-text-on-dark-3);
-  font-weight: 500;
+.edv2-chip--saving {
+  border-color: transparent;
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
 }
 
 /* ---------- Media slots ---------- */
@@ -1310,11 +1311,7 @@
         rgba(24, 24, 27, 0.4) 38%,
         rgba(24, 24, 27, 0) 62%
       ),
-      linear-gradient(
-        180deg,
-        rgba(24, 24, 27, 0.4) 0%,
-        rgba(24, 24, 27, 0) 30%
-      );
+      linear-gradient(180deg, rgba(24, 24, 27, 0.4) 0%, rgba(24, 24, 27, 0) 30%);
   }
 }
 
@@ -1528,10 +1525,77 @@
 
 @media (min-width: 48rem) {
   .edv2-pricing__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    max-width: 56rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 64rem;
     margin-inline: auto;
+  }
+}
+
+/* Supply-length toggle: one ink pill, the pressed option inverted. */
+.edv2-pricing__terms {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  padding: 0.25rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-white);
+  border: 1px solid var(--edv2-border);
+}
+
+.edv2-pricing__term {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: var(--edv2-r-full);
+  background: transparent;
+  color: var(--edv2-text-2);
+  font: inherit;
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.edv2-pricing__term[aria-pressed="true"] {
+  background: var(--edv2-text);
+  color: var(--edv2-white);
+}
+
+.edv2-pricing__term-hint {
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
+  font-size: var(--edv2-fs-micro);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Under ~416px the two options plus the hint no longer fit on one line, so
+   the pill goes full width and the hint drops under its label. */
+@media (max-width: 26rem) {
+  .edv2-pricing__terms {
+    width: 100%;
+  }
+
+  .edv2-pricing__term {
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    padding-inline: 0.5rem;
+    text-align: center;
   }
 }
 
@@ -1602,9 +1666,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.edv2-tier__was {
-  color: var(--edv2-text-3);
-  font-size: 1.125rem;
+.edv2-tier__unit {
+  color: var(--edv2-text-2);
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -1841,11 +1905,7 @@
         rgba(24, 24, 27, 0.55) 0%,
         rgba(24, 24, 27, 0) 32%
       ),
-      linear-gradient(
-        90deg,
-        rgba(24, 24, 27, 0.6) 0%,
-        rgba(24, 24, 27, 0) 55%
-      ),
+      linear-gradient(90deg, rgba(24, 24, 27, 0.6) 0%, rgba(24, 24, 27, 0) 55%),
       linear-gradient(0deg, rgba(24, 24, 27, 0.5) 0%, rgba(24, 24, 27, 0) 40%);
   }
 }

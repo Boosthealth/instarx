@@ -7,26 +7,61 @@
 export const INTAKE_HREF = "https://my.instarx.com/intake/insta-ready";
 
 // ---------------------------------------------------------------------------
-// TODO_CONFIRM — commercial and product values not yet confirmed by the
-// prescribing/pharmacy partners (brief Part 9). Placeholders are plausible
-// against the intake catalog (5-packs $98–$187, "about $8.3/use") and QUAD's
-// $114 / was $179 anchor. Change here only; nothing else hard-codes them.
+// Customer pricing (USD), from the 2026-09-24 ED pricing schedule. A pack is
+// one month of doses; the 3-month price covers three packs. The schedule also
+// lists "Forte Sublingual 15-pack" ($188 / $508); that is a different product
+// and stays off this single-product page. Change here only; nothing else
+// hard-codes a price.
+// ---------------------------------------------------------------------------
+export type PricingTermKey = "monthly" | "quarterly";
+
+export type PricingPack = {
+  key: "5" | "10" | "20";
+  /** Card title, as the schedule names it. */
+  name: string;
+  /** Doses in one pack (one month). */
+  doses: number;
+  /** Price for a 1-month supply and for a 3-month supply. */
+  price: Record<PricingTermKey, number>;
+  recommended: boolean;
+};
+
+export const PRICING_PACKS = [
+  {
+    key: "5",
+    name: "5-pack",
+    doses: 5,
+    price: { monthly: 98, quarterly: 248 },
+    recommended: false,
+  },
+  {
+    key: "10",
+    name: "10-pack",
+    doses: 10,
+    price: { monthly: 158, quarterly: 398 },
+    recommended: false,
+  },
+  {
+    key: "20",
+    name: "20-pack",
+    doses: 20,
+    price: { monthly: 210, quarterly: 548 },
+    recommended: true,
+  },
+] satisfies PricingPack[];
+
+const TERM_MONTHS: Record<PricingTermKey, number> = {
+  monthly: 1,
+  quarterly: 3,
+};
+
+/** Lowest 1-month price on the schedule: the hero, sticky bar and final CTA anchor. */
+const PRICE_FROM = Math.min(...PRICING_PACKS.map((p) => p.price.monthly));
+
+// TODO_CONFIRM — values not yet confirmed by the prescribing/pharmacy
+// partners (brief Part 9). Change here only; nothing else hard-codes them.
 // ---------------------------------------------------------------------------
 export const TODO_CONFIRM = {
-  /** First-month price for the monthly tier (USD). */
-  PRICE_MONTHLY: 99,
-  /** "Was" anchor shown struck through beside the monthly price. */
-  PRICE_MONTHLY_WAS: 149,
-  /** Recurring price after the first month, monthly tier. */
-  PRICE_MONTHLY_RECURRING: 129,
-  /** 3-month tier price (USD), billed once every 3 months. */
-  PRICE_QUARTERLY: 249,
-  /** "Was" anchor for the 3-month tier. */
-  PRICE_QUARTERLY_WAS: 447,
-  /** Doses per shipment, monthly tier. */
-  DOSES_MONTHLY: 12,
-  /** Doses per shipment, 3-month tier. */
-  DOSES_QUARTERLY: 36,
   /** Shipping cost and speed claim. */
   SHIPPING: "Free 1–2 day shipping",
   /** Delivery window as a noun phrase, for sentences and the SEO description. */
@@ -56,6 +91,14 @@ export const TODO_CONFIRM = {
 const money = (n: number) => `$${n}`;
 const perDose = (price: number, doses: number) =>
   `$${(price / doses).toFixed(2).replace(/\.00$/, "")}`;
+/** What a 3-month supply saves against three 1-month orders of the same pack. */
+const savings = (pack: PricingPack) =>
+  pack.price.monthly * 3 - pack.price.quarterly;
+const LOWEST_PER_DOSE = perDose(
+  Math.min(...PRICING_PACKS.map((p) => p.price.quarterly / (p.doses * 3))),
+  1,
+);
+const MAX_SAVINGS = Math.max(...PRICING_PACKS.map(savings));
 
 /** Sitewide, real, not ED-specific. Always labelled as InstaRx (brief Part 4).
  *  Rendered by TrustBadge in the hero (compact) and above the testimonials. */
@@ -118,11 +161,11 @@ export const hero = {
     E: "Your body doesn't work on a schedule. Your treatment shouldn't either.",
   } satisfies Record<HeroVariant, string>,
   subhead:
-    "Insta-Ready Quattro™ combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It dissolves under your tongue, so many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
+    "Insta-Ready Quattro™ combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It comes as a small vial of liquid: swish it for 30 to 60 seconds, swallow, and many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
   /** Phone subhead: the CTA sits near the fold, so two short sentences.
    *  Headline C's device plus the Part 4 onset line, footnote kept. */
   subheadShort:
-    "Four ingredients in one dose that dissolves under your tongue. Many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
+    "Four ingredients in one small vial. Swish for 30 to 60 seconds, swallow, and many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
   subheadTail:
     "Prescribed online by a US-licensed doctor if it's right for you, shipped in plain packaging.",
   cta: "See if I qualify",
@@ -148,12 +191,12 @@ export const hero = {
   },
 } as const;
 
-/* The hero, sticky bar, tier and final CTA all say "first month" for
- * PRICE_MONTHLY so one product never shows three different "regular" prices. */
+/* The hero, sticky bar and final CTA all anchor on the same "from" price so
+ * one product never shows three different entry prices. No "was" anchor: the
+ * schedule has no list price to strike through. */
 export const heroOffer = {
-  price: `${money(TODO_CONFIRM.PRICE_MONTHLY)} first month`,
-  was: money(TODO_CONFIRM.PRICE_MONTHLY_WAS),
-  perDose: `about ${perDose(TODO_CONFIRM.PRICE_MONTHLY, TODO_CONFIRM.DOSES_MONTHLY)} a dose`,
+  price: `From ${money(PRICE_FROM)} a month`,
+  perDose: `as low as ${LOWEST_PER_DOSE} a dose`,
 } as const;
 
 export type Ingredient = {
@@ -169,7 +212,7 @@ export type Ingredient = {
 
 export const formula = {
   heading: "The complete stack.",
-  sub: "Four ingredients in one sublingual dose. Each does one job.",
+  sub: "Four ingredients in one small vial. Each does one job.",
   items: [
     {
       key: "sildenafil",
@@ -268,29 +311,29 @@ export const benefits = {
   heading: "Engineered for your body.",
   items: [
     {
-      title: "Melts in minutes.",
-      body: "One dose that dissolves under your tongue, so many men feel it in as little as 15 minutes*.",
+      title: "Swish and swallow.",
+      body: "A small vial of liquid, not a pill. Hold it in your mouth for 30 to 60 seconds, swallow, and many men feel it in as little as 15 minutes*.",
       points: [
         {
-          title: "Skips digestion",
-          body: "Absorbs through the tissue under your tongue instead of waiting on your stomach.",
+          title: "Absorbs in the mouth",
+          body: "The liquid starts absorbing through the lining of your mouth before it reaches your stomach.",
         },
         {
-          title: "Four ingredients, one dose",
+          title: "Four ingredients, one vial",
           body: "The actives behind Viagra®, Cialis® and Levitra®, plus apomorphine.",
         },
       ],
       overlay: {
         kind: "chips",
-        items: ["Dissolves under the tongue", "As little as 15 minutes*"],
+        items: ["Swish 30–60 seconds", "As little as 15 minutes*"],
       },
       media: {
-        label: "Benefit visual · 1:1 · sublingual troche macro",
+        label: "Benefit visual · 1:1 · liquid vial macro",
         asset:
-          "Macro: two fingertips lifting a single pale troche toward parted lips, nose and mouth only, dusk light.",
+          "Macro: two fingertips lifting a small clear single-dose vial toward parted lips, nose and mouth only, dusk light.",
         aspect: "1 / 1",
         tone: 1,
-        src: "/images/ed-treatment-v2/benefit-melts.webp",
+        src: "/images/ed-treatment-v2/benefit-vial.webp",
       },
     },
     {
@@ -299,7 +342,7 @@ export const benefits = {
       points: [
         {
           title: "Less affected by food",
-          body: "A swallowed pill can be; a sublingual dose is less likely to be.",
+          body: "A swallowed pill can be; a dose absorbed in the mouth is less likely to be.",
         },
         {
           title: "Timing from your provider",
@@ -373,9 +416,10 @@ export const delivered = {
   /** Full-bleed band still, the partner of `steps.media`: the box arrives
    *  at home at night, in the page's house look. */
   media: {
-    label: "Delivered background · 16:9 · plain box on a hallway console at night",
+    label:
+      "Delivered background · 16:9 · plain box on a hallway console at night",
     asset:
-      "Unmarked matte box on a dark hallway console, keys beside it, one warm table lamp, front door ajar on blue dusk, no people. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
+      "Unmarked matte box on a dark hallway console, keys and one small clear vial beside it, warm lamp light from off frame, front door ajar on blue dusk, no people, no pill bottles. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
     aspect: "16 / 9",
     aspectMobile: "3 / 4",
     tone: 0,
@@ -398,7 +442,7 @@ export const comparison = {
     {
       label: "Format",
       oldWay: "Swallowed tablet",
-      newWay: "Dissolves under the tongue",
+      newWay: "Liquid vial, swish and swallow",
     },
     {
       label: "Feel it in",
@@ -438,19 +482,46 @@ export const comparison = {
   ] satisfies ComparisonRow[],
 } as const;
 
-export type PricingTier = {
-  key: "monthly" | "quarterly";
-  name: string;
-  billing: string;
-  price: string;
-  was: string;
-  doses: string;
-  perDose: string;
-  recurring: string;
-  features: string[];
-  recommended: boolean;
-  cta: string;
+export type PricingTerm = {
+  key: PricingTermKey;
+  label: string;
+  /** Small note inside the toggle option; only the 3-month term has one. */
+  hint?: string;
 };
+
+/** Everything a tier card prints for one pack at one supply length. Kept
+ *  here so no copy lives in JSX (brief Part 8). */
+export type TierView = {
+  name: string;
+  supply: string;
+  price: string;
+  unit: string;
+  perDose: string;
+  saving?: string;
+  note: string;
+};
+
+export function tierView(pack: PricingPack, term: PricingTermKey): TierView {
+  const months = TERM_MONTHS[term];
+  const price = pack.price[term];
+  const doses = pack.doses * months;
+  const saved = money(savings(pack));
+  return {
+    name: pack.name,
+    supply:
+      term === "monthly"
+        ? `${doses} doses, 1-month supply`
+        : `${doses} doses, 3-month supply`,
+    price: money(price),
+    unit: term === "monthly" ? "/month" : "/3 months",
+    perDose: `${perDose(price, doses)} per dose`,
+    saving: term === "quarterly" ? `Save ${saved}` : undefined,
+    note:
+      term === "monthly"
+        ? `Or ${money(pack.price.quarterly)} for a 3-month supply and save ${saved}.`
+        : `${saved} less than three 1-month orders.`,
+  };
+}
 
 const sharedFeatures = [
   "Doctor visit and prescription included",
@@ -461,37 +532,22 @@ const sharedFeatures = [
 
 export const pricing = {
   heading: "The power of 4. In 1 dose.",
-  sub: "Pricing shown up front. No membership. Cancel anytime.",
-  tiers: [
-    {
-      key: "monthly",
-      name: "Monthly",
-      billing: "Billed monthly",
-      price: money(TODO_CONFIRM.PRICE_MONTHLY),
-      was: money(TODO_CONFIRM.PRICE_MONTHLY_WAS),
-      doses: `${TODO_CONFIRM.DOSES_MONTHLY} doses`,
-      perDose: `${perDose(TODO_CONFIRM.PRICE_MONTHLY, TODO_CONFIRM.DOSES_MONTHLY)} per dose`,
-      recurring: `First month ${money(TODO_CONFIRM.PRICE_MONTHLY)}, then ${money(TODO_CONFIRM.PRICE_MONTHLY_RECURRING)}/month`,
-      features: sharedFeatures,
-      recommended: false,
-      cta: "See if I qualify",
-    },
+  sub: "Three pack sizes, two supply lengths. No membership. Cancel anytime.",
+  termsLabel: "Supply length",
+  terms: [
+    { key: "monthly", label: "1-month supply" },
     {
       key: "quarterly",
-      name: "3-month supply",
-      billing: "Billed every 3 months",
-      price: money(TODO_CONFIRM.PRICE_QUARTERLY),
-      was: money(TODO_CONFIRM.PRICE_QUARTERLY_WAS),
-      doses: `${TODO_CONFIRM.DOSES_QUARTERLY} doses`,
-      perDose: `${perDose(TODO_CONFIRM.PRICE_QUARTERLY, TODO_CONFIRM.DOSES_QUARTERLY)} per dose`,
-      recurring: `${money(TODO_CONFIRM.PRICE_QUARTERLY)} every 3 months, auto-renews until you cancel`,
-      features: sharedFeatures,
-      recommended: true,
-      cta: "See if I qualify",
+      label: "3-month supply",
+      hint: `Save up to ${money(MAX_SAVINGS)}`,
     },
-  ] satisfies PricingTier[],
-  recommendedLabel: "Best value",
-  fine: "Prices shown are for the compounded Quattro™ sublingual. A licensed provider decides whether a prescription is appropriate; completing the intake does not guarantee a prescription.",
+  ] satisfies PricingTerm[],
+  defaultTerm: "monthly" as PricingTermKey,
+  packs: PRICING_PACKS,
+  features: sharedFeatures,
+  recommendedLabel: "Lowest per dose",
+  cta: "See if I qualify",
+  fine: "Prices shown are for the compounded Quattro™ liquid. A licensed provider decides whether a prescription is appropriate; completing the intake does not guarantee a prescription.",
 } as const;
 
 export const safetyStrip = {
@@ -603,12 +659,49 @@ export const press = {
    *  Nothing else: another company's coverage shown here would be a false
    *  endorsement. */
   items: [
-    { name: "OK! magazine", src: "/lose-weight/press/ok-magazine.svg", w: 1804, h: 1130, px: 37 },
-    { name: "The Balancing Act", src: "/lose-weight/press/balancing-act.svg", w: 675.46, h: 130.61, px: 29 },
-    { name: "Woman's World", src: "/lose-weight/press/womans-world.svg", w: 1917, h: 257, px: 24 },
-    { name: "LA Weekly", src: "/lose-weight/press/la-weekly.svg", w: 300, h: 77, px: 29, twoTone: true },
-    { name: "Lifetime", src: "/lose-weight/press/lifetime.svg", w: 237.364, h: 71.967, px: 29 },
-    { name: "Health Uncensored with Dr. Drew", src: "/lose-weight/press/health-uncensored.svg", w: 1400, h: 711.9, px: 44 },
+    {
+      name: "OK! magazine",
+      src: "/lose-weight/press/ok-magazine.svg",
+      w: 1804,
+      h: 1130,
+      px: 37,
+    },
+    {
+      name: "The Balancing Act",
+      src: "/lose-weight/press/balancing-act.svg",
+      w: 675.46,
+      h: 130.61,
+      px: 29,
+    },
+    {
+      name: "Woman's World",
+      src: "/lose-weight/press/womans-world.svg",
+      w: 1917,
+      h: 257,
+      px: 24,
+    },
+    {
+      name: "LA Weekly",
+      src: "/lose-weight/press/la-weekly.svg",
+      w: 300,
+      h: 77,
+      px: 29,
+      twoTone: true,
+    },
+    {
+      name: "Lifetime",
+      src: "/lose-weight/press/lifetime.svg",
+      w: 237.364,
+      h: 71.967,
+      px: 29,
+    },
+    {
+      name: "Health Uncensored with Dr. Drew",
+      src: "/lose-weight/press/health-uncensored.svg",
+      w: 1400,
+      h: 711.9,
+      px: 44,
+    },
   ] as readonly PressLogo[],
 } as const;
 
@@ -616,7 +709,7 @@ export const finalCta = {
   heading: "Ready when you are.",
   body: `Two minutes online. A real doctor. Plain packaging at your door in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
   cta: "See if I qualify",
-  sub: `First month ${money(TODO_CONFIRM.PRICE_MONTHLY)}. Cancel anytime.`,
+  sub: `From ${money(PRICE_FROM)} a month. Cancel anytime.`,
   /** Decorative strip under the CTA: the page's own stills mixed with three
    *  night frames made for the strip (mirror, taxi, front door), in an order
    *  that alternates warm and cool. No packaging or shipment frames here. */
@@ -635,7 +728,7 @@ export const finalCta = {
 } as const;
 
 export const stickyBar = {
-  price: `${money(TODO_CONFIRM.PRICE_MONTHLY)} first month`,
+  price: `From ${money(PRICE_FROM)}/mo`,
   cta: "See if I qualify",
   safetyLabel: "Safety info",
   safetyHref: TODO_CONFIRM.SAFETY_HREF,
@@ -661,6 +754,6 @@ export const footerDisclaimers = {
 
 export const metadata = {
   /* Rendered with title.absolute in page.tsx, so no "| InstaRx" template suffix. */
-  title: `4-in-1 ED Sublingual from ${money(TODO_CONFIRM.PRICE_MONTHLY)}/mo | Insta-Ready by InstaRx`,
-  description: `Sildenafil, tadalafil, vardenafil and apomorphine in one sublingual dose. Doctor-prescribed online, no membership, plain packaging in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
+  title: `4-in-1 ED Treatment from ${money(PRICE_FROM)}/mo | Insta-Ready by InstaRx`,
+  description: `Sildenafil, tadalafil, vardenafil and apomorphine in one small liquid vial. Doctor-prescribed online, no membership, plain packaging in ${TODO_CONFIRM.SHIPPING_DAYS}.`,
 } as const;

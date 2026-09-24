@@ -20,7 +20,11 @@ export function PressWall() {
         <Reveal className="edv2-stagger edv2-press__wall">
           {/* role="list" keeps the list announced in Safari, which drops
               list semantics on list-style: none. */}
-          <ul className="edv2-press__list" role="list" aria-label={press.listLabel}>
+          <ul
+            className="edv2-press__list"
+            role="list"
+            aria-label={press.listLabel}
+          >
             {press.items.map((logo, i) => (
               <li
                 key={logo.name}

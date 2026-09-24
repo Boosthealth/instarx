@@ -21,7 +21,10 @@ export function OldWayNewWay() {
         <Reveal className="edv2-compare edv2-stagger">
           <table className="edv2-compare__table" role="table">
             <thead role="rowgroup">
-              <tr className="edv2-compare__row edv2-compare__row--head" role="row">
+              <tr
+                className="edv2-compare__row edv2-compare__row--head"
+                role="row"
+              >
                 <td className="edv2-compare__corner" role="cell" />
                 <th
                   scope="col"
@@ -47,13 +50,23 @@ export function OldWayNewWay() {
                   className="edv2-compare__row edv2-stagger__item"
                   style={{ "--i": i } as CSSProperties}
                 >
-                  <th scope="row" role="rowheader" className="edv2-compare__label">
+                  <th
+                    scope="row"
+                    role="rowheader"
+                    className="edv2-compare__label"
+                  >
                     {row.label}
                   </th>
-                  <td role="cell" className="edv2-compare__cell edv2-compare__cell--old">
+                  <td
+                    role="cell"
+                    className="edv2-compare__cell edv2-compare__cell--old"
+                  >
                     {row.oldWay}
                   </td>
-                  <td role="cell" className="edv2-compare__cell edv2-compare__cell--new">
+                  <td
+                    role="cell"
+                    className="edv2-compare__cell edv2-compare__cell--new"
+                  >
                     {row.newWay}
                   </td>
                 </tr>

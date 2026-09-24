@@ -77,7 +77,11 @@ export function Reviews() {
         <Reveal className="edv2-stagger edv2-mosaic-wrap">
           {/* role="list" keeps the list announced in Safari, which drops
               list semantics on list-style: none. */}
-          <ul className="edv2-mosaic" role="list" aria-label={reviews.listLabel}>
+          <ul
+            className="edv2-mosaic"
+            role="list"
+            aria-label={reviews.listLabel}
+          >
             {reviews.items.map((review, i) => (
               <Pair key={`${review.name}-${i}`} review={review} index={i} />
             ))}

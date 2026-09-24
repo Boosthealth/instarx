@@ -30,13 +30,21 @@ export function Header() {
 
   return (
     <>
-      <div ref={sentinel} className="edv2-header__sentinel" aria-hidden="true" />
+      <div
+        ref={sentinel}
+        className="edv2-header__sentinel"
+        aria-hidden="true"
+      />
       <header
         className="edv2-header"
         data-scrolled={scrolled ? "true" : "false"}
       >
         <div className="edv2-header__inner">
-          <Link href="/" className="edv2-header__logo" aria-label="InstaRx home">
+          <Link
+            href="/"
+            className="edv2-header__logo"
+            aria-label="InstaRx home"
+          >
             <Image
               src={header.logoSrc}
               alt={header.logoAlt}

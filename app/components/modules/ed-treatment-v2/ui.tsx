@@ -1,12 +1,7 @@
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type {
-  CSSProperties,
-  ReactEventHandler,
-  ReactNode,
-  Ref,
-} from "react";
+import type { CSSProperties, ReactEventHandler, ReactNode, Ref } from "react";
 import {
   rating,
   TODO_CONFIRM,
@@ -222,15 +217,6 @@ export function Ambient({ src }: { src: string }) {
 }
 
 /* Struck-through anchor price with a coherent sentence for screen readers. */
-export function WasPrice({ value }: { value: string }) {
-  return (
-    <s>
-      <span className="sr-only">regularly </span>
-      {value}
-    </s>
-  );
-}
-
 const STAR_PATH =
   "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
 

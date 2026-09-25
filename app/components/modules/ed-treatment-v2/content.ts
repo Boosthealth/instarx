@@ -437,14 +437,6 @@ export type ComparisonRow = {
 
 export const comparison = {
   heading: "The old way vs. the new way.",
-  /** Clean product cutout (no grain, transparent) that stands in the channel
-   *  between the old and new columns on wide screens and above the table on
-   *  phones. Decorative: the "new way" header names the product. */
-  product: {
-    src: "/images/ed-treatment-v2/product-vial.webp",
-    width: 520,
-    height: 1098,
-  },
   oldLabel: "A swallowed pill",
   newLabel: "Insta-Ready Quattro™",
   rows: [

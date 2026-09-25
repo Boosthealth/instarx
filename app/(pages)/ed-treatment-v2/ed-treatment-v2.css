@@ -1404,40 +1404,8 @@
    way in ink. Every row is a grid so phones can put the label above the two
    values; the markup restates the table roles. */
 .edv2-compare {
-  position: relative;
   max-width: 60rem;
   margin-inline: auto;
-}
-
-/* Phones: the cutout stands centred above the column headers, small enough
-   that the table is still the first thing read. */
-.edv2-compare__product {
-  width: 5rem;
-  margin: 0 auto 1rem;
-  filter: drop-shadow(0 14px 18px rgba(24, 24, 27, 0.22));
-}
-
-.edv2-compare__product img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .edv2-compare__product {
-    animation: edv2-hover 6s ease-in-out infinite;
-  }
-}
-
-@keyframes edv2-hover {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-6px);
-  }
 }
 
 .edv2-compare__table,
@@ -1516,29 +1484,11 @@
 }
 
 @media (min-width: 48rem) {
-  /* Label, old, a 5.5rem channel, new. The channel is empty in every row;
-     the cutout floats over it, centred at 50% + 7.5rem (half the label and
-     channel widths plus the gaps and padding that sit left of centre). */
   .edv2-compare__row {
-    grid-template-columns: 13rem 1fr 5.5rem 1fr;
+    grid-template-columns: 13rem 1fr 1fr;
     gap: 2rem;
     align-items: baseline;
     padding: 1.1rem 1.5rem;
-  }
-
-  .edv2-compare__cell--new {
-    grid-column: 4;
-  }
-
-  .edv2-compare__product {
-    position: absolute;
-    top: -1.75rem;
-    left: calc(50% + 7.5rem);
-    z-index: 1;
-    width: 5.5rem;
-    margin: 0;
-    transform: translateX(-50%) rotate(-6deg);
-    filter: drop-shadow(0 22px 26px rgba(24, 24, 27, 0.26));
   }
 
   .edv2-compare__corner {
@@ -1561,39 +1511,6 @@
     grid-column: auto;
     font-size: var(--edv2-fs-body);
     font-weight: 500;
-  }
-}
-
-@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
-  .edv2-compare__product {
-    animation-name: edv2-hover-wide;
-  }
-}
-
-/* From 64rem the channel widens to 12rem and the bottle becomes a packshot:
-   11rem wide, breaking the top rule and standing over the first four rows,
-   the way QUAD's bottle leans between its two cards. Centre is still
-   W/2 + 7.5rem (1.5 + 13 + 2 + fr + 2 + 6 = 24.5 + (W - 34) / 2). */
-@media (min-width: 64rem) {
-  .edv2-compare__row {
-    grid-template-columns: 13rem 1fr 12rem 1fr;
-  }
-
-  .edv2-compare__product {
-    top: -2.25rem;
-    width: 11rem;
-    filter: drop-shadow(-8px 30px 30px rgba(24, 24, 27, 0.3));
-  }
-}
-
-@keyframes edv2-hover-wide {
-  0%,
-  100% {
-    transform: translateX(-50%) rotate(-6deg) translateY(0);
-  }
-
-  50% {
-    transform: translateX(-50%) rotate(-6deg) translateY(-6px);
   }
 }
 

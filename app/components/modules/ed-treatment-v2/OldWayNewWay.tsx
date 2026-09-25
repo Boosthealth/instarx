@@ -29,7 +29,7 @@ export function OldWayNewWay() {
               alt=""
               width={comparison.product.width}
               height={comparison.product.height}
-              sizes="(min-width: 48rem) 88px, 64px"
+              sizes="(min-width: 64rem) 176px, (min-width: 48rem) 88px, 80px"
             />
           </div>
           <table className="edv2-compare__table" role="table">

@@ -442,8 +442,8 @@ export const comparison = {
    *  phones. Decorative: the "new way" header names the product. */
   product: {
     src: "/images/ed-treatment-v2/product-vial.webp",
-    width: 430,
-    height: 1200,
+    width: 520,
+    height: 1098,
   },
   oldLabel: "A swallowed pill",
   newLabel: "Insta-Ready Quattro™",

@@ -1,0 +1,2770 @@
+/* /ed-treatment-v2 — provisional design tokens and section styles.
+ * Everything visual is a custom property on .edv2 so the styling phase can
+ * retheme in one place. Palette, radii and button grammar follow the
+ * Superpower.com system (zinc neutrals, one vermillion accent, full-pill CTAs).
+ */
+
+.edv2 {
+  /* Type. Sitewide Figtree, set as --font-figtree on <html> by the root layout. */
+  --edv2-font-sans: var(--font-figtree);
+  --edv2-font: var(--edv2-font-sans), ui-sans-serif, system-ui, sans-serif;
+  --edv2-track-display: -0.03em;
+  --edv2-track-heading: -0.02em;
+  --edv2-track-ui: -0.0125em;
+  --edv2-lh-display: 0.95;
+  --edv2-lh-heading: 1.05;
+  --edv2-lh-body: 1.5;
+  --edv2-fs-display: clamp(3rem, 2.1rem + 5.4vw, 6rem);
+  --edv2-fs-h2: clamp(2rem, 1.4rem + 2.8vw, 3.75rem);
+  --edv2-fs-h3: clamp(1.5rem, 1.25rem + 1.2vw, 2.25rem);
+  --edv2-fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --edv2-fs-body: 1rem;
+  --edv2-fs-small: 0.875rem;
+  --edv2-fs-micro: 0.75rem;
+
+  /* Neutrals (zinc). */
+  --edv2-white: #ffffff;
+  --edv2-zinc-50: #fafafa;
+  --edv2-zinc-100: #f4f4f5;
+  --edv2-zinc-200: #e4e4e7;
+  --edv2-zinc-300: #d4d4d8;
+  --edv2-zinc-400: #a1a1aa;
+  --edv2-zinc-500: #71717a;
+  --edv2-zinc-600: #52525b;
+  --edv2-zinc-700: #3f3f46;
+  --edv2-zinc-800: #27272a;
+  --edv2-zinc-900: #18181b;
+  --edv2-zinc-950: #09090b;
+
+  /* Accent (vermillion). */
+  --edv2-accent: #fc5f2b;
+  /* Ink on the accent. White reads on-brand but sits at 3.2:1; zinc-950
+     clears AA at every button size. Flip here if brand insists on white. */
+  --edv2-accent-ink: var(--edv2-zinc-950);
+  --edv2-accent-hover: #f7861e;
+  --edv2-accent-soft: #fff6ea;
+
+  /* Semantic. The light bands sit on a settled grey rather than paper white,
+     so the step down from the dark hero is gentler; white is kept for the
+     cards that should lift off it (pricing, reviews, safety, sticky bar).
+     text-3 is one step darker than zinc-500, which drops under 4.5:1 on the
+     soft band. */
+  --edv2-bg: #f2f2f3;
+  --edv2-bg-2: #e9e9eb;
+  --edv2-bg-3: #e2e2e5;
+  --edv2-bg-dark: var(--edv2-zinc-900);
+  --edv2-bg-dark-2: var(--edv2-zinc-800);
+  --edv2-text: var(--edv2-zinc-900);
+  --edv2-text-2: var(--edv2-zinc-600);
+  --edv2-text-3: #62626b;
+  --edv2-text-on-dark: var(--edv2-white);
+  --edv2-text-on-dark-2: var(--edv2-zinc-300);
+  --edv2-text-on-dark-3: var(--edv2-zinc-400);
+  --edv2-border: #d9d9dd;
+  --edv2-border-dark: rgba(255, 255, 255, 0.12);
+  /* Ink ring on the grey bands (the accent falls under 3:1 there); the dark
+     bands switch back to the accent below. */
+  --edv2-focus: var(--edv2-zinc-900);
+  /* Trustpilot's own greens, for the boxed-star badge only. */
+  --edv2-tp-green: #00b67a;
+  --edv2-tp-grey: #dcdce0;
+
+  /* Radii. */
+  --edv2-r-sm: 0.5rem;
+  --edv2-r-md: 0.75rem;
+  --edv2-r-lg: 1rem;
+  --edv2-r-xl: 1.25rem;
+  --edv2-r-2xl: 1.5rem;
+  --edv2-r-3xl: 2rem;
+  --edv2-r-full: 9999px;
+
+  /* Shadows: offset + soft blur, never a flat halo. */
+  --edv2-shadow-sm:
+    0 1px 2px rgba(24, 24, 27, 0.06), 0 1px 3px rgba(24, 24, 27, 0.04);
+
+  /* Spacing and layout. */
+  --edv2-container: 80rem;
+  --edv2-gutter: 1rem;
+  --edv2-section-y: clamp(4rem, 3rem + 5vw, 8rem);
+  --edv2-section-y-tight: clamp(3rem, 2.5rem + 3vw, 5rem);
+  --edv2-tuck: 1.5rem;
+  --edv2-header-h: 4rem;
+  --edv2-sticky-h: 4.5rem;
+
+  /* Motion. */
+  --edv2-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --edv2-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --edv2-dur-fast: 160ms;
+  --edv2-dur-ui: 240ms;
+  --edv2-dur-reveal: 320ms;
+  --edv2-dur-media: 600ms;
+
+  /* Media slot placeholders: tone-graded gradients so contrast can be judged now. */
+  --edv2-slot-0: radial-gradient(
+    120% 80% at 70% 20%,
+    #3b2a22 0%,
+    #18181b 55%,
+    #0c0c0e 100%
+  );
+  --edv2-slot-1: linear-gradient(160deg, #2a3c55 0%, #18181b 60%, #0f1116 100%);
+  --edv2-slot-2: linear-gradient(160deg, #3a3a40 0%, #1c1c20 55%, #0e0e10 100%);
+  --edv2-slot-3: linear-gradient(160deg, #4a3222 0%, #221a17 55%, #0f0d0c 100%);
+  --edv2-slot-4: radial-gradient(
+    90% 90% at 30% 70%,
+    #6b3a1f 0%,
+    #2a1a14 50%,
+    #121012 100%
+  );
+
+  font-family: var(--edv2-font);
+  font-size: var(--edv2-fs-body);
+  line-height: var(--edv2-lh-body);
+  color: var(--edv2-text);
+  background: var(--edv2-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings:
+    "ss01" 1,
+    "cv11" 1;
+  accent-color: var(--edv2-accent);
+  caret-color: var(--edv2-accent);
+}
+
+@media (min-width: 48rem) {
+  .edv2 {
+    --edv2-gutter: 2rem;
+  }
+}
+
+.edv2 ::selection {
+  background: var(--edv2-accent);
+  color: var(--edv2-white);
+}
+
+.edv2 :focus-visible {
+  outline: 2px solid var(--edv2-focus);
+  outline-offset: 3px;
+}
+
+/* Zero-specificity reset so every later link rule (p a, .edv2-link, header
+ * anchor, footer links, sticky safety link) wins without !important. */
+.edv2 :where(a:not(.edv2-btn)) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.edv2 p a,
+.edv2 .edv2-link {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+  transition: color var(--edv2-dur-ui) ease;
+}
+
+.edv2 strong {
+  font-weight: 700;
+}
+
+.edv2 s {
+  text-decoration-thickness: 1.5px;
+}
+
+/* ---------- Layout primitives ---------- */
+
+.edv2-container {
+  width: 100%;
+  max-width: var(--edv2-container);
+  margin-inline: auto;
+  padding-inline: var(--edv2-gutter);
+}
+
+.edv2-section {
+  padding-block: var(--edv2-section-y);
+}
+
+.edv2-section--soft {
+  background: var(--edv2-bg-2);
+}
+
+.edv2-section--tuck {
+  border-top-left-radius: var(--edv2-tuck);
+  border-top-right-radius: var(--edv2-tuck);
+  margin-top: calc(var(--edv2-tuck) * -1);
+  position: relative;
+}
+
+/* ---------- Type ---------- */
+
+.edv2-display {
+  font-size: var(--edv2-fs-display);
+  font-weight: 800;
+  letter-spacing: var(--edv2-track-display);
+  line-height: var(--edv2-lh-display);
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* Section headings sit at 500: the hero carries the weight, everything after
+   it speaks at a normal volume. */
+.edv2-h2 {
+  font-size: var(--edv2-fs-h2);
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-display);
+  line-height: var(--edv2-lh-heading);
+  text-wrap: balance;
+  margin: 0;
+}
+
+.edv2-h3 {
+  font-size: var(--edv2-fs-h3);
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-heading);
+  line-height: 1.1;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.edv2-lead {
+  font-size: var(--edv2-fs-lead);
+  line-height: 1.45;
+  color: var(--edv2-text-2);
+  max-width: 40rem;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+.edv2-stack .edv2-lead {
+  color: var(--edv2-text-on-dark-2);
+}
+
+.edv2-small {
+  font-size: var(--edv2-fs-small);
+  line-height: 1.5;
+}
+
+.edv2-micro {
+  font-size: var(--edv2-fs-micro);
+  line-height: 1.5;
+}
+
+.edv2-muted {
+  color: var(--edv2-text-2);
+}
+
+/* ---------- Buttons ---------- */
+
+.edv2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--edv2-r-full);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: var(--edv2-fs-body);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--edv2-dur-ui) ease,
+    transform var(--edv2-dur-fast) var(--edv2-ease-out);
+}
+
+.edv2-btn:active {
+  transform: scale(0.97);
+}
+
+.edv2-btn--primary {
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-btn--primary:hover {
+    background: var(--edv2-accent-hover);
+  }
+}
+
+.edv2-btn--dark {
+  background: var(--edv2-zinc-900);
+  color: var(--edv2-white);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-btn--dark:hover {
+    background: var(--edv2-zinc-800);
+  }
+}
+
+.edv2-btn--ghost-light {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--edv2-white);
+  border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.edv2-btn--sm {
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  font-size: var(--edv2-fs-small);
+}
+
+.edv2-btn--lg {
+  min-height: 3.5rem;
+  padding: 1rem 1.75rem;
+  font-size: 1.0625rem;
+}
+
+.edv2-btn--block {
+  width: 100%;
+}
+
+.edv2-btn .edv2-btn__icon {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-btn:hover .edv2-btn__icon {
+    transform: translateX(2px);
+  }
+}
+
+/* ---------- Chips and pills ---------- */
+
+.edv2-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--edv2-r-full);
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  line-height: 1.2;
+  border: 1px solid var(--edv2-border);
+  background: var(--edv2-white);
+  color: var(--edv2-text);
+}
+
+.edv2-chip--on-dark {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--edv2-white);
+  backdrop-filter: blur(8px);
+}
+
+.edv2-chip--saving {
+  border-color: transparent;
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
+}
+
+/* ---------- Media slots ---------- */
+
+.edv2-slot {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--edv2-r-lg);
+  background: var(--edv2-slot-2);
+  aspect-ratio: var(--slot-aspect-mobile, var(--slot-aspect, 4 / 5));
+  isolation: isolate;
+}
+
+@media (min-width: 48rem) {
+  .edv2-slot {
+    aspect-ratio: var(--slot-aspect, 4 / 5);
+  }
+}
+
+.edv2-slot--0 {
+  background: var(--edv2-slot-0);
+}
+.edv2-slot--1 {
+  background: var(--edv2-slot-1);
+}
+.edv2-slot--2 {
+  background: var(--edv2-slot-2);
+}
+.edv2-slot--3 {
+  background: var(--edv2-slot-3);
+}
+.edv2-slot--4 {
+  background: var(--edv2-slot-4);
+}
+
+.edv2-slot__grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Drift layer for a card's photo: 16% taller than the card so a +/-6% slide
+   never shows an edge. The card clips it. */
+.edv2-parallax {
+  position: absolute;
+  inset: -8% 0;
+  will-change: transform;
+}
+
+.edv2-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.edv2-slot__label {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--edv2-r-sm);
+  background: rgba(24, 24, 27, 0.6);
+  color: var(--edv2-text-on-dark-2);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+/* ---------- Header ---------- */
+
+/* Dark surfaces keep the vermillion focus ring. */
+.edv2-header,
+.edv2-hero,
+.edv2-stack,
+.edv2-final,
+.edv2-footer {
+  --edv2-focus: var(--edv2-accent);
+}
+
+/* Fixed over the page: transparent on the hero, dark glass once scrolled
+   (Header.tsx flips data-scrolled from a sentinel at the top of the
+   document). Below 64rem the glass is the full-width bar; from 64rem it is a
+   pill inside the content width, in the superpower.com manner, with the
+   outer bar staying clear. Only the unprefixed backdrop-filter is written:
+   Lightning CSS adds the -webkit- copy, and a hand-written one after it
+   would win and lose the blur. --edv2-header-h is the transparent bar's
+   height, which the hero pads for; the pill is shorter and does not move
+   the page. */
+.edv2-header__sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 2.5rem;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.edv2-header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 30;
+  padding-inline: var(--edv2-gutter);
+  border-bottom: 1px solid transparent;
+  color: var(--edv2-white);
+  transition:
+    background-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    border-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    padding var(--edv2-dur-ui) var(--edv2-ease-out),
+    backdrop-filter var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+.edv2-header[data-scrolled="true"] {
+  background: rgb(9 9 11 / 0.7);
+  border-bottom-color: var(--edv2-border-dark);
+  backdrop-filter: blur(20px);
+}
+
+.edv2-header__inner {
+  width: 100%;
+  max-width: calc(var(--edv2-container) - 2 * var(--edv2-gutter));
+  height: var(--edv2-header-h);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--edv2-r-full);
+  transition:
+    background-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    border-color var(--edv2-dur-ui) var(--edv2-ease-out),
+    height var(--edv2-dur-ui) var(--edv2-ease-out),
+    padding var(--edv2-dur-ui) var(--edv2-ease-out),
+    backdrop-filter var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+/* From 64rem the outer bar stays transparent and only the pill is glass.
+   The bar itself lets clicks through so the 10px bands above and below the
+   pill, and the margins beside it on wide screens, do not cover the page;
+   the pill takes them back. */
+@media (min-width: 64rem) {
+  .edv2-header {
+    pointer-events: none;
+  }
+
+  .edv2-header__inner {
+    pointer-events: auto;
+  }
+
+  .edv2-header[data-scrolled="true"] {
+    padding-block: 0.625rem;
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+  }
+
+  .edv2-header[data-scrolled="true"] .edv2-header__inner {
+    height: 3.5rem;
+    padding-inline: 1.25rem 0.375rem;
+    background: rgb(9 9 11 / 0.7);
+    border-color: var(--edv2-border-dark);
+    backdrop-filter: blur(20px);
+  }
+}
+
+.edv2-header__logo {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.edv2-header__logo img {
+  height: 1.5rem;
+  width: auto;
+  display: block;
+}
+
+.edv2-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Below 64rem the bottom sticky bar (price and CTA) is the persistent
+   action once the hero button scrolls away, so the header keeps only the
+   logo and the anchor; two vermillion buttons on one phone screen read as
+   noise. From 64rem the sticky bar is gone and the header carries the CTA. */
+.edv2-header__nav > .edv2-btn {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .edv2-header__nav > .edv2-btn {
+    display: inline-flex;
+  }
+}
+
+.edv2-header__anchor {
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  color: var(--edv2-text-on-dark-2);
+  padding: 0.75rem 0.25rem;
+  margin-block: -0.25rem;
+  transition: color var(--edv2-dur-ui) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-header__anchor:hover {
+    color: var(--edv2-white);
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.edv2-hero {
+  position: relative;
+  min-height: 100svh;
+  max-height: 60rem;
+  display: flex;
+  align-items: flex-end;
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 64rem) {
+  .edv2-hero {
+    align-items: center;
+    min-height: min(100svh, 57.5rem);
+  }
+}
+
+.edv2-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--edv2-slot-0);
+}
+
+.edv2-hero__media .edv2-slot__label {
+  bottom: auto;
+  top: calc(var(--edv2-header-h) + 0.75rem);
+  right: 0.75rem;
+  left: auto;
+}
+
+.edv2-hero__video,
+.edv2-hero__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.edv2-hero__video {
+  opacity: 0;
+  transition: opacity var(--edv2-dur-media) ease;
+}
+
+.edv2-hero__video[data-ready="true"] {
+  opacity: 1;
+}
+
+/* The loop is 16:9 only. If a desktop window narrows after it started, hide
+ * it so the tall poster shows; the offscreen observer then pauses it. */
+@media (max-width: 47.99rem) {
+  .edv2-hero__video {
+    display: none;
+  }
+}
+
+.edv2-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(24, 24, 27, 0.55) 0%, rgba(24, 24, 27, 0) 28%),
+    linear-gradient(
+      0deg,
+      rgba(24, 24, 27, 0.92) 0%,
+      rgba(24, 24, 27, 0.55) 45%,
+      rgba(24, 24, 27, 0.1) 100%
+    );
+  pointer-events: none;
+}
+
+@media (min-width: 64rem) {
+  .edv2-hero__scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(24, 24, 27, 0.4) 0%,
+        rgba(24, 24, 27, 0) 25%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(24, 24, 27, 0.9) 0%,
+        rgba(24, 24, 27, 0.6) 40%,
+        rgba(24, 24, 27, 0.05) 80%
+      );
+  }
+}
+
+.edv2-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-top: calc(var(--edv2-header-h) + 2rem);
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 64rem) {
+  .edv2-hero__content {
+    padding-block: 6rem;
+  }
+}
+
+.edv2-hero__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 42rem;
+}
+
+.edv2-hero__rating {
+  display: flex;
+}
+
+.edv2-stars {
+  display: inline-flex;
+  gap: 0.125rem;
+  color: var(--edv2-accent);
+}
+
+.edv2-stars svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: currentColor;
+}
+
+.edv2-hero__title span {
+  display: block;
+}
+
+.edv2-hero__sub {
+  font-size: var(--edv2-fs-small);
+  line-height: 1.5;
+  color: var(--edv2-text-on-dark-2);
+  max-width: 34rem;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+@media (min-width: 40rem) {
+  .edv2-hero__sub {
+    font-size: var(--edv2-fs-lead);
+    line-height: 1.45;
+  }
+}
+
+.edv2-hero__sub-tail,
+.edv2-hero__sub-long {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .edv2-hero__sub-short {
+    display: none;
+  }
+
+  .edv2-hero__sub-long,
+  .edv2-hero__sub-tail {
+    display: inline;
+  }
+}
+
+.edv2-hero__offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.edv2-hero__price {
+  font-size: 1.0625rem;
+}
+
+.edv2-hero__price strong {
+  font-weight: 700;
+}
+
+.edv2-hero__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+@media (min-width: 40rem) {
+  .edv2-hero__actions {
+    width: auto;
+    align-items: flex-start;
+  }
+}
+
+.edv2-hero__micro {
+  color: var(--edv2-text-on-dark-3);
+  margin: 0;
+  max-width: 34rem;
+}
+
+/* ---------- Section heads ---------- */
+
+.edv2-head {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+  max-width: 48rem;
+}
+
+.edv2-head--center {
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+/* ---------- Complete stack ---------- */
+
+.edv2-stack {
+  position: relative;
+  isolation: isolate;
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+  padding-block: var(--edv2-section-y) 0;
+}
+
+/* ---------- Ambient light (dark bands) ---------- */
+
+.edv2-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.edv2-ambient__img {
+  object-fit: cover;
+  transform: scale(1.3);
+  filter: blur(40px) saturate(1.15);
+  opacity: 0.16;
+}
+
+/* The stack band is several viewports tall on desktop (the runway). Light
+   only its top so the blurred raster stays about one screen, fading out. */
+.edv2-stack > .edv2-ambient {
+  bottom: auto;
+  height: min(100%, 160svh);
+  mask-image: linear-gradient(#000 55%, transparent);
+}
+
+.edv2-ambient__grain {
+  position: absolute;
+  inset: 0;
+  /* Irregular noise tile; a regular dot lattice aliases into stripes. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+}
+
+.edv2-stack__runway {
+  position: relative;
+}
+
+.edv2-stack__viewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+}
+
+.edv2-stack__card {
+  grid-area: 1 / 1;
+  width: 100%;
+  background: var(--edv2-bg-dark);
+  border-radius: var(--edv2-r-lg);
+  will-change: transform, opacity;
+}
+
+.edv2-stack__card-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: center;
+  min-height: 70svh;
+}
+
+.edv2-stack__media {
+  --slot-aspect: 4 / 5;
+  max-height: 78svh;
+  width: 100%;
+  border-radius: var(--edv2-r-lg);
+}
+
+.edv2-stack__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.edv2-stack__index {
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--edv2-text-on-dark-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.edv2-stack__word {
+  font-size: clamp(3.5rem, 2rem + 7vw, 8rem);
+  font-weight: 800;
+  letter-spacing: var(--edv2-track-display);
+  line-height: 0.9;
+  margin: 0;
+}
+
+.edv2-stack__ingredient {
+  font-size: var(--edv2-fs-h3);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-heading);
+  color: var(--edv2-text-on-dark-2);
+  margin: 0;
+}
+
+.edv2-stack__role {
+  font-size: var(--edv2-fs-lead);
+  line-height: 1.45;
+  color: var(--edv2-text-on-dark-2);
+  max-width: 30rem;
+  margin: 0;
+}
+
+.edv2-stack__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.edv2-stack__rail {
+  position: absolute;
+  right: var(--edv2-gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  z-index: 3;
+}
+
+.edv2-stack__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition:
+    background-color var(--edv2-dur-ui) ease,
+    transform var(--edv2-dur-ui) var(--edv2-ease-out);
+}
+
+.edv2-stack__dot[data-active="true"] {
+  background: var(--edv2-accent);
+  transform: scale(1.4);
+}
+
+/* Mobile: snap carousel */
+
+.edv2-stack__carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--edv2-gutter);
+  padding-inline: var(--edv2-gutter);
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.edv2-stack__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.edv2-stack__slide {
+  flex: 0 0 min(82vw, 22rem);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.edv2-stack__slide .edv2-stack__word {
+  font-size: clamp(2.75rem, 12vw, 3.75rem);
+}
+
+.edv2-stack__slide .edv2-stack__ingredient {
+  font-size: 1.125rem;
+}
+
+.edv2-stack__slide .edv2-stack__role {
+  font-size: var(--edv2-fs-small);
+}
+
+.edv2-stack__footer {
+  padding-block: 2.5rem var(--edv2-section-y);
+  color: var(--edv2-text-on-dark-3);
+  max-width: 52rem;
+}
+
+/* ---------- Engineered (benefits) ---------- */
+
+/* Rows sit 1.25rem apart, each in its own grey box with the photo card
+   inset by the box's padding, so the band reads as one argument rather
+   than three sections floating in white space. */
+.edv2-benefits__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.edv2-benefit {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0.5rem;
+  border-radius: var(--edv2-r-2xl);
+  background: var(--edv2-bg-3);
+}
+
+@media (min-width: 48rem) {
+  .edv2-benefit {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .edv2-benefit:nth-child(even) .edv2-benefit__media {
+    order: 2;
+  }
+}
+
+.edv2-benefit__media {
+  --slot-aspect: 1 / 1;
+  --slot-aspect-mobile: 4 / 3;
+  border-radius: var(--edv2-r-xl);
+}
+
+.edv2-benefit__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem 1rem 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .edv2-benefit__copy {
+    padding: clamp(2rem, 3.5vw, 3.5rem);
+  }
+}
+
+.edv2-benefit__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.edv2-benefit__intro p,
+.edv2-benefit__points p {
+  margin: 0;
+  color: var(--edv2-text-2);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.edv2-benefit__intro p {
+  font-size: var(--edv2-fs-lead);
+}
+
+.edv2-benefit__points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edv2-benefit__points li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.edv2-benefit__points svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.1rem;
+  color: var(--edv2-text);
+}
+
+.edv2-benefit__points strong {
+  color: var(--edv2-text);
+  font-weight: 600;
+}
+
+/* Frosted labels over the benefit photos. A dark tint sits under the blur
+   so white text holds on any frame; two or three per photo, no more. They
+   repeat copy already on the page and are hidden from assistive tech. */
+.edv2-benefit__layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.edv2-benefit__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.edv2-benefit__overlay--top {
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+@media (min-width: 48rem) {
+  .edv2-benefit__overlay {
+    padding: 1.25rem;
+  }
+}
+
+.edv2-glass {
+  color: var(--edv2-white);
+  background: rgba(9, 9, 11, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px) saturate(1.2);
+}
+
+.edv2-glass--chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--edv2-r-full);
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  line-height: 1.2;
+  animation: edv2-float 6s ease-in-out 4 alternate;
+  animation-delay: calc(var(--i, 0) * -1.6s);
+}
+
+.edv2-glass--card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 12rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--edv2-r-lg);
+  text-align: left;
+  /* Denser than the chips: the card can land over a candle or a lit
+     face on the mobile crop, and the rows have to stay readable there. */
+  background: rgba(9, 9, 11, 0.58);
+  backdrop-filter: blur(16px) saturate(1.2);
+  animation: edv2-float 7s ease-in-out 4 alternate;
+}
+
+.edv2-compare-mini__label,
+.edv2-window-mini__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.edv2-compare-mini__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  font-size: var(--edv2-fs-small);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.edv2-compare-mini__row--new {
+  color: var(--edv2-white);
+  font-weight: 600;
+}
+
+.edv2-compare-mini__row--new span:last-child {
+  color: var(--edv2-accent);
+}
+
+.edv2-window-mini__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-heading);
+  line-height: 1.1;
+}
+
+.edv2-window-mini__track {
+  display: block;
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--edv2-r-full);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* The bar fills once the row has scrolled in. */
+.edv2-window-mini__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.edv2-reveal[data-in="true"] .edv2-window-mini__fill {
+  animation: edv2-fill 2s var(--edv2-ease-out) 300ms both;
+}
+
+@keyframes edv2-float {
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes edv2-fill {
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edv2-glass--chip,
+  .edv2-glass--card {
+    animation: none;
+  }
+
+  .edv2-window-mini__fill,
+  .edv2-reveal[data-in="true"] .edv2-window-mini__fill {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ---------- Delivered ---------- */
+
+/* Full-bleed night still, the partner of the Steps band: same house look,
+   different composition. Steps runs its copy along the foot; here the
+   heading and one frosted panel stand in a single column on the shadowed
+   left, the lit box on the right. The still drifts a little as the band
+   passes (ParallaxLayer); the section clips it. */
+.edv2-delivered {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 46rem);
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered {
+    min-height: clamp(34rem, 46vw, 44rem);
+  }
+}
+
+.edv2-delivered__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--edv2-slot-0);
+}
+
+/* Phones: darken the top for the heading and the foot for the panel.
+   Wider: the box sits on the right, so the shade comes from the left, with
+   a little from the top so the heading clears the lamp glow. */
+.edv2-delivered__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 38%),
+    linear-gradient(0deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 45%);
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered__scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(24, 24, 27, 0.72) 0%,
+        rgba(24, 24, 27, 0.4) 38%,
+        rgba(24, 24, 27, 0) 62%
+      ),
+      linear-gradient(180deg, rgba(24, 24, 27, 0.4) 0%, rgba(24, 24, 27, 0) 30%);
+  }
+}
+
+/* Phones: heading at the top, panel at the foot, the still between them.
+   Wider: both stack in one left column, vertically centred in the band. */
+.edv2-delivered__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(3rem, 8vw, 6rem);
+  padding-block: var(--edv2-section-y) clamp(1rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered__content {
+    justify-content: center;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+    padding-block: var(--edv2-section-y);
+  }
+}
+
+.edv2-delivered__head {
+  margin-bottom: 0;
+  max-width: 34rem;
+}
+
+/* One panel: the body sentence, then the three proof points as a hairline
+   list. Same glass as the Steps panel so the two bands match. */
+.edv2-delivered__panel {
+  border-radius: var(--edv2-r-xl);
+  background: rgba(9, 9, 11, 0.56);
+  backdrop-filter: blur(18px) saturate(1.2);
+  padding: 1.25rem 1.25rem 0.25rem;
+}
+
+@media (min-width: 48rem) {
+  .edv2-delivered__panel {
+    max-width: 34rem;
+    padding: 1.5rem 1.5rem 0.375rem;
+  }
+}
+
+.edv2-delivered__body {
+  color: var(--edv2-text-on-dark-2);
+  margin-bottom: 1rem;
+}
+
+/* Proof points as a hairline list: title left, detail beside it on wide
+   screens, under it on phones. No icons, no cards. */
+.edv2-delivered__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.edv2-trust {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.15rem 1.5rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+@media (min-width: 40rem) {
+  .edv2-trust {
+    grid-template-columns: minmax(10rem, 1fr) 1.4fr;
+    align-items: baseline;
+  }
+}
+
+.edv2-trust__title {
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-ui);
+  margin: 0;
+  color: var(--edv2-white);
+}
+
+.edv2-trust__detail {
+  margin: 0;
+  color: var(--edv2-text-on-dark-2);
+  font-size: var(--edv2-fs-small);
+}
+
+/* ---------- Old way vs new way ---------- */
+
+/* A plain text table: zebra rows, label in ink, the old way in grey, the new
+   way in ink. Every row is a grid so phones can put the label above the two
+   values; the markup restates the table roles. */
+.edv2-compare {
+  max-width: 60rem;
+  margin-inline: auto;
+}
+
+.edv2-compare__table,
+.edv2-compare__table thead,
+.edv2-compare__table tbody {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.edv2-compare__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 1.25rem;
+  padding: 1rem;
+  border-radius: var(--edv2-r-sm);
+}
+
+.edv2-compare__table tbody .edv2-compare__row:nth-child(odd) {
+  background: var(--edv2-bg-2);
+}
+
+.edv2-compare__row th,
+.edv2-compare__row td {
+  padding: 0;
+  font: inherit;
+  text-align: left;
+}
+
+/* Out of the grid on phones but still in the accessibility tree, so the
+ * two column headers keep lining up with the old and new cells. */
+.edv2-compare__corner {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.edv2-compare__row--head {
+  padding-block: 0 1rem;
+  border-bottom: 1px solid var(--edv2-border);
+  margin-bottom: 0.5rem;
+  border-radius: 0;
+}
+
+.edv2-compare__row--head .edv2-compare__cell {
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-ui);
+  line-height: 1.25;
+}
+
+.edv2-compare__row--head .edv2-compare__cell--new {
+  color: var(--edv2-text);
+}
+
+.edv2-compare__label {
+  grid-column: 1 / -1;
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  color: var(--edv2-text);
+}
+
+.edv2-compare__cell {
+  line-height: 1.4;
+}
+
+.edv2-compare__cell--old {
+  color: var(--edv2-text-3);
+}
+
+.edv2-compare__cell--new {
+  color: var(--edv2-text);
+  font-weight: 500;
+}
+
+@media (min-width: 48rem) {
+  .edv2-compare__row {
+    grid-template-columns: 13rem 1fr 1fr;
+    gap: 2rem;
+    align-items: baseline;
+    padding: 1.1rem 1.5rem;
+  }
+
+  .edv2-compare__corner {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .edv2-compare__row--head {
+    padding-block: 0 1.25rem;
+  }
+
+  .edv2-compare__row--head .edv2-compare__cell {
+    font-size: 1.125rem;
+  }
+
+  .edv2-compare__label {
+    grid-column: auto;
+    font-size: var(--edv2-fs-body);
+    font-weight: 500;
+  }
+}
+
+/* ---------- Pricing ---------- */
+
+.edv2-pricing__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 48rem) {
+  .edv2-pricing__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+}
+
+/* Supply-length toggle: one ink pill, the pressed option inverted. */
+.edv2-pricing__terms {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  padding: 0.25rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-white);
+  border: 1px solid var(--edv2-border);
+}
+
+.edv2-pricing__term {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: var(--edv2-r-full);
+  background: transparent;
+  color: var(--edv2-text-2);
+  font: inherit;
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.edv2-pricing__term[aria-pressed="true"] {
+  background: var(--edv2-text);
+  color: var(--edv2-white);
+}
+
+.edv2-pricing__term-hint {
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
+  font-size: var(--edv2-fs-micro);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Under ~416px the two options plus the hint no longer fit on one line, so
+   the pill goes full width and the hint drops under its label. */
+@media (max-width: 26rem) {
+  .edv2-pricing__terms {
+    width: 100%;
+  }
+
+  .edv2-pricing__term {
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    padding-inline: 0.5rem;
+    text-align: center;
+  }
+}
+
+.edv2-tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: var(--edv2-r-lg);
+  background: var(--edv2-white);
+  border: 1px solid var(--edv2-border);
+}
+
+@media (min-width: 48rem) {
+  .edv2-tier {
+    padding: 2rem;
+  }
+
+  /* Three columns at 48rem leave ~190px for the CTA pill; the lg padding
+     fits "See if I qualify" with 2px to spare, so give the label room. */
+  .edv2-tier .edv2-btn--lg {
+    padding-inline: 1.25rem;
+  }
+}
+
+.edv2-tier--recommended {
+  border-color: var(--edv2-accent);
+}
+
+.edv2-tier__badge {
+  position: absolute;
+  top: -0.85rem;
+  left: 1.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-accent);
+  color: var(--edv2-accent-ink);
+  font-size: var(--edv2-fs-micro);
+  font-weight: 600;
+}
+
+.edv2-tier__head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.edv2-tier__name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-ui);
+  margin: 0;
+}
+
+.edv2-tier__billing {
+  color: var(--edv2-text-2);
+  font-size: var(--edv2-fs-small);
+  margin: 0;
+}
+
+.edv2-tier__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.edv2-tier__amount {
+  font-size: clamp(2.75rem, 2.3rem + 1.5vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-display);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.edv2-tier__unit {
+  color: var(--edv2-text-2);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.edv2-tier__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.edv2-tier__recurring {
+  margin: 0;
+  color: var(--edv2-text-2);
+  font-size: var(--edv2-fs-small);
+}
+
+.edv2-tier__features {
+  list-style: none;
+  margin: 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--edv2-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.edv2-tier__feature {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: var(--edv2-fs-small);
+  line-height: 1.4;
+}
+
+/* Solid ink disc with a white tick: reads as a mark, not an illustration. */
+.edv2-tier__feature svg {
+  flex: 0 0 auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  padding: 0.2rem;
+  border-radius: var(--edv2-r-full);
+  background: var(--edv2-text);
+  color: var(--edv2-white);
+  margin-top: 0.05rem;
+}
+
+.edv2-tier__cta {
+  margin-top: auto;
+}
+
+.edv2-pricing__fine {
+  margin: 1.5rem auto 0;
+  max-width: 56rem;
+  color: var(--edv2-text-2);
+  text-align: center;
+}
+
+/* ---------- Safety strip ---------- */
+
+.edv2-safety {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-radius: var(--edv2-r-lg);
+  background: var(--edv2-white);
+  border: 1px solid var(--edv2-border);
+  color: var(--edv2-text-2);
+  font-size: var(--edv2-fs-small);
+  line-height: 1.5;
+  max-width: 56rem;
+  margin: 1.5rem auto 0;
+}
+
+.edv2-safety svg {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--edv2-text);
+  margin-top: 0.15rem;
+}
+
+.edv2-safety p {
+  margin: 0;
+}
+
+.edv2-safety strong {
+  color: var(--edv2-text);
+}
+
+/* ---------- Press ---------- */
+
+/* Logo wall on the hero's dark ground: one centred, wrapping row of the
+   six outlet wordmarks the other landers use, turned white by a filter. A
+   static row; the only marquee on the page is the still strip under the
+   final CTA. Gap and scale are tuned so all six sit on one line inside the
+   80rem container; narrower viewports wrap. */
+.edv2-press {
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark-3);
+  padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}
+
+.edv2-press__lead {
+  max-width: 40rem;
+  margin: 0 auto 1.75rem;
+  text-align: center;
+  text-wrap: balance;
+  font-size: var(--edv2-fs-small);
+  letter-spacing: var(--edv2-track-ui);
+  color: var(--edv2-text-on-dark-3);
+}
+
+.edv2-press__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  row-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edv2-press__item {
+  display: flex;
+  align-items: center;
+}
+
+/* Sized from the px height each mark gets on /nad-plus (--h), so the
+   optical sizes tuned there carry over. The baked fills (OK! red, Lifetime
+   pink, light-grey Health) flatten to one white through the filter; the
+   two-tone mark keeps its counter with grayscale + invert instead. */
+.edv2-press__logo {
+  display: block;
+  height: calc(var(--h, 28) * 0.0625rem);
+  width: auto;
+  opacity: 0.82;
+  filter: brightness(0) invert(1);
+}
+
+.edv2-press__logo--two-tone {
+  filter: grayscale(1) invert(1);
+}
+
+/* The 21st.dev "cinematic logo cloud" entrance, once, on scroll-in: each mark
+   resolves out of a blur in order. Filter is on the palette for this one
+   reveal because the marks are tiny raster-free SVGs, so nine blurred layers
+   cost nothing. The (0,4,0) hidden-state selector outranks the shared
+   stagger rule. Both rules live inside a no-preference query, so under
+   reduced motion the marks are simply never hidden, whatever the source
+   order; the shared reduced-motion block then covers the rest. */
+@media (prefers-reduced-motion: no-preference) {
+  .edv2-press .edv2-stagger__item {
+    transition:
+      opacity 700ms var(--edv2-ease-out),
+      transform 700ms var(--edv2-ease-out),
+      filter 700ms var(--edv2-ease-out);
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+
+  .edv2-press .edv2-stagger[data-in="false"] .edv2-stagger__item {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    filter: blur(10px);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .edv2-press__logo {
+    height: calc(var(--h, 28) * 0.05rem);
+  }
+
+  .edv2-press__list {
+    row-gap: 1.25rem;
+  }
+}
+
+/* ---------- Steps ---------- */
+
+/* Full-bleed night still with the heading at the top and the three steps
+   in one frosted panel along the bottom. The still drifts a little as the
+   band passes (ParallaxLayer); the section clips it. */
+.edv2-steps {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 48rem);
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+}
+
+@media (min-width: 48rem) {
+  .edv2-steps {
+    min-height: clamp(38rem, 52vw, 50rem);
+  }
+}
+
+.edv2-steps__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--edv2-slot-0);
+}
+
+/* Phones crop the 3:4 still at the sides; favour the left crop so the
+   subject sits to the right of the heading instead of under it. */
+@media (max-width: 47.99rem) {
+  .edv2-steps__media .edv2-slot__img {
+    object-position: 18% 50%;
+  }
+}
+
+/* Phones: darken the top for the heading and the foot for the panel.
+   Wider: the subject sits on the right, so the shade comes from the left
+   and the top; the panel's own glass handles the foot. */
+.edv2-steps__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 38%),
+    linear-gradient(0deg, rgba(24, 24, 27, 0.7) 0%, rgba(24, 24, 27, 0) 45%);
+}
+
+@media (min-width: 48rem) {
+  .edv2-steps__scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(24, 24, 27, 0.55) 0%,
+        rgba(24, 24, 27, 0) 32%
+      ),
+      linear-gradient(90deg, rgba(24, 24, 27, 0.6) 0%, rgba(24, 24, 27, 0) 55%),
+      linear-gradient(0deg, rgba(24, 24, 27, 0.5) 0%, rgba(24, 24, 27, 0) 40%);
+  }
+}
+
+.edv2-steps__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(3rem, 8vw, 6rem);
+  padding-block: var(--edv2-section-y) clamp(1rem, 2.5vw, 2rem);
+}
+
+.edv2-steps__head {
+  margin-bottom: 0;
+  max-width: 34rem;
+}
+
+/* One panel, three cells, hairline dividers: a single object at the foot
+   of the photo, not three floating cards. Heavier glass than the chips
+   because body copy has to read over the sofa. */
+.edv2-steps__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  border-radius: var(--edv2-r-xl);
+  background: rgba(9, 9, 11, 0.56);
+  backdrop-filter: blur(18px) saturate(1.2);
+  overflow: hidden;
+}
+
+@media (min-width: 48rem) {
+  .edv2-steps__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.edv2-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.25rem 1.375rem;
+  position: relative;
+}
+
+.edv2-step + .edv2-step {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+@media (min-width: 48rem) {
+  .edv2-step {
+    padding: 1.5rem 1.5rem 1.625rem;
+  }
+
+  .edv2-step + .edv2-step {
+    border-top: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+  }
+}
+
+.edv2-step__num {
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--edv2-accent);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.75rem;
+}
+
+.edv2-step__title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: var(--edv2-track-ui);
+  line-height: 1.25;
+  margin: 0;
+  color: var(--edv2-white);
+  text-wrap: balance;
+}
+
+.edv2-step__body {
+  margin: 0;
+  color: var(--edv2-text-on-dark-2);
+  text-wrap: pretty;
+}
+
+/* ---------- Trust badge (Trustpilot-style boxed stars) ---------- */
+
+.edv2-rating {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--edv2-fs-small);
+  color: var(--edv2-text-2);
+  text-decoration: none;
+}
+
+.edv2-rating__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: var(--edv2-track-ui);
+  color: var(--edv2-text);
+}
+
+.edv2-rating__mark {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--edv2-tp-green);
+}
+
+.edv2-rating__boxes {
+  display: inline-flex;
+  gap: 0.125rem;
+}
+
+.edv2-rating__box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  overflow: hidden;
+  background: var(--edv2-tp-grey);
+}
+
+.edv2-rating__box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 100%);
+  background: var(--edv2-tp-green);
+}
+
+.edv2-rating__box svg {
+  position: relative;
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: #fff;
+}
+
+.edv2-rating__score strong {
+  font-weight: 700;
+  color: var(--edv2-text);
+}
+
+.edv2-rating__count {
+  color: var(--edv2-text-3);
+}
+
+a.edv2-rating:hover .edv2-rating__source {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Hero form: one wrapping row, boxes first, source last with a separator. */
+.edv2-rating--compact {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.625rem;
+  font-weight: 600;
+  letter-spacing: var(--edv2-track-ui);
+}
+
+.edv2-rating--compact .edv2-rating__boxes {
+  order: 1;
+}
+
+.edv2-rating--compact .edv2-rating__score {
+  order: 2;
+}
+
+.edv2-rating--compact .edv2-rating__source {
+  order: 3;
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+}
+
+.edv2-rating--compact .edv2-rating__source::before {
+  content: "·";
+  margin-right: 0.25rem;
+  color: var(--edv2-text-3);
+}
+
+.edv2-rating--compact .edv2-rating__box {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.edv2-rating--compact .edv2-rating__box svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* Under ~32rem the row cannot hold boxes, score and source; the source
+ * takes its own line and loses the separator instead of wrapping mid-row. */
+@media (max-width: 32rem) {
+  .edv2-rating--compact .edv2-rating__source {
+    flex-basis: 100%;
+  }
+
+  .edv2-rating--compact .edv2-rating__source::before {
+    content: none;
+  }
+}
+
+.edv2-rating--on-dark,
+.edv2-rating--on-dark .edv2-rating__count {
+  color: var(--edv2-text-on-dark-2);
+}
+
+.edv2-rating--on-dark .edv2-rating__source,
+.edv2-rating--on-dark .edv2-rating__score strong {
+  color: var(--edv2-text-on-dark);
+}
+
+.edv2-rating--on-dark .edv2-rating__source::before {
+  color: var(--edv2-text-on-dark-3);
+}
+
+/* ---------- Reviews (still + quote wall) ---------- */
+
+/* Each review is one row on phones and half a row from 64rem: a 3:4 still
+ * and a quote tile side by side, both stretched to the taller of the two.
+ * Every other pair is mirrored with `order` (DOM order stays still then
+ * quote), so a desktop row reads still, quote, quote, still and the stills
+ * step diagonally on phones. */
+.edv2-mosaic {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edv2-mosaic__item {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: inherit;
+  min-width: 0;
+}
+
+.edv2-mosaic__item--flip .edv2-mosaic__photo {
+  order: 2;
+}
+
+/* align-self: stretch is explicit because a grid item with an aspect ratio
+   defaults to start, which would leave a gap under a still shorter than its
+   quote. width: 100% is explicit too: with only the height stretched, the
+   ratio would widen the still past its column (measured 247px in a 173px
+   column at 390px). With both axes set the ratio yields to the row and the
+   image crops; when the quote is the shorter one the ratio still sets the
+   row height. */
+.edv2-mosaic__photo {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--edv2-r-xl);
+  background: var(--edv2-bg-3);
+}
+
+.edv2-mosaic__img {
+  object-fit: cover;
+}
+
+.edv2-mosaic__quote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border-radius: var(--edv2-r-xl);
+  background: var(--edv2-white);
+  color: var(--edv2-text);
+}
+
+.edv2-mosaic__stars svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* Only the customer's words live in the blockquote; stars and byline sit
+   beside it in the tile so they are not read as part of the quotation. */
+.edv2-mosaic__bq {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  margin: 0;
+}
+
+.edv2-mosaic__title {
+  margin: 0;
+  font-size: var(--edv2-fs-body);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: var(--edv2-track-heading);
+  text-wrap: balance;
+}
+
+.edv2-mosaic__text {
+  margin: 0;
+  font-size: var(--edv2-fs-small);
+  line-height: 1.5;
+  color: var(--edv2-text-2);
+  text-wrap: pretty;
+}
+
+/* Name and label at the foot of the quote tile. */
+.edv2-mosaic__by {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  line-height: 1.25;
+}
+
+.edv2-mosaic__by strong {
+  font-size: var(--edv2-fs-small);
+  font-weight: 600;
+}
+
+.edv2-mosaic__by span {
+  font-size: var(--edv2-fs-micro);
+  color: var(--edv2-text-3);
+}
+
+/* The stills are made for the page, not the reviewers; the wall says so. */
+.edv2-mosaic__note {
+  max-width: 40rem;
+  margin: 1rem auto 0;
+  text-align: center;
+  font-size: var(--edv2-fs-micro);
+  color: var(--edv2-text-3);
+}
+
+@media (min-width: 40rem) {
+  .edv2-mosaic,
+  .edv2-mosaic__item {
+    gap: 1rem;
+  }
+
+  .edv2-mosaic__quote {
+    gap: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .edv2-mosaic__title {
+    font-size: 1.0625rem;
+  }
+
+  .edv2-mosaic__text {
+    font-size: var(--edv2-fs-body);
+  }
+}
+
+@media (min-width: 64rem) {
+  .edv2-mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Used by the final CTA strip (.edv2-strip__track), which sets its own
+ * --marquee-gap. */
+@keyframes edv2-marquee {
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap) / 2));
+  }
+}
+
+/* ---------- Final CTA + footer ---------- */
+
+.edv2-final {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark);
+  text-align: center;
+}
+
+.edv2-final__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+/* The hero's single-row badge wraps to two lines on phones; here it sits
+ * in a centred stack, so its lines centre too. */
+.edv2-final__inner .edv2-rating--compact,
+.edv2-final__inner .edv2-rating--compact .edv2-rating__source {
+  justify-content: center;
+  text-align: center;
+}
+
+.edv2-final__body {
+  margin: 0;
+  font-size: var(--edv2-fs-lead);
+  color: var(--edv2-text-on-dark-2);
+  text-wrap: balance;
+}
+
+.edv2-final__sub {
+  margin: 0;
+  color: var(--edv2-text-on-dark-3);
+}
+
+/* Still strip under the final CTA: the page's own photos and three night
+   frames made for it, tilted a few degrees each, rolling slowly and fading
+   at the sides. It eats most of the section's bottom padding so the photos
+   sit low, next to the footer. The page's only marquee; --marquee-gap feeds
+   the keyframe's travel distance. */
+.edv2-strip {
+  --marquee-gap: 1rem;
+  --still-h: 12rem;
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: calc(0.25rem - var(--edv2-section-y));
+  padding-block: 0.75rem 2rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+@media (min-width: 48rem) {
+  .edv2-strip {
+    --still-h: 16rem;
+  }
+}
+
+.edv2-strip__track {
+  display: flex;
+  gap: var(--marquee-gap);
+  width: max-content;
+  animation: edv2-marquee 70s linear infinite reverse;
+}
+
+/* Pointer users can hold the strip still. */
+.edv2-strip:hover .edv2-strip__track {
+  animation-play-state: paused;
+}
+
+.edv2-strip__set {
+  display: flex;
+  gap: var(--marquee-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edv2-still {
+  position: relative;
+  flex: none;
+  height: var(--still-h);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--edv2-r-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  rotate: -2deg;
+}
+
+.edv2-still:nth-child(even) {
+  rotate: 3deg;
+}
+
+.edv2-still:nth-child(4n + 3) {
+  rotate: -1deg;
+}
+
+.edv2-still__img {
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edv2-strip__track {
+    animation: none;
+  }
+}
+
+.edv2-footer {
+  background: var(--edv2-bg-dark);
+  color: var(--edv2-text-on-dark-3);
+  padding-block: 3rem calc(3rem + var(--edv2-sticky-h));
+  border-top: 1px solid var(--edv2-border-dark);
+}
+
+@media (min-width: 64rem) {
+  .edv2-footer {
+    padding-bottom: 3rem;
+  }
+}
+
+.edv2-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 56rem;
+}
+
+.edv2-footer__logo {
+  display: inline-block;
+  padding-block: 0.75rem;
+  margin-block: -0.75rem;
+}
+
+.edv2-footer__logo img {
+  height: 1.25rem;
+  width: auto;
+  opacity: 0.8;
+}
+
+.edv2-footer p {
+  margin: 0;
+  font-size: var(--edv2-fs-micro);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.edv2-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: var(--edv2-fs-small);
+}
+
+.edv2-footer__links a {
+  display: inline-block;
+  padding-block: 1rem;
+  margin-block: -1rem;
+  color: var(--edv2-text-on-dark-2);
+  transition: color var(--edv2-dur-ui) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .edv2-footer__links a:hover {
+    color: var(--edv2-white);
+  }
+}
+
+/* ---------- Sticky bar ---------- */
+
+.edv2-sticky {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 0.6rem var(--edv2-gutter) calc(0.6rem + env(safe-area-inset-bottom));
+  background: var(--edv2-white);
+  border-top: 1px solid var(--edv2-border);
+  transform: translateY(105%);
+  transition: transform 280ms var(--edv2-ease-out);
+}
+
+.edv2-sticky[data-visible="true"] {
+  transform: translateY(0);
+}
+
+@media (min-width: 64rem) {
+  .edv2-sticky {
+    display: none;
+  }
+}
+
+.edv2-sticky__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.edv2-sticky__price {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.edv2-sticky__price strong {
+  font-size: var(--edv2-fs-small);
+  white-space: nowrap;
+}
+
+.edv2-safety .edv2-link {
+  display: inline-block;
+  padding-block: 0.75rem;
+  margin-block: -0.75rem;
+}
+
+.edv2-sticky__safety {
+  display: inline-block;
+  padding-block: 1rem;
+  margin-block: -1rem;
+  font-size: var(--edv2-fs-micro);
+  color: var(--edv2-text-2);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  white-space: nowrap;
+}
+
+.edv2-sticky .edv2-btn {
+  margin-left: auto;
+  flex: 1 1 auto;
+  max-width: 14rem;
+}
+
+/* ---------- Reveal ---------- */
+
+.edv2-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--edv2-dur-reveal) var(--edv2-ease-out),
+    transform var(--edv2-dur-reveal) var(--edv2-ease-out);
+}
+
+.edv2-reveal[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Grouped stagger: the container stays put, its items rise in order. One
+   observer per group instead of one per row. */
+.edv2-reveal.edv2-stagger {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.edv2-stagger__item {
+  transition:
+    opacity 320ms var(--edv2-ease-out),
+    transform 320ms var(--edv2-ease-out);
+  transition-delay: var(--stagger-delay, calc(var(--i, 0) * 40ms));
+}
+
+.edv2-steps__list .edv2-stagger__item {
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+.edv2-stagger[data-in="false"] .edv2-stagger__item {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Hero media settles from 1.06 to 1 on load. Scale only, so the poster
+   paints at once and LCP is not held back. */
+.edv2-hero__media .edv2-slot {
+  animation: edv2-settle 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes edv2-settle {
+  from {
+    transform: scale(1.06);
+  }
+}
+
+/* Hero entrance (CSS, off main thread; poster is not delayed). */
+
+.edv2-hero__stack > * {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: edv2-rise 360ms var(--edv2-ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes edv2-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Fewer and gentler, not none: spatial entrances and scroll-linked
+     movement go; press feedback, colour and opacity state changes stay. */
+  .edv2-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .edv2-hero__video {
+    transition: none;
+  }
+
+  /* The glass state still switches; it just does not animate the padding. */
+  .edv2-header,
+  .edv2-header__inner {
+    transition: none;
+  }
+
+  .edv2-sticky {
+    transform: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--edv2-dur-fast) ease,
+      visibility 0s linear var(--edv2-dur-fast);
+  }
+
+  .edv2-sticky[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .edv2-hero__stack > * {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .edv2-stack__card {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Framer writes these transforms inline, hence !important. */
+  .edv2-parallax,
+  .edv2-hero__media {
+    transform: none !important;
+  }
+
+  .edv2-stagger__item,
+  .edv2-stagger[data-in="false"] .edv2-stagger__item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .edv2-hero__media .edv2-slot {
+    animation: none;
+  }
+}
+
+/* ---------- Complete stack: layout mechanics ---------- */
+
+.edv2-hero__media .edv2-slot {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.edv2-stack__runway {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .edv2-stack__runway {
+    display: block;
+    height: calc(var(--stack-n, 4) * 100svh);
+  }
+
+  .edv2-stack__runway[data-static="true"] {
+    height: auto;
+  }
+
+  .edv2-stack__runway[data-static="true"] .edv2-stack__viewport {
+    position: static;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .edv2-stack__runway[data-static="true"] .edv2-stack__frame {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .edv2-stack__runway[data-static="true"] .edv2-stack__card-inner {
+    min-height: 0;
+  }
+
+  /* Same static layout straight from the media query, so a reduced-motion
+   * visitor gets it before hydration and without JS; data-static then
+   * removes the inline transforms and the progress rail. */
+  @media (prefers-reduced-motion: reduce) {
+    .edv2-stack__runway {
+      height: auto;
+    }
+
+    .edv2-stack__runway .edv2-stack__viewport {
+      position: static;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .edv2-stack__runway .edv2-stack__frame {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .edv2-stack__runway .edv2-stack__card-inner {
+      min-height: 0;
+    }
+
+    .edv2-stack__rail {
+      display: none;
+    }
+  }
+
+  .edv2-stack__carousel {
+    display: none;
+  }
+}
+
+.edv2-stack__frame {
+  display: grid;
+  width: 100%;
+}
+
+.edv2-stack__frame > * {
+  grid-area: 1 / 1;
+}
+
+.edv2-stack__slide-media {
+  --slot-aspect: 4 / 5;
+  --slot-aspect-mobile: 1 / 1;
+}

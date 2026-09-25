@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { CSSProperties } from "react";
 import { comparison } from "./content";
 import { Reveal } from "./Reveal";
@@ -5,7 +6,10 @@ import { Reveal } from "./Reveal";
 /* One text table, no icons: label, old way, new way. Zebra rows carry the
  * eye across. Rows are laid out as grids (two columns under the label on
  * phones), so the table roles are stated explicitly to survive the display
- * change. Row i rises 40ms behind row i-1. */
+ * change. Row i rises 40ms behind row i-1. The product cutout stands in a
+ * spare grid column between the old and new cells from 48rem, breaking the
+ * top rule, and sits centred above the table on phones. It is decorative:
+ * the "new way" column header already names the product. */
 export function OldWayNewWay() {
   return (
     <section
@@ -19,6 +23,15 @@ export function OldWayNewWay() {
           </h2>
         </div>
         <Reveal className="edv2-compare edv2-stagger">
+          <div className="edv2-compare__product" aria-hidden="true">
+            <Image
+              src={comparison.product.src}
+              alt=""
+              width={comparison.product.width}
+              height={comparison.product.height}
+              sizes="(min-width: 48rem) 88px, 64px"
+            />
+          </div>
           <table className="edv2-compare__table" role="table">
             <thead role="rowgroup">
               <tr

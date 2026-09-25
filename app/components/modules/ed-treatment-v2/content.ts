@@ -418,9 +418,9 @@ export const delivered = {
    *  at home at night, in the page's house look. */
   media: {
     label:
-      "Delivered background · 16:9 · plain box on a hallway console at night",
+      "Delivered background · 16:9 · InstaRx box open on a hallway console at night",
     asset:
-      "Unmarked matte box on a dark hallway console, keys and one small clear vial beside it, warm lamp light from off frame, front door ajar on blue dusk, no people, no pill bottles. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
+      "The black InstaRx presentation box, lid open on its five vials, on a dark wooden hallway console; one vial standing beside the house keys; one warm tungsten lamp from off frame, deep navy shadow elsewhere; no people, no pill bottles, no other text. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
     aspect: "16 / 9",
     aspectMobile: "3 / 4",
     tone: 0,
@@ -437,6 +437,14 @@ export type ComparisonRow = {
 
 export const comparison = {
   heading: "The old way vs. the new way.",
+  /** Clean product cutout (no grain, transparent) that stands in the channel
+   *  between the old and new columns on wide screens and above the table on
+   *  phones. Decorative: the "new way" header names the product. */
+  product: {
+    src: "/images/ed-treatment-v2/product-vial.webp",
+    width: 430,
+    height: 1200,
+  },
   oldLabel: "A swallowed pill",
   newLabel: "Insta-Ready Quattro™",
   rows: [

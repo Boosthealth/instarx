@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
-import { comparison } from "./content";
+import { comparison, INTAKE_HREF } from "./content";
 import { Reveal } from "./Reveal";
+import { Button } from "./ui";
 
 /* One text table, no icons: label, old way, new way. Zebra rows carry the
  * eye across. Rows are laid out as grids (two columns under the label on
@@ -10,6 +11,8 @@ import { Reveal } from "./Reveal";
 export function OldWayNewWay() {
   return (
     <section
+      id="new-way"
+      tabIndex={-1}
       className="edv2-section edv2-comparison"
       aria-labelledby="edv2-compare-title"
     >
@@ -74,6 +77,11 @@ export function OldWayNewWay() {
               ))}
             </tbody>
           </table>
+        </Reveal>
+        <Reveal className="edv2-compare__cta">
+          <Button href={INTAKE_HREF} size="lg" arrow>
+            {comparison.cta}
+          </Button>
         </Reveal>
       </div>
     </section>

@@ -79,13 +79,13 @@ export const TODO_CONFIRM = {
     tadalafil: "Strength set by your provider",
     apomorphine: "Strength set by your provider",
   },
-  /** Safety-information destination. A combined Quattro™ safety page does not
+  /** Safety-information destination. A combined Insta-Ready safety page does not
    *  exist yet; the sildenafil page is the closest live one. */
   SAFETY_HREF: "/safety/sildenafil",
-  /** Public Trustpilot profile URL. Neither instarx.com nor go.instarx.com
-   *  links one today (checked 2026-09-23), so TrustBadge shows the sitewide
-   *  rating labelled InstaRx and no Trustpilot mark until this is set. */
-  TRUSTPILOT_URL: null as string | null,
+  /** Public Google Reviews (Business Profile) URL. Neither instarx.com nor
+   *  go.instarx.com links one today (checked 2026-09-28), so TrustBadge is a
+   *  static Google Reviews badge until this is set; then it links out. */
+  GOOGLE_REVIEWS_URL: null as string | null,
 } as const;
 
 const money = (n: number) => `$${n}`;
@@ -100,28 +100,33 @@ const LOWEST_PER_DOSE = perDose(
 );
 const MAX_SAVINGS = Math.max(...PRICING_PACKS.map(savings));
 
-/** Sitewide, real, not ED-specific. Always labelled as InstaRx (brief Part 4).
- *  Rendered by TrustBadge in the hero (compact) and above the testimonials. */
+/** Google Reviews badge (client, 2026-09-28). Rendered by TrustBadge in the
+ *  hero (compact) and above the testimonials. TODO_CONFIRM: 4.7 is the
+ *  sitewide figure carried over from the previous badge; confirm it against
+ *  the live Google Business Profile before launch. */
 export const rating = {
-  grade: "Excellent",
   score: "4.7",
   outOf: "5",
-  /** Whose rating this is. Replaced by the Trustpilot mark once TRUSTPILOT_URL exists. */
-  source: "InstaRx customer rating",
-  count: "Across 10,000+ InstaRx customers",
   outOfLabel: "out of",
-  trustpilotWordmark: "Trustpilot",
-  /** Accessible names for the whole badge (it is one role="img"). */
-  labelInstaRx:
-    "InstaRx customer rating: Excellent, 4.7 out of 5. Across 10,000+ InstaRx customers.",
-  labelTrustpilot:
-    "Rated Excellent, 4.7 out of 5 on Trustpilot. Across 10,000+ InstaRx customers.",
+  source: "Google Reviews",
+  count: "Real reviews from real customers.",
+  /** Accessible name for the whole badge (it is one role="img" or one link). */
+  label:
+    "Rated 4.7 out of 5 on Google Reviews. Real reviews from real customers.",
 } as const;
 
 export const header = {
   logoAlt: "InstaRx",
   logoSrc: "/logos/instarx-logo-inverse.webp",
-  anchor: { label: "Reviews", href: "#reviews" },
+  /** Section anchors (client, 2026-09-28). Inline from 48rem; a Menu button
+   *  opens them as a list below that. */
+  nav: [
+    { label: "The Stack", href: "#formula" },
+    { label: "The New Way", href: "#new-way" },
+    { label: "The Power of 4", href: "#pricing" },
+    { label: "Reviews", href: "#reviews" },
+  ],
+  menu: { open: "Menu", close: "Close" },
   cta: "See if I qualify",
 } as const;
 
@@ -161,7 +166,7 @@ export const hero = {
     E: "Your body doesn't work on a schedule. Your treatment shouldn't either.",
   } satisfies Record<HeroVariant, string>,
   subhead:
-    "Insta-Ready Quattro™ combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It comes as a small vial of liquid: swish it for 30 to 60 seconds, swallow, and many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
+    "Insta-Ready combines the active ingredients behind Viagra®, Cialis® and Levitra® with apomorphine, which works through the brain's arousal pathway rather than blood flow alone. It comes as a small vial of liquid: swish it for 30 to 60 seconds, swallow, and many men feel it in as little as 15 minutes* and stay ready for up to 36 hours.",
   /** Phone subhead: the CTA sits near the fold, so two short sentences.
    *  Headline C's device plus the Part 4 onset line, footnote kept. */
   subheadShort:
@@ -183,7 +188,7 @@ export const hero = {
       label:
         "Hero video · 16:9 desktop / 9:16 mobile · muted loop · poster first",
       asset:
-        "Night apartment: a man in a half-unbuttoned shirt seen from behind, a woman's hand on the back of his neck from out of frame, city lights blurred through the window, one warm lamp. 8–12 s seamless loop, no audio.",
+        "Night apartment by the window: a couple stands close, his open white shirt, her navy satin slip, her arm around his neck, faces in shadow and almost touching, one warm lamp, city lights blurred through the glass. 6 s seamless loop, no audio.",
       aspect: "16 / 9",
       aspectMobile: "9 / 16",
       tone: 0,
@@ -281,7 +286,7 @@ export const formula = {
     },
   ] satisfies Ingredient[],
   footer:
-    "Sildenafil, tadalafil and vardenafil are each FDA-approved on their own; apomorphine is used off-label. Quattro™ is a compounded combination prepared by a state-licensed 503A compounding pharmacy for you; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
+    "Sildenafil, tadalafil and vardenafil are each FDA-approved on their own; apomorphine is used off-label. Insta-Ready is a compounded combination prepared by a state-licensed 503A compounding pharmacy for you; the combined formula is not an FDA-approved finished drug. Your provider sets the exact strengths.",
 } as const;
 
 /** Frosted labels laid over a benefit photo. Every string repeats a claim
@@ -355,7 +360,7 @@ export const benefits = {
         label: "Affected by food",
         oldLabel: "Swallowed pill",
         oldValue: "Can be",
-        newLabel: "Quattro™",
+        newLabel: "Insta-Ready",
         newValue: "Less likely",
       },
       media: {
@@ -437,8 +442,10 @@ export type ComparisonRow = {
 
 export const comparison = {
   heading: "The old way vs. the new way.",
+  /** Client-supplied CTA under the table (2026-09-28). */
+  cta: "Get started with better sex",
   oldLabel: "A swallowed pill",
-  newLabel: "Insta-Ready Quattro™",
+  newLabel: "Insta-Ready",
   rows: [
     {
       label: "Format",
@@ -545,7 +552,7 @@ export const pricing = {
   features: sharedFeatures,
   recommendedLabel: "Lowest per dose",
   cta: "See if I qualify",
-  fine: "Prices shown are for the compounded Quattro™ liquid. A licensed provider decides whether a prescription is appropriate; completing the intake does not guarantee a prescription.",
+  fine: "Prices shown are for the compounded Insta-Ready liquid. A licensed provider decides whether a prescription is appropriate; completing the intake does not guarantee a prescription.",
 } as const;
 
 export const safetyStrip = {
@@ -623,12 +630,12 @@ export const reviews = {
         "The customer service is spot on — individualized personal attention, quick response time and a great product. I am 100% happy and will continue with InstaRx.",
     },
     {
-      name: "Darlene N.",
+      name: "James",
       label: "InstaRx customer",
       photo: "/images/ed-treatment-v2/wall-boat.webp",
-      title: "Life-changing",
+      title: "Would recommend them to anyone",
       quote:
-        "I feel healthier, more confident, and whenever I have any questions the Insta team has been very helpful.",
+        "I made an error during my initial order and these people were kind enough to help me out. Would recommend them to anyone.",
     },
   ] as readonly Review[],
 } as const;
@@ -742,12 +749,8 @@ export const footerDisclaimers = {
   ],
   trademarks:
     "Viagra®, Cialis® and Levitra® are registered trademarks of their respective owners, which are not affiliated with InstaRx.",
-  links: [
-    { label: "Privacy policy", href: "/policies/privacy-policy" },
-    { label: "Terms", href: "/policies/terms-and-conditions" },
-    { label: "Safety information", href: TODO_CONFIRM.SAFETY_HREF },
-  ],
-  copyright: "© 2026 InstaRx. All rights reserved.",
+  /** Product safety page; the shared site footer carries the policy links. */
+  safety: { label: "Safety information", href: TODO_CONFIRM.SAFETY_HREF },
 } as const;
 
 export const metadata = {

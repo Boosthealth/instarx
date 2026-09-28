@@ -216,29 +216,62 @@ export function Ambient({ src }: { src: string }) {
   );
 }
 
-/* Struck-through anchor price with a coherent sentence for screen readers. */
+/* 24-box five-point star shared by the rating badge and Stars. */
 const STAR_PATH =
   "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
 
-function StarBox({ fill }: { fill: number }) {
+/* One star: grey base with a gold copy clipped to `fill` (0..1) on top, so
+ * the fifth star shows 4.7 as seven tenths gold. */
+function Star({ fill }: { fill: number }) {
   const pct = Math.round(Math.max(0, Math.min(1, fill)) * 100);
   return (
     <span
-      className="edv2-rating__box"
+      className="edv2-rating__star"
       style={{ "--fill": `${pct}%` } as CSSProperties}
     >
       <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d={STAR_PATH} />
+      </svg>
+      <svg
+        className="edv2-rating__star-fill"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
         <path d={STAR_PATH} />
       </svg>
     </span>
   );
 }
 
-/* Trustpilot-style rating badge: five boxed stars with a fractional fill on
- * the last, "Excellent 4.7 out of 5", and whose rating it is. The Trustpilot
- * mark and outbound link appear only once TODO_CONFIRM.TRUSTPILOT_URL is set;
- * until then the badge is labelled InstaRx (brief Part 4). Default is the
- * stacked, centred form; `compact` is the single-row hero form. */
+/* Google's four-colour G, drawn inline so it needs no request. */
+function GoogleMark() {
+  return (
+    <svg className="edv2-rating__mark" viewBox="0 0 48 48" aria-hidden="true">
+      <path
+        fill="#ea4335"
+        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+      />
+      <path
+        fill="#4285f4"
+        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+      />
+      <path
+        fill="#fbbc05"
+        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+      />
+      <path
+        fill="#34a853"
+        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+      />
+    </svg>
+  );
+}
+
+/* Google Reviews badge: the G and "Google Reviews", five gold stars with a
+ * fractional fill on the last, "4.7 out of 5", and the count line. It links
+ * to the Business Profile once TODO_CONFIRM.GOOGLE_REVIEWS_URL is set and is
+ * a single role="img" until then. Default is the stacked, centred form;
+ * `compact` is the single-row hero form. */
 export function TrustBadge({
   compact = false,
   onDark = false,
@@ -249,8 +282,8 @@ export function TrustBadge({
   className?: string;
 }) {
   const score = Number(rating.score);
-  const url = TODO_CONFIRM.TRUSTPILOT_URL;
-  const label = url ? rating.labelTrustpilot : rating.labelInstaRx;
+  const url = TODO_CONFIRM.GOOGLE_REVIEWS_URL;
+  const label = rating.label;
   const cls = [
     "edv2-rating",
     compact && "edv2-rating--compact",
@@ -263,31 +296,16 @@ export function TrustBadge({
   const inner = (
     <>
       <span className="edv2-rating__source">
-        {url ? (
-          <>
-            <svg
-              className="edv2-rating__mark"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d={STAR_PATH} />
-            </svg>
-            {rating.trustpilotWordmark}
-          </>
-        ) : (
-          rating.source
-        )}
+        <GoogleMark />
+        {rating.source}
       </span>
-      <span className="edv2-rating__boxes">
+      <span className="edv2-rating__stars">
         {[0, 1, 2, 3, 4].map((i) => (
-          <StarBox key={i} fill={score - i} />
+          <Star key={i} fill={score - i} />
         ))}
       </span>
       <span className="edv2-rating__score">
-        <strong>
-          {rating.grade} {rating.score}
-        </strong>{" "}
-        {rating.outOfLabel} {rating.outOf}
+        <strong>{rating.score}</strong> {rating.outOfLabel} {rating.outOf}
       </span>
       {!compact && <span className="edv2-rating__count">{rating.count}</span>}
     </>

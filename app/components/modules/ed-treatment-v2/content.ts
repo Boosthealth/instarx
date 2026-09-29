@@ -336,7 +336,7 @@ export const benefits = {
       media: {
         label: "Benefit visual · 1:1 · liquid vial macro",
         asset:
-          "Macro: the real single-dose vial (squat clear glass, about 30 mm tall and 14 mm wide, only twice as tall as wide, black ribbed cap as wide as the body, half full of pale liquid, no label; true scale: shorter than the top joint of the thumb) pinched by its cap between thumb and index finger, lifted toward parted lips, nose and mouth only, dusk light.",
+          "Macro: the real single-dose vial (squat clear glass, about 30 mm tall and 14 mm wide, only twice as tall as wide, black ribbed cap as wide as the body, half full of pale liquid, no label; true scale: shorter than the top joint of the thumb) open, pinched by its body between thumb and index finger and tilted to parted lips, the unscrewed black cap held in the fingers of the other hand at the frame edge; nose and mouth only, dusk light.",
         aspect: "1 / 1",
         tone: 1,
         src: "/images/ed-treatment-v2/benefit-vial.webp",

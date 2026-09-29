@@ -336,7 +336,7 @@ export const benefits = {
       media: {
         label: "Benefit visual · 1:1 · liquid vial macro",
         asset:
-          "Macro: a tiny 2 mL clear single-dose vial (35 mm tall, true scale: shorter than the top joint of the thumb) pinched between thumb and index finger, lifted toward parted lips, nose and mouth only, dusk light.",
+          "Macro: the real single-dose vial (squat clear glass, about 30 mm tall and 14 mm wide, only twice as tall as wide, black ribbed cap as wide as the body, half full of pale liquid, no label; true scale: shorter than the top joint of the thumb) pinched by its cap between thumb and index finger, lifted toward parted lips, nose and mouth only, dusk light.",
         aspect: "1 / 1",
         tone: 1,
         src: "/images/ed-treatment-v2/benefit-vial.webp",
@@ -425,7 +425,7 @@ export const delivered = {
     label:
       "Delivered background · 16:9 · InstaRx box open on a hallway console at night",
     asset:
-      "The black InstaRx presentation box, lid open on its five tiny 2 mL vials in a foam insert, on a dark wooden hallway console; one tiny 2 mL vial (35 mm, true scale: about half a door key) standing beside the house keys; one warm tungsten lamp from off frame, deep navy shadow elsewhere; no people, no pill bottles, no other text. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
+      "The black InstaRx presentation box, lid open on its five squat 2 mL vials (clear glass, black ribbed cap as wide as the body, only twice as tall as wide) in a foam insert, on a dark wooden hallway console; one squat vial (30 mm, true scale: shorter than half a door key) standing beside the house keys; one warm tungsten lamp from off frame, deep navy shadow elsewhere; no people, no pill bottles, no other text. Wide: box on the right third, the left two thirds in shadow for the copy. Mobile: 3:4, box in the upper half, lower half empty for the panel.",
     aspect: "16 / 9",
     aspectMobile: "3 / 4",
     tone: 0,

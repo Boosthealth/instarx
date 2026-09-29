@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/ed/analytics.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nobody Decides At Six O'Clock</title>
+<meta name="description" content="Why a daily dose removes the timing problem instead of shortening it.">
+<meta property="og:title" content="Nobody Decides At Six O'Clock">
+<meta property="og:description" content="Why a daily dose removes the timing problem instead of shortening it.">
+<meta property="og:type" content="article">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/ed/adv.css?v=2026092310">
+<link rel="stylesheet" href="/ed/mobile-floor.css?v=2026092310">
+</head>
+<body>
+<!--
+  PRIMED ADVERTORIAL  -  first-person narrator format.
+  Same page TYPE as instaready.html (shares adv.css, modelled on
+  getbrickedrx.com/discover/over40). Differentiated per BRAND.md:
+  PrimED leads INDIGO, terracotta appears only on the H1 clause and
+  the CTA buttons. InstaReady leads near-black + terracotta throughout.
+
+  BUILD NOTES:
+   - Narrator is a written persona; comment thread is written, not
+     collected. Swap for consented patients or keep with the
+     dramatization disclosure in the footer. Client + counsel call.
+   - PrimED's FORMULA IS UNCONFIRMED. The ingredient section is
+     deliberately tokenised and this page argues the dosing SCHEDULE,
+     not the ingredient list. Do not publish actives that the
+     prescribing pharmacy has not confirmed.
+   - Only PRICING is a [CONFIRM] token.
+-->
+
+
+
+
+<style>
+/* diagram + seal styling, token-driven so each page can recolour */
+.dgm{margin:30px 0;padding:0}
+.dgm svg{width:100%;height:auto;display:block;font-family:inherit}
+.dgm figcaption{font-size:12.5px;line-height:1.55;color:var(--dgm-mute,#6E6E82);font-style:italic;margin:10px 0 0}
+.seals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:28px 0}
+.seal{display:flex;flex-direction:column;gap:5px;padding:18px 16px;border:1px solid var(--dgm-line,#DCD4C6);border-radius:12px}
+.seal .ic{width:26px;height:26px;color:var(--dgm-a,#C1683C);margin-bottom:4px}
+.seal b{font-size:13.5px;font-weight:700;line-height:1.3;color:var(--dgm-ink,#1B1B3A)}
+.seal span{font-size:12px;line-height:1.45;color:var(--dgm-mute,#6E6E82)}
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.125em;fill:none}
+.ic.solid{fill:currentColor}
+@media(max-width:860px){.seals{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.seals{grid-template-columns:1fr}}
+.dgm{--dgm-a:#C1683C;--dgm-b:#1B1B3A;--dgm-ink:#1B1B3A;--dgm-mute:#6E6E82;--dgm-line:#E3DED4}
+.seals{--dgm-a:#C1683C;--dgm-ink:#1B1B3A;--dgm-mute:#6E6E82;--dgm-line:#E3DED4}
+.beatimg{margin:30px 0}.beatimg img{width:100%;height:auto;border-radius:4px}
+.beatimg figcaption{font-family:'Inter',system-ui,sans-serif;font-size:12.5px;line-height:1.5;color:#8A8A92;margin:9px 0 0}
+.bylinewrap{display:flex;align-items:center;gap:12px}
+.bylinewrap img{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center 30%;flex:0 0 auto}
+</style>
+<style>
+/* PrimED identity override: indigo leads, terracotta is secondary */
+:root{
+  --cyan:#11A1D3;          /* InstaRx cyan, the brand accent (04_Aggressive_batch_spec.md) */
+  --ink:#1B1B3A;
+  --body:#333348;
+  --accent:#1B1B3A;
+  --accent-deep:#101024;
+  --accent-soft:#EFEFF4;
+  --dark:#1B1B3A;
+  --cta:#C1683C;
+  --cta-deep:#A9552E;
+}
+h2::before{background:var(--cta)}
+.checks li::before{background:var(--cta)}
+.wins li::before{color:var(--cta)}
+h1 span{color:var(--cta)}
+.btn{background:var(--cta)}
+.btn:hover{background:var(--cta-deep)}
+.steps li::before{background:var(--cta)}
+.ctapanel h2 span{color:#E08A52}
+.ctapanel li::before{color:#E08A52}
+.ctapanel .star{color:#E08A52}
+.voices{border-top-color:var(--cta);background:#F2F0EA}
+.voices .hd{color:var(--cta-deep)}
+.path.two{border-left-color:var(--cta);background:#FBF1EA}
+.path.two .lab{color:var(--cta-deep)}
+.ing .spec{color:var(--cta-deep)}
+tbody tr.mine td{background:#FBF1EA}
+tbody tr.mine td:first-child{box-shadow:inset 3px 0 0 var(--cta)}
+tbody tr.mine .brandcell,tbody tr.mine .per{color:var(--cta-deep)}
+summary::after{color:var(--cta)}
+.meet li::before{background:#E08A52}
+.meet h3 span{color:var(--cyan)}
+.build{border-color:var(--cta)}
+::-webkit-scrollbar-thumb{background:rgba(27,27,58,.45);background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(27,27,58,.8);background-clip:padding-box}
+</style>
+
+<!-- ICON SPRITE. Paste once per page, directly after <body> content starts.
+     Use with: <svg class="ic"><use href="#i-shield"></use></svg>
+     Sized by CSS (width/height), coloured by currentColor. -->
+<svg style="display:none" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.8 9.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2L4 13.5h6L9.5 22 20 10.5h-6.5L13.5 2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M7 2v4c0 2.5 5 3.8 5 6s-5 3.5-5 6v4M17 2v4c0 2.5-5 3.8-5 6s5 3.5 5 6v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 8.6V13l3 2M9.5 2h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 12.3l2.7 2.7L16.2 9.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cross" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 9l6 6M15 9l-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 4.5a3 3 0 00-5.6-1.4A2.8 2.8 0 003.5 6a2.9 2.9 0 00-.2 5.2A3 3 0 005 16a3 3 0 004.4 2.6A2.6 2.6 0 0012 20V4.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 4.5a3 3 0 015.6-1.4A2.8 2.8 0 0120.5 6a2.9 2.9 0 01.2 5.2A3 3 0 0119 16a3 3 0 01-4.4 2.6A2.6 2.6 0 0112 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+<symbol id="i-flow" viewBox="0 0 24 24"><path d="M12 2.8S5.5 9.6 5.5 14a6.5 6.5 0 0013 0C18.5 9.6 12 2.8 12 2.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 14.6a2.9 2.9 0 002.9 2.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.2" width="11" height="19.6" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10.4 18.6h3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="17" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="9" y="2.2" width="6" height="4.2" rx="1.3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 12h7M8.5 16h4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M12 2.6l8.4 4.2v9.9L12 21.4 3.6 16.7V6.8L12 2.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3.6 6.8L12 11.4l8.4-4.6M12 11.4v10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.6" y="10.4" width="14.8" height="11" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.2 10.4V7.6a3.8 3.8 0 017.6 0v2.8" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M1.8 6.4h12.4v10.2H1.8zM14.2 9.8h3.9l3.1 3.1v3.7h-7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="6.4" cy="18.4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.2" cy="18.4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-needle-off" viewBox="0 0 24 24"><path d="M14.6 3.6l5.8 5.8M17.6 6.6l-9.4 9.4-3.6 1.2 1.2-3.6 9.4-9.4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 21L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9 2.9-6z" fill="currentColor"/></symbol>
+<symbol id="i-starhalf" viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9 2.9-6z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 2.6v14.9L6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9 2.9-6z" fill="currentColor"/></symbol>
+<symbol id="i-pill" viewBox="0 0 24 24"><rect x="2.6" y="8.4" width="18.8" height="7.2" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7" transform="rotate(-45 12 12)"/><path d="M8.5 8.5l7 7" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s5.6 6.1 5.6 10a5.6 5.6 0 11-11.2 0C6.4 9.1 12 3 12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.4" y="5" width="17.2" height="16.2" rx="2.3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.4 9.8h17.2M8 2.8v4M16 2.8v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<div class="topbar">
+  <div class="col ui">
+    <span><b>Advertisement</b></span>
+    <span>A Man's Story</span>
+    <span>Doctor Prescribed</span>
+  </div>
+</div>
+
+<main>
+<header>
+
+  <div class="col">
+    <h1>The Daily ED Dose Men Over 50 Are Switching To <span>So Nobody Has To Decide At Six O'Clock Any More.</span></h1>
+    <p class="standfirst">
+      Your pill probably works fine. That was never the problem. The problem is the forty-five
+      minutes of notice it needs, and what a decade of that quietly does to a marriage.
+    </p>
+    <div class="bylinewrap">
+      <img src="/ed/img/av-ray.jpg" alt="">
+      <p class="byline" style="border:0;padding:0;margin:0">
+      By <b>Ray Dunmore, 59</b> &nbsp;&middot;&nbsp; September 2026
+      <em>PrimED customer story &middot; 7 minute read</em>
+      </p>
+    </div>
+  </div>
+
+  <figure class="col">
+    <img src="/ed/img/couple-kitchen.jpg" alt="A couple in their late fifties standing close together in a kitchen in the morning, laughing">
+    <figcaption>Photograph for illustrative purposes. Not an actual patient.</figcaption>
+  </figure>
+</header>
+
+<article>
+  <div class="col">
+
+    <p>
+      I want to start somewhere unusual for a page like this, which is that my medication worked.
+    </p>
+
+    <p>
+      Eleven years on a prescription, and I could count the genuine failures on one hand. So when
+      my wife finally said something, I was ready to defend the thing. And what she actually said
+      was not about the pill at all. She said: <strong>"I miss it being a surprise."</strong>
+    </p>
+
+    <p>
+      I did not have an answer for that. Because she was right, and I had not noticed it happening.
+    </p>
+
+    <p>So if any of this sounds like your last few years, keep reading:</p>
+
+    <ul class="checks">
+      <li>You decide in the afternoon whether tonight is going to happen</li>
+      <li>You time dinner, and you turn down the second drink</li>
+      <li>You slip off for five minutes and come back like nothing happened</li>
+      <li>An unplanned moment arrives and finds you unprepared, so it goes nowhere</li>
+      <li>Your partner has stopped initiating and neither of you has ever mentioned it</li>
+    </ul>
+
+    <p>
+      Eleven years of that. Not one of those is a side effect. I used to think they were the price
+      of the medicine. <strong>They are not the price of the medicine. They are the design of it.</strong>
+    </p>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-night.jpg" alt="A man sitting on the edge of a bed at night">
+      <figcaption>The six o'clock decision, eleven years running. Photograph for illustrative purposes.</figcaption>
+    </figure>
+    <h2 class="beat">Spike, Window, Crash</h2>
+
+    <p>
+      Every on-demand ED medication works the same way structurally, whatever the brand on the box.
+      The blue one, the weekend one, the chewables, all of it. A large dose, taken in anticipation,
+      that pushes hard for a defined stretch and then clears.
+    </p>
+
+    <p>
+      That is the whole design. A window. And when the window shuts, you are back exactly where you
+      started, as though none of it happened.
+    </p>
+
+    <p>
+      So your sex life has to be placed somewhere on that curve. Which means somebody, usually the
+      same somebody, has to decide in advance that there is going to be an evening.
+      <strong>The pill runs you. You do not run the pill.</strong>
+    </p>
+
+    <p>
+      And here is the bit I never worked out on my own: you are not really gambling on whether the
+      pill works. You are gambling on guessing the right night. A rough week, four hours of sleep,
+      a couple of drinks with dinner. Any of those can move things, and you do not find out until
+      you are already there.
+    </p>
+    
+<figure class="dgm dgm-daily">
+  <svg viewBox="0 0 680 300" role="img" aria-labelledby="dTitle dDesc">
+    <title id="dTitle">On-demand dosing against daily steady state</title>
+    <desc id="dDesc">On-demand dosing produces a repeating spike and crash with gaps between doses. A daily low dose holds a flat steady level with no peaks and no gaps.</desc>
+    <line x1="58" y1="140" x2="648" y2="140" stroke="var(--dgm-line,#DCD4C6)" stroke-width="1.2"/>
+    <line x1="58" y1="268" x2="648" y2="268" stroke="var(--dgm-line,#DCD4C6)" stroke-width="1.2"/>
+    <text x="58" y="34" font-size="11" font-weight="700" letter-spacing="2" fill="var(--dgm-mute,#6E6E82)">ON DEMAND</text>
+    <text x="58" y="52" font-size="12.5" fill="var(--dgm-mute,#8C8C9E)">Spike, window, crash. Somebody has to decide in advance.</text>
+    <path d="M58 140 L104 140 C120 138 128 76 148 70 C168 76 176 132 196 140 L268 140
+             C284 138 292 76 312 70 C332 76 340 132 360 140 L470 140
+             C486 138 494 76 514 70 C534 76 542 132 562 140 L648 140"
+          fill="none" stroke="var(--dgm-mute,#8C8C9E)" stroke-width="2.4" stroke-dasharray="6 4" stroke-linejoin="round"/>
+    <circle cx="148" cy="70" r="4" fill="var(--dgm-mute,#8C8C9E)"/>
+    <circle cx="312" cy="70" r="4" fill="var(--dgm-mute,#8C8C9E)"/>
+    <circle cx="514" cy="70" r="4" fill="var(--dgm-mute,#8C8C9E)"/>
+    <text x="216" y="128" font-size="10.5" font-weight="600" fill="var(--dgm-mute,#8C8C9E)">gap</text>
+    <text x="400" y="128" font-size="10.5" font-weight="600" fill="var(--dgm-mute,#8C8C9E)">gap</text>
+    <text x="58" y="182" font-size="11" font-weight="700" letter-spacing="2" fill="var(--dgm-a,#C1683C)">DAILY, LOW DOSE</text>
+    <text x="58" y="200" font-size="12.5" fill="var(--dgm-a,#C1683C)" fill-opacity=".85">A flat line. Nothing peaks, so nothing has to be timed.</text>
+    <path d="M58 268 C110 268 120 226 168 224 L648 222"
+          fill="none" stroke="var(--dgm-a,#C1683C)" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M168 224 L648 222" fill="none" stroke="var(--dgm-a,#C1683C)" stroke-width="3.4" stroke-linecap="round"/>
+    <text x="196" y="248" font-size="10.5" font-weight="600" fill="var(--dgm-a,#C1683C)">steady state, held</text>
+    <text x="58" y="290" font-size="10" fill="var(--dgm-mute,#9A9AAA)">DAY 1</text>
+    <text x="330" y="290" font-size="10" fill="var(--dgm-mute,#9A9AAA)">DAY 4</text>
+    <text x="620" y="290" font-size="10" fill="var(--dgm-mute,#9A9AAA)">DAY 7</text>
+  </svg>
+  <figcaption>Curves illustrate the shape of each dosing approach, not measured pharmacokinetic data. Individual response varies.</figcaption>
+</figure>
+    <h2 class="beat">Why Daily Was Always The Answer For Men Like Me</h2>
+
+    <p>
+      Now, if you are bracing for some new miracle compound with a name you cannot pronounce,
+      relax. It is the opposite of that. The answer has been sitting in the clinical literature
+      since the 2000s.
+    </p>
+
+    <p>
+      It is the same class of medicine you are almost certainly already taking. The difference was
+      never <em>what</em>. It was <em>how</em>.
+    </p>
+
+    <p>
+      The old way you know. One big dose. One window. Then the crash. The other way flips it: a
+      fraction of that dose, once a day, every day. Instead of forcing things open occasionally,
+      you hold a low steady level all the time.
+    </p>
+
+    <p>
+      That is the entire trick, and it is not clever. Steady instead of spiking.
+      <strong>There is nothing to time, because nothing is peaking.</strong>
+    </p>
+
+    <p>
+      No forty-five minute wait. No window to beat. No slipping off to the bathroom. No deciding at
+      six o'clock. It just is not a thing you think about any more.
+    </p>
+
+    <div class="inline-cta">
+      <a class="btn" href="https://my.instarx.com/intake/insta-ready">See if you qualify</a>
+      <p class="note">Free clinician review &middot; No charge unless approved</p>
+    </div>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-drawer.jpg" alt="An open nightstand drawer with assorted unmarked tablets">
+      <figcaption>A drawer of things that all did the same job. Photograph for illustrative purposes.</figcaption>
+    </figure>
+    <h2 class="beat">Low-Dose Daily Is Not A Loophole</h2>
+
+    <p>
+      This was my first objection, so I will deal with it head on. Taking something every day sounds
+      like more medicine, and more medicine sounds worse.
+    </p>
+
+    <p>
+      It is the other way round. <strong>A daily regimen uses a smaller amount of the same drug
+      than an on-demand dose, not a larger one.</strong> The comparison is not every day versus
+      sometimes. It is a low steady level versus a high intermittent one.
+    </p>
+
+    <p>
+      Low-dose daily tadalafil has been an FDA-approved dosing regimen for erectile dysfunction
+      since the 2000s. The reason most of us have never been offered it is not clinical. It is that
+      a pill you take before sex is a much easier thing to advertise than a pill you take with your
+      coffee.
+    </p>
+
+    <h3>On tolerance, because everybody asks</h3>
+
+    <p>
+      This class of drug is not a stimulant and not a hormone. It does not replace something your
+      body makes, and the mechanism is not known to wear out with use. Daily dosing here is a long
+      established clinical regimen, not a workaround somebody invented to sell subscriptions.
+    </p>
+    <h2 class="beat">The Part Where I Tell You It Might Not Be For You</h2>
+
+    <p>
+      I am going to do something the last four websites I read did not do, which is tell you when
+      this is the wrong product.
+    </p>
+
+    <p>
+      The daily-dose pitch usually claims an erection is plumbing, full stop, and anything happening
+      in your head is beside the point. For a lot of men that is broadly true and a daily dose is
+      all they need. It was all I needed.
+    </p>
+
+    <p>
+      But it is said with more confidence than the evidence supports. Arousal starts on a separate
+      neurological pathway, and for a real minority of men that, rather than blood flow, is where
+      the gap actually sits. So:
+    </p>
+
+    <ul class="wins">
+      <li><strong>If your medicine works and you resent the scheduling</strong>, a daily dose solves your problem. That is this page.</li>
+      <li><strong>If the physical side works and you still feel absent during sex</strong>, a daily PDE5 protocol on its own will not reach that, whoever is selling it, us included. You want the on-demand formula with an arousal-side active instead.</li>
+    </ul>
+
+    <p>
+      The intake asks about this directly and the physician sees your answers. It is free either
+      way, so the cost of finding out which of the two you are is nothing.
+    </p>
+
+    <h2 class="beat">So What Exactly Is It?</h2>
+
+    <p>
+      PrimED is a compounded daily tablet, prescribed online after review by a US-licensed physician
+      and dispensed by a licensed US compounding pharmacy. It is built around steady state rather
+      than a window: a small amount every day, instead of a large amount before something.
+    </p>
+
+    <div class="meet">
+      <div class="txt">
+        <p class="kicker">The daily dose</p>
+        <h3>Meet <span>PrimED</span></h3>
+        <ul>
+          <li>A fraction of an on-demand dose</li>
+          <li>Taken once a day, with your coffee</li>
+          <li>No window, no countdown</li>
+          <li>Nothing to time, nothing to plan</li>
+          <li>Reviewed by a US physician first</li>
+        </ul>
+      </div>
+      <div class="shot"><img src="/ed/img/fmt-daily.jpg" alt="A single small daily tablet"></div>
+    </div>
+
+    <div class="build">
+      <b>Formula &middot; confirm before publishing</b>
+      PrimED's actives and per-dose milligram figures are not confirmed, and are deliberately
+      absent here rather than estimated. Populate this section from the prescribing pharmacy before
+      the page goes live. Dose figures are the most legally sensitive claim on any page in this
+      category: do not carry them from a competitor and do not infer them from a product photo.
+      This page runs without them only because its argument is the dosing schedule, not the
+      ingredient list.
+    </div>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-clinic.jpg" alt="A clinician at a desk with a blank chart and a stethoscope">
+      <figcaption>A licensed physician reads your full medication list before anything is dispensed.</figcaption>
+    </figure>
+    <h2 class="beat">Is It Safe?</h2>
+
+    <p>
+      Real question, and it deserves a straight answer rather than reassurance.
+    </p>
+
+    <p>
+      First, the dose. An on-demand tablet can run several times what a daily regimen uses. This is
+      a fraction of that, held steady, which is a smaller amount of medicine in you overall rather
+      than a larger one.
+    </p>
+
+    <p>
+      Second, and this is the part most of these online operations skip: a real doctor stands
+      between you and the product. You do not add this to a cart. A licensed US physician reads
+      your medical history and your full medication list before anything ships, and if it is not
+      right for you, they do not approve it and you do not pay.
+    </p>
+
+    <p>
+      And the hard limits, which I want in the middle of the page rather than the bottom.
+      <strong>If you take nitrates for chest pain, this is not for you, and that one is not
+      negotiable.</strong> Same for severe uncontrolled high blood pressure, recent stroke or
+      unstable heart disease. Alpha-blockers and some blood pressure medicines interact, so list
+      everything on the form. Headache, flushing and a blocked nose are the common side effects
+      across this drug class.
+    </p>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-cost.jpg" alt="Loose notes and coins beside a tablet and a vial">
+      <figcaption>Per-dose pricing is what usually decides this. Figures pending confirmation.</figcaption>
+    </figure>
+    <h2 class="beat">Now Let's Talk About The Math</h2>
+
+    <p>
+      I assumed a daily prescription had to cost more than an occasional one. Everybody assumes
+      that. In this category it usually inverts, because on-demand pricing is per dose and per-dose
+      numbers in ED are high.
+    </p>
+
+    <div class="pricewrap">
+      <table>
+        <thead>
+          <tr><th scope="col">Treatment</th><th scope="col">What you get</th><th scope="col">Per use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="brandcell">Brand-name<em>On-demand &middot; one active</em></td>
+            <td>One active. One window. Timing required every single time.</td>
+            <td><span class="per">[CONFIRM]<em>Per use</em></span></td>
+          </tr>
+          <tr>
+            <td class="brandcell">Compounded<em>On-demand &middot; multi-active</em></td>
+            <td>More actives, still per dose, still on the pill's schedule.</td>
+            <td><span class="per">[CONFIRM]<em>Per use</em></span></td>
+          </tr>
+          <tr class="mine">
+            <td class="brandcell">PrimED<em>Daily &middot; steady state</em></td>
+            <td><strong>Taken once a day.</strong> No window, no countdown, nothing to time.</td>
+            <td><span class="per">[CONFIRM]<em>Per day</em></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="build">
+      <b>Build note &middot; pricing</b>
+      Every price cell is a token by instruction. Populate from the live offer before this page
+      takes traffic. Do not run this table with estimates.
+    </div>
+
+    <h2 class="beat">What Actually Changed</h2>
+
+    <p>
+      Almost nothing, and that is genuinely the point. There is no moment. Nothing kicks in, because
+      nothing is peaking. If you are waiting for a switch to flip, you will be disappointed.
+    </p>
+
+    <p>
+      What I noticed was an absence. The six o'clock decision was gone. The arithmetic about a
+      second drink was gone. The five minutes in the bathroom was gone. And the flat feeling of an
+      evening that got planned and then did not go anywhere went with them.
+    </p>
+
+    <figure>
+      <img src="/ed/img/couple-bed.jpg" alt="A couple in their fifties lying close together on a bed, relaxed and laughing">
+      <figcaption>Photograph for illustrative purposes. Not an actual patient.</figcaption>
+    </figure>
+
+    <p>
+      What my wife noticed was different and it came first. About three weeks in she said I had
+      stopped organising things. Not stopped wanting them. <strong>Stopped organising them.</strong>
+      I had not realised how much of the logistics she had been quietly absorbing until they
+      stopped.
+    </p>
+
+    <h2 class="beat">I Am Not The Only One</h2>
+
+    <div class="voices">
+      <p class="hd">&#9733; What other men said after switching</p>
+      <blockquote>
+        <p>"Two glasses of wine at dinner used to mean the night was over before it started. That
+        maths just is not part of my life any more."</p>
+        <cite>Warren T., 61 &middot; Ohio</cite>
+      </blockquote>
+      <blockquote>
+        <p>"Mine was work. Sixty-hour weeks and by Friday there was nothing left. My wife had
+        stopped suggesting anything. Three weeks in, she did not have to."</p>
+        <cite>Curt B., 49 &middot; Florida</cite>
+      </blockquote>
+      <blockquote>
+        <p>"Four months on it. The part nobody tells you about is the headspace you get back. I am
+        not planning. I am just there."</p>
+        <cite>Dale R., 58 &middot; Arizona</cite>
+      </blockquote>
+      <blockquote>
+        <p>"I had made peace with it. Assumed that was what sixty looked like. Turns out it was
+        just what sixty looked like on the wrong schedule."</p>
+        <cite>Bill M., 64 &middot; Pennsylvania</cite>
+      </blockquote>
+    </div>
+
+    <div class="build">
+      <b>Build note &middot; testimonials and comments</b>
+      The quotes above and the comment thread lower down are written, not collected. Two compliant
+      routes: replace with verified patients who have consent on file, or keep as written and run
+      the dramatization disclosure already in the footer. Client and counsel decision. Do not ship
+      them undisclosed either way.
+    </div>
+
+    <p>
+      And straight with you, because the people selling gas-station pills never are: this is not a
+      light switch. A daily dose builds to a steady level over days rather than working from the
+      first one. Some men feel it in a week, some take a few. That is exactly why a doctor looks at
+      every order before it ships.
+    </p>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-phone.jpg" alt="A man's hands holding a phone at a kitchen table">
+      <figcaption>About two minutes, at your own kitchen table.</figcaption>
+    </figure>
+    <h2 class="beat">How To See If It Is Right For You</h2>
+
+    <p>
+      What nearly stopped me was picturing a waiting room and explaining my sex life to a doctor half
+      my age. That is not what happens. It was about five minutes at my own kitchen table.
+    </p>
+
+    <ol class="steps">
+      <li><div><b>Answer a few questions.</b><p>Health history and current medications, particularly
+      nitrates, alpha-blockers and anything for blood pressure. Straight and medical, no nonsense.</p></div></li>
+      <li><div><b>A licensed physician reviews it.</b><p>A real doctor, licensed in your state. They
+      approve it, adjust it, or tell you it is not right for you. If they do not approve it, you do
+      not pay a cent.</p></div></li>
+      <li><div><b>It turns up at your door.</b><p>Plain packaging, nothing on the outside of the box
+      that says a word about what is inside. Cancel any time, no retention call.</p></div></li>
+    </ol>
+
+    
+    <div class="seals">
+  <div class="seal"><svg class="ic"><use href="#i-clipboard"></use></svg><b>Physician reviewed</b><span>US-licensed, before anything ships</span></div>
+  <div class="seal"><svg class="ic"><use href="#i-shield"></use></svg><b>Licensed US pharmacy</b><span>Compounded and dispensed domestically</span></div>
+  <div class="seal"><svg class="ic"><use href="#i-box"></use></svg><b>Plain packaging</b><span>Nothing identifying on the outside</span></div>
+  <div class="seal"><svg class="ic"><use href="#i-lock"></use></svg><b>No charge unless approved</b><span>Free review, no consultation fee</span></div>
+</div>
+    <div class="ctapanel">
+      <p class="star">&#9733; Start here &#9733;</p>
+      <h2>See If You Qualify<br><span>For PrimED</span></h2>
+      <p class="sub">Two-minute intake &middot; Reviewed by a US-licensed physician</p>
+      <ul>
+        <li>Takes about two minutes to complete</li>
+        <li>Reviewed by a licensed US physician</li>
+        <li>Compounded in a licensed US pharmacy</li>
+        <li>Free discreet shipping in plain packaging</li>
+        <li>No contract, cancel any time</li>
+        <li>You pay nothing unless a physician approves your order</li>
+      </ul>
+      <a class="btn" href="https://my.instarx.com/intake/insta-ready">Start the 2-minute intake</a>
+      <p class="foot">Free qualification &middot; No charge until approved</p>
+    </div>
+
+    <h2 class="beat">The Choice Is Yours</h2>
+
+    <p>Two options in front of you right now.</p>
+
+    <div class="path">
+      <p class="lab">Path one</p>
+      <b>Close this tab.</b>
+      <p>Keep doing what I did for eleven years. Keep deciding in the afternoon. Keep timing dinner
+      and turning down the second drink. Keep treating the logistics as the price of the medicine,
+      when they were only ever the design of it.</p>
+    </div>
+
+    <div class="path two">
+      <p class="lab">Path two</p>
+      <b>Spend two minutes.</b>
+      <p>Two minutes, a few honest questions, and a licensed doctor tells you whether a daily dose
+      is right for you. If it is, nobody has to decide at six o'clock any more. If it is not, they
+      say so, and you do not pay a cent to find out.</p>
+    </div>
+
+    
+    <figure class="beatimg">
+      <img src="/ed/img/beat-walk.jpg" alt="A couple walking together on a suburban pavement">
+      <figcaption>Photograph for illustrative purposes. Not an actual patient.</figcaption>
+    </figure>
+    <div class="ps">
+      <p>
+        <strong>P.S.</strong> My medication was never the problem, which is why it took eleven years
+        to work out what was. It was the forty-five minutes in front of it, and the fact that one of
+        us had to schedule around them. If your wife has stopped suggesting anything, it is worth
+        considering that she may not have lost interest. She may just have got tired of the
+        arrangements.
+      </p>
+      <p class="sig">
+        <b>Ray Dunmore</b>
+        PrimED customer story &middot; InstaRx Health
+      </p>
+    </div>
+
+    <h2 class="beat">Frequently Asked Questions</h2>
+
+    <details open>
+      <summary>How long before I notice a difference?</summary>
+      <div class="ans">Daily dosing reaches a steady level over a number of days rather than working
+      from the first dose the way an on-demand pill does. That is the trade: you give up the
+      immediate effect and you get back the absence of planning. Individual response varies.</div>
+    </details>
+    <details>
+      <summary>Do I have to take it forever?</summary>
+      <div class="ans">No, and there is no contract. If you stop, you go back to where you were.
+      Most men who stop do it because their circumstances changed, not because it stopped working.</div>
+    </details>
+    <details>
+      <summary>Everyone is advertising four-ingredient formulas. Should I take one of those instead?</summary>
+      <div class="ans">Possibly, and it depends on what your gap actually is rather than on how many
+      molecules are in the bottle. A four-active on-demand product exists to cover both blood flow
+      and arousal in one moment. A daily dose exists to remove the moment. If your medicine works
+      and the planning is what you hate, adding actives does not solve your problem. Changing the
+      schedule does.</div>
+    </details>
+    <details>
+      <summary>Can I still use an on-demand dose as well?</summary>
+      <div class="ans">That is a question for the prescribing physician, not a website. Raise it on
+      the intake. Stacking PDE5 inhibitors without clinical guidance is not safe.</div>
+    </details>
+    <details>
+      <summary>What if my wife asks what it is?</summary>
+      <div class="ans">Mine asked within a fortnight. I told her. It turned out she had been waiting
+      a long time for me to raise it, which I suspect is more common than anyone admits.</div>
+    </details>
+    <details>
+      <summary>What if the doctor says no?</summary>
+      <div class="ans">Then you are not charged, and you have learned something useful for free.
+      A no usually means something in your history needs a different approach.</div>
+    </details>
+
+    <div class="fb">
+      <div class="bar">
+        <span class="l">Comments</span>
+        <span class="r">Most relevant &#9662;</span>
+      </div>
+      <div class="meta">
+        <span class="reacts"><i class="r1">&#128077;</i><i class="r2">&#10084;</i><i class="r3">&#128519;</i> &nbsp;7.2K</span>
+        <span>1,604 comments &middot; 940 shares</span>
+      </div>
+      <div class="thread">
+        <div class="fbc">
+          <div class="av"><img src="/ed/img/av-russ.jpg" alt="Russ Sheehan"></div>
+          <div>
+            <div class="bub"><p class="nm">Russ Sheehan</p><p class="tx">"I miss it being a surprise." I had to put the phone down for a minute after that one. Nobody has ever put my last five years in six words before.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>4h<span class="cnt">&#128077;&#10084; 503</span></p>
+          </div>
+        </div>
+        <div class="fbc reply">
+          <div class="av"><img src="/ed/img/av-ray.jpg" alt="Ray Dunmore"></div>
+          <div>
+            <div class="bub"><p class="nm">Ray Dunmore <span>Author</span></p><p class="tx">Russ, that sentence cost me about a week of thinking. Worth it though.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>3h</p>
+          </div>
+        </div>
+        <div class="fbc">
+          <div class="av"><img src="/ed/img/av-vic.jpg" alt="Vic Amato"></div>
+          <div>
+            <div class="bub"><p class="nm">Vic Amato</p><p class="tx">What sold me was the dose being smaller, not bigger. I was taking a full tablet just in case and getting the headache and the red face every time for nothing.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>9h<span class="cnt">&#128077;&#10084; 394</span></p>
+          </div>
+        </div>
+        <div class="fbc">
+          <div class="av"><img src="/ed/img/av-lou.jpg" alt="Lou Brennan"></div>
+          <div>
+            <div class="bub"><p class="nm">Lou Brennan</p><p class="tx">Appreciate a page that tells you when its own product is the wrong one. First one I have read that did.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>12h<span class="cnt">&#128077; 288</span></p>
+          </div>
+        </div>
+        <div class="fbc reply">
+          <div class="av"><img src="/ed/img/av-ray.jpg" alt="Ray Dunmore"></div>
+          <div>
+            <div class="bub"><p class="nm">Ray Dunmore <span>Author</span></p><p class="tx">Lou, they sell both, so there is no reason to push you onto the wrong one. Answer the intake honestly and it sorts itself out.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>11h</p>
+          </div>
+        </div>
+        <div class="fbc">
+          <div class="av"><img src="/ed/img/av-stan.jpg" alt="Stan Okafor"></div>
+          <div>
+            <div class="bub"><p class="nm">Stan Okafor</p><p class="tx">Mine was never the drinking, it was sleep. Four hours a night for a fortnight and I was useless. Almost clicked away thinking this was not about me.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>1d<span class="cnt">&#128077;&#10084; 466</span></p>
+          </div>
+        </div>
+        <div class="fbc">
+          <div class="av"><img src="/ed/img/av-ed.jpg" alt="Ed Mazurek"></div>
+          <div>
+            <div class="bub"><p class="nm">Ed Mazurek</p><p class="tx">Filled it in on a Sunday at the kitchen table. Doctor came back the next day, plain box that week. It is a dose with my coffee and I do not think about any of this any more.</p></div>
+            <p class="act"><b>Like</b><b>Reply</b>1d<span class="cnt">&#128077;&#10084; 377</span></p>
+          </div>
+        </div>
+      </div>
+      <p class="fbnote">
+        Comment thread and profile images are illustrative and reflect composite customer feedback.
+        See the full disclosure below.
+      </p>
+    </div>
+
+    <div class="inline-cta">
+      <a class="btn" href="https://my.instarx.com/intake/insta-ready">See if you qualify for PrimED</a>
+      <p class="note">Two minutes &middot; No charge unless a physician approves your order</p>
+    </div>
+
+  </div>
+</article>
+</main>
+
+<div class="legal">
+  <div class="col">
+    <h4>Important disclaimer</h4>
+    <p>
+      <strong>This is an advertisement.</strong> PrimED is a compounded medication available by
+      prescription through licensed US physicians and a US compounding pharmacy.
+    </p>
+    <p>
+      The compounded combination is not FDA-approved as a combination product. The individual
+      active ingredients are FDA-approved medicines. The FDA does not verify the safety or
+      effectiveness of compounded drugs. Individual results may vary.
+    </p>
+    <p>
+      <strong>DO NOT USE IF YOU TAKE NITRATES, INCLUDING NITROGLYCERIN. THIS IS A HARD
+      CONTRAINDICATION.</strong> Not suitable for men with severe uncontrolled hypertension,
+      unstable cardiovascular disease or recent stroke. Alpha-blockers and certain blood pressure
+      medications interact. Possible side effects include headache, flushing, nasal congestion and
+      dizziness. Seek immediate medical attention for an erection lasting more than four hours.
+    </p>
+    <p>
+      <strong>The narrator of this article is a written persona. The customer comments, quotes and
+      profile photographs are dramatizations based on composite customer experience. Names, images
+      and details are not those of specific individuals and no image depicts a real customer.</strong> This content is not medical advice. Consult your
+      healthcare provider before starting any new medication.
+    </p>
+    <p>
+      References to third-party brands are for editorial comparison only. InstaRx is not affiliated
+      with or endorsed by those companies. Photography is illustrative and does not depict actual
+      patients.
+    </p>
+    <p><strong>THIS IS AN ADVERTISEMENT. INDIVIDUAL RESULTS MAY VARY.</strong></p>
+  </div>
+</div>
+<style id="irx-scheme">html{color-scheme:light}</style></body>
+</html>

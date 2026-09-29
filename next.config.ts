@@ -3,6 +3,19 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // gzip is on by default; the production host (CDN) adds brotli on top.
   compress: true,
+  // ED landers ported as-is from instarx-ed-lp: static HTML + assets live in
+  // public/ed/ and are served at their original slugs.
+  async rewrites() {
+    return [
+      "lander-a-quad",
+      "lander-b-prequiz",
+      "lander-c-braverx",
+      "instaready",
+      "primed",
+      "instaready-comparison",
+      "instaready-listicle",
+    ].map((slug) => ({ source: `/${slug}`, destination: `/ed/${slug}.html` }));
+  },
   images: {
     // Prefer modern formats from the optimizer — AVIF first (smallest), WebP
     // fallback — for any image still passed through next/image.

@@ -40,11 +40,13 @@ export default function AnalyticsScripts() {
     "/glp2-v3",
     "/nad-plus",
     "/glp1/how-it-works",
+    "/4th-month-free",
   ]);
   const analyticsStrategy =
     pathname !== null && LAZY_ANALYTICS_ROUTES.has(pathname)
       ? "lazyOnload"
       : "afterInteractive";
+  const lightweightPostHog = pathname === "/4th-month-free";
 
   return (
     <>
@@ -79,6 +81,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 posthog.init('${POSTHOG_KEY}', {
   api_host: '${POSTHOG_API_HOST}',
   capture_pageleave: true,
+  disable_session_recording: ${lightweightPostHog},
+  disable_surveys: ${lightweightPostHog},
   defaults: '2026-01-30'
 });`}
         </Script>

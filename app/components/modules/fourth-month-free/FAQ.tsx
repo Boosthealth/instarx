@@ -1,14 +1,58 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import type { FAQItem } from "./types";
 import { PROMO, track } from "./ui";
 
+// Same accordion as the /glp2 FAQ (app/components/modules/home/FAQ.tsx), plus lp_faq_open tracking.
 export function FAQ({ faqs }: { faqs: readonly FAQItem[] }) {
-  const [open, setOpen] = useState<number | null>(null);
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? faqs : faqs.slice(0, 5);
-  return <section className="m4-section m4-faq" id="faq" data-track-section="faq"><div className="m4-faq__shape m4-faq__shape--one" /><div className="m4-faq__shape m4-faq__shape--two" /><div className="m4-container m4-faq__grid"><header><h2>Get the answers you need</h2><p>Find answers to frequently asked questions about the 4th Month Free plan.</p></header><div className="m4-accordion">{visible.map((faq, i) => { const isOpen = open === i; return <article key={faq.question}><button aria-expanded={isOpen} aria-controls={`m4-faq-${i}`} onClick={() => { setOpen(isOpen ? null : i); if (!isOpen) track({ event: "lp_faq_open", question: faq.question, promo: PROMO }); }}><span>{faq.question}</span><ChevronDown /></button><div id={`m4-faq-${i}`} className={`m4-accordion__answer ${isOpen ? "is-open" : ""}`}><div><p>{faq.answer}</p></div></div></article>; })}{!expanded && <button className="m4-faq__more" onClick={() => setExpanded(true)}>Load More</button>}</div></div></section>;
-}
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  return (
+    <section className="bg-white py-16 px-4 sm:px-6 lg:py-24" id="faqs" data-track-section="faq">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 text-center mb-4 leading-tight">
+          Get the answers you need
+        </h2>
+        <p className="text-center text-lg text-gray-700 mb-12 md:text-xl md:mb-16">
+          Everything about the 4th Month Free plan.
+        </p>
+        <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
+          {faqs.map((faq, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <div key={faq.question}>
+                <h3>
+                  <button
+                    type="button"
+                    className="w-full flex items-center justify-between py-4 text-left gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 rounded-sm"
+                    aria-expanded={isOpen}
+                    aria-controls={`m4f-faq-panel-${i}`}
+                    id={`m4f-faq-button-${i}`}
+                    onClick={() => {
+                      setOpenIndex(isOpen ? null : i);
+                      if (!isOpen) track({ event: "lp_faq_open", question: faq.question, promo: PROMO });
+                    }}
+                  >
+                    <span className="font-semibold text-gray-900 text-lg leading-snug">{faq.question}</span>
+                    <span className="shrink-0 text-gray-400 text-xl leading-none" aria-hidden="true">{isOpen ? "×" : "+"}</span>
+                  </button>
+                </h3>
+                <div
+                  id={`m4f-faq-panel-${i}`}
+                  role="region"
+                  aria-labelledby={`m4f-faq-button-${i}`}
+                  className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                >
+                  <div className="overflow-hidden" inert={!isOpen}>
+                    <p className="pb-4 text-base text-gray-600 leading-snug">{faq.answer}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

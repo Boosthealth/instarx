@@ -6,6 +6,8 @@ import type { Treatment } from "./types";
 export const CTA_BASE_URL = "https://go.instarx.com/intake";
 export const PROMO = "month4free";
 
+import { BTN_DARK } from "./buttons";
+
 declare global {
   interface Window { dataLayer?: Record<string, unknown>[]; }
 }
@@ -25,13 +27,13 @@ export function buildCtaHref(treatment: Treatment) {
   return url.toString();
 }
 
-export function CtaLink({ location, treatment, className = "", children, onNavigate }: {
+export function CtaLink({ location, treatment, className = BTN_DARK, children, onNavigate, ...rest }: {
   location: string;
   treatment?: Treatment;
   className?: string;
   children: React.ReactNode;
   onNavigate?: () => void;
-}) {
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "onClick" | "className" | "children">) {
   const anchorRef = useRef<HTMLAnchorElement>(null);
   const href = `${CTA_BASE_URL}?promo=${PROMO}&treatment=${treatment || "tirzepatide"}`;
 
@@ -51,5 +53,5 @@ export function CtaLink({ location, treatment, className = "", children, onNavig
     onNavigate?.();
   };
 
-  return <a ref={anchorRef} href={href} className={className} onClick={handleClick}>{children}</a>;
+  return <a ref={anchorRef} href={href} className={className} onClick={handleClick} {...rest}>{children}</a>;
 }

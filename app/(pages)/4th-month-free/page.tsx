@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FourthMonthFreeLanding } from "@/app/components/modules/fourth-month-free";
-import "./fourth-month-free.css";
 
 export const metadata: Metadata = {
   title: { absolute: "Get Your 4th Month Free — GLP-1 Weight Loss | InstaRx" },

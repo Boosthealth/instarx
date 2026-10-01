@@ -36,9 +36,8 @@ export function Comparison() {
       <div className="bg-[#f5f0eb] rounded-3xl sm:rounded-[48px] px-4 py-16 sm:px-6 lg:py-24">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">Compare InstaRx vs. the rest</p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">Why pay more for less?</h2>
-            <p className="text-lg text-gray-700 md:text-xl">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">Why pay more for less?</h2>
+            <p className="text-lg text-gray-700 text-pretty md:text-xl">
               InstaRx doesn&apos;t just cost less. It delivers more: more care, more flexibility, and every 4th month free.
               See how it stacks up:
             </p>

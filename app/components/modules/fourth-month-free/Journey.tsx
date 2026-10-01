@@ -40,11 +40,10 @@ export function Journey() {
     <section className="bg-white py-16 px-4 sm:px-6 lg:py-24" id="how-it-works" data-track-section="journey">
       <div className="max-w-7xl mx-auto grid gap-10 lg:grid-cols-[1fr_380px] lg:gap-16">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">Your 4-month journey</p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">
             What you&apos;ll feel, month by month
           </h2>
-          <p className="text-lg text-gray-700 mb-10 md:text-xl">
+          <p className="text-lg text-gray-700 text-pretty mb-10 md:text-xl">
             Understanding the timeline is the difference between quitting and transforming. Here&apos;s exactly what to expect.
           </p>
           <ol className="divide-y divide-gray-200 border-t border-gray-200">
@@ -79,8 +78,7 @@ export function Journey() {
         </div>
         <aside className="lg:pt-32">
           <div className="lg:sticky lg:top-[calc(var(--header-height)+24px)] rounded-3xl bg-linear-to-br from-purple-100 via-pink-100 to-yellow-100 p-6 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-700 mb-2">The 4-month plan</p>
-            <p className="text-3xl font-bold tracking-tight text-gray-900 mb-5">Pay for 3. Month 4 is on us.*</p>
+            <p className="text-3xl font-bold tracking-tight text-balance text-gray-900 mb-5">Pay for 3. Month 4 is on us.*</p>
             <div className="rounded-2xl bg-white p-4 mb-5">
               <PlanTracker size="large" />
             </div>

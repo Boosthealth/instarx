@@ -43,7 +43,7 @@ function TimelineChart() {
   };
 
   // pathLength=1 lets the stroke-dash draw-in work for any line length.
-  const lineClass = `transition-[stroke-dashoffset] duration-[1400ms] ease-out motion-reduce:transition-none ${drawn ? "[stroke-dashoffset:0]" : "[stroke-dashoffset:1] motion-reduce:[stroke-dashoffset:0]"}`;
+  const lineClass = `transition-[stroke-dashoffset] duration-[1400ms] ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none ${drawn ? "[stroke-dashoffset:0]" : "[stroke-dashoffset:1] motion-reduce:[stroke-dashoffset:0]"}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col">
@@ -79,7 +79,7 @@ function TimelineChart() {
           {activeMonth !== null && (
             <line x1={chartX(activeMonth)} x2={chartX(activeMonth)} y1="22" y2={CHART_BASE_Y} className="stroke-gray-300" />
           )}
-          <path d={linePath(CHART.semaglutide)} pathLength={1} strokeDasharray="1" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`stroke-gray-400 ${lineClass}`} />
+          <path d={linePath(CHART.semaglutide)} pathLength={1} strokeDasharray="1" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`stroke-gray-400 delay-150 ${lineClass}`} />
           <path d={linePath(CHART.tirzepatide)} pathLength={1} strokeDasharray="1" fill="none" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`stroke-gray-900 ${lineClass}`} />
           {CHART.semaglutide.map((n, i) => (
             <circle key={`s${i}`} cx={chartX(i)} cy={chartY(n)} r={activeMonth === i ? 5 : 3} className="fill-white stroke-gray-400" strokeWidth="2" />
@@ -114,7 +114,7 @@ function TimelineChart() {
         >
           {sources ? "Hide" : "View"} clinical sources
         </button>
-        <div id="clinical-sources" className={`grid transition-all duration-300 ease-in-out ${sources ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <div id="clinical-sources" className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none ${sources ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
           <div className="overflow-hidden" inert={!sources}>
             <div className="space-y-2 pt-3 text-sm text-gray-600 leading-snug">
               <p>Disclaimer: Projections reflect 24-week clinical averages from Phase 3 trials of the active ingredients. Individual results vary based on starting BMI, diet, and adherence.</p>
@@ -147,7 +147,7 @@ function TransformationCalculator() {
       </p>
       <div className="border-t border-gray-100 my-5" />
       <p className="text-center text-gray-600 mb-2">Your current weight:</p>
-      <p className="text-center text-4xl font-semibold text-gray-900 mb-5" aria-live="polite">{weight} lbs</p>
+      <p className="text-center text-4xl font-semibold tabular-nums text-gray-900 mb-5">{weight} lbs</p>
       <div className="px-2 mb-2">
         <input
           type="range"
@@ -175,14 +175,14 @@ function TransformationCalculator() {
             <span className="block text-sm font-semibold">At month 4</span>
             <span className="block text-xs text-gray-700">The breakthrough · ~8% avg. loss</span>
           </span>
-          <span className="text-2xl font-extrabold sm:text-3xl">{Math.round(weight * 0.92)} lbs</span>
+          <span className="text-2xl font-extrabold tabular-nums sm:text-3xl">{Math.round(weight * 0.92)} lbs</span>
         </div>
         <div className="flex items-center justify-between rounded-full bg-gray-100 px-6 py-3.5 text-gray-900">
           <span className="leading-tight">
             <span className="block text-sm font-semibold">At 1 year</span>
             <span className="block text-xs text-gray-700">The goal · ~15% avg. loss</span>
           </span>
-          <span className="text-2xl font-extrabold sm:text-3xl">{Math.round(weight * 0.85)} lbs</span>
+          <span className="text-2xl font-extrabold tabular-nums sm:text-3xl">{Math.round(weight * 0.85)} lbs</span>
         </div>
       </div>
       <p className="mt-4 text-center text-xs text-gray-500">Based on clinical study averages. Individual results vary.</p>
@@ -195,11 +195,10 @@ export function Science() {
     <section className="bg-[#f5f0eb] rounded-t-[32px] sm:rounded-t-[48px] pt-16 pb-16 px-4 sm:px-6 lg:pt-24" data-track-section="science">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">Clinical data</p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">
             See the science: why 3 months matters
           </h2>
-          <p className="text-lg text-gray-700 md:text-xl">Look at the data. If you quit in month 2, you miss the big drop.</p>
+          <p className="text-lg text-gray-700 text-pretty md:text-xl">Look at the data. If you quit in month 2, you miss the big drop.</p>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
           <TimelineChart />

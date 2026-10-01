@@ -25,10 +25,11 @@ export function Hero({ startingAt }: { startingAt: number }) {
                 <span className="size-2 rounded-full bg-orange-600" aria-hidden="true" />
                 Don&apos;t quit right before the breakthrough
               </p>
-              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
+              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight text-balance mb-4">
                 Commit to weight loss. Get your 4th month <FreeLink />, forever.
               </h1>
-              <p className="mb-4 max-w-md">
+              {/* The pill already carries this idea; dropping it on phones keeps the CTA above the fold. */}
+              <p className="hidden sm:block mb-4 max-w-md text-pretty">
                 Most weight-loss journeys stall in month 2, right before real results kick in. Lock in a
                 4-month plan, quiet the food noise, and we cover month 4.
               </p>
@@ -66,8 +67,8 @@ export function Hero({ startingAt }: { startingAt: number }) {
                 className="w-full h-auto rounded-2xl object-cover"
                 priority
               />
-              <div className="absolute left-3 right-3 bottom-3 sm:left-auto sm:right-auto sm:-left-8 sm:bottom-8 sm:w-72 rounded-2xl bg-white p-4 shadow-lg">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">Your 4-month plan</p>
+              <div className="relative -mt-16 mx-3 sm:absolute sm:mt-0 sm:mx-0 sm:-left-8 sm:bottom-8 sm:w-72 rounded-2xl bg-white p-4 shadow-lg">
+                <p className="text-sm font-semibold text-gray-900 mb-3">Your 4-month plan</p>
                 <PlanTracker />
                 <p className="mt-3 text-sm text-gray-700">
                   Pay for 3. <span className="font-semibold text-gray-900">Month 4 is on us.*</span>

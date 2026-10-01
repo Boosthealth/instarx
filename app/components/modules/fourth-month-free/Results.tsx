@@ -35,11 +35,10 @@ export function Results() {
     <section className="bg-white py-16 lg:py-24" id="results" data-track-section="results">
       <div className="max-w-6xl mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-10 px-4 sm:px-6 md:mb-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">Real member results</p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">
             They didn&apos;t quit. Neither will you.
           </h2>
-          <p className="text-lg text-gray-700 md:text-xl">
+          <p className="text-lg text-gray-700 text-pretty md:text-xl">
             Thousands of InstaRx members have committed to the full journey. Here&apos;s what happened when they did.
           </p>
         </div>

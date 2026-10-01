@@ -11,11 +11,11 @@ export function FinalCTA() {
             <span className="size-2 rounded-full bg-orange-600" aria-hidden="true" />
             Don&apos;t miss the breakthrough
           </p>
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-5">
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.1] mb-5">
             Your 4th month is already paid for.<a href="#offer-terms" className="hover:text-blue-500" aria-label="See offer terms">*</a>{" "}
             You just have to claim it.
           </h2>
-          <p className="text-lg md:text-xl mb-8">
+          <p className="text-lg md:text-xl text-pretty mb-8">
             Thousands of patients almost gave up in month 2. The ones who committed to the full journey are the ones who
             transformed. Your breakthrough is waiting.
           </p>

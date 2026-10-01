@@ -89,11 +89,10 @@ export function Plans({ offer }: { offer: Offer }) {
       <div className="bg-[#f5f0eb] rounded-3xl sm:rounded-[48px] px-4 py-14 sm:px-6 lg:py-20">
         <div className="max-w-5xl mx-auto">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">Price-lock guarantee</p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">
               Every 4th month is <FreeLink />, forever
             </h2>
-            <p className="text-lg text-gray-700 md:text-xl">
+            <p className="text-lg text-gray-700 text-pretty md:text-xl">
               Choose your medication. Commit to 4 months, pay for 3. Stay with us and we&apos;ll cover every 4th month,
               forever. Same price at every dose. Zero hidden fees.
             </p>
@@ -103,7 +102,7 @@ export function Plans({ offer }: { offer: Offer }) {
             <PlanCard item={offer.tirz} featured />
           </div>
           <div className="mt-8 rounded-3xl bg-white p-6 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-600 mb-4">Every plan includes</p>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Every plan includes</h3>
             <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {INCLUDES.map(({ icon: Icon, label }) => (
                 <li key={label} className="flex flex-col items-center gap-2 rounded-2xl bg-[#faf6f0] px-3 py-4 text-sm font-medium text-gray-900">

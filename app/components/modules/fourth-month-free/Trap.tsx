@@ -27,17 +27,16 @@ export function Trap() {
     <section className="bg-gray-100 py-16 px-4 sm:px-6 lg:py-24" data-track-section="trap">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700 mb-3">The month-to-month trap</p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-gray-900 leading-tight mb-4">
             Why quitting early sets you up to fail
           </h2>
-          <p className="text-lg text-gray-700 md:text-xl">
+          <p className="text-lg text-gray-700 text-pretty md:text-xl">
             The diet industry sells &quot;overnight results.&quot; Your body doesn&apos;t work that way. Quitting your
             medication in the first 60 days is like walking out of the gym while you&apos;re still stretching.
           </p>
         </div>
         <ol className="grid gap-4 md:grid-cols-3 md:gap-6">
-          {CARDS.map(({ icon: Icon, ...card }, i) => (
+          {CARDS.map(({ icon: Icon, ...card }) => (
             <li
               key={card.title}
               className={`relative flex flex-col rounded-2xl bg-white p-6 md:p-8 ${card.danger ? "ring-2 ring-orange-600" : ""}`}
@@ -47,15 +46,12 @@ export function Trap() {
                   The danger zone
                 </span>
               )}
-              <div className="flex items-center justify-between mb-6">
-                <span
-                  className={`flex size-12 items-center justify-center rounded-xl ${card.danger ? "bg-orange-50 text-orange-700" : "bg-gray-100 text-gray-900"}`}
-                >
-                  <Icon className="size-6" aria-hidden="true" />
-                </span>
-                <span className="text-5xl font-extrabold text-gray-200" aria-hidden="true">0{i + 1}</span>
-              </div>
-              <p className="text-sm font-semibold uppercase tracking-[0.15em] text-orange-700 mb-1">{card.eyebrow}</p>
+              <span
+                className={`flex size-12 items-center justify-center rounded-xl mb-6 ${card.danger ? "bg-orange-50 text-orange-700" : "bg-gray-100 text-gray-900"}`}
+              >
+                <Icon className="size-6" aria-hidden="true" />
+              </span>
+              <p className="font-semibold text-orange-700 mb-1">{card.eyebrow}</p>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">{card.title}</h3>
               <p className="text-gray-700 leading-relaxed">{card.body}</p>
             </li>

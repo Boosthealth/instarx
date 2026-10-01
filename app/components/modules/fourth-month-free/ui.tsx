@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { BTN_DARK } from "./buttons";
+import { CTA_BASE_URL, PROMO } from "./constants";
 import type { Treatment } from "./types";
 
-export const CTA_BASE_URL = "https://go.instarx.com/intake";
-export const PROMO = "month4free";
-
-import { BTN_DARK } from "./buttons";
+export { CTA_BASE_URL, PROMO };
 
 declare global {
   interface Window { dataLayer?: Record<string, unknown>[]; }

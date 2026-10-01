@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { PROMO, track } from "./ui";
+import type { Treatment } from "./types";
+import { buildCtaHref, CTA_BASE_URL, PROMO, track } from "./ui";
 
 export function PageEffects() {
   useEffect(() => {
@@ -20,6 +21,20 @@ export function PageEffects() {
       return observer;
     });
     return () => observers.forEach((observer) => observer.disconnect());
+  }, []);
+
+  // The shared /glp2 Header renders plain links to ctaHref; give its CTAs the same
+  // treatment passthrough and lp_cta_click ("nav") that CtaLink provides elsewhere.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>(`header a[href^="${CTA_BASE_URL}"]`);
+      if (!link) return;
+      const chosen = (sessionStorage.getItem("treatment") as Treatment | null) || "tirzepatide";
+      link.href = buildCtaHref(chosen);
+      track({ event: "lp_cta_click", cta_location: "nav", treatment: chosen, promo: PROMO });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   return null;

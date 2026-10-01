@@ -15,7 +15,7 @@ import { FAQ } from "./FAQ";
 import { FinalCTA } from "./FinalCTA";
 import { OfferTerms } from "./OfferTerms";
 import { StickyOffer } from "./StickyOffer";
-import { CTA_BASE_URL, PROMO } from "./ui";
+import { CTA_BASE_URL, PROMO } from "./constants";
 
 // Shell (Header, Reviews, Footer) is shared with /glp2 so the page carries the same brand frame.
 export function FourthMonthFreeLanding({ offer, faqs }: { offer: Offer; faqs: readonly FAQItem[] }) {

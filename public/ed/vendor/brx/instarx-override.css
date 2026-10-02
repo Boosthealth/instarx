@@ -1,0 +1,126 @@
+/* ============================================================
+   InstaRx token override for the BraveRx theme stylesheets.
+   We ship their theme.css / base.css / multi-image-with-text.css /
+   output.css UNMODIFIED, then remap only the brand colours here.
+     their green-haze  #01a95b  ->  InstaRx cyan       #11A1D3
+     their angel-green #004125  ->  InstaRx indigo     #1B1B3A
+     their charcoal    #262626  ->  kept (neutral ink)
+   CTA stays terracotta #C1683C, which is the action colour in BRAND.md.
+   ============================================================ */
+:root{
+  --color-green-haze:#11A1D3;
+  --color-emerald:#3FBCE4;
+  --color-angel-green:#1B1B3A;
+  --color-forest-green:#242448;
+  --instarx-cyan:#11A1D3;
+  --instarx-indigo:#1B1B3A;
+  --instarx-terra:#C1683C;
+  --instarx-terra-deep:#A9552E;
+  --instarx-bone:#F5F0EB;
+}
+.tw-text-green-haze{color:var(--instarx-cyan)!important}
+.tw-bg-green-haze{background-color:var(--instarx-cyan)!important}
+.tw-border-green-haze{border-color:var(--instarx-cyan)!important}
+
+/* the theme's Anton display, kept, plus our CTA */
+.brx-cta{display:inline-block;background:var(--instarx-cyan);color:#fff;text-decoration:none;
+  font-family:'Roboto Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+  font-size:17px;letter-spacing:.08em;padding:16px 40px;border-radius:4px;
+  transition:background .15s,transform .12s;border:0;cursor:pointer}
+.brx-cta:hover{background:var(--instarx-cyan-deep);transform:translateY(-1px)}
+.brx-cta:focus-visible{outline:3px solid var(--instarx-indigo);outline-offset:3px}
+
+/* us-vs-them, rebuilt from their inline rules with our column colour */
+.us-vs-them .frame{background:#262626;color:#eaeaea;border:1px solid #696969;margin:0 auto}
+.us-vs-them .comparison-row{border-bottom:1px solid #696969}
+.us-vs-them .comparison-row:last-child{border-bottom:0}
+.us-vs-them .us-icon,.us-vs-them .head-us{background:var(--instarx-indigo)}
+.us-vs-them .ic{width:24px;height:24px}
+.us-vs-them .ic.yes{color:#fff}
+.us-vs-them .ic.no{color:#8d8d8d}
+
+/* facts-wrapper: their 30% column, 1px charcoal border, min-height 400 per the
+   section's own inline rule */
+.facts-wrapper{min-height:400px}
+.facts-wrapper .fact:last-of-type{border-bottom:none}
+
+/* the page ground + type, using the theme's own custom properties */
+body{background:#fff;color:#262626}
+.instarx-wm{font-family:'Anton',Impact,sans-serif;font-size:26px;text-transform:uppercase;
+  color:#262626;letter-spacing:.02em}
+.instarx-wm i{font-style:normal;color:var(--instarx-cyan)}
+.dose-note{font-size:13px;line-height:1.65;color:#71717E}
+
+/* ------------------------------------------------------------
+   base.css ships .body-wrapper as a sticky-footer flex column
+   (display:flex; height:100%; min-height:100vh; overflow-x:hidden).
+   On their site it wraps header + main + footer. We ship only the
+   page body, so height:100% resolves against the viewport and turns
+   the wrapper into an internal scroll region that shrinks <main>.
+   Keep the wrapper (their sections rely on not being flex items)
+   but let it grow with content.
+   ------------------------------------------------------------ */
+.body-wrapper{height:auto;overflow:visible}
+.body-wrapper > main{flex:1 0 auto;min-height:0}
+
+/* Icons are inline SVG, not a webfont.
+   The Material Symbols ligature font was rendering its ligature NAMES as serif
+   text on iOS ("star star health_and_safety") whenever the gstatic woff2 did
+   not arrive: the family is declared with no fallback stack, so a failed font
+   drops to Safari's default serif and the glyph names show through. On a paid
+   landing page that is a total loss of the page. These are the same Material
+   Symbols paths, shipped in the document, so there is nothing left to fail. */
+.mi{display:inline-flex;align-items:center;justify-content:center;line-height:1;vertical-align:middle}
+.mi-svg{display:block;flex:none}
+
+
+/* ---- mobile legibility --------------------------------------------------
+   Added after review feedback that this page was unreadable on a phone. The
+   root cause was a missing viewport tag; these are the leftovers it hid. */
+:root{--instarx-cyan-deep:#0C7CA3}
+@media (max-width:640px){
+  .dose-note{font-size:13.5px;line-height:1.7}
+  /* the announcement-bar link was a 16px-tall tap target */
+  .promo a{display:inline-block;padding:12px 6px;line-height:1.2}
+  .brx-cta{width:100%;text-align:center;padding-top:18px;padding-bottom:18px}
+}
+
+/* ---- review round 3 -------------------------------------------------------
+
+   1. The comparison table's right-hand header was #262626 type sitting on the
+      #262626 frame: a 1:1 contrast ratio, so the column simply had no header.
+      The left column is white on indigo; the right gets a muted grey so the
+      hierarchy still favours InstaReady. */
+.us-vs-them .frame h3{color:#B9BEC7!important}
+
+/* 2. The three-step section centres its icons but left-aligns the eyebrow,
+      headings and body, so every row read as misaligned. Centre the text to
+      match the icons. */
+.brx-steps-centered,
+.brx-steps-centered h3,
+.brx-steps-centered h4,
+.brx-steps-centered p,
+.brx-steps-centered span{text-align:center}
+
+/* 3. A CTA that touches the next section's image reads as part of the artwork
+      rather than as a button. Give every primary CTA air beneath it. */
+.brx-cta{margin-bottom:8px}
+p:has(> .brx-cta){margin-bottom:40px}
+
+/* 4. The image+text sections open with an eyebrow over a headline. The theme's
+      heading scale did not survive the lift, so the headline fell back to the
+      base 16px — the same size as the eyebrow above it and the body below it,
+      with 25px of air in between. Two stray lines instead of a section opening.
+      Size the headline, shrink the eyebrow to eyebrow size, and close the gap
+      between them so they read as one unit. */
+.img-text__content .section-heading-box{margin-bottom:0}
+.img-text__content .section-heading-title{
+  font-size:13px;line-height:1.3;letter-spacing:.12em;margin-bottom:0}
+.img-text__heading{
+  font-size:clamp(1.4rem,4.6vw,1.9rem);line-height:1.18;
+  margin-top:10px;margin-bottom:18px}
+/* Same centred-icon / left-aligned-text mismatch as the three-step section:
+   the feature icons in these blocks sit centred over copy that starts at the
+   left edge. Centre the copy to the icons. */
+.img-text__content .custom-html-block{text-align:center}
+.img-text__content .custom-html-block .tw-text-left{text-align:center}

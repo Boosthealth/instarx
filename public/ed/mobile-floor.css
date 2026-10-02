@@ -1,0 +1,112 @@
+/* ---------------------------------------------------------------------------
+   MOBILE TYPE FLOOR  ·  shared by the pages that carry their own type system
+   (listicle, solution comparison, dark DTC lander).
+
+   Added 22 Sep 2026 after review feedback that these pages were unreadable on a
+   phone. The headline cause was a missing viewport tag, which made phones render
+   at ~980px and scale the whole page down. Once that was fixed, a second problem
+   showed: these systems were drawn at desktop reading distance, so captions,
+   citations, seals and legal copy sat between 9.5px and 12.5px.
+
+   Body copy wants 16px. Legal fine print legitimately runs smaller, but nothing
+   below 13px is comfortably readable on a handset, so that is the floor here.
+   Short uppercase micro-labels are exempt: they are 2-4 words and read fine
+   smaller, and inflating them breaks the chips they sit in.
+
+   !important throughout because each of these pages declares its type in an
+   inline <style> block that loads after this file.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+
+  /* long-form secondary copy: captions, notes, disclosures, seals */
+  .legal p,
+  .legal b,
+  .legal strong,
+  .legal span,
+  .seal span,
+  .seals span,
+  .seal b,
+  p.cap,
+  p.tnote,
+  p.dose,
+  p.note,
+  p.foot,
+  p.hd,
+  p.fbnote,
+  figcaption,
+  cite,
+  .t,
+  .build,
+  .build b {
+    font-size: 13.5px !important;
+    line-height: 1.65 !important;
+  }
+
+  /* page-specific secondary styles found by the audit on the listicle,
+     solution comparison and dark DTC lander.
+
+     `.shell p` and `.col p` used to be in this group. Both are CARD wrappers on
+     those three pages, but `.col` is also the article column on the
+     advertorials, so a floor meant for captions was pinning 54 paragraphs of
+     body copy on instaready.html and 18 on the solution comparison down to
+     13.5px, and capping the 18px standfirst with them. A flat `font-size` is a
+     cap as well as a floor. Name the small things; never a bare `p`. */
+  .shell .rx,
+  .shell p.micro,
+  .cta-row .micro,
+  .molecule,
+  .s .lab,
+  .stack .confirm,
+  .ph b,
+  .who span,
+  .top span,
+  .dose span {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* the footer disclosure runs at 10.5px by design at desktop reading distance.
+     It used to be lifted by the over-broad `.col p` rule above; now that that is
+     gone it needs naming, because legal copy nobody can read is not a
+     disclosure. */
+  footer .col p,
+  footer .legal p,
+  .legalnote {
+    font-size: 13.5px !important;
+    line-height: 1.7 !important;
+  }
+
+  /* price slots were drawn for a short figure; the token needs to fit */
+  .price .now,
+  .priceline .now,
+  .amt .now {
+    font-size: 30px !important;
+  }
+
+  /* body copy should never dip under the comfortable reading size. 17px is the
+     floor rather than 16px: these are long-form reading pages and the review
+     note was that the copy was still too small to read on a handset. */
+  p,
+  li {
+    font-size: max(17px, 1em);
+    line-height: 1.65;
+  }
+
+  /* uppercase micro-labels: a few words each, so they hold up smaller */
+  .kicker,
+  .lab,
+  .badge,
+  .eyebrow,
+  .step-label {
+    font-size: 11.5px !important;
+    letter-spacing: .08em !important;
+  }
+
+  /* tap targets: anything clickable needs a real finger-sized box */
+  a.btn,
+  .btn,
+  button {
+    min-height: 44px;
+  }
+}

@@ -162,7 +162,7 @@ function setGuardSessionCookie(
     value: session.value,
     path: "/",
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     expires: new Date(session.expires * 1000),
   });
@@ -172,17 +172,31 @@ function setGuardSessionCookie(
 // redirect that spends an access token and mints a session), or null to let
 // the request continue into the rest of the proxy.
 async function guardFunnel(request: NextRequest): Promise<NextResponse | null> {
+  // No key configured (e.g. Preview deployments, which don't get the
+  // Production-only env vars): fail OPEN rather than letting WebCrypto throw
+  // on a zero-length HMAC key. Every crypto operation below assumes a key.
+  if (!GUARD_VALIDATION_KEY) return null;
+
   const url = request.nextUrl;
   const path = url.pathname;
 
   // Never redirect anything but a page view. A redirected POST loses its body.
   if (request.method !== "GET" && request.method !== "HEAD") return null;
   if (isGuardExcluded(path)) return null;
-  if (await hasValidGuardSession(request)) return null;
+
+  const token = url.searchParams.get(GUARD_TOKEN_PARAM);
+
+  if (await hasValidGuardSession(request)) {
+    // Already authenticated. A leftover single-use token must still never be
+    // left on the URL to be copied, shared, logged, or forwarded downstream.
+    if (!token) return null;
+    const clean = new URL(url);
+    clean.searchParams.delete(GUARD_TOKEN_PARAM);
+    return NextResponse.redirect(clean, 302);
+  }
 
   // Arriving from the gate with a token: spend it, then clean the URL so a
   // single-use token is never left to be copied, shared or logged.
-  const token = url.searchParams.get(GUARD_TOKEN_PARAM);
   if (token) {
     const verdict = await validateGuardToken(token);
 
@@ -248,6 +262,9 @@ const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 function carryForwardParams(target: URL, source: URLSearchParams): void {
   source.forEach((value, key) => {
     if (key === VISITOR_QUERY_PARAM) return;
+    // A spent (or unspent) single-use guard token must never ride a redirect
+    // onward to a third-party lander/funnel domain or an analytics query string.
+    if (key === GUARD_TOKEN_PARAM) return;
     if (!value) return;
     if (!target.searchParams.has(key)) target.searchParams.set(key, value);
   });
@@ -416,7 +433,8 @@ function isNonHumanRequest(request: NextRequest): boolean {
   const rscHeader = request.headers.get("rsc");
   const allHeaders: Record<string, string> = {};
   request.headers.forEach((v, k) => {
-    allHeaders[k] = v;
+    // Cookie carries bearer credentials (ix_fg_session, etc.) — never log it.
+    allHeaders[k] = k.toLowerCase() === "cookie" ? "[redacted]" : v;
   });
   console.log(
     `[debug-middleware] path=${request.nextUrl.pathname} search="${request.nextUrl.search}" hasRsc=${hasRscParam} nextPrefetch=${nextPrefetchHeader} rsc=${rscHeader} headers=${JSON.stringify(allHeaders)}`,
@@ -449,6 +467,13 @@ function isNonHumanRequest(request: NextRequest): boolean {
 // A/B branches below still gate on an explicit pathname check, so this is a
 // superset of what they need — add paths there as more experiments are
 // introduced, not here.
+//
+// The excluded extension list mirrors GUARD_ASSET_PATTERN above (keep them in
+// sync). It deliberately does NOT include .html: static landers served from
+// public/ (e.g. public/ed/*.html) are real page views and must stay gated —
+// a blanket "any dotted path" exclusion let them bypass the guard entirely.
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon\\.ico|.*\\.(?:css|js|mjs|map|png|jpe?g|gif|svg|webp|avif|ico|woff2?|ttf|eot|pdf|txt|xml|json)$).*)",
+  ],
 };

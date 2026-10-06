@@ -40,13 +40,13 @@ export default function AnalyticsScripts() {
     "/glp2-v3",
     "/nad-plus",
     "/glp1/how-it-works",
-    "/4th-month-free",
+    "/glp-fourth-month-free",
   ]);
   const analyticsStrategy =
     pathname !== null && LAZY_ANALYTICS_ROUTES.has(pathname)
       ? "lazyOnload"
       : "afterInteractive";
-  const lightweightPostHog = pathname === "/4th-month-free";
+  const lightweightPostHog = pathname === "/glp-fourth-month-free";
 
   return (
     <>

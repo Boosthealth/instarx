@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Get Your 4th Month Free — GLP-1 Weight Loss | InstaRx",
     description:
       "Commit to 3 months of doctor-prescribed GLP-1 and get every 4th month free, forever. Same price at every dose. No hidden fees. Free 1-2 day shipping.",
-    url: "/4th-month-free",
+    url: "/glp-fourth-month-free",
   },
 };
 
@@ -61,11 +61,13 @@ const FAQS = [
   },
   {
     question: "What if I'm not approved?",
-    answer: "You won't be charged. Your provider reviews your intake before anything ships.",
+    answer:
+      "You won't be charged. Your provider reviews your intake before anything ships.",
   },
   {
     question: "Can I cancel?",
-    answer: "Yes. Cancel anytime from your patient portal before your next 4-month renewal.",
+    answer:
+      "Yes. Cancel anytime from your patient portal before your next 4-month renewal.",
   },
   {
     question: "Semaglutide or tirzepatide, which should I pick?",
@@ -74,7 +76,8 @@ const FAQS = [
   },
   {
     question: "How fast will I get my medication?",
-    answer: "Most orders are reviewed within 24 hours and arrive in 1-2 days with free expedited shipping.",
+    answer:
+      "Most orders are reviewed within 24 hours and arrive in 1-2 days with free expedited shipping.",
   },
   {
     question: "Are the medications FDA approved?",
@@ -98,7 +101,9 @@ export default function FourthMonthFreePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+        }}
       />
       <FourthMonthFreeLanding offer={OFFER} faqs={FAQS} />
     </>

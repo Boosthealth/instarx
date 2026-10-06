@@ -15,7 +15,7 @@ export function ArtDirected({
   priority?: boolean;
   className?: string;
 }) {
-  const common = { alt, sizes: "100vw", quality: 80, priority };
+  const common = { alt, sizes: "100vw", priority };
   const {
     props: { srcSet: wideSet },
   } = getImageProps({ ...common, src: wide, width: 2400, height: 1350 });

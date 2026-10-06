@@ -426,8 +426,7 @@ export function FinalCta() {
           src={finalCta.image.src}
           alt={finalCta.image.alt}
           fill
-          sizes="(min-width: 48rem) 50vw, 100vw"
-          quality={80}
+          sizes="(min-width: 48rem) 52vw, 100vw"
         />
       </div>
       <div className="edv3-final__scrim" aria-hidden="true" />

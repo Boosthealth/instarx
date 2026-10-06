@@ -64,7 +64,13 @@ const socials = [
   },
 ];
 
-const cards = ["visa", "mastercard", "discover", "amex"];
+/* Widths match each SVG's intrinsic ratio at the 28px rendered height. */
+const cards = [
+  { name: "visa", alt: "Visa", width: 45 },
+  { name: "mastercard", alt: "Mastercard", width: 34 },
+  { name: "discover", alt: "Discover", width: 61 },
+  { name: "amex", alt: "American Express", width: 29 },
+];
 
 export function SiteFooter() {
   return (
@@ -134,11 +140,11 @@ export function SiteFooter() {
             aria-label="Accepted payment cards"
           >
             {cards.map((card) => (
-              <li key={card}>
+              <li key={card.name}>
                 <Image
-                  src={`/images/cards/${card}.svg`}
-                  alt={card}
-                  width={44}
+                  src={`/images/cards/${card.name}.svg`}
+                  alt={card.alt}
+                  width={card.width}
                   height={28}
                 />
               </li>

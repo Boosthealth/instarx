@@ -2,7 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
-import { GTM_ID, GTM_SNIPPET, POSTHOG_SNIPPET } from "@/app/lib/analytics";
+import {
+  GTM_ID,
+  GTM_SNIPPET,
+  POSTHOG_LIGHTWEIGHT_SNIPPET,
+  POSTHOG_SNIPPET,
+} from "@/app/lib/analytics";
 
 // Pages that embed Savvy/Embeddables flows. The third-party flow owns PostHog
 // on these routes, so we keep OUR PostHog off them to avoid collisions/
@@ -37,11 +42,13 @@ export default function AnalyticsScripts() {
     "/glp2-v3",
     "/nad-plus",
     "/glp1/how-it-works",
+    "/glp-fourth-month-free",
   ]);
   const analyticsStrategy =
     pathname !== null && LAZY_ANALYTICS_ROUTES.has(pathname)
       ? "lazyOnload"
       : "afterInteractive";
+  const lightweightPostHog = pathname === "/glp-fourth-month-free";
 
   return (
     <>
@@ -68,7 +75,7 @@ export default function AnalyticsScripts() {
       {/* PostHog — skipped on embeddables pages (their flow handles it) */}
       {!skipPostHog && (
         <Script id="posthog" strategy={analyticsStrategy}>
-          {POSTHOG_SNIPPET}
+          {lightweightPostHog ? POSTHOG_LIGHTWEIGHT_SNIPPET : POSTHOG_SNIPPET}
         </Script>
       )}
       {/* End PostHog */}

@@ -62,7 +62,9 @@
   padding: 0;
 }
 
-.edv3 a:not(.edv3-btn) {
+/* :where() keeps this reset at zero specificity so .edv3-link and other
+ * component link styles win without !important. */
+.edv3 :where(a:not(.edv3-btn)) {
   color: inherit;
   text-decoration: none;
 }
@@ -253,8 +255,8 @@
 
 .edv3-link {
   color: var(--edv3-ink-2);
-  text-decoration: underline !important;
-  text-decoration-color: var(--edv3-line-strong) !important;
+  text-decoration: underline;
+  text-decoration-color: var(--edv3-line-strong);
   text-underline-offset: 3px;
   transition: color 0.3s var(--edv3-ease);
 }

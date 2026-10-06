@@ -49,7 +49,7 @@ export const hero = {
   chips: [
     "No pills. No injections.",
     "Feel it in as little as 15 min*",
-    "Up to a 36-hour window",
+    "Up to a 36-hour window*",
     "Discreet delivery",
   ],
   cta: "Take the quiz",
@@ -70,11 +70,11 @@ export const trust = [
 
 export const ready = {
   heading: "Ready the moment it matters.",
-  body: "A pill makes you plan: swallow it, wait 30 to 60 minutes and hope the timing lines up. Insta-Ready is a liquid you swish for 30 to 60 seconds, then swallow. It starts absorbing through the lining of your mouth, so you're ready closer to when it actually happens, not an hour ahead of it.*",
+  body: "A pill makes you plan: swallow it, wait 30 to 60 minutes and hope the timing lines up. Insta-Ready is a liquid you swish for 30 to 60 seconds, then swallow. It's made for a faster start than a swallowed tablet, so you're ready closer to when it actually happens, not an hour ahead of it.*",
   points: [
     {
       lead: "Faster by design.",
-      text: "Absorption starts in the mouth, so many men feel it sooner than a swallowed tablet.*",
+      text: "Made for a faster start, so many men feel it sooner than a swallowed tablet.*",
     },
     {
       lead: "Built for spontaneity.",
@@ -124,7 +124,7 @@ export const formula = {
       key: "tadalafil",
       ingredient: "Tadalafil",
       role: "Stamina",
-      text: "The long-acting compound, the active in Cialis®. Keeps you responsive for up to 36 hours, so there's no timing the moment.",
+      text: "The long-acting compound, the active in Cialis®. Keeps you responsive for up to 36 hours, so there's no timing the moment.*",
       approval: "FDA-approved on its own",
       image: "/images/ed-treatment-v3/formula-tadalafil.webp",
       alt: "A long unbroken trail of bronze light across a dark field",
@@ -158,15 +158,15 @@ export const engineered = {
   items: [
     {
       title: "Minutes, not hours.",
-      text: "Swish, swallow, and absorption starts in your mouth. Many men feel it in as little as 15 minutes, against the 30 to 60 minutes a swallowed pill can take.*",
+      text: "Swish, then swallow. Many men feel it in as little as 15 minutes, against the 30 to 60 minutes a swallowed pill can take.*",
     },
     {
       title: "Dinner-friendly.",
-      text: "A heavy meal can blunt a standard ED pill. Insta-Ready is less likely to be slowed down by food, so you don't have to choose between a real dinner and the rest of the night.",
+      text: "A heavy meal can blunt a standard ED pill. Insta-Ready is less likely to be slowed down by food, so you don't have to choose between a real dinner and the rest of the night.*",
     },
     {
       title: "One dose, all weekend.",
-      text: "With a long-acting compound in the mix, a single dose can keep you responsive for up to 36 hours. No countdown, no planning around a pill.",
+      text: "With a long-acting compound in the mix, a single dose can keep you responsive for up to 36 hours. No countdown, no planning around a pill.*",
     },
   ],
 } as const;
@@ -178,8 +178,8 @@ export const compare = {
     ["Format", "Liquid vial, swish and swallow", "Swallowed tablet"],
     ["Onset", "As little as 15 minutes*", "30 to 60 minutes"],
     ["Active ingredients", "4 compounds", "1 compound"],
-    ["Active window", "Up to 36 hours", "Varies by pill"],
-    ["Slowed by food", "Less likely", "Can be"],
+    ["Active window", "Up to 36 hours*", "Varies by pill"],
+    ["Slowed by food", "Less likely*", "Can be"],
     ["Arousal pathway", "Also works through the brain", "Blood flow only"],
   ] as const,
   cta: "See if you qualify",
@@ -274,11 +274,11 @@ export const faq = {
   items: [
     {
       q: "How is Insta-Ready different from Viagra or Cialis?",
-      a: "Viagra and Cialis are single-compound pills that mainly address blood flow and can take 30 to 60 minutes to work. Insta-Ready combines four prescription compounds (for speed, strength, stamina and desire) in one small liquid vial that you swish and swallow, so absorption starts in your mouth.",
+      a: "Viagra and Cialis are single-compound pills that mainly address blood flow and can take 30 to 60 minutes to work. Insta-Ready combines four prescription compounds (for speed, strength, stamina and desire) in one small liquid vial that you swish for 30 to 60 seconds, then swallow.",
     },
     {
       q: "How fast does it actually work?",
-      a: "Many men feel it in as little as 15 minutes, though onset varies from person to person.* Because absorption starts in the mouth rather than the stomach, it is less likely to be slowed down by a meal. Sexual stimulation is still needed.",
+      a: "Many men feel it in as little as 15 minutes, though onset varies from person to person.* It is also less likely to be slowed down by a meal.* Sexual stimulation is still needed.",
     },
     {
       q: "Is it safe and doctor-prescribed?",
@@ -311,7 +311,7 @@ export const safetyStrip =
 
 export const footerDisclaimers = {
   footnote:
-    "*Onset and results vary by individual. Based on ingredient pharmacology and patient reports; no clinical trial has evaluated the combined formulation.",
+    "*Onset, duration, food effects and results vary by individual. Based on ingredient pharmacology and patient reports; no clinical trial has evaluated the combined formulation.",
   paragraphs: [
     "InstaRx is a technology platform that connects you with independent, US-licensed healthcare providers. Prescription products require an online consultation with a licensed provider who determines whether a prescription is appropriate; completing the intake does not guarantee a prescription.",
     "Compounded medications are prepared by state-licensed 503A compounding pharmacies for individual patients and are not FDA-approved; the FDA does not review compounded drugs for safety, effectiveness, or quality. Sildenafil, tadalafil and vardenafil are FDA-approved in their own branded and generic forms; the compounded combination is not an FDA-approved finished drug. Apomorphine is used off-label.",

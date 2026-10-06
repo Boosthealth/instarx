@@ -31,6 +31,13 @@ export function PageEffects() {
       if (!link) return;
       const chosen = (sessionStorage.getItem("treatment") as Treatment | null) || "tirzepatide";
       link.href = buildCtaHref(chosen);
+      // The Header renders next/link, which soft-navigates on its href prop when
+      // CTA_BASE_URL is same-origin (production), dropping the rewrite above and
+      // skipping the proxy's /intake split. Stop the event before React sees it so
+      // the browser does a full navigation to the rewritten href.
+      if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        event.stopPropagation();
+      }
       track({ event: "lp_cta_click", cta_location: "nav", treatment: chosen, promo: PROMO });
     };
     document.addEventListener("click", onClick, true);

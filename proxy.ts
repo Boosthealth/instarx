@@ -1,8 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import {
-  ATTRIBUTION_COOKIE,
-  captureAttribution,
-} from "@/app/lib/attribution";
+import { ATTRIBUTION_COOKIE, captureAttribution } from "@/app/lib/attribution";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
@@ -218,8 +215,12 @@ function isNonHumanRequest(request: NextRequest): boolean {
   const nextPrefetchHeader = request.headers.get("next-router-prefetch");
   const rscHeader = request.headers.get("rsc");
   const allHeaders: Record<string, string> = {};
-  request.headers.forEach((v, k) => { allHeaders[k] = v; });
-  console.log(`[debug-middleware] path=${request.nextUrl.pathname} search="${request.nextUrl.search}" hasRsc=${hasRscParam} nextPrefetch=${nextPrefetchHeader} rsc=${rscHeader} headers=${JSON.stringify(allHeaders)}`);
+  request.headers.forEach((v, k) => {
+    allHeaders[k] = v;
+  });
+  console.log(
+    `[debug-middleware] path=${request.nextUrl.pathname} search="${request.nextUrl.search}" hasRsc=${hasRscParam} nextPrefetch=${nextPrefetchHeader} rsc=${rscHeader} headers=${JSON.stringify(allHeaders)}`,
+  );
 
   // Next.js App Router <Link> prefetch — fires when a Link enters the viewport,
   // before any click. App Router RSC prefetches use a `?_rsc=…` query param +

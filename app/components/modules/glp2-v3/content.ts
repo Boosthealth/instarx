@@ -10,7 +10,8 @@
  * strikethrough pricing.
  */
 
-export const INTAKE_HREF = "https://go.instarx.com/intake";
+// All CTAs point at the dedicated spray intake site.
+export const INTAKE_HREF = "https://spray.instarx.com/";
 
 export const announcement = "NEW — Needle-free GLP-1 is here · $299/month flat";
 

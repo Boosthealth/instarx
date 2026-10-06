@@ -23,8 +23,8 @@ export function V2Button({
   arrow?: boolean;
   tabIndex?: number;
 }) {
-  // prefetch={false}: every CTA points at /intake, and viewport prefetch would
-  // pre-bucket visitors in the experiment proxy.
+  // prefetch={false}: every CTA points at the external spray intake site
+  // (spray.instarx.com), so viewport prefetch buys nothing.
   return (
     <Link
       href={href}

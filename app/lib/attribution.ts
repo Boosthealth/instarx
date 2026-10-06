@@ -68,3 +68,38 @@ export function captureAttribution(source: URLSearchParams): string | null {
   const result = captured.toString();
   return result.length > 0 ? result : null;
 }
+
+// Persists marketing attribution (utm_*, gclid, ad_id, …) from the entry URL
+// into the `ix_attribution` cookie. Inlined and pre-hydration ON PURPOSE: the
+// previous useEffect version only ran after the React bundle hydrated, so a
+// CTA click that beat hydration (slow mobile webviews) reached /intake with no
+// cookie and the funnel lost all attribution. A parser-executed script at the
+// top of <body> runs before any CTA is clickable (the static /ed landers load
+// it via app/ed/analytics.js/route.ts). proxy.ts also sets the same
+// cookie server-side on proxied routes; this covers direct lander entries.
+// Key filtering must stay in lockstep with proxy.ts — both sides read the
+// shared lists in app/lib/attribution.ts. ES5-only: it must run in the oldest
+// in-app webviews, which are exactly where the hydration race bit.
+export const ATTRIBUTION_CAPTURE_SCRIPT = `(function () {
+  try {
+    var keys = ${JSON.stringify(ATTRIBUTION_KEYS)};
+    var prefixes = ${JSON.stringify(ATTRIBUTION_KEY_PREFIXES)};
+    var search = new URLSearchParams(window.location.search);
+    var captured = new URLSearchParams();
+    var any = false;
+    search.forEach(function (value, key) {
+      if (!value) return;
+      var keep = keys.indexOf(key) !== -1;
+      if (!keep) {
+        for (var i = 0; i < prefixes.length; i++) {
+          if (key.lastIndexOf(prefixes[i], 0) === 0) { keep = true; break; }
+        }
+      }
+      if (keep) { captured.set(key, value); any = true; }
+    });
+    if (!any) return;
+    var domain = /(^|\\.)instarx\\.com$/.test(window.location.hostname) ? "; domain=.instarx.com" : "";
+    var secure = window.location.protocol === "https:" ? "; secure" : "";
+    document.cookie = "${ATTRIBUTION_COOKIE}=" + captured.toString() + "; path=/" + domain + "; max-age=31536000; samesite=lax" + secure;
+  } catch (e) {}
+})();`;

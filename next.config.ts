@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
   // ED landers ported as-is from instarx-ed-lp: static HTML + assets live in
   // public/ed/ and are served only at the short /ed1…/ed7 launch slugs
   // (PRO-847), numbered in the order the client reviewed them. The React
-  // ED treatment v2 page continues the sequence at app/(pages)/ed8.
+  // ED treatment v2 and v3 pages continue the sequence at app/(pages)/ed8
+  // and app/(pages)/ed9.
   async rewrites() {
     return ED_LANDERS.map((slug, i) => ({
       source: `/ed${i + 1}`,

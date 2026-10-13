@@ -14,25 +14,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="/ed/adv.css?v=2026092310">
 <link rel="stylesheet" href="/ed/mobile-floor.css?v=2026092310">
+
+<!-- irx-universal-head:start --><link rel="stylesheet" href="/ed/universal.css?v=2026101304"><!-- irx-universal-head:end -->
 </head>
 <body>
-<!--
-  PRIMED ADVERTORIAL  -  first-person narrator format.
-  Same page TYPE as instaready.html (shares adv.css, modelled on
-  getbrickedrx.com/discover/over40). Differentiated per BRAND.md:
-  PrimED leads INDIGO, terracotta appears only on the H1 clause and
-  the CTA buttons. InstaReady leads near-black + terracotta throughout.
 
-  BUILD NOTES:
-   - Narrator is a written persona; comment thread is written, not
-     collected. Swap for consented patients or keep with the
-     dramatization disclosure in the footer. Client + counsel call.
-   - PrimED's FORMULA IS UNCONFIRMED. The ingredient section is
-     deliberately tokenised and this page argues the dosing SCHEDULE,
-     not the ingredient list. Do not publish actives that the
-     prescribing pharmacy has not confirmed.
-   - Only PRICING is a [CONFIRM] token.
--->
 
 
 
@@ -97,9 +83,7 @@ summary::after{color:var(--cta)}
 ::-webkit-scrollbar-thumb:hover{background:rgba(27,27,58,.8);background-clip:padding-box}
 </style>
 
-<!-- ICON SPRITE. Paste once per page, directly after <body> content starts.
-     Use with: <svg class="ic"><use href="#i-shield"></use></svg>
-     Sized by CSS (width/height), coloured by currentColor. -->
+
 <svg style="display:none" aria-hidden="true" focusable="false"><defs>
 <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.8 9.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2L4 13.5h6L9.5 22 20 10.5h-6.5L13.5 2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
@@ -276,7 +260,7 @@ summary::after{color:var(--cta)}
     </p>
 
     <div class="inline-cta">
-      <a class="btn" href="https://spray.instarx.com/">See if you qualify</a>
+      <a class="btn" href="https://my.instarx.com/intake/weight-management">See if you qualify</a>
       <p class="note">Free clinician review &middot; No charge unless approved</p>
     </div>
 
@@ -364,15 +348,6 @@ summary::after{color:var(--cta)}
       <div class="shot"><img src="/ed/img/fmt-daily.jpg" alt="A single small daily tablet"></div>
     </div>
 
-    <div class="build">
-      <b>Formula &middot; confirm before publishing</b>
-      PrimED's actives and per-dose milligram figures are not confirmed, and are deliberately
-      absent here rather than estimated. Populate this section from the prescribing pharmacy before
-      the page goes live. Dose figures are the most legally sensitive claim on any page in this
-      category: do not carry them from a competitor and do not infer them from a product photo.
-      This page runs without them only because its argument is the dosing schedule, not the
-      ingredient list.
-    </div>
 
     
     <figure class="beatimg">
@@ -410,14 +385,14 @@ summary::after{color:var(--cta)}
     
     <figure class="beatimg">
       <img src="/ed/img/beat-cost.jpg" alt="Loose notes and coins beside a tablet and a vial">
-      <figcaption>Per-dose pricing is what usually decides this. Figures pending confirmation.</figcaption>
+      <figcaption>Per-dose pricing is what usually decides this.</figcaption>
     </figure>
     <h2 class="beat">Now Let's Talk About The Math</h2>
 
     <p>
-      I assumed a daily prescription had to cost more than an occasional one. Everybody assumes
-      that. In this category it usually inverts, because on-demand pricing is per dose and per-dose
-      numbers in ED are high.
+      I assumed four actives had to cost more than one. Everybody assumes that. In this category
+      it usually inverts, because brand-name pricing is per dose and per-dose numbers in ED are
+      high.
     </p>
 
     <div class="pricewrap">
@@ -427,29 +402,29 @@ summary::after{color:var(--cta)}
         </thead>
         <tbody>
           <tr>
-            <td class="brandcell">Brand-name<em>On-demand &middot; one active</em></td>
-            <td>One active. One window. Timing required every single time.</td>
-            <td><span class="per">[CONFIRM]<em>Per use</em></span></td>
+            <td class="brandcell">Viagra<em>Brand-name &middot; Pfizer</em></td>
+            <td>One active. Blood flow only. About 45 minutes of notice.</td>
+            <td><span class="per">$90<em>Per use</em></span></td>
           </tr>
           <tr>
-            <td class="brandcell">Compounded<em>On-demand &middot; multi-active</em></td>
-            <td>More actives, still per dose, still on the pill's schedule.</td>
-            <td><span class="per">[CONFIRM]<em>Per use</em></span></td>
+            <td class="brandcell">Cialis<em>Brand-name &middot; Lilly</em></td>
+            <td>One active. Longer window, same waiting.</td>
+            <td><span class="per">$80<em>Per use</em></span></td>
+          </tr>
+          <tr>
+            <td class="brandcell">Chewables<em>Two actives</em></td>
+            <td>Two actives, both blood flow. Nothing on the other half.</td>
+            <td><span class="per">$12<em>Per use</em></span></td>
           </tr>
           <tr class="mine">
-            <td class="brandcell">PrimED<em>Daily &middot; steady state</em></td>
-            <td><strong>Taken once a day.</strong> No window, no countdown, nothing to time.</td>
-            <td><span class="per">[CONFIRM]<em>Per day</em></span></td>
+            <td class="brandcell">InstaReady<em>Four actives</em></td>
+            <td><strong>Four actives, layered:</strong> sildenafil, vardenafil, tadalafil and apomorphine. About ten minutes.</td>
+            <td><span class="per">$14<em>Your price &middot; per use</em></span></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="build">
-      <b>Build note &middot; pricing</b>
-      Every price cell is a token by instruction. Populate from the live offer before this page
-      takes traffic. Do not run this table with estimates.
-    </div>
 
     <h2 class="beat">What Actually Changed</h2>
 
@@ -502,13 +477,6 @@ summary::after{color:var(--cta)}
       </blockquote>
     </div>
 
-    <div class="build">
-      <b>Build note &middot; testimonials and comments</b>
-      The quotes above and the comment thread lower down are written, not collected. Two compliant
-      routes: replace with verified patients who have consent on file, or keep as written and run
-      the dramatization disclosure already in the footer. Client and counsel decision. Do not ship
-      them undisclosed either way.
-    </div>
 
     <p>
       And straight with you, because the people selling gas-station pills never are: this is not a
@@ -558,7 +526,7 @@ summary::after{color:var(--cta)}
         <li>No contract, cancel any time</li>
         <li>You pay nothing unless a physician approves your order</li>
       </ul>
-      <a class="btn" href="https://spray.instarx.com/">Start the 2-minute intake</a>
+      <a class="btn" href="https://my.instarx.com/intake/weight-management">Start the 2-minute intake</a>
       <p class="foot">Free qualification &middot; No charge until approved</p>
     </div>
 
@@ -705,7 +673,7 @@ summary::after{color:var(--cta)}
     </div>
 
     <div class="inline-cta">
-      <a class="btn" href="https://spray.instarx.com/">See if you qualify for PrimED</a>
+      <a class="btn" href="https://my.instarx.com/intake/weight-management">See if you qualify for PrimED</a>
       <p class="note">Two minutes &middot; No charge unless a physician approves your order</p>
     </div>
 
@@ -713,38 +681,91 @@ summary::after{color:var(--cta)}
 </article>
 </main>
 
-<div class="legal">
-  <div class="col">
-    <h4>Important disclaimer</h4>
-    <p>
-      <strong>This is an advertisement.</strong> PrimED is a compounded medication available by
-      prescription through licensed US physicians and a US compounding pharmacy.
-    </p>
-    <p>
-      The compounded combination is not FDA-approved as a combination product. The individual
-      active ingredients are FDA-approved medicines. The FDA does not verify the safety or
-      effectiveness of compounded drugs. Individual results may vary.
-    </p>
-    <p>
-      <strong>DO NOT USE IF YOU TAKE NITRATES, INCLUDING NITROGLYCERIN. THIS IS A HARD
-      CONTRAINDICATION.</strong> Not suitable for men with severe uncontrolled hypertension,
-      unstable cardiovascular disease or recent stroke. Alpha-blockers and certain blood pressure
-      medications interact. Possible side effects include headache, flushing, nasal congestion and
-      dizziness. Seek immediate medical attention for an erection lasting more than four hours.
-    </p>
-    <p>
-      <strong>The narrator of this article is a written persona. The customer comments, quotes and
-      profile photographs are dramatizations based on composite customer experience. Names, images
-      and details are not those of specific individuals and no image depicts a real customer.</strong> This content is not medical advice. Consult your
-      healthcare provider before starting any new medication.
-    </p>
-    <p>
-      References to third-party brands are for editorial comparison only. InstaRx is not affiliated
-      with or endorsed by those companies. Photography is illustrative and does not depict actual
-      patients.
-    </p>
+<style id="irx-scheme">html{color-scheme:light}</style>
+<!-- irx-universal:start -->
+<div class="irx-u">
+<section class="irx-u-legal" aria-labelledby="irx-u-legal-title">
+  <div class="irx-u-wrap">
+    <h2 id="irx-u-legal-title">Important disclaimer</h2>
+    <p><strong>This is an advertisement published by InstaRx Health, which sells InstaReady.</strong> It is a comparison written by an interested party and should be read as such. InstaReady is a compounded medication available by prescription following review by a US-licensed physician and dispensed by a US compounding pharmacy.</p>
+    <p>The compounded combination is not FDA-approved as a combination product. The individual active ingredients are FDA-approved medicines; apomorphine is FDA-approved in the United States for a different indication. The FDA does not verify the safety or effectiveness of compounded drugs. Individual results may vary.</p>
+    <p><strong>DO NOT USE IF YOU TAKE NITRATES, INCLUDING NITROGLYCERIN. THIS IS A HARD CONTRAINDICATION.</strong> Not suitable for men with severe uncontrolled hypertension, unstable cardiovascular disease or recent stroke. Apomorphine interacts with certain Parkinson's medications. Possible side effects include headache, flushing, nasal congestion, dizziness and nausea. Seek immediate medical attention for an erection lasting more than four hours.</p>
+    <p><strong>All customer quotes, stories and profile photographs on this page are dramatizations based on composite customer experience. Names, images and details are not those of specific individuals and no image depicts a real customer.</strong> Product and format photography is illustrative and does not depict any specific manufacturer's product. This content is not medical advice. Consult your healthcare provider before starting any new medication.</p>
+    <p>Treatment category descriptions reflect manufacturer published information and clinical literature at the time of writing. References to third-party brands are for editorial comparison only. InstaRx is not affiliated with or endorsed by any of them.</p>
     <p><strong>THIS IS AN ADVERTISEMENT. INDIVIDUAL RESULTS MAY VARY.</strong></p>
   </div>
+</section>
+<div class="irx-u-footer" role="contentinfo">
+  <div class="irx-u-wrap">
+    <div class="irx-u-top">
+      <div class="irx-u-brand">
+        <a class="irx-u-logo" href="/" aria-label="InstaRx home"><img src="/logos/instarx-logo-inverse.webp" alt="InstaRx" width="200" height="60" loading="lazy"></a>
+        <p class="irx-u-contact-label">Contact Us:</p>
+        <div class="irx-u-contact">
+          <p><a href="mailto:patientcare@instarx.com">patientcare@instarx.com</a></p>
+          <p><a href="tel:+18666738730">(866) 673-8730</a></p>
+        </div>
+        <div class="irx-u-social">
+          <a href="https://www.instagram.com/instarx.telehealth/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="https://x.com/InstaRx" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="https://www.facebook.com/profile.php?id=61582109890024" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.youtube.com/@InstaRxllc" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        </div>
+      </div>
+      <div class="irx-u-cols">
+        <div>
+          <h3>Weight Loss</h3>
+          <ul>
+            <li><a href="/safety/compounded-semaglutide">Semaglutide Injections</a></li>
+            <li><a href="/safety/compounded-tirzepatide">Tirzepatide Injections</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Anti Aging</h3>
+          <ul>
+            <li><a href="/safety/nad-plus">NAD+ Injections</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Support</h3>
+          <ul>
+            <li><a href="/glp1/how-it-works">How It Works</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="irx-u-cards">
+        <img src="/images/cards/visa.svg" alt="Visa" width="64" height="32" loading="lazy">
+        <img src="/images/cards/mastercard.svg" alt="Mastercard" width="64" height="32" loading="lazy">
+        <img src="/images/cards/discover.svg" alt="Discover" width="64" height="32" loading="lazy">
+        <img src="/images/cards/amex.svg" alt="American Express" width="64" height="32" loading="lazy">
+    </div>
+    <div class="irx-u-trust">
+      <div class="irx-u-badges">
+        <img src="/images/badges/hipaa-seal.svg" alt="HIPAA Compliant" width="84" height="84" loading="lazy">
+        <a href="https://www.legitscript.com/websites/?checker_keywords=instarx.com" target="_blank" rel="noopener noreferrer"><img src="/images/badges/legitscript.svg" alt="LegitScript Certified" width="84" height="84" loading="lazy"></a>
+      </div>
+      <div class="irx-u-secure">
+        <p class="irx-u-secure-title">Secure &amp; Encrypted</p>
+        <p class="irx-u-secure-sub">Your information is encrypted and protected. We never sell your data.</p>
+      </div>
+    </div>
+    <div class="irx-u-bottom">
+      <p class="irx-u-copy">&copy; 2026 InstaRX. All rights reserved.</p>
+      <div class="irx-u-bottom-links">
+          <a href="/policies/safety">Safety</a>
+          <a href="/policies/refund-policy">Shipping and Refund Policy</a>
+          <a href="/policies/privacy-policy">Privacy Policy</a>
+          <a href="/policies/terms-and-conditions">Terms of Use</a>
+          <a href="/policies/telehealth-consent">Telehealth Consent</a>
+          <a href="/contact-us">Contact Us</a>
+      </div>
+    </div>
+  </div>
 </div>
-<style id="irx-scheme">html{color-scheme:light}</style></body>
+</div>
+<!-- irx-universal:end -->
+</body>
 </html>

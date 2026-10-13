@@ -17,3 +17,10 @@ posthog.init('${POSTHOG_KEY}', {
   capture_pageleave: true,
   defaults: '2026-01-30'
 });`;
+
+// Same snippet with session recording and surveys off, for performance-
+// sensitive landers that still want PostHog pageviews and events.
+export const POSTHOG_LIGHTWEIGHT_SNIPPET = POSTHOG_SNIPPET.replace(
+  "capture_pageleave: true,",
+  "capture_pageleave: true,\n  disable_session_recording: true,\n  disable_surveys: true,",
+);

@@ -212,12 +212,18 @@ function escapeRe(s) {
 /* A block is always inserted as "\n<block>\n" straight before its anchor and
  * stripped as exactly that, so a re-run restores the pre-injection bytes and
  * then re-inserts: byte-for-byte idempotent whatever surrounds the anchor. */
-function stripBetween(html, start, end) {
+function stripBetween(html, start, end, file) {
   const re = new RegExp(
     `\\n${escapeRe(start)}[\\s\\S]*?${escapeRe(end)}\\n`,
     "g",
   );
-  return html.replace(re, "");
+  const out = html.replace(re, "");
+  if (out.includes(start) || out.includes(end)) {
+    throw new Error(
+      `${file}: a "${start}" block is not wrapped in bare newlines; fix it by hand before re-running`,
+    );
+  }
+  return out;
 }
 
 function insertBefore(html, anchor, block, file) {
@@ -234,10 +240,12 @@ let changed = 0;
 for (const page of PAGES) {
   const path = join(ED_DIR, page.file);
   const before = readFileSync(path, "utf8");
-  let html = before;
+  // The markers are matched against bare "\n"; a CRLF checkout would otherwise
+  // leave the old blocks in place and duplicate them. The landers are LF files.
+  let html = before.replace(/\r\n?/g, "\n");
 
-  html = stripBetween(html, HEAD_START, HEAD_END);
-  html = stripBetween(html, BODY_START, BODY_END);
+  html = stripBetween(html, HEAD_START, HEAD_END, page.file);
+  html = stripBetween(html, BODY_START, BODY_END, page.file);
 
   html = insertBefore(html, "</head>", HEAD_BLOCK, page.file);
 

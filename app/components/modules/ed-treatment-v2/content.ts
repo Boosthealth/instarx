@@ -1,5 +1,5 @@
 /**
- * /ed-treatment-v2 — content for the video-led single-product ED lander.
+ * /ed8 (ED treatment v2) — content for the video-led single-product ED lander.
  * Every string the page renders lives here. Claims follow the guardrails in
  * docs/ed-treatment/landing-page-brief.md Part 4.
  */

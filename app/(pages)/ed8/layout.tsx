@@ -1,4 +1,4 @@
-import "./ed-treatment-v2.css";
+import "./ed8.css";
 
 /* Route-scoped layout: the .edv2 token scope and TLS warm-up for the
  * analytics origins (GTM, Meta, PostHog) that AnalyticsScripts loads on every

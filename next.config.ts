@@ -4,9 +4,10 @@ const nextConfig: NextConfig = {
   // gzip is on by default; the production host (CDN) adds brotli on top.
   compress: true,
   // ED landers ported as-is from instarx-ed-lp: static HTML + assets live in
-  // public/ed/ and are served at their original slugs.
+  // public/ed/ and are served at their original slugs plus the short /ed1…/ed7
+  // launch slugs (PRO-847), in the order the client reviewed them.
   async rewrites() {
-    return [
+    const landers = [
       "lander-a-quad",
       "lander-b-prequiz",
       "lander-c-braverx",
@@ -14,7 +15,11 @@ const nextConfig: NextConfig = {
       "primed",
       "instaready-comparison",
       "instaready-listicle",
-    ].map((slug) => ({ source: `/${slug}`, destination: `/ed/${slug}.html` }));
+    ];
+    return landers.flatMap((slug, i) => [
+      { source: `/${slug}`, destination: `/ed/${slug}.html` },
+      { source: `/ed${i + 1}`, destination: `/ed/${slug}.html` },
+    ]);
   },
   images: {
     // Prefer modern formats from the optimizer — AVIF first (smallest), WebP

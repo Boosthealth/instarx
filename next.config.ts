@@ -1,25 +1,27 @@
 import type { NextConfig } from "next";
 
+// public/ed/<slug>.html, in /ed1…/ed7 order.
+const ED_LANDERS = [
+  "lander-a-quad",
+  "lander-b-prequiz",
+  "lander-c-braverx",
+  "instaready",
+  "primed",
+  "instaready-comparison",
+  "instaready-listicle",
+];
+
 const nextConfig: NextConfig = {
   // gzip is on by default; the production host (CDN) adds brotli on top.
   compress: true,
   // ED landers ported as-is from instarx-ed-lp: static HTML + assets live in
-  // public/ed/ and are served at their original slugs plus the short /ed1…/ed7
-  // launch slugs (PRO-847), in the order the client reviewed them.
+  // public/ed/ and are served only at the short /ed1…/ed7 launch slugs
+  // (PRO-847), numbered in the order the client reviewed them.
   async rewrites() {
-    const landers = [
-      "lander-a-quad",
-      "lander-b-prequiz",
-      "lander-c-braverx",
-      "instaready",
-      "primed",
-      "instaready-comparison",
-      "instaready-listicle",
-    ];
-    return landers.flatMap((slug, i) => [
-      { source: `/${slug}`, destination: `/ed/${slug}.html` },
-      { source: `/ed${i + 1}`, destination: `/ed/${slug}.html` },
-    ]);
+    return ED_LANDERS.map((slug, i) => ({
+      source: `/ed${i + 1}`,
+      destination: `/ed/${slug}.html`,
+    }));
   },
   images: {
     // Prefer modern formats from the optimizer — AVIF first (smallest), WebP

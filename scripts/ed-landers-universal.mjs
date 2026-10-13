@@ -5,7 +5,10 @@
  *
  * Idempotent: each run strips the previously injected blocks (delimited by
  * HTML comment markers) and re-inserts them, so re-running after editing the
- * copy below or public/ed/universal.css is the whole update procedure:
+ * copy below or public/ed/universal.css is the whole update procedure
+ * for the universal block. (The one-off PRO-847 content edits - native
+ * footer links, prices, removed build notes - were hand-applied and are NOT
+ * reproduced by this script; a fresh page export needs them redone.)
  *
  *   node scripts/ed-landers-universal.mjs
  *
@@ -20,12 +23,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ED_DIR = join(ROOT, "public", "ed");
 
 /** Where every CTA on the landers goes (PRO-847). */
-export const INTAKE_HREF = "https://my.instarx.com/intake/weight-management";
+const INTAKE_HREF = "https://my.instarx.com/intake/weight-management";
 /** Placeholder host the landers were exported with. */
 const PLACEHOLDER_HREF = "https://spray.instarx.com/";
 
 /** Bump when universal.css changes so cached landers pick it up. */
-const CSS_VERSION = "2026101303";
+const CSS_VERSION = "2026101304";
 
 const HEAD_START = "<!-- irx-universal-head:start -->";
 const HEAD_END = "<!-- irx-universal-head:end -->";
@@ -38,10 +41,10 @@ const HEAD_BLOCK = `${HEAD_START}<link rel="stylesheet" href="/ed/universal.css?
 const DISCLAIMER_HTML = `<section class="irx-u-legal" aria-labelledby="irx-u-legal-title">
   <div class="irx-u-wrap">
     <h2 id="irx-u-legal-title">Important disclaimer</h2>
-    <p>This is an advertisement published by InstaRx Health, which sells InstaReady. It is a comparison written by an interested party and should be read as such. InstaReady is a compounded medication available by prescription following review by a US-licensed physician and dispensed by a US compounding pharmacy.</p>
+    <p><strong>This is an advertisement published by InstaRx Health, which sells InstaReady.</strong> It is a comparison written by an interested party and should be read as such. InstaReady is a compounded medication available by prescription following review by a US-licensed physician and dispensed by a US compounding pharmacy.</p>
     <p>The compounded combination is not FDA-approved as a combination product. The individual active ingredients are FDA-approved medicines; apomorphine is FDA-approved in the United States for a different indication. The FDA does not verify the safety or effectiveness of compounded drugs. Individual results may vary.</p>
     <p><strong>DO NOT USE IF YOU TAKE NITRATES, INCLUDING NITROGLYCERIN. THIS IS A HARD CONTRAINDICATION.</strong> Not suitable for men with severe uncontrolled hypertension, unstable cardiovascular disease or recent stroke. Apomorphine interacts with certain Parkinson's medications. Possible side effects include headache, flushing, nasal congestion, dizziness and nausea. Seek immediate medical attention for an erection lasting more than four hours.</p>
-    <p>All customer quotes, stories and profile photographs on this page are dramatizations based on composite customer experience. Names, images and details are not those of specific individuals and no image depicts a real customer. Product and format photography is illustrative and does not depict any specific manufacturer's product. This content is not medical advice. Consult your healthcare provider before starting any new medication.</p>
+    <p><strong>All customer quotes, stories and profile photographs on this page are dramatizations based on composite customer experience. Names, images and details are not those of specific individuals and no image depicts a real customer.</strong> Product and format photography is illustrative and does not depict any specific manufacturer's product. This content is not medical advice. Consult your healthcare provider before starting any new medication.</p>
     <p>Treatment category descriptions reflect manufacturer published information and clinical literature at the time of writing. References to third-party brands are for editorial comparison only. InstaRx is not affiliated with or endorsed by any of them.</p>
     <p><strong>THIS IS AN ADVERTISEMENT. INDIVIDUAL RESULTS MAY VARY.</strong></p>
   </div>
@@ -224,7 +227,7 @@ function insertBefore(html, anchor, block, file) {
       `${file}: expected exactly one "${anchor}", found ${count}`,
     );
   }
-  return html.replace(anchor, `\n${block}\n${anchor}`);
+  return html.replace(anchor, () => `\n${block}\n${anchor}`);
 }
 
 let changed = 0;

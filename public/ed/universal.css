@@ -157,8 +157,8 @@
   height: 3.5rem;
   width: auto;
 }
-.irx-u-contact-label {
-  margin-top: 1.5rem !important;
+.irx-u-footer .irx-u-contact-label {
+  margin-top: 1.5rem;
   font-size: 1.125rem;
   font-weight: 600;
   color: #d1d5db;

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: pageMeta.title,
     description: pageMeta.description,
-    url: "/ed-treatment-v3",
+    url: "/ed9",
   },
 };
 

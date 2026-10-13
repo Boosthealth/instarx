@@ -1,5 +1,5 @@
 /**
- * /ed-treatment-v3 — content for the premium single-product ED lander.
+ * /ed9 (ED treatment v3) — content for the premium single-product ED lander.
  * Section order and beats follow the BetterMe Rx QMAX page (qmax.bettermerx.com
  * /ed/main-oo-2); every claim is rewritten to Insta-Ready's own facts and the
  * guardrails in docs/ed-treatment/landing-page-brief.md Part 4: swish and

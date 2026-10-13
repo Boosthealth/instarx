@@ -35,7 +35,9 @@ export default function EdTreatmentV3() {
     <>
       <AnchorScrollFix />
       <PageViewedEvent pageName="ed-treatment-v3" />
-      <Header />
+      {/* Placeholder offer copy (TODO_CONFIRM in content.ts) stays off
+          production, like the sample testimonials. */}
+      <Header showPromo={process.env.VERCEL_ENV !== "production"} />
       <main>
         <Hero />
         <TrustBar />

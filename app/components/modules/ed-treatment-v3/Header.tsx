@@ -8,8 +8,10 @@ import { ArrowIcon } from "./ui";
 
 /* Promo strip + sticky header. The header sits transparent over the hero and
  * takes a graphite glass once a 1px sentinel at the top of the page scrolls
- * out of view. The promo strip scrolls away with the page. */
-export function Header() {
+ * out of view. The promo strip scrolls away with the page, and renders only
+ * while `showPromo` is set: the offer is a TODO_CONFIRM placeholder, so the
+ * server page keeps it off production until ops confirms a real offer. */
+export function Header({ showPromo }: { showPromo: boolean }) {
   const sentinel = useRef<HTMLDivElement | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,11 +27,13 @@ export function Header() {
 
   return (
     <>
-      <p className="edv3-promo">
-        <span>{promo.offer}</span>
-        <span className="edv3-promo__dot" aria-hidden="true" />
-        <span className="edv3-promo__tail">{promo.tail}</span>
-      </p>
+      {showPromo && (
+        <p className="edv3-promo">
+          <span>{promo.offer}</span>
+          <span className="edv3-promo__dot" aria-hidden="true" />
+          <span className="edv3-promo__tail">{promo.tail}</span>
+        </p>
+      )}
       <div ref={sentinel} className="edv3-sentinel" aria-hidden="true" />
       <header className="edv3-header" data-scrolled={scrolled}>
         <div className="edv3-container edv3-header__inner">

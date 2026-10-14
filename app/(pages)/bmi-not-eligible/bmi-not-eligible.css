@@ -1,0 +1,57 @@
+/* Self-contained styles for the /bmi-not-eligible exit page. Calm, centered
+   card on a soft neutral background: this is a screen-out page, so it reads
+   quiet and kind, not like a paid-traffic quiz intro. Scoped under .bmi-* so
+   it can't bleed into other pages. */
+
+.bmi-page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  background: #f5f6f8;
+  color: #1a2233;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bmi-inner {
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.bmi-title {
+  font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.bmi-body {
+  margin: 20px auto 0;
+  max-width: 46ch;
+  font-size: clamp(1rem, 0.6vw + 0.9rem, 1.125rem);
+  line-height: 1.6;
+  color: #3a4457;
+}
+
+.bmi-body + .bmi-body {
+  margin-top: 16px;
+}
+
+.bmi-contact {
+  margin-top: 32px;
+  font-size: 1rem;
+  color: #3a4457;
+}
+
+.bmi-contact a {
+  color: #0d6efd;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.bmi-contact a:hover {
+  text-decoration: underline;
+}

@@ -4,7 +4,7 @@ Reference for which pages exist, which embed the third-party (Savvy/Embeddables)
 flow, and which analytics each page loads.
 
 **Branch:** `main`
-**Last updated:** 2026-05-19
+**Last updated:** 2026-09-14
 
 ## How analytics is wired
 
@@ -41,6 +41,7 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 | Route | Embedded solution (`EmbeddablesScript`) | GTM | PostHog |
 | --- | :---: | :---: | :---: |
 | `/` | ✅ | ❌ | ❌ |
+| `/bmi-not-eligible` | ❌ | ✅ | ✅ |
 | `/contact-us` | ❌ | ✅ | ✅ |
 | `/glp1-info` | ❌ | ✅ | ✅ |
 | `/glp1-new` | ❌ | ✅ | ✅ |
@@ -63,10 +64,13 @@ Legend: ✅ = yes / loaded · ❌ = no / not loaded
 
 ## Summary
 
-- **20** total routes.
+- **21** total routes.
 - **4** embed the third-party flow and run **no** first-party analytics:
   `/`, `/glp1-weight-loss`, `/intake`, `/intake01`.
-- **16** are first-party pages running **GTM + PostHog**.
+- **17** are first-party pages running **GTM + PostHog**.
+- `/bmi-not-eligible` is the exit page for people who screen out of the intake
+  flow with a BMI under 20. It runs first-party analytics so the rejection rate
+  is measurable; the embedded flow's low-BMI exit must point at this path.
 - `/` is the Savvy embeddables flow (`flow_a22jeg0agf2ch469bbf95406`),
   intentionally excluded from first-party analytics (the flow ships its own).
 - `/weight-loss` holds the marketing site that previously lived at `/`

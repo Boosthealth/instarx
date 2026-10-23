@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { useSyncExternalStore } from "react";
+import { CARE_HOST } from "@/app/lib/care-lander";
 import {
   GTM_ID,
   GTM_SNIPPET,
@@ -26,12 +28,24 @@ const EMBEDDABLES_ROUTES = new Set([
   "/quiz02",
 ]);
 
+const subscribeToNothing = () => () => {};
+
 export default function AnalyticsScripts() {
   const pathname = usePathname();
+  // null on the server and during hydration; the real host right after.
+  const hostname = useSyncExternalStore(
+    subscribeToNothing,
+    () => window.location.hostname,
+    () => null,
+  );
 
   // PostHog is skipped on embeddables pages (their flow handles it); GTM loads
-  // on every page.
-  const skipPostHog = pathname !== null && EMBEDDABLES_ROUTES.has(pathname);
+  // on every page. care.instarx.com/ is the glp2-care lander rewritten onto
+  // the root (see proxy.ts), not the embeddables homepage, so it keeps PostHog.
+  const skipPostHog =
+    pathname !== null &&
+    EMBEDDABLES_ROUTES.has(pathname) &&
+    hostname !== CARE_HOST;
 
   // Defer analytics to page-idle on the heavy editorial landers (glp2-v2,
   // nad-plus, glp1/how-it-works) ONLY, so the ~900KB of marketing/analytics JS

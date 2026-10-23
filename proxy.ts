@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ATTRIBUTION_COOKIE, captureAttribution } from "@/app/lib/attribution";
+import { CARE_HOST, CARE_LANDER_PATH } from "@/app/lib/care-lander";
 import { getVariationKey } from "@/app/lib/convert";
 import {
   AFFILIATE_FUNNEL_SPLIT_EXPERIENCE,
@@ -99,6 +100,18 @@ async function routeResponse(
   request: NextRequest,
   visitorId: string,
 ): Promise<NextResponse> {
+  // care.instarx.com/ — Pinterest lander (INS-730). Rewrite, not redirect, so
+  // the visitor stays on care.instarx.com/ with the query string untouched.
+  // Checked before the homepage split, which must only run on go.instarx.com.
+  if (
+    request.headers.get("host") === CARE_HOST &&
+    request.nextUrl.pathname === "/"
+  ) {
+    const target = request.nextUrl.clone();
+    target.pathname = CARE_LANDER_PATH;
+    return NextResponse.rewrite(target);
+  }
+
   // / — Homepage lander split (split-URL test). Bucket the visitor and 302
   // the non-control arms to the assigned GLP-1 lander, carrying the visitor id
   // as a query param so it persists across the redirect. Same prefetch/bot

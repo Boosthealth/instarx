@@ -90,6 +90,28 @@ function CheckIcon({ className = "" }: { className?: string }) {
   );
 }
 
+/** FAQ disclosure marker; rotates 45° into a cross when the answer is open. */
+function PlusIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      width="20"
+      height="20"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      <path
+        d="M10 3v14M3 10h14"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function SymptomIcon({
   name,
 }: {
@@ -163,7 +185,7 @@ export function Hero() {
               <Cta className="w-full sm:w-auto mb-4">{hero.cta}</Cta>
               <p className="text-sm text-gray-700">
                 {hero.micro.map((item, i) => (
-                  <span key={item}>
+                  <span key={item} className="inline-block whitespace-nowrap">
                     {i > 0 && (
                       <span aria-hidden="true">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
                     )}
@@ -279,7 +301,7 @@ export function Science() {
               </li>
             ))}
           </ul>
-          <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-gray-700 leading-relaxed">
+          <p className="mx-auto mt-8 max-w-[70ch] text-center text-sm text-gray-700 leading-relaxed text-pretty">
             {science.disclosure}
           </p>
         </div>
@@ -380,7 +402,7 @@ export function Pricing() {
     <section className="bg-[#f5f0eb] py-16 md:py-24 px-6" id="pricing">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className={`${H2} mb-3`}>{pricing.title}</h2>
-        <p className="text-lg md:text-xl font-medium text-gray-700 mb-10">
+        <p className="mx-auto max-w-2xl text-lg md:text-xl font-medium text-gray-700 mb-10 text-balance">
           {pricing.lead}
         </p>
 
@@ -517,11 +539,11 @@ export function Callout() {
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
               {callout.title}
             </h3>
-            <p className="text-base text-gray-800 leading-relaxed">
+            <p className="max-w-prose text-base text-gray-800 leading-relaxed text-pretty">
               {callout.body}
               <Ref n={callout.bodyRef} />
             </p>
-            <p className="mt-3 text-sm text-gray-800 leading-relaxed">
+            <p className="mt-3 max-w-prose text-sm text-gray-800 leading-relaxed text-pretty">
               {callout.fine}
               <Ref n={callout.fineRef} />
             </p>
@@ -551,14 +573,9 @@ export function Faq() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-lg font-bold text-gray-900 leading-snug [&::-webkit-details-marker]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 rounded-sm">
                 {item.q}
-                <span
-                  className="shrink-0 text-3xl font-light leading-none text-blue-600 transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
-                  aria-hidden="true"
-                >
-                  +
-                </span>
+                <PlusIcon className="shrink-0 text-blue-600 transition-transform duration-200 ease-out group-open:rotate-45 motion-reduce:transition-none" />
               </summary>
-              <p className="pb-6 text-base text-gray-700 leading-relaxed">
+              <p className="max-w-prose pb-6 text-base text-gray-700 leading-relaxed text-pretty">
                 {item.a}
               </p>
             </details>
@@ -617,7 +634,7 @@ export function Disclaimers() {
       aria-label="Disclaimers and references"
     >
       <div className={`${CONTAINER} text-sm text-gray-700 leading-relaxed`}>
-        <p className="max-w-4xl">{disclaimers.text}</p>
+        <p className="max-w-[75ch] text-pretty">{disclaimers.text}</p>
         <p className="mt-6 font-semibold text-gray-900">
           {disclaimers.referencesTitle}
         </p>

@@ -69,7 +69,7 @@ export default function SleepApnea() {
       <PageViewedEvent pageName="sleep-apnea" />
       <PageEffects />
       <Header ctaHref={INTAKE_HREF} links={[...navLinks]} />
-      <main>
+      <main className="selection:bg-blue-200 selection:text-gray-950">
         <Hero />
         <TrustBar />
         <Problem />

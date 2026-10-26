@@ -43,13 +43,18 @@ function CloseIcon() {
   );
 }
 
+type NavLink = { label: string; href: string };
+
 export default function Header({
   ctaHref = "https://go.instarx.com/intake",
+  links,
 }: {
   ctaHref?: string;
+  /** Override the nav items; default keeps the homepage anchors + pricing. */
+  links?: NavLink[];
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navLinks = [...anchorLinks, { label: "Plans & Pricing", href: ctaHref }];
+  const navLinks: NavLink[] = links ?? [...anchorLinks, { label: "Plans & Pricing", href: ctaHref }];
 
   useEffect(() => {
     if (!menuOpen) return;

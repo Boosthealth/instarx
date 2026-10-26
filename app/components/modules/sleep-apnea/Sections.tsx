@@ -112,17 +112,21 @@ function PlusIcon({ className = "" }: { className?: string }) {
   );
 }
 
+const SYMPTOM_ICON_PATHS: Record<
+  (typeof problem.symptoms)[number]["icon"],
+  string
+> = {
+  snore: "M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0",
+  battery:
+    "M2 9a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM22 11v2M6 10v4",
+  moon: "M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z",
+};
+
 function SymptomIcon({
   name,
 }: {
   name: (typeof problem.symptoms)[number]["icon"];
 }) {
-  const paths = {
-    snore: "M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0",
-    battery:
-      "M2 9a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM22 11v2M6 10v4",
-    moon: "M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z",
-  } as const;
   return (
     <svg
       viewBox="0 0 24 24"
@@ -136,7 +140,7 @@ function SymptomIcon({
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d={paths[name]} />
+      <path d={SYMPTOM_ICON_PATHS[name]} />
     </svg>
   );
 }
@@ -200,9 +204,8 @@ export function Hero() {
                 alt={hero.image.alt}
                 width={1376}
                 height={768}
-                sizes="(max-width: 1023px) calc(100vw - 48px), 560px"
+                sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) calc(50vw - 64px), 560px"
                 priority
-                fetchPriority="high"
                 className="w-full lg:max-w-[560px] h-auto rounded-2xl object-cover aspect-[4/3] lg:aspect-[16/11]"
               />
             </div>
@@ -593,25 +596,26 @@ export function Faq() {
 export function FinalCta() {
   return (
     <section className="sm:p-4">
-      {/* The couple is centred in the photo, so copy never overlays it: phones
-          stack the photo above the copy, and from `sm` up the photo becomes a
-          right-hand panel fading into the dark card while the copy sits left. */}
-      <div className="relative overflow-hidden rounded-t-3xl sm:rounded-[48px] bg-gray-950 sm:min-h-[480px] sm:flex sm:items-center">
-        <div className="relative aspect-[16/11] sm:absolute sm:inset-y-0 sm:right-0 sm:w-[62%] sm:aspect-auto">
+      {/* The couple is centred in the photo, so copy never overlays it: up to
+          `lg` the photo stacks above the copy, and from `lg` the photo becomes
+          a right-hand panel (62%) fading into the dark card while the copy is
+          capped at 42% so the heading ends inside the panel's solid edge. */}
+      <div className="relative overflow-hidden rounded-t-3xl sm:rounded-[48px] bg-gray-950 lg:min-h-[480px] lg:flex lg:items-center">
+        <div className="relative aspect-[16/11] lg:absolute lg:inset-y-0 lg:right-0 lg:w-[62%] lg:aspect-auto">
           <Image
             src={finalCta.image.src}
             alt={finalCta.image.alt}
             fill
-            sizes="(max-width: 639px) 100vw, 62vw"
-            className="object-cover sm:object-[center_40%]"
+            sizes="(max-width: 1023px) 100vw, 62vw"
+            className="object-cover lg:object-[center_40%]"
           />
           <div
-            className="absolute inset-0 hidden sm:block bg-linear-to-r from-gray-950 from-5% via-gray-950/45 via-45% to-gray-950/0"
+            className="absolute inset-0 hidden lg:block bg-linear-to-r from-gray-950 from-5% via-gray-950/45 via-45% to-gray-950/0"
             aria-hidden="true"
           />
         </div>
-        <div className="relative w-full px-6 py-12 text-center sm:max-w-xl sm:py-16 sm:pl-12 sm:text-left lg:pl-16">
-          <h2 className="mx-auto mb-7 max-w-3xl text-4xl md:text-5xl font-bold tracking-tight leading-tight text-balance text-white sm:mx-0">
+        <div className="relative w-full px-6 py-12 text-center lg:w-[42%] lg:max-w-xl lg:py-16 lg:pl-12 lg:text-left xl:pl-16">
+          <h2 className="mx-auto mb-7 max-w-3xl text-4xl md:text-5xl font-bold tracking-tight leading-tight text-balance text-white lg:mx-0">
             {finalCta.title}
           </h2>
           <Cta color="white" className="w-full sm:w-auto">

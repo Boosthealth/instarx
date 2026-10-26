@@ -3,6 +3,8 @@
  * Copy is the client-approved text from the shared static page, word for word
  * (compliance: brand names only in the disclosure, trademark line and
  * references; "FDA-approved" only in the negated disclosures and FAQ Q3).
+ * Exception: `pricing` below is our placeholder, lifted from /glp2, because
+ * the client package left prices unconfirmed; it awaits their sign-off.
  * Every string the page renders lives here. Do not edit copy without Jeremy.
  */
 

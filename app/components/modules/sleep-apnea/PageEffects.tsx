@@ -11,17 +11,30 @@ import { INTAKE_HREF } from "./content";
  * its caller's onClick (the Header closes its mobile menu there) and then
  * bails on `defaultPrevented`, so no soft navigation happens and the menu
  * overlay is not left open in the bfcache snapshot. Only plain left clicks
- * are handled; modified clicks keep their native open-in-new-tab behaviour.
+ * on the intake path itself are handled (query strings allowed, `/intake01`
+ * and the like are not); modified clicks, `target` and `download` links keep
+ * their native behaviour.
  */
+const INTAKE_URL = new URL(INTAKE_HREF);
+
+function isIntakeLink(link: HTMLAnchorElement): boolean {
+  const url = new URL(link.href);
+  return (
+    url.origin === INTAKE_URL.origin && url.pathname === INTAKE_URL.pathname
+  );
+}
+
 export function PageEffects() {
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
       const link = target.closest("a");
-      if (!link || !link.href.startsWith(INTAKE_HREF)) return;
+      if (!link || !isIntakeLink(link)) return;
       if (
         event.defaultPrevented ||
+        (link.target && link.target !== "_self") ||
+        link.hasAttribute("download") ||
         event.button !== 0 ||
         event.metaKey ||
         event.ctrlKey ||

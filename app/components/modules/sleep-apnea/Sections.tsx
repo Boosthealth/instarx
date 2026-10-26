@@ -122,12 +122,10 @@ function SymptomIcon({
 function Photo({
   src,
   alt,
-  priority = false,
   className = "",
 }: {
   src: string;
   alt: string;
-  priority?: boolean;
   className?: string;
 }) {
   return (
@@ -137,7 +135,6 @@ function Photo({
       width={1376}
       height={768}
       sizes={PHOTO_SIZES}
-      priority={priority}
       className={`w-full h-auto rounded-3xl object-cover aspect-[16/11] ${className}`.trim()}
     />
   );
@@ -163,9 +160,7 @@ export function Hero() {
               <p className="text-lg sm:text-xl text-gray-800 mb-7 max-w-xl leading-relaxed">
                 {hero.sub}
               </p>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-4">
-                <Cta className="w-full sm:w-auto">{hero.cta}</Cta>
-              </div>
+              <Cta className="w-full sm:w-auto mb-4">{hero.cta}</Cta>
               <p className="text-sm text-gray-700">
                 {hero.micro.map((item, i) => (
                   <span key={item}>
@@ -183,7 +178,7 @@ export function Hero() {
                 alt={hero.image.alt}
                 width={1376}
                 height={768}
-                sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) 600px, 560px"
+                sizes="(max-width: 1024px) calc(100vw - 48px), 560px"
                 priority
                 fetchPriority="high"
                 className="w-full lg:max-w-[560px] h-auto rounded-2xl object-cover aspect-[4/3] lg:aspect-[16/11]"
@@ -227,11 +222,7 @@ export function Problem() {
       <div
         className={`${CONTAINER} grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center`}
       >
-        <Photo
-          src={problem.image.src}
-          alt={problem.image.alt}
-          className="order-first"
-        />
+        <Photo src={problem.image.src} alt={problem.image.alt} />
         <div>
           <h2 className={`${H2} mb-5`}>{problem.title}</h2>
           <p className={BODY}>{problem.body}</p>
@@ -267,7 +258,7 @@ export function Science() {
             <h2 className={`${H2} mb-5`}>{science.title}</h2>
             <p className={BODY}>
               {science.intro.map((part, i) => (
-                <span key={part.ref}>
+                <span key={part.text}>
                   {i > 0 && " "}
                   {part.text}
                   <Ref n={part.ref} />

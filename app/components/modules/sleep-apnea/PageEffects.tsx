@@ -7,8 +7,11 @@ import { INTAKE_HREF } from "./content";
  * The shared Header renders its CTAs with next/link. On go.instarx.com the
  * intake URL is same-origin, so Link soft-navigates on its href prop, which
  * skips the proxy's /intake funnel split (the RSC fetch reads as non-human).
- * Stop the capture-phase click before React sees it so the browser performs
- * a full navigation. Same approach as /glp-fourth-month-free.
+ * Cancel the default in the capture phase and navigate ourselves: Link runs
+ * its caller's onClick (the Header closes its mobile menu there) and then
+ * bails on `defaultPrevented`, so no soft navigation happens and the menu
+ * overlay is not left open in the bfcache snapshot. Only plain left clicks
+ * are handled; modified clicks keep their native open-in-new-tab behaviour.
  */
 export function PageEffects() {
   useEffect(() => {
@@ -27,7 +30,8 @@ export function PageEffects() {
       ) {
         return;
       }
-      event.stopPropagation();
+      event.preventDefault();
+      window.location.assign(link.href);
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);

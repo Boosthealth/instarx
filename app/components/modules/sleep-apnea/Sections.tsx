@@ -25,7 +25,7 @@ const H2 =
   "text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight text-balance";
 const BODY = "text-lg text-gray-700 leading-relaxed text-pretty";
 const PHOTO_SIZES =
-  "(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 48px), 600px";
+  "(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1279px) calc(50vw - 56px), 584px";
 
 /** Primary CTA: a plain anchor (full navigation) so proxy rewrites and the
  *  /intake split apply; next/link would soft-navigate in production. */
@@ -178,7 +178,7 @@ export function Hero() {
                 alt={hero.image.alt}
                 width={1376}
                 height={768}
-                sizes="(max-width: 1024px) calc(100vw - 48px), 560px"
+                sizes="(max-width: 1023px) calc(100vw - 48px), 560px"
                 priority
                 fetchPriority="high"
                 className="w-full lg:max-w-[560px] h-auto rounded-2xl object-cover aspect-[4/3] lg:aspect-[16/11]"
@@ -397,7 +397,7 @@ export function Pricing() {
                   alt={vial.alt}
                   width={640}
                   height={640}
-                  sizes="(max-width: 640px) 40vw, 280px"
+                  sizes="(max-width: 639px) 40vw, 280px"
                   className="w-1/2 max-w-[280px] h-auto object-contain"
                 />
               ))}
@@ -585,7 +585,7 @@ export function FinalCta() {
             src={finalCta.image.src}
             alt={finalCta.image.alt}
             fill
-            sizes="(max-width: 640px) 100vw, 62vw"
+            sizes="(max-width: 639px) 100vw, 62vw"
             className="object-cover sm:object-[center_40%]"
           />
           <div

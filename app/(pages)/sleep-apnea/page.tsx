@@ -33,6 +33,8 @@ export const metadata: Metadata = {
     title: pageMeta.title,
     description: pageMeta.description,
     type: "website",
+    siteName: "InstaRx",
+    locale: "en_US",
     url: "/sleep-apnea",
     images: [{ url: pageMeta.ogImage, width: 1200, height: 630 }],
   },

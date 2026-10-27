@@ -11,7 +11,7 @@
 export const INTAKE_HREF = "https://go.instarx.com/intake";
 
 export const metadata = {
-  title: "GLP-1 Weight Loss & Sleep Apnea | InstaRx",
+  title: "Sleep Apnea | InstaRx",
   description:
     "Extra weight is a major driver of sleep apnea. See if a provider-guided GLP-1 weight-loss program is right for you. 2-minute online visit.",
   ogImage: "/images/sleep-apnea/og-image-1200x630.jpg",

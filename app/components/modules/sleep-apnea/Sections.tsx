@@ -172,43 +172,44 @@ function Photo({
 
 export function Hero() {
   return (
-    <section className="sm:px-4" style={{ paddingTop: "var(--header-height)" }}>
-      <div className="bg-gradient rounded-3xl sm:rounded-[48px] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 text-gray-900">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-8 sm:py-14">
-            <div>
-              <p className="inline-block mb-5 rounded-full bg-white/70 px-4 py-1.5 text-sm font-semibold tracking-wide text-gray-900">
-                {hero.eyebrow}
-              </p>
-              <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-5 text-balance">
-                {hero.headline}
-              </h1>
-              <p className="text-lg sm:text-xl text-gray-800 mb-7 max-w-xl leading-relaxed">
-                {hero.sub}
-              </p>
-              <Cta className="w-full sm:w-auto mb-4">{hero.cta}</Cta>
-              <p className="text-sm text-gray-700">
-                {hero.micro.map((item, i) => (
-                  <span key={item} className="inline-block whitespace-nowrap">
-                    {i > 0 && (
-                      <span aria-hidden="true">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-                    )}
-                    {item}
-                  </span>
-                ))}
-              </p>
-            </div>
-            <div className="flex justify-center lg:justify-end">
-              <Image
-                src={hero.image.src}
-                alt={hero.image.alt}
-                width={1376}
-                height={768}
-                sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) calc(50vw - 64px), 560px"
-                priority
-                className="w-full lg:max-w-[560px] h-auto rounded-2xl object-cover aspect-[4/3] lg:aspect-[16/11]"
-              />
-            </div>
+    <section
+      className="bg-blue-50"
+      style={{ paddingTop: "var(--header-height)" }}
+    >
+      <div className={`${CONTAINER} text-gray-900`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-8 sm:py-14">
+          <div>
+            <p className="inline-block mb-5 rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold tracking-wide text-blue-900">
+              {hero.eyebrow}
+            </p>
+            <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] tracking-tight mb-5 text-balance">
+              {hero.headline}
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-800 mb-7 max-w-xl leading-relaxed">
+              {hero.sub}
+            </p>
+            <Cta className="w-full sm:w-auto mb-4">{hero.cta}</Cta>
+            <p className="text-sm text-gray-700">
+              {hero.micro.map((item, i) => (
+                <span key={item} className="inline-block whitespace-nowrap">
+                  {i > 0 && (
+                    <span aria-hidden="true">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                  )}
+                  {item}
+                </span>
+              ))}
+            </p>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <Image
+              src={hero.image.src}
+              alt={hero.image.alt}
+              width={1376}
+              height={768}
+              sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1279px) calc(50vw - 48px), 560px"
+              priority
+              className="w-full lg:max-w-[560px] h-auto rounded-2xl object-cover aspect-[4/3] lg:aspect-[16/11]"
+            />
           </div>
         </div>
       </div>
@@ -222,13 +223,13 @@ export function Hero() {
 
 export function TrustBar() {
   return (
-    <div className="bg-white">
+    <div className="bg-gray-950">
       <ul
-        className={`${CONTAINER} flex flex-wrap justify-center gap-x-10 gap-y-2 py-5 text-sm sm:text-base font-semibold text-gray-900`}
+        className={`${CONTAINER} flex flex-wrap justify-center gap-x-10 gap-y-2 py-4 text-sm sm:text-base font-semibold text-white`}
       >
         {trust.map((item) => (
           <li key={item} className="inline-flex items-center gap-2">
-            <CheckIcon className="text-emerald-600" />
+            <CheckIcon className="text-white" />
             {item}
           </li>
         ))}
@@ -247,7 +248,6 @@ export function Problem() {
       <div
         className={`${CONTAINER} grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center`}
       >
-        <Photo src={problem.image.src} alt={problem.image.alt} />
         <div>
           <h2 className={`${H2} mb-5`}>{problem.title}</h2>
           <p className={BODY}>{problem.body}</p>
@@ -265,6 +265,7 @@ export function Problem() {
             ))}
           </ul>
         </div>
+        <Photo src={problem.image.src} alt={problem.image.alt} />
       </div>
     </section>
   );
@@ -276,38 +277,36 @@ export function Problem() {
 
 export function Science() {
   return (
-    <section className="sm:px-4">
-      <div className="bg-gray-100 rounded-3xl sm:rounded-[48px] py-16 md:py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className={`${H2} mb-5`}>{science.title}</h2>
-            <p className={BODY}>
-              {science.intro.map((part, i) => (
-                <span key={part.text}>
-                  {i > 0 && " "}
-                  {part.text}
-                  <Ref n={part.ref} />
-                </span>
-              ))}
-            </p>
-          </div>
-          <ul className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
-            {science.stats.map((stat) => (
-              <li key={stat.n} className="rounded-3xl bg-white p-7 md:p-8">
-                <p className="text-4xl xl:text-5xl font-extrabold tracking-tight text-gray-900 leading-none mb-3">
-                  {stat.n}
-                </p>
-                <p className="text-base text-gray-700 leading-relaxed">
-                  {stat.text}
-                  <Ref n={stat.ref} />
-                </p>
-              </li>
+    <section className="bg-gray-100 py-16 md:py-24">
+      <div className={CONTAINER}>
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className={`${H2} mb-5`}>{science.title}</h2>
+          <p className={BODY}>
+            {science.intro.map((part, i) => (
+              <span key={part.text}>
+                {i > 0 && " "}
+                {part.text}
+                <Ref n={part.ref} />
+              </span>
             ))}
-          </ul>
-          <p className="mx-auto mt-8 max-w-[70ch] text-center text-sm text-gray-700 leading-relaxed text-pretty">
-            {science.disclosure}
           </p>
         </div>
+        <ul className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+          {science.stats.map((stat) => (
+            <li key={stat.n} className="rounded-3xl bg-white p-7 md:p-8">
+              <p className="text-4xl xl:text-5xl font-extrabold tracking-tight text-blue-600 leading-none mb-3">
+                {stat.n}
+              </p>
+              <p className="text-base text-gray-700 leading-relaxed">
+                {stat.text}
+                <Ref n={stat.ref} />
+              </p>
+            </li>
+          ))}
+        </ul>
+        <p className="mx-auto mt-8 max-w-[70ch] text-center text-sm text-gray-700 leading-relaxed text-pretty">
+          {science.disclosure}
+        </p>
       </div>
     </section>
   );
@@ -402,14 +401,14 @@ export function HowItWorks() {
 
 export function Pricing() {
   return (
-    <section className="bg-[#f5f0eb] py-16 md:py-24 px-6" id="pricing">
+    <section className="bg-gray-100 py-16 md:py-24 px-6" id="pricing">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className={`${H2} mb-3`}>{pricing.title}</h2>
         <p className="mx-auto max-w-2xl text-lg md:text-xl font-medium text-gray-700 mb-10 text-balance">
           {pricing.lead}
         </p>
 
-        <div className="rounded-3xl overflow-hidden bg-[#faf6f0] text-left">
+        <div className="rounded-3xl overflow-hidden bg-white text-left">
           <div className="pt-8 px-4">
             <p className="text-center text-base font-medium text-gray-700">
               {pricing.medications}
@@ -428,7 +427,7 @@ export function Pricing() {
               ))}
             </div>
             <div className="flex justify-center pt-2">
-              <span className="bg-gradient inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-black whitespace-nowrap">
+              <span className="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-900 whitespace-nowrap">
                 {pricing.badge}
               </span>
             </div>
@@ -595,12 +594,12 @@ export function Faq() {
 
 export function FinalCta() {
   return (
-    <section className="sm:p-4">
+    <section>
       {/* The couple is centred in the photo, so copy never overlays it: up to
           `lg` the photo stacks above the copy, and from `lg` the photo becomes
           a right-hand panel (62%) fading into the dark card while the copy is
           capped at 42% so the heading ends inside the panel's solid edge. */}
-      <div className="relative overflow-hidden rounded-t-3xl sm:rounded-[48px] bg-gray-950 lg:min-h-[480px] lg:flex lg:items-center">
+      <div className="relative overflow-hidden bg-gray-950 lg:min-h-[480px] lg:flex lg:items-center">
         <div className="relative aspect-[16/11] lg:absolute lg:inset-y-0 lg:right-0 lg:w-[62%] lg:aspect-auto">
           <Image
             src={finalCta.image.src}
